@@ -29,12 +29,37 @@ ROOT_DIR="$(cd "$(dirname "$0")" && pwd)"
 # Start MongoDB with Docker
 echo -e "${BLUE}📦 Starting MongoDB...${NC}"
 cd "$ROOT_DIR/backend"
-if docker ps | grep -q matrimonial-mongo; then
-    echo -e "${GREEN}✓ MongoDB container already running${NC}"
+
+# Find docker command
+DOCKER_CMD=$(which docker 2>/dev/null || command -v docker 2>/dev/null || echo "docker")
+if [ "$DOCKER_CMD" = "docker" ] && ! command -v docker >/dev/null 2>&1; then
+    # Try common docker paths
+    if [ -x "/usr/local/bin/docker" ]; then
+        DOCKER_CMD="/usr/local/bin/docker"
+    elif [ -x "/usr/bin/docker" ]; then
+        DOCKER_CMD="/usr/bin/docker"
+    else
+        echo -e "${YELLOW}⚠️  Docker not found in PATH. Trying to continue...${NC}"
+        echo -e "${YELLOW}   If MongoDB is already running, this is OK${NC}"
+        DOCKER_CMD=""
+    fi
+fi
+
+if [ -n "$DOCKER_CMD" ]; then
+    if $DOCKER_CMD ps 2>/dev/null | grep -q matrimonial-mongo; then
+        echo -e "${GREEN}✓ MongoDB container already running${NC}"
+    else
+        $DOCKER_CMD compose up -d mongo 2>/dev/null || $DOCKER_CMD-compose up -d mongo 2>/dev/null || {
+            echo -e "${YELLOW}⚠️  Could not start MongoDB container. Checking if already running...${NC}"
+            if $DOCKER_CMD ps -a 2>/dev/null | grep -q matrimonial-mongo; then
+                echo -e "${GREEN}✓ MongoDB container exists${NC}"
+            fi
+        }
+        echo -e "${GREEN}✓ MongoDB container check complete${NC}"
+        sleep 3
+    fi
 else
-    docker compose up -d mongo
-    echo -e "${GREEN}✓ MongoDB container started${NC}"
-    sleep 3
+    echo -e "${YELLOW}⚠️  Docker command not available. Assuming MongoDB is already running.${NC}"
 fi
 
 # Wait for MongoDB to be ready
