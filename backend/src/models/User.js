@@ -53,10 +53,12 @@ const userSchema = new mongoose.Schema(
       type: String,
       lowercase: true,
       trim: true,
+      index: false, // Explicitly disable auto-index, we create it manually below
     },
     phone: {
       type: String,
       trim: true,
+      index: false, // Explicitly disable auto-index, we create it manually below
     },
     passwordHash: { type: String, required: false }, // Optional for OTP-based auth
     
