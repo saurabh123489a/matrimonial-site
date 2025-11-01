@@ -53,14 +53,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       lowercase: true,
       trim: true,
-      unique: true,
-      sparse: true,
     },
     phone: {
       type: String,
       trim: true,
-      unique: true,
-      sparse: true,
     },
     passwordHash: { type: String, required: false }, // Optional for OTP-based auth
     
