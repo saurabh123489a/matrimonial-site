@@ -1,0 +1,694 @@
+'use client';
+
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
+import { userApi, photoApi, User, UpdateUserDto, metaDataApi } from '@/lib/api';
+import { auth } from '@/lib/auth';
+import { useTranslation } from '@/hooks/useTranslation';
+import { useNotifications } from '@/contexts/NotificationContext';
+import LocationSelect from '@/components/LocationSelect';
+
+export default function MyProfilePage() {
+  const router = useRouter();
+  const { t } = useTranslation();
+  const { showSuccess, showError } = useNotifications();
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [editing, setEditing] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [uploadingPhotos, setUploadingPhotos] = useState(false);
+  const [togglingActive, setTogglingActive] = useState(false);
+  const [error, setError] = useState('');
+  const [mounted, setMounted] = useState(false);
+  const [formData, setFormData] = useState<UpdateUserDto>({});
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [educationOptions, setEducationOptions] = useState<Array<{ value: string; label: string }>>([]);
+  const [occupationOptions, setOccupationOptions] = useState<Array<{ value: string; label: string }>>([]);
+  const [loadingEducation, setLoadingEducation] = useState(false);
+  const [loadingOccupation, setLoadingOccupation] = useState(false);
+
+  useEffect(() => {
+    // Only run on client side
+    setMounted(true);
+    
+    if (!auth.isAuthenticated()) {
+      router.push('/login');
+      return;
+    }
+
+    loadProfile();
+    loadEducationOptions();
+    loadOccupationOptions();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const loadEducationOptions = async () => {
+    setLoadingEducation(true);
+    try {
+      const response = await metaDataApi.getEducation();
+      if (response.status && response.data) {
+        setEducationOptions(response.data);
+      }
+    } catch (error) {
+      console.error('Failed to load education options:', error);
+    } finally {
+      setLoadingEducation(false);
+    }
+  };
+
+  const loadOccupationOptions = async () => {
+    setLoadingOccupation(true);
+    try {
+      const response = await metaDataApi.getOccupation();
+      if (response.status && response.data) {
+        setOccupationOptions(response.data);
+      }
+    } catch (error) {
+      console.error('Failed to load occupation options:', error);
+    } finally {
+      setLoadingOccupation(false);
+    }
+  };
+
+  const loadProfile = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const response = await userApi.getMe();
+      if (response.status && response.data) {
+        setUser(response.data);
+        setFormData({
+          name: response.data.name || '',
+          email: response.data.email || '',
+          phone: response.data.phone || '',
+          city: response.data.city || '',
+          state: response.data.state || '',
+          country: response.data.country || '',
+          religion: response.data.religion || '',
+          education: response.data.education || '',
+          occupation: response.data.occupation || '',
+          bio: response.data.bio || '',
+          horoscopeDetails: {
+            rashi: response.data.horoscopeDetails?.rashi || '',
+            nakshatra: response.data.horoscopeDetails?.nakshatra || '',
+            starSign: response.data.horoscopeDetails?.starSign || '',
+          },
+        });
+      } else {
+        setError(response.message || 'Failed to load profile');
+      }
+    } catch (err: any) {
+      console.error('Profile load error:', err);
+      if (err.response?.status === 401 || err.response?.status === 403) {
+        auth.logout();
+        router.push('/login');
+      } else {
+        const errorMsg = err.response?.data?.message || err.message || 'Failed to load profile';
+        setError(errorMsg);
+        showError(errorMsg);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSave = async () => {
+    setSaving(true);
+    setError('');
+
+    try {
+      const response = await userApi.updateMe(formData);
+      if (response.status) {
+        setUser(response.data);
+        setEditing(false);
+        showSuccess(t('profile.profileUpdated'));
+      }
+    } catch (err: any) {
+      const errorMsg = err.response?.data?.message || 'Failed to update profile';
+      setError(errorMsg);
+      showError(errorMsg);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    // Check max photos limit (3)
+    const currentPhotoCount = user?.photos?.length || 0;
+    if (currentPhotoCount + files.length > 3) {
+      const errorMsg = t('profile.maxPhotos') + `. ${t('profile.youHave')} ${currentPhotoCount} ${t('profile.photos')}.`;
+      setError(errorMsg);
+      showError(errorMsg);
+      return;
+    }
+
+    setUploadingPhotos(true);
+    setError('');
+
+    try {
+      const fileArray = Array.from(files);
+      const response = await photoApi.upload(fileArray);
+      if (response.status) {
+        setUser(response.data);
+        showSuccess(t('profile.photosUploaded'));
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '';
+        }
+      }
+    } catch (err: any) {
+      const errorMsg = err.response?.data?.message || 'Failed to upload photos';
+      setError(errorMsg);
+      showError(errorMsg);
+    } finally {
+      setUploadingPhotos(false);
+    }
+  };
+
+  const handleDeletePhoto = async (photoIndex: number) => {
+    if (!confirm(t('profile.confirmDeletePhoto'))) return;
+
+    setError('');
+
+    try {
+      const response = await photoApi.delete(photoIndex);
+      if (response.status) {
+        setUser(response.data);
+        showSuccess(t('profile.photoDeleted'));
+      }
+    } catch (err: any) {
+      const errorMsg = err.response?.data?.message || 'Failed to delete photo';
+      setError(errorMsg);
+      showError(errorMsg);
+    }
+  };
+
+  const handleSetPrimaryPhoto = async (photoIndex: number) => {
+    setError('');
+
+    try {
+      const response = await photoApi.setPrimary(photoIndex);
+      if (response.status) {
+        setUser(response.data);
+        showSuccess(t('profile.primaryPhotoUpdated'));
+      }
+    } catch (err: any) {
+      const errorMsg = err.response?.data?.message || 'Failed to set primary photo';
+      setError(errorMsg);
+      showError(errorMsg);
+    }
+  };
+
+  const handleToggleActive = async () => {
+    if (!user) return;
+    
+    setTogglingActive(true);
+    setError('');
+
+    try {
+      const response = await userApi.updateMe({ isActive: !user.isActive });
+      if (response.status) {
+        setUser(response.data);
+        showSuccess(response.data.isActive ? t('profile.profileActivated') : t('profile.profileDeactivated'));
+      }
+    } catch (err: any) {
+      const errorMsg = err.response?.data?.message || 'Failed to update profile status';
+      setError(errorMsg);
+      showError(errorMsg);
+    } finally {
+      setTogglingActive(false);
+    }
+  };
+
+  const handleCountryChange = useCallback((country: string) => {
+    setFormData((prev) => ({ ...prev, country, state: '', city: '' }));
+  }, []);
+
+  const handleStateChange = useCallback((state: string) => {
+    setFormData((prev) => ({ ...prev, state, city: '' }));
+  }, []);
+
+  const handleCityChange = useCallback((city: string) => {
+    setFormData((prev) => ({ ...prev, city }));
+  }, []);
+
+  if (!mounted || loading) {
+    return (
+      <div className="max-w-4xl mx-auto px-4 py-12">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-pink-600"></div>
+          <p className="mt-4 text-gray-600">{t('common.loading')}</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="max-w-4xl mx-auto px-4 py-12">
+        <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded">
+          {error || t('profile.failedToLoad')}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div className="bg-gradient-to-r from-pink-500 to-red-500 p-6 text-white">
+          <div className="flex justify-between items-center">
+            <h1 className="text-3xl font-bold">{t('profile.myProfile')}</h1>
+            {!editing && (
+              <button
+                onClick={() => setEditing(true)}
+                className="px-4 py-2 bg-white text-pink-600 rounded-md hover:bg-gray-100"
+              >
+                {t('profile.editProfile')}
+              </button>
+            )}
+          </div>
+        </div>
+
+        <div className="p-6 md:p-8">
+
+          {/* Profile Status Toggle */}
+          <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="font-semibold text-gray-900">{t('profile.profileStatus')}</p>
+                <p className="text-sm text-gray-600" dir="auto">
+                  {user.isActive 
+                    ? t('profile.activeStatusDesc')
+                    : t('profile.inactiveStatusDesc')}
+                </p>
+              </div>
+              <button
+                onClick={handleToggleActive}
+                disabled={togglingActive}
+                className={`px-6 py-2 rounded-md font-semibold transition-all ${
+                  user.isActive
+                    ? 'bg-red-600 text-white hover:bg-red-700'
+                    : 'bg-green-600 text-white hover:bg-green-700'
+                } disabled:opacity-50`}
+              >
+                {togglingActive ? t('common.loading') : user.isActive ? t('profile.deactivateProfile') : t('profile.activateProfile')}
+              </button>
+            </div>
+          </div>
+
+          {/* Photos Section */}
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              {t('profile.photos')} ({t('profile.maxPhotos')})
+            </label>
+            <div className="grid grid-cols-3 gap-4 mb-4">
+              {(user.photos || []).map((photo, index) => (
+                <div key={index} className="relative group">
+                  <img
+                    src={photo.url}
+                    alt={`Photo ${index + 1}`}
+                    className="w-full aspect-square object-cover rounded-lg border-2 border-gray-200"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  {photo.isPrimary && (
+                    <div className="absolute top-2 left-2 bg-pink-600 text-white text-xs px-2 py-1 rounded-full font-semibold">
+                      {t('profile.primaryPhoto')}
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all rounded-lg flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100">
+                    {!photo.isPrimary && (
+                      <button
+                        onClick={() => handleSetPrimaryPhoto(index)}
+                        className="px-3 py-1 bg-pink-600 text-white text-xs rounded hover:bg-pink-700"
+                      >
+                        {t('profile.setPrimary')}
+                      </button>
+                    )}
+                    <button
+                      onClick={() => handleDeletePhoto(index)}
+                      className="px-3 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700"
+                    >
+                      {t('common.delete')}
+                    </button>
+                  </div>
+                </div>
+              ))}
+              {(user.photos?.length || 0) < 3 && (
+                <div
+                  onClick={() => fileInputRef.current?.click()}
+                  className="aspect-square border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-pink-500 hover:bg-pink-50 transition-all"
+                >
+                  <div className="text-4xl text-gray-400 mb-2">📷</div>
+                  <p className="text-sm text-gray-600">{t('profile.uploadPhoto')}</p>
+                </div>
+              )}
+            </div>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handlePhotoUpload}
+              className="hidden"
+              disabled={uploadingPhotos || (user.photos?.length || 0) >= 3}
+            />
+            {uploadingPhotos && (
+              <p className="text-sm text-gray-600">{t('profile.uploadingPhotos')}</p>
+            )}
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t('profile.name')}</label>
+              {editing ? (
+                <input
+                  type="text"
+                  value={formData.name || ''}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                />
+              ) : (
+                <p className="text-gray-900">{user.name}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t('profile.email')}</label>
+              {editing ? (
+                <input
+                  type="email"
+                  value={formData.email || ''}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                />
+              ) : (
+                <p className="text-gray-900">{user.email || t('profile.notProvided')}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t('profile.phone')}</label>
+              {editing ? (
+                <input
+                  type="tel"
+                  value={formData.phone || ''}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                />
+              ) : (
+                <p className="text-gray-900">{user.phone || t('profile.notProvided')}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t('profile.age')}</label>
+              <p className="text-gray-900">{user.age || t('profile.notProvided')}</p>
+            </div>
+
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">{t('profile.location')}</label>
+              {editing ? (
+                <LocationSelect
+                  selectedCountry={formData.country || user?.country || ''}
+                  selectedState={formData.state || user?.state || ''}
+                  selectedCity={formData.city || user?.city || ''}
+                  onCountryChange={handleCountryChange}
+                  onStateChange={handleStateChange}
+                  onCityChange={handleCityChange}
+                />
+              ) : (
+                <div className="space-y-1 text-gray-900">
+                  {user.country && <p><span className="font-medium">{t('profile.country')}:</span> {user.country}</p>}
+                  {user.state && <p><span className="font-medium">{t('profile.state')}:</span> {user.state}</p>}
+                  {user.city && <p><span className="font-medium">{t('profile.city')}:</span> {user.city}</p>}
+                  {!user.country && !user.state && !user.city && <p>{t('profile.notProvided')}</p>}
+                </div>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t('profile.religion')}</label>
+              {editing ? (
+                <input
+                  type="text"
+                  value={formData.religion || ''}
+                  onChange={(e) => setFormData({ ...formData, religion: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                />
+              ) : (
+                <p className="text-gray-900">{user.religion || t('profile.notProvided')}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                {t('profile.education')}
+                {loadingEducation && (
+                  <span className="ml-2 text-xs text-gray-500">(Loading...)</span>
+                )}
+              </label>
+              {editing ? (
+                <select
+                  value={formData.education || ''}
+                  onChange={(e) => setFormData({ ...formData, education: e.target.value })}
+                  disabled={loadingEducation}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500 disabled:opacity-50"
+                >
+                  <option value="">Select Education</option>
+                  {educationOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <p className="text-gray-900">
+                  {user.education 
+                    ? educationOptions.find(opt => opt.value === user.education)?.label || user.education
+                    : t('profile.notProvided')}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                {t('profile.occupation')}
+                {loadingOccupation && (
+                  <span className="ml-2 text-xs text-gray-500">(Loading...)</span>
+                )}
+              </label>
+              {editing ? (
+                <select
+                  value={formData.occupation || ''}
+                  onChange={(e) => setFormData({ ...formData, occupation: e.target.value })}
+                  disabled={loadingOccupation}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500 disabled:opacity-50"
+                >
+                  <option value="">Select Occupation</option>
+                  {occupationOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <p className="text-gray-900">
+                  {user.occupation 
+                    ? occupationOptions.find(opt => opt.value === user.occupation)?.label || user.occupation
+                    : t('profile.notProvided')}
+                </p>
+              )}
+            </div>
+
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t('profile.bio')}</label>
+              {editing ? (
+                <textarea
+                  value={formData.bio || ''}
+                  onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+                  rows={4}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                  dir="auto"
+                />
+              ) : (
+                <p className="text-gray-900" dir="auto">{user.bio || t('profile.noBio')}</p>
+              )}
+            </div>
+
+            {/* Horoscope Details Section */}
+            <div className="md:col-span-2 border-t pt-6 mt-4">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">🔮 {t('profile.horoscopeDetails') || 'Horoscope Details'}</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    {t('profile.rashi') || 'Rashi (Moon Sign)'}
+                  </label>
+                  {editing ? (
+                    <select
+                      value={formData.horoscopeDetails?.rashi || ''}
+                      onChange={(e) => setFormData({
+                        ...formData,
+                        horoscopeDetails: {
+                          ...formData.horoscopeDetails,
+                          rashi: e.target.value,
+                        },
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                    >
+                      <option value="">Select Rashi</option>
+                      <option value="Aries">Aries (Mesha)</option>
+                      <option value="Taurus">Taurus (Vrishabha)</option>
+                      <option value="Gemini">Gemini (Mithuna)</option>
+                      <option value="Cancer">Cancer (Karka)</option>
+                      <option value="Leo">Leo (Simha)</option>
+                      <option value="Virgo">Virgo (Kanya)</option>
+                      <option value="Libra">Libra (Tula)</option>
+                      <option value="Scorpio">Scorpio (Vrishchika)</option>
+                      <option value="Sagittarius">Sagittarius (Dhanu)</option>
+                      <option value="Capricorn">Capricorn (Makara)</option>
+                      <option value="Aquarius">Aquarius (Kumbha)</option>
+                      <option value="Pisces">Pisces (Meena)</option>
+                    </select>
+                  ) : (
+                    <p className="text-gray-900">
+                      {user.horoscopeDetails?.rashi || t('profile.notProvided')}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    {t('profile.nakshatra') || 'Nakshatra'}
+                  </label>
+                  {editing ? (
+                    <select
+                      value={formData.horoscopeDetails?.nakshatra || ''}
+                      onChange={(e) => setFormData({
+                        ...formData,
+                        horoscopeDetails: {
+                          ...formData.horoscopeDetails,
+                          nakshatra: e.target.value,
+                        },
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                    >
+                      <option value="">Select Nakshatra</option>
+                      <option value="Ashwini">Ashwini</option>
+                      <option value="Bharani">Bharani</option>
+                      <option value="Krittika">Krittika</option>
+                      <option value="Rohini">Rohini</option>
+                      <option value="Mrigashira">Mrigashira</option>
+                      <option value="Ardra">Ardra</option>
+                      <option value="Punarvasu">Punarvasu</option>
+                      <option value="Pushya">Pushya</option>
+                      <option value="Ashlesha">Ashlesha</option>
+                      <option value="Magha">Magha</option>
+                      <option value="Purva Phalguni">Purva Phalguni</option>
+                      <option value="Uttara Phalguni">Uttara Phalguni</option>
+                      <option value="Hasta">Hasta</option>
+                      <option value="Chitra">Chitra</option>
+                      <option value="Swati">Swati</option>
+                      <option value="Vishakha">Vishakha</option>
+                      <option value="Anuradha">Anuradha</option>
+                      <option value="Jyeshtha">Jyeshtha</option>
+                      <option value="Mula">Mula</option>
+                      <option value="Purva Ashadha">Purva Ashadha</option>
+                      <option value="Uttara Ashadha">Uttara Ashadha</option>
+                      <option value="Shravana">Shravana</option>
+                      <option value="Dhanishta">Dhanishta</option>
+                      <option value="Shatabhisha">Shatabhisha</option>
+                      <option value="Purva Bhadrapada">Purva Bhadrapada</option>
+                      <option value="Uttara Bhadrapada">Uttara Bhadrapada</option>
+                      <option value="Revati">Revati</option>
+                    </select>
+                  ) : (
+                    <p className="text-gray-900">
+                      {user.horoscopeDetails?.nakshatra || t('profile.notProvided')}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    {t('profile.starSign') || 'Star Sign'}
+                  </label>
+                  {editing ? (
+                    <input
+                      type="text"
+                      value={formData.horoscopeDetails?.starSign || ''}
+                      onChange={(e) => setFormData({
+                        ...formData,
+                        horoscopeDetails: {
+                          ...formData.horoscopeDetails,
+                          starSign: e.target.value,
+                        },
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                      placeholder="Optional"
+                    />
+                  ) : (
+                    <p className="text-gray-900">
+                      {user.horoscopeDetails?.starSign || t('profile.notProvided')}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {editing && (
+            <div className="mt-6 flex gap-4">
+              <button
+                onClick={handleSave}
+                disabled={saving}
+                className="px-6 py-2 bg-pink-600 text-white rounded-md hover:bg-pink-700 disabled:opacity-50"
+              >
+                {saving ? t('profile.saving') : t('common.save')}
+              </button>
+              <button
+                onClick={() => {
+                  setEditing(false);
+                  setFormData({
+                    name: user.name || '',
+                    email: user.email || '',
+                    phone: user.phone || '',
+                    city: user.city || '',
+                    state: user.state || '',
+                    country: user.country || '',
+                    religion: user.religion || '',
+                    education: user.education || '',
+                    occupation: user.occupation || '',
+                    bio: user.bio || '',
+                    horoscopeDetails: {
+                      rashi: user.horoscopeDetails?.rashi || '',
+                      nakshatra: user.horoscopeDetails?.nakshatra || '',
+                      starSign: user.horoscopeDetails?.starSign || '',
+                    },
+                  });
+                }}
+                className="px-6 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50"
+              >
+                {t('common.cancel')}
+              </button>
+            </div>
+          )}
+
+          {!editing && (
+            <div className="mt-6">
+              <div className="bg-yellow-50 border border-yellow-200 rounded-md p-4">
+                <p className="text-sm text-yellow-800" dir="auto">
+                  <strong>{t('profile.profileStatus')}:</strong> {user.isProfileComplete ? t('profile.complete') : t('profile.incomplete')}
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+

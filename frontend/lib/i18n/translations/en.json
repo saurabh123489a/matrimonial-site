@@ -1,0 +1,502 @@
+{
+  "common": {
+    "appName": "ekGahoi",
+    "home": "Home",
+    "browseProfiles": "Browse Profiles",
+    "community": "Community",
+    "myProfile": "My Profile",
+    "profileViews": "Profile Views",
+    "notifications": "Notifications",
+    "login": "Login",
+    "logout": "Logout",
+    "signUp": "Sign Up",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "submit": "Submit",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "search": "Search",
+    "filter": "Filter",
+    "close": "Close",
+    "aboutUs": "About Us",
+    "donation": "Donation"
+  },
+  "home": {
+    "title": "ekGahoi - Complete Community Platform",
+    "subtitle": "Your comprehensive community solution: Marriage matching, Census data management, Family records, and Community news - All in one place.",
+    "getStarted": "Get started",
+    "browseProfiles": "Browse Profiles",
+    "trustedPlatform": "Complete community platform for Gahoi community",
+    "features": {
+      "marriage": "Marriage Matching",
+      "marriageDesc": "Find your perfect life partner with verified profiles and smart matching",
+      "census": "Community Census",
+      "censusDesc": "Maintain and access community demographic data and statistics",
+      "family": "Family Data",
+      "familyDesc": "Register and manage family information, track family trees and relationships",
+      "news": "Community News",
+      "newsDesc": "Stay updated with local news, events, and announcements from your community"
+    }
+  },
+  "auth": {
+    "login": "Sign in with Phone",
+    "enterOTP": "Enter OTP",
+    "phoneNumber": "Phone Number",
+    "enterPhone": "Enter your phone number",
+    "sendOTP": "Send OTP",
+    "sendingOTP": "Sending OTP...",
+    "otpCode": "OTP Code",
+    "enterOTPCode": "Enter 6-digit OTP",
+    "verifyOTP": "Verify OTP",
+    "verifying": "Verifying...",
+    "changePhoneNumber": "Change Phone Number",
+    "otpSent": "OTP sent successfully!",
+    "otpSentTo": "We sent a verification code to",
+    "or": "Or",
+    "developmentMode": "Development Mode",
+    "invalidOTP": "Invalid OTP. Please try again.",
+    "failedToSendOTP": "Failed to send OTP. Please try again.",
+    "createAccount": "create a new account",
+    "register": "Register",
+    "createAccountTitle": "Create your account",
+    "signInToAccount": "Or sign in to your account",
+    "fullName": "Full Name",
+    "emailOptional": "Email (optional)",
+    "phoneOptional": "Phone (10 digits, optional)",
+    "password": "Password",
+    "gender": "Gender",
+    "male": "Male",
+    "female": "Female",
+    "other": "Other",
+    "age": "Age",
+    "communityPosition": "Do you hold a position in the community? (Optional)",
+    "communityPositionDesc": "Community members with positions can report/flag inappropriate profiles",
+    "noPosition": "No position",
+    "communityLeader": "Community Leader",
+    "communityMember": "Community Member",
+    "familyHead": "Family Head",
+    "elder": "Elder",
+    "volunteer": "Volunteer",
+    "creatingAccount": "Creating account...",
+    "signUp": "Sign up",
+    "registrationFailed": "Registration failed. Please try again."
+  },
+  "profile": {
+    "myProfile": "My Profile",
+    "editProfile": "Edit Profile",
+    "viewProfile": "View Profile",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "gender": "Gender",
+    "age": "Age",
+    "dateOfBirth": "Date of Birth",
+    "city": "City",
+    "state": "State",
+    "country": "Country",
+    "location": "Location",
+    "religion": "Religion",
+    "education": "Education",
+    "occupation": "Occupation",
+    "bio": "Bio",
+    "photos": "Photos",
+    "uploadPhoto": "Upload Photo",
+    "maxPhotos": "Maximum 3 photos allowed",
+    "youHave": "You have",
+    "setPrimary": "Set as Primary",
+    "primaryPhoto": "Primary Photo",
+    "profileStatus": "Profile Status",
+    "activeStatusDesc": "Your profile is active and visible to others",
+    "inactiveStatusDesc": "Your profile is deactivated and hidden from searches",
+    "activateProfile": "Activate Profile",
+    "deactivateProfile": "Deactivate Profile",
+    "profileUpdated": "Profile updated successfully!",
+    "photosUploaded": "Photos uploaded successfully!",
+    "photoDeleted": "Photo deleted successfully!",
+    "primaryPhotoUpdated": "Primary photo updated!",
+    "profileActivated": "Profile activated successfully!",
+    "profileDeactivated": "Profile deactivated successfully!",
+    "uploadingPhotos": "Uploading photos...",
+    "saving": "Saving...",
+    "confirmDeletePhoto": "Are you sure you want to delete this photo?",
+    "notProvided": "Not provided",
+    "noBio": "No bio provided",
+    "failedToLoad": "Failed to load profile",
+    "complete": "Complete ✓",
+    "incomplete": "Incomplete - Please add more information"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "noNotifications": "No notifications found",
+    "markAsRead": "Mark Read",
+    "markAllRead": "Mark All Read",
+    "delete": "Delete",
+    "unreadCount": "You have {count} unread notification(s)",
+    "types": {
+      "shortlist": "Added to Shortlist",
+      "profileView": "Profile Viewed",
+      "interestReceived": "Interest Received",
+      "interestAccepted": "Interest Accepted",
+      "messageReceived": "New Message",
+      "admin": "Admin Notification"
+    },
+    "toast": {
+      "success": "Success",
+      "error": "Error",
+      "info": "Information",
+      "warning": "Warning",
+      "notification": "Notification"
+    }
+  },
+  "profileViews": {
+    "title": "Who Viewed Your Profile",
+    "noViews": "No one has viewed your profile yet",
+    "viewed": "Viewed",
+    "sendMessage": "Send Message",
+    "sending": "Sending...",
+    "messagePlaceholder": "Send a message...",
+    "viewProfile": "View Profile"
+  },
+  "messages": {
+    "title": "Messages",
+    "sendMessage": "Send Message",
+    "conversations": "Conversations",
+    "noConversations": "No conversations yet",
+    "noConversationsDesc": "Start a conversation by visiting someone's profile and sending a message",
+    "browseProfiles": "Browse Profiles",
+    "typeMessage": "Type a message...",
+    "send": "Send",
+    "sending": "Sending...",
+    "loading": "Loading messages...",
+    "loadingConversation": "Loading conversation...",
+    "back": "Back",
+    "viewProfile": "View Profile",
+    "noMessages": "No messages yet",
+    "noMessagesDesc": "Start the conversation!",
+    "you": "You",
+    "unreadCount": "{count} unread message{plural}",
+    "allCaughtUp": "All caught up!",
+    "justNow": "Just now",
+    "minutesAgo": "{mins}m ago",
+    "hoursAgo": "{hours}h ago",
+    "daysAgo": "{days}d ago",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "messageSent": "Message sent successfully",
+    "failedToSend": "Failed to send message",
+    "failedToLoad": "Failed to load conversation",
+    "userNotFound": "User not found",
+    "goBack": "Go back to messages",
+    "messageLength": "{length}/5000"
+  },
+  "interests": {
+    "sendInterest": "Send Interest",
+    "interestSent": "Interest sent successfully",
+    "accept": "Accept",
+    "reject": "Reject",
+    "incomingInterests": "Incoming Interests",
+    "outgoingInterests": "Outgoing Interests"
+  },
+  "shortlist": {
+    "addToShortlist": "Add to Shortlist",
+    "removeFromShortlist": "Remove from Shortlist",
+    "shortlisted": "Shortlisted",
+    "myShortlist": "My Shortlist"
+  },
+  "horoscope": {
+    "title": "Horoscope Matching (36 Gunas)",
+    "buttonTitle": "Check Horoscope Match (36 Gunas)",
+    "calculating": "Calculating horoscope match...",
+    "insufficientData": "No horoscope data available",
+    "overallScore": "Overall Score",
+    "match": "Match",
+    "status": {
+      "excellent": "Excellent match! Highly compatible",
+      "good": "Good match with good compatibility",
+      "moderate": "Moderate compatibility",
+      "average": "Average compatibility",
+      "low": "Low compatibility - Not recommended"
+    },
+    "doshas": {
+      "title": "Doshas Detected:",
+      "nadi": "Nadi Dosha - Same Nadi",
+      "gana": "Gana Dosha - Incompatible Gana",
+      "bhakoot": "Bhakoot Dosha - Incompatible signs"
+    },
+    "breakdown": {
+      "title": "Detailed Breakdown",
+      "aspects": {
+        "varna": "Varna",
+        "vasya": "Vasya",
+        "tara": "Tara",
+        "yoni": "Yoni",
+        "grahaMaitri": "Graha Maitri",
+        "gana": "Gana",
+        "bhakoot": "Bhakoot",
+        "nadi": "Nadi"
+      }
+    },
+    "info": {
+      "yourHoroscope": "Your Horoscope",
+      "theirHoroscope": "{name}'s Horoscope",
+      "rashi": "Rashi",
+      "nakshatra": "Nakshatra"
+    },
+    "loginRequired": "Please login to check horoscope matching",
+    "failed": "Failed to calculate horoscope match",
+    "insufficientInfo": "Insufficient horoscope information for matching"
+  },
+  "admin": {
+    "portal": "Admin Portal",
+    "dashboard": "Dashboard",
+    "manageUsers": "Manage Users",
+    "allMessages": "All Messages",
+    "notifications": "Notifications",
+    "createAdmin": "Create Admin",
+    "overview": "Manage your community platform",
+    "dashboardTab": {
+      "title": "Dashboard Overview",
+      "totalUsers": "Total Users",
+      "activeUsers": "Active Users",
+      "pendingReports": "Pending Reports",
+      "adminUsers": "Admin Users",
+      "viewAllReports": "View All Reports"
+    },
+    "usersTab": {
+      "title": "User Management",
+      "description": "Manage user profiles, activate/deactivate accounts, and view user details.",
+      "search": "Search",
+      "searchPlaceholder": "Search by name, email, phone...",
+      "status": "Status",
+      "allUsers": "All Users",
+      "active": "Active",
+      "inactive": "Inactive",
+      "gender": "Gender",
+      "allGenders": "All Genders",
+      "loading": "Loading users...",
+      "noUsers": "No users found",
+      "total": "Total users",
+      "user": "User",
+      "contact": "Contact",
+      "role": "Role",
+      "actions": "Actions",
+      "edit": "Edit",
+      "deactivate": "Deactivate",
+      "activate": "Activate",
+      "delete": "Delete",
+      "confirmDelete": "Are you sure you want to delete {name}? This action cannot be undone.",
+      "editUser": "Edit User",
+      "saveChanges": "Save Changes",
+      "updated": "User updated successfully!",
+      "deleted": "User deleted successfully!",
+      "statusUpdated": "User status updated successfully"
+    },
+    "messagesTab": {
+      "title": "All Messages",
+      "description": "View and monitor all conversations across the platform.",
+      "searchContent": "Search Content",
+      "searchPlaceholder": "Search message content...",
+      "senderId": "Sender ID",
+      "senderIdPlaceholder": "Filter by sender ID",
+      "receiverId": "Receiver ID",
+      "receiverIdPlaceholder": "Filter by receiver ID",
+      "readStatus": "Read Status",
+      "all": "All",
+      "read": "Read",
+      "unread": "Unread",
+      "loading": "Loading messages...",
+      "noMessages": "No messages found",
+      "totalMessages": "Total messages",
+      "from": "From",
+      "to": "To",
+      "message": "Message",
+      "status": "Status",
+      "date": "Date",
+      "actions": "Actions",
+      "view": "View",
+      "messageDetails": "Message Details",
+      "messageContent": "Message Content",
+      "timestamps": "Timestamps",
+      "sent": "Sent",
+      "updated": "Updated",
+      "readAt": "Read at",
+      "conversationId": "Conversation ID",
+      "page": "Page {page} of {total}",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "notificationsTab": {
+      "title": "Send Notifications",
+      "notificationType": "Notification Type",
+      "global": "Global (All Users)",
+      "personal": "Personal (Specific User)",
+      "userId": "User ID",
+      "userIdPlaceholder": "Enter user ID",
+      "userIdRequired": "User ID is required for personal notifications",
+      "title": "Title",
+      "titlePlaceholder": "Notification title",
+      "message": "Message",
+      "messagePlaceholder": "Notification message",
+      "sendGlobal": "Send Global Notification",
+      "sendPersonal": "Send Personal Notification",
+      "sending": "Sending...",
+      "globalSent": "Global notification sent to all users!",
+      "personalSent": "Personal notification sent!",
+      "titleAndMessageRequired": "Title and message are required"
+    },
+    "createAdminTab": {
+      "title": "Create Admin User",
+      "quickMethod": "Quick Method",
+      "quickMethodDesc": "Run ./createAdmin.sh from the project root",
+      "created": "Admin user created successfully!",
+      "name": "Name",
+      "namePlaceholder": "Admin name",
+      "email": "Email (Optional)",
+      "emailPlaceholder": "admin@ekgahoi.com",
+      "phone": "Phone (Optional)",
+      "phonePlaceholder": "10 digit phone number",
+      "phoneNote": "Either email or phone is required",
+      "password": "Password",
+      "passwordPlaceholder": "Strong password",
+      "gender": "Gender",
+      "create": "Create Admin User",
+      "creating": "Creating...",
+      "alternativeMethods": "Alternative Methods",
+      "shellScript": "Shell Script",
+      "nodeScript": "Node Script",
+      "apiEndpoint": "API Endpoint"
+    }
+  },
+  "aboutUs": {
+    "title": "About ekGahoi",
+    "subtitle": "Your Complete Community Platform",
+    "mission": {
+      "title": "Our Mission",
+      "content": "ekGahoi is dedicated to serving the Gahoi community by providing a comprehensive platform that brings together marriage matching, community census, family data management, and community news. We aim to strengthen community bonds and preserve cultural heritage through technology."
+    },
+    "vision": {
+      "title": "Our Vision",
+      "content": "To become the leading digital platform for the Gahoi community, facilitating meaningful connections, preserving family histories, and keeping the community informed and united."
+    },
+    "features": {
+      "title": "What We Offer",
+      "marriage": {
+        "title": "Marriage Matching",
+        "desc": "Find your perfect life partner with verified profiles, horoscope matching (36 Gunas), and smart compatibility algorithms."
+      },
+      "census": {
+        "title": "Community Census",
+        "desc": "Maintain comprehensive demographic data and statistics about our community members."
+      },
+      "family": {
+        "title": "Family Data Management",
+        "desc": "Register and manage family information, track family trees, and maintain family relationships."
+      },
+      "news": {
+        "title": "Community News",
+        "desc": "Stay updated with local news, events, announcements, and important information from your community."
+      },
+      "community": {
+        "title": "Community Forum",
+        "desc": "Engage with community members, ask questions, share knowledge, and build connections."
+      }
+    },
+    "values": {
+      "title": "Our Values",
+      "trust": "Trust & Security",
+      "trustDesc": "Your privacy and data security are our top priorities.",
+      "unity": "Community Unity",
+      "unityDesc": "Bringing the community together through technology.",
+      "heritage": "Preserving Heritage",
+      "heritageDesc": "Maintaining and celebrating our cultural traditions.",
+      "innovation": "Innovation",
+      "innovationDesc": "Using modern technology to serve traditional values."
+    },
+    "contact": {
+      "title": "Contact Us",
+      "email": "Email",
+      "phone": "Phone",
+      "address": "Address",
+      "addressValue": "Serving the Gahoi Community Worldwide"
+    }
+  },
+  "donation": {
+    "title": "Support ekGahoi",
+    "subtitle": "Help Us Serve the Community",
+    "description": "Your donations help us maintain and improve ekGahoi platform, ensuring free access for all community members.",
+    "whyDonate": {
+      "title": "Why Donate?",
+      "reason1": {
+        "title": "Free Platform Access",
+        "desc": "Keep the platform free for all community members"
+      },
+      "reason2": {
+        "title": "Platform Maintenance",
+        "desc": "Server costs, security updates, and technical maintenance"
+      },
+      "reason3": {
+        "title": "Feature Development",
+        "desc": "New features and improvements based on community feedback"
+      },
+      "reason4": {
+        "title": "Community Support",
+        "desc": "Help desk, technical support, and user assistance"
+      }
+    },
+    "donationMethods": {
+      "title": "Donation Methods",
+      "upi": {
+        "title": "UPI Payment",
+        "placeholder": "Enter UPI ID",
+        "button": "Donate via UPI"
+      },
+      "bank": {
+        "title": "Bank Transfer",
+        "accountName": "Account Name",
+        "accountNumber": "Account Number",
+        "ifsc": "IFSC Code",
+        "bankName": "Bank Name",
+        "copy": "Copy Details"
+      },
+      "qr": {
+        "title": "Scan QR Code",
+        "desc": "Scan the QR code with any UPI app to donate"
+      }
+    },
+    "amount": {
+      "title": "Donation Amount",
+      "select": "Select Amount",
+      "custom": "Custom Amount",
+      "enterAmount": "Enter custom amount",
+      "minAmount": "Minimum amount is ₹100"
+    },
+    "form": {
+      "name": "Full Name",
+      "namePlaceholder": "Enter your name",
+      "phone": "Phone Number",
+      "phonePlaceholder": "Enter your phone number",
+      "email": "Email (Optional)",
+      "emailPlaceholder": "Enter your email",
+      "message": "Message (Optional)",
+      "messagePlaceholder": "Leave a message for us",
+      "submit": "Proceed to Payment",
+      "submitting": "Processing..."
+    },
+    "thankYou": {
+      "title": "Thank You!",
+      "message": "Your donation helps us continue serving the community. We appreciate your support!",
+      "receipt": "A receipt will be sent to your email if provided.",
+      "back": "Back to Home"
+    },
+    "info": {
+      "title": "Donation Information",
+      "tax": "All donations are eligible for tax benefits under Section 80G.",
+      "transparency": "We maintain complete transparency in all donations received.",
+      "usage": "100% of donations are used for platform development and maintenance."
+    }
+  }
+}
+

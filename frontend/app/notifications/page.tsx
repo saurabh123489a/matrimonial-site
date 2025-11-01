@@ -1,0 +1,190 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { notificationApi } from '@/lib/api';
+import { auth } from '@/lib/auth';
+
+export default function NotificationsPage() {
+  const router = useRouter();
+  const [notifications, setNotifications] = useState<any[]>([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState<'all' | 'unread'>('all');
+
+  useEffect(() => {
+    if (!auth.getToken()) {
+      router.push('/login');
+      return;
+    }
+    loadNotifications();
+    loadUnreadCount();
+  }, [filter]);
+
+  const loadNotifications = async () => {
+    try {
+      const response = await notificationApi.getAll({
+        isRead: filter === 'unread' ? false : undefined,
+      });
+      if (response.status) {
+        setNotifications(response.data);
+      }
+    } catch (error) {
+      console.error('Failed to load notifications:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loadUnreadCount = async () => {
+    try {
+      const response = await notificationApi.getUnreadCount();
+      if (response.status) {
+        setUnreadCount(response.data.count);
+      }
+    } catch (error) {
+      console.error('Failed to load unread count:', error);
+    }
+  };
+
+  const handleMarkAsRead = async (id: string) => {
+    try {
+      await notificationApi.markAsRead(id);
+      loadNotifications();
+      loadUnreadCount();
+    } catch (error) {
+      console.error('Failed to mark as read:', error);
+    }
+  };
+
+  const handleMarkAllAsRead = async () => {
+    try {
+      await notificationApi.markAllAsRead();
+      loadNotifications();
+      loadUnreadCount();
+    } catch (error) {
+      console.error('Failed to mark all as read:', error);
+    }
+  };
+
+  const getNotificationIcon = (type: string) => {
+    switch (type) {
+      case 'shortlist':
+        return '⭐';
+      case 'profile_view':
+        return '👁️';
+      case 'interest_received':
+        return '💝';
+      case 'interest_accepted':
+        return '✅';
+      case 'message_received':
+        return '💬';
+      case 'admin':
+        return '📢';
+      default:
+        return '🔔';
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-3xl font-bold text-gray-900">Notifications</h1>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setFilter(filter === 'all' ? 'unread' : 'all')}
+              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+            >
+              {filter === 'all' ? 'Unread Only' : 'All'}
+            </button>
+            {unreadCount > 0 && (
+              <button
+                onClick={handleMarkAllAsRead}
+                className="px-4 py-2 text-sm font-medium text-white bg-pink-600 rounded-md hover:bg-pink-700"
+              >
+                Mark All Read
+              </button>
+            )}
+          </div>
+        </div>
+
+        {unreadCount > 0 && (
+          <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
+            <p className="text-sm text-blue-800">
+              You have <span className="font-bold">{unreadCount}</span> unread notification{unreadCount !== 1 ? 's' : ''}
+            </p>
+          </div>
+        )}
+
+        {loading ? (
+          <div className="text-center py-12">
+            <p className="text-gray-500">Loading notifications...</p>
+          </div>
+        ) : notifications.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-gray-500">No notifications found</p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {notifications.map((notification) => (
+              <div
+                key={notification._id}
+                className={`p-4 bg-white rounded-lg shadow-sm border ${
+                  !notification.isRead ? 'border-pink-300 bg-pink-50' : 'border-gray-200'
+                }`}
+              >
+                <div className="flex items-start justify-between">
+                  <div className="flex items-start space-x-3 flex-1">
+                    <span className="text-2xl">{getNotificationIcon(notification.type)}</span>
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-gray-900">{notification.title}</h3>
+                      <p className="text-gray-600 text-sm mt-1">{notification.message}</p>
+                      <p className="text-xs text-gray-400 mt-2">
+                        {new Date(notification.createdAt).toLocaleString()}
+                      </p>
+                      {notification.relatedUserId && (
+                        <Link
+                          href={`/profiles/${notification.relatedUserId._id || notification.relatedUserId}`}
+                          className="text-pink-600 hover:text-pink-700 text-sm mt-2 inline-block"
+                        >
+                          View Profile →
+                        </Link>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    {!notification.isRead && (
+                      <button
+                        onClick={() => handleMarkAsRead(notification._id)}
+                        className="px-3 py-1 text-xs font-medium text-pink-600 bg-pink-50 rounded hover:bg-pink-100"
+                      >
+                        Mark Read
+                      </button>
+                    )}
+                    <button
+                      onClick={async () => {
+                        try {
+                          await notificationApi.delete(notification._id);
+                          loadNotifications();
+                          loadUnreadCount();
+                        } catch (error) {
+                          console.error('Failed to delete:', error);
+                        }
+                      }}
+                      className="text-gray-400 hover:text-red-600"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
