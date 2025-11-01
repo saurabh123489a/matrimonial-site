@@ -16,14 +16,12 @@ const questionSchema = new mongoose.Schema(
     author: { 
       type: mongoose.Schema.Types.ObjectId, 
       ref: 'User', 
-      required: true,
-      index: true
+      required: true
     },
     category: { 
       type: String,
       enum: ['relationship', 'wedding', 'family', 'dowry', 'traditions', 'lifestyle', 'career', 'general'],
-      default: 'general',
-      index: true
+      default: 'general'
     },
     tags: [{
       type: String,

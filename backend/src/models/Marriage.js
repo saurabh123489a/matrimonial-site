@@ -11,20 +11,17 @@ const marriageSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
-      index: true,
     },
     brideUserId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
-      index: true,
     },
     
     // Marriage Details
     marriageDate: {
       type: Date,
       required: true,
-      index: true,
     },
     marriageLocation: {
       city: String,
@@ -66,7 +63,6 @@ const marriageSchema = new mongoose.Schema(
     isVerified: {
       type: Boolean,
       default: false,
-      index: true,
     },
     isActive: {
       type: Boolean,

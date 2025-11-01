@@ -65,7 +65,7 @@ const notificationSchema = new mongoose.Schema(
 // Indexes for efficient queries
 notificationSchema.index({ userId: 1, isRead: 1, createdAt: -1 });
 notificationSchema.index({ userId: 1, type: 1, createdAt: -1 });
-notificationSchema.index({ isRead: false, createdAt: -1 }); // For unread count
+notificationSchema.index({ userId: 1, isRead: -1, createdAt: -1 }); // For unread count (use -1 to prioritize false values)
 
 export default mongoose.model('Notification', notificationSchema);
 

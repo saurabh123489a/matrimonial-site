@@ -53,12 +53,14 @@ const userSchema = new mongoose.Schema(
       type: String,
       lowercase: true,
       trim: true,
-      index: { unique: true, sparse: true },
+      unique: true,
+      sparse: true,
     },
     phone: {
       type: String,
       trim: true,
-      index: { unique: true, sparse: true },
+      unique: true,
+      sparse: true,
     },
     passwordHash: { type: String, required: false }, // Optional for OTP-based auth
     
@@ -74,8 +76,7 @@ const userSchema = new mongoose.Schema(
     maritalStatus: { 
       type: String, 
       enum: ['unmarried', 'divorced', 'widowed', 'separated'],
-      default: 'unmarried',
-      index: true
+      default: 'unmarried'
     },
     
     // Physical Attributes
@@ -94,8 +95,8 @@ const userSchema = new mongoose.Schema(
     pincode: { type: String },
     
     // Family & Background
-    religion: { type: String, index: true },
-    caste: { type: String, index: true },
+    religion: { type: String },
+    caste: { type: String },
     subCaste: { type: String },
     gotra: { type: String }, // Ancestral lineage
     motherTongue: { type: String },
@@ -109,9 +110,9 @@ const userSchema = new mongoose.Schema(
     },
     
     // Education & Career
-    education: { type: String, index: true },
+    education: { type: String },
     fieldOfStudy: { type: String }, // Specialization or major
-    occupation: { type: String, index: true },
+    occupation: { type: String },
     employer: { type: String }, // Company or organization name
     annualIncome: { type: Number },
     
@@ -157,8 +158,8 @@ const userSchema = new mongoose.Schema(
 );
 
 // Indexes for efficient queries
-userSchema.index({ email: 1 });
-userSchema.index({ phone: 1 });
+userSchema.index({ email: 1 }, { unique: true, sparse: true });
+userSchema.index({ phone: 1 }, { unique: true, sparse: true });
 userSchema.index({ gender: 1, age: 1 });
 userSchema.index({ city: 1, state: 1 });
 userSchema.index({ religion: 1 });

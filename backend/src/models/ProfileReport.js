@@ -10,13 +10,11 @@ const profileReportSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
-      index: true,
     },
     reportedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
-      index: true,
     },
     reason: {
       type: String,
@@ -38,7 +36,6 @@ const profileReportSchema = new mongoose.Schema(
       type: String,
       enum: ['pending', 'reviewed', 'resolved', 'dismissed'],
       default: 'pending',
-      index: true,
     },
     adminNotes: {
       type: String,
@@ -59,7 +56,6 @@ const profileReportSchema = new mongoose.Schema(
 
 // Index for efficient queries
 profileReportSchema.index({ status: 1, createdAt: -1 });
-profileReportSchema.index({ reportedUserId: 1, reportedBy: 1 });
 
 // Prevent duplicate reports from same user on same profile
 profileReportSchema.index({ reportedUserId: 1, reportedBy: 1 }, { unique: true });

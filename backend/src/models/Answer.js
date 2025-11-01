@@ -10,14 +10,12 @@ const answerSchema = new mongoose.Schema(
     question: { 
       type: mongoose.Schema.Types.ObjectId, 
       ref: 'Question', 
-      required: true,
-      index: true
+      required: true
     },
     author: { 
       type: mongoose.Schema.Types.ObjectId, 
       ref: 'User', 
-      required: true,
-      index: true
+      required: true
     },
     upvotes: {
       type: Number,

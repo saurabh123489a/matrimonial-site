@@ -12,10 +12,18 @@ export const connectToDatabase = async () => {
       console.warn('⚠️  MONGODB_URI not set in environment, using default: mongodb://localhost:27017/matrimonial');
     }
 
-    // Connection options
+    // Connection options optimized for MongoDB Atlas
     const options = {
-      serverSelectionTimeoutMS: 10000, // 10 seconds timeout
-      socketTimeoutMS: 45000, // 45 seconds socket timeout
+      serverSelectionTimeoutMS: 5000, // 5 seconds timeout (reduced for faster failure detection)
+      socketTimeoutMS: 30000, // 30 seconds socket timeout
+      connectTimeoutMS: 10000, // 10 seconds connection timeout
+      maxPoolSize: 10, // Maintain up to 10 socket connections
+      minPoolSize: 2, // Maintain at least 2 socket connections
+      maxIdleTimeMS: 30000, // Close connections after 30 seconds of inactivity
+      bufferCommands: false, // Disable mongoose buffering
+      bufferMaxEntries: 0, // Disable mongoose buffering
+      // Heartbeat frequency to detect connection issues faster
+      heartbeatFrequencyMS: 10000,
     };
 
     // Connect to MongoDB
