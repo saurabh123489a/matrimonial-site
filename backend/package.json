@@ -1,0 +1,31 @@
+{
+  "name": "matrimonial-backend",
+  "version": "1.0.0",
+  "description": "Node.js + Express backend for Matrimonial Android App",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "NODE_OPTIONS='--no-warnings --no-deprecation' node --watch --no-warnings src/server.js",
+    "dev:debug": "NODE_OPTIONS='--inspect=0.0.0.0:9229' node --watch src/server.js",
+    "dev:debug-brk": "NODE_OPTIONS='--inspect-brk=0.0.0.0:9229' node --watch src/server.js",
+    "start": "node src/server.js",
+    "migrate": "node src/migrations/migrate.js up",
+    "migrate:rollback": "node src/migrations/migrate.js down"
+  },
+  "dependencies": {
+    "axios": "^1.13.1",
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "ecdsa-sig-formatter": "^1.0.11",
+    "express": "^4.19.2",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.6.0",
+    "morgan": "^1.10.0",
+    "multer": "^2.0.2",
+    "sharp": "^0.34.4",
+    "zod": "^3.23.8"
+  }
+}
