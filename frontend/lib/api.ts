@@ -354,7 +354,7 @@ export const adminApi = {
     const response = await api.post('/admin/notifications/personal', data);
     return response.data;
   },
-  getAllUsers: async (filters?: { page?: number; limit?: number; search?: string; isActive?: boolean; gender?: string; status?: string }): Promise<ApiResponse<any[]>> => {
+  getAllUsers: async (filters?: { page?: number; limit?: number; search?: string; isActive?: boolean; gender?: string; status?: string }): Promise<ApiResponse<any[]> & { pagination?: Pagination }> => {
     const params = new URLSearchParams();
     Object.entries(filters || {}).forEach(([key, value]) => {
       if (value !== undefined && value !== null) params.append(key, String(value));
@@ -384,7 +384,7 @@ export const adminApi = {
     isRead?: boolean;
     startDate?: string;
     endDate?: string;
-  }): Promise<ApiResponse<any[]>> => {
+  }): Promise<ApiResponse<any[]> & { pagination?: Pagination }> => {
     const params = new URLSearchParams();
     if (filters) {
       Object.entries(filters).forEach(([key, value]) => {
@@ -511,7 +511,7 @@ export const messageApi = {
     const response = await api.post('/messages/send', { receiverId, content });
     return response.data;
   },
-  getConversations: async (options?: { page?: number; limit?: number }): Promise<ApiResponse<any[]>> => {
+  getConversations: async (options?: { page?: number; limit?: number }): Promise<ApiResponse<any[]> & { unreadCount?: number }> => {
     const params = new URLSearchParams();
     if (options) {
       Object.entries(options).forEach(([key, value]) => {
