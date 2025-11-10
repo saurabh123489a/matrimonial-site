@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { interestApi } from '@/lib/api';
 import { auth } from '@/lib/auth';
 import Link from 'next/link';
+import SkeletonLoader from '@/components/SkeletonLoader';
+import EmptyState from '@/components/EmptyState';
 
 export default function InterestSentPage() {
   const router = useRouter();
@@ -35,33 +37,44 @@ export default function InterestSentPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-gray-600">Loading...</div>
+      <div className="min-h-screen bg-white dark:bg-slate-900 pb-20">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="space-y-4">
+            <SkeletonLoader type="text" count={5} className="h-24" />
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white pb-20">
+    <div className="min-h-screen bg-white dark:bg-slate-900 pb-20 transition-colors">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-2xl sm:text-3xl font-light text-gray-900 mb-8">Interest Sent</h1>
+        <div className="flex items-center gap-3 mb-8">
+          <div className="p-2 bg-gradient-to-r from-pink-100 to-red-100 dark:from-pink-900 dark:to-red-900 rounded-lg">
+            <svg className="w-6 h-6 text-pink-600 dark:text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+            </svg>
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-light text-gray-900 dark:text-slate-100">Interest Sent</h1>
+        </div>
 
         {interests.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-gray-600 mb-4">You haven't sent any interests yet</p>
-            <Link
-              href="/profiles"
-              className="inline-block px-6 py-3 bg-black text-white font-medium hover:bg-gray-900 transition-colors text-sm uppercase tracking-wider"
-            >
-              Browse Profiles
-            </Link>
-          </div>
+          <EmptyState
+            icon="📤"
+            title="You haven't sent any interests yet"
+            description="Browse profiles and send interest to connect with potential matches"
+            action={{
+              label: "Browse Profiles",
+              href: "/profiles"
+            }}
+          />
         ) : (
           <div className="space-y-4">
             {interests.map((interest: any) => (
               <div
                 key={interest._id || interest.id}
-                className="bg-white border border-gray-200 p-6 hover:shadow-md transition-shadow"
+                className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 p-6 hover:shadow-md transition-all rounded-lg"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">

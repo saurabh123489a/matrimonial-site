@@ -92,6 +92,7 @@ export const userRepository = {
   /**
    * Search users with filters and pagination
    * Ensures photos are sorted with primary photo first
+   * Hides phone numbers for female users
    */
   search: async (filters, options = {}) => {
     const {
@@ -109,6 +110,7 @@ export const userRepository = {
       .exec();
 
     // Sort photos for each user: primary first
+    // Hide phone numbers for female users
     users.forEach(user => {
       if (user.photos && user.photos.length > 0) {
         user.photos.sort((a, b) => {
@@ -116,6 +118,10 @@ export const userRepository = {
           if (b.isPrimary) return 1;
           return (a.order || 0) - (b.order || 0);
         });
+      }
+      // Hide phone number for female users
+      if (user.gender === 'female') {
+        user.phone = undefined;
       }
     });
 

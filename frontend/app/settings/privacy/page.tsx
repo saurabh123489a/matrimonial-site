@@ -6,6 +6,7 @@ import { userApi } from '@/lib/api';
 import { auth } from '@/lib/auth';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useNotifications } from '@/contexts/NotificationContext';
+import Link from 'next/link';
 
 export default function PrivacySettingsPage() {
   const router = useRouter();
@@ -83,6 +84,21 @@ export default function PrivacySettingsPage() {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 pb-20">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Settings Navigation */}
+        <div className="flex gap-4 mb-6 border-b border-gray-200 dark:border-gray-700">
+          <Link
+            href="/settings/privacy"
+            className="px-4 py-2 font-medium border-b-2 border-pink-600 text-pink-600"
+          >
+            Privacy
+          </Link>
+          <Link
+            href="/settings/language"
+            className="px-4 py-2 font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
+          >
+            Language
+          </Link>
+        </div>
         <h1 className="text-2xl sm:text-3xl font-light text-gray-900 dark:text-white mb-8">Privacy Settings</h1>
 
         <div className="space-y-6">

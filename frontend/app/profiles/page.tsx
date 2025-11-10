@@ -8,6 +8,8 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { auth } from '@/lib/auth';
 import Link from 'next/link';
 import { usePullToRefresh } from '@/hooks/usePullToRefresh';
+import SkeletonLoader from '@/components/SkeletonLoader';
+import EmptyState from '@/components/EmptyState';
 
 function ProfilesContent() {
   const { t } = useTranslation();
@@ -19,12 +21,25 @@ function ProfilesContent() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   // Check authentication on mount (client-side only)
   useEffect(() => {
     setMounted(true);
     const authenticated = auth.isAuthenticated();
     setIsAuthenticated(authenticated);
+    
+    // Load current user for gender-based filtering
+    if (authenticated) {
+      userApi.getMe().then(response => {
+        if (response.status) {
+          setCurrentUser(response.data);
+        }
+      }).catch(() => {
+        // Silently fail
+      });
+    }
+    
     // Show modal if not authenticated (after a brief delay for better UX)
     if (!authenticated) {
       const timer = setTimeout(() => {
@@ -33,6 +48,9 @@ function ProfilesContent() {
       return () => clearTimeout(timer);
     }
   }, []);
+  
+  // Gahoi ID search
+  const [gahoiId, setGahoiId] = useState(searchParams.get('gahoiId') || '');
   
   // Gahoi Sathi style comprehensive filters
   const [filters, setFilters] = useState({
@@ -53,6 +71,7 @@ function ProfilesContent() {
   const [page, setPage] = useState(1);
   const [pagination, setPagination] = useState({ total: 0, pages: 0 });
   const [showFilters, setShowFilters] = useState(false);
+  const [displayLimit, setDisplayLimit] = useState(10); // Show only 10 initially
 
   // Pull-to-refresh hook
   const { isRefreshing, isPulling, pullDistance } = usePullToRefresh({
@@ -67,7 +86,41 @@ function ProfilesContent() {
     setError('');
     
     try {
-      const filterParams: any = { page, limit: 16 };
+      // If Gahoi ID is provided, search by ID via search API
+      if (gahoiId && gahoiId.trim()) {
+        const id = gahoiId.trim();
+        // Validate: must be exactly 5 digits starting with 1000
+        if (!/^100[0-9]{2}$/.test(id)) {
+          setError('Gahoi ID must be a 5-digit number starting with 1000 (e.g., 10000-10099)');
+          setLoading(false);
+          return;
+        }
+        
+        try {
+          // Use search API with gahoiId parameter (backend handles the ID lookup)
+          const searchResponse = await userApi.search({ gahoiId: id, page, limit: 16 });
+          if (searchResponse.status && searchResponse.data) {
+            setUsers(searchResponse.data);
+            setPagination(searchResponse.pagination || { total: searchResponse.data.length, pages: 1 });
+          } else {
+            setError('No profile found with this Gahoi ID');
+            setUsers([]);
+          }
+        } catch (err: any) {
+          if (err.response?.status === 404 || err.response?.status === 400) {
+            setError(err.response?.data?.message || 'No profile found with this Gahoi ID');
+          } else {
+            setError(err.response?.data?.message || 'Failed to search by Gahoi ID');
+          }
+          setUsers([]);
+        } finally {
+          setLoading(false);
+        }
+        return;
+      }
+
+      // Otherwise, use filters
+      const filterParams: any = { page: 1, limit: 100 }; // Fetch more, but display only 10 initially
       Object.entries(filters).forEach(([key, value]) => {
         if (value) {
           if (key === 'minAge' || key === 'maxAge' || key === 'minHeight' || key === 'maxHeight') {
@@ -78,13 +131,26 @@ function ProfilesContent() {
         }
       });
 
+      // Auto-filter by opposite gender if user is authenticated and no gender filter is set
+      if (isAuthenticated && currentUser && !filterParams.gender) {
+        // Females see males, Males see females
+        if (currentUser.gender === 'female') {
+          filterParams.gender = 'male';
+        } else if (currentUser.gender === 'male') {
+          filterParams.gender = 'female';
+        }
+      }
+
       const response = await userApi.search(filterParams);
       
       if (response.status) {
-        setUsers(response.data || []);
+        const allUsers = response.data || [];
+        setUsers(allUsers);
         if (response.pagination) {
           setPagination(response.pagination);
         }
+        // Reset display limit when new search is performed
+        setDisplayLimit(10);
       }
     } catch (err: any) {
       setError(err.response?.data?.message || 'Failed to load profiles');
@@ -94,8 +160,12 @@ function ProfilesContent() {
   };
 
   useEffect(() => {
-    loadProfiles();
-  }, [page]);
+    // Load profiles when filters change or when currentUser is loaded (for gender filtering)
+    // If authenticated, wait for currentUser to load; if not authenticated, load immediately
+    if (!isAuthenticated || currentUser !== null) {
+      loadProfiles();
+    }
+  }, [page, gahoiId, currentUser, isAuthenticated]);
 
   const handleFilterChange = (key: string, value: string) => {
     setFilters({ ...filters, [key]: value });
@@ -108,6 +178,7 @@ function ProfilesContent() {
   };
 
   const clearFilters = () => {
+    setGahoiId('');
     setFilters({
       gender: '',
       minAge: '',
@@ -234,9 +305,9 @@ function ProfilesContent() {
 
           {/* Sidebar Filters - Gahoi Sathi Style */}
           <aside className={`lg:w-80 flex-shrink-0 ${showFilters ? 'block' : 'hidden'} lg:block`}>
-            <div className="bg-white rounded-lg shadow-md p-4 sm:p-6 filter-section lg:sticky lg:top-4">
+            <div className="bg-white dark:bg-slate-800 rounded-lg shadow-md p-4 sm:p-6 filter-section lg:sticky lg:top-4 transition-colors">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-lg font-bold text-gray-900">Refine Search</h2>
+                <h2 className="text-lg font-bold text-gray-900 dark:text-slate-100">Refine Search</h2>
                 <button
                   onClick={clearFilters}
                   className="text-sm text-pink-600 hover:text-pink-700 font-medium"
@@ -246,6 +317,49 @@ function ProfilesContent() {
               </div>
 
               <div className="space-y-5">
+                {/* Gahoi ID Search */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2">
+                    Search by Gahoi ID
+                  </label>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={gahoiId}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        // Only allow 5-digit numbers starting with 1000
+                        if (value === '' || /^1000[0-9]$/.test(value) || /^100[0-9]{2}$/.test(value)) {
+                          setGahoiId(value);
+                          setPage(1);
+                        }
+                      }}
+                      placeholder="10000"
+                      className="flex-1 px-4 py-2 border-2 border-gray-200 dark:border-slate-600 rounded-md focus:outline-none focus:border-pink-500 text-gray-800 dark:text-slate-100 dark:bg-slate-700"
+                      maxLength={5}
+                    />
+                    {gahoiId && (
+                      <button
+                        onClick={() => {
+                          setGahoiId('');
+                          setPage(1);
+                        }}
+                        className="px-3 py-2 text-gray-500 hover:text-gray-700 dark:text-slate-400 dark:hover:text-slate-200"
+                        aria-label="Clear Gahoi ID"
+                      >
+                        ✕
+                      </button>
+                    )}
+                  </div>
+                  <p className="text-xs text-gray-500 dark:text-slate-400 mt-1">
+                    5-digit ID (10000-10099). Even = Male, Odd = Female
+                  </p>
+                </div>
+
+                <div className="border-t border-gray-200 dark:border-slate-700 pt-4">
+                  <p className="text-sm font-semibold text-gray-700 dark:text-slate-300 mb-3">OR use filters below</p>
+                </div>
+
                 {/* Gender - "I'm looking for a" */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -439,28 +553,26 @@ function ProfilesContent() {
             )}
 
             {loading ? (
-              <div className="text-center py-16">
-                <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-pink-600 border-t-transparent"></div>
-                <p className="mt-4 text-gray-600">{t('common.loading')}</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+                <SkeletonLoader type="profile-list" count={8} />
               </div>
             ) : users.length === 0 ? (
-              <div className="bg-white rounded-lg shadow-md p-12 text-center">
-                <div className="text-6xl mb-4">🔍</div>
-                <p className="text-gray-600 text-lg mb-2">No profiles found</p>
-                <p className="text-gray-500 text-sm mb-4">Try adjusting your search filters</p>
-                <button
-                  onClick={clearFilters}
-                  className="px-6 py-2 bg-pink-600 text-white rounded-md hover:bg-pink-700"
-                >
-                  Clear Filters
-                </button>
-              </div>
+              <EmptyState
+                icon="🔍"
+                title="No profiles found"
+                description="Try adjusting your search filters or clear them to see more results"
+                action={{
+                  label: "Clear Filters",
+                  onClick: clearFilters
+                }}
+              />
             ) : (
               <>
                 {/* Sort Options */}
-                <div className="bg-white rounded-lg shadow-md p-3 sm:p-4 mb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-                  <p className="text-xs sm:text-sm text-gray-600">
-                    Showing {users.length} of {pagination.total} profiles
+                <div className="bg-white dark:bg-slate-800 rounded-lg shadow-md p-3 sm:p-4 mb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 transition-colors">
+                  <p className="text-xs sm:text-sm text-gray-600 dark:text-slate-400">
+                    Showing {Math.min(displayLimit, users.length)} of {users.length} profiles
+                    {pagination.total > users.length && ` (${pagination.total} total)`}
                   </p>
                   <select className="w-full sm:w-auto px-3 sm:px-4 py-2 border border-gray-300 rounded-md text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-pink-500">
                     <option>Newest First</option>
@@ -472,7 +584,7 @@ function ProfilesContent() {
 
                 {/* Profile Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
-                  {users.map((user) => (
+                  {users.slice(0, displayLimit).map((user) => (
                     <div 
                       key={user._id} 
                       className={mounted && !isAuthenticated ? 'cursor-pointer relative' : ''}
@@ -491,6 +603,18 @@ function ProfilesContent() {
                     </div>
                   ))}
                 </div>
+
+                {/* Load More Button */}
+                {displayLimit < users.length && (
+                  <div className="mt-8 text-center">
+                    <button
+                      onClick={() => setDisplayLimit(prev => Math.min(prev + 10, users.length))}
+                      className="px-6 py-3 bg-pink-600 text-white rounded-lg hover:bg-pink-700 transition-colors font-medium shadow-md hover:shadow-lg"
+                    >
+                      Load More ({users.length - displayLimit} remaining)
+                    </button>
+                  </div>
+                )}
 
                 {/* Pagination */}
                 {pagination.pages > 1 && (

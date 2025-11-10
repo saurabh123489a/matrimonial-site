@@ -66,13 +66,13 @@ export default function Navbar() {
     }
   };
 
-  // Main navigation links for bottom bar - Always show 5 items
+  // Main navigation links for bottom bar - 5 items (Interests combined)
   const mainNavLinks = [
     { href: '/profile', label: 'Profile', icon: '👤', tourId: 'profile' },
     { href: '/profiles', label: 'Search', icon: '🔍', tourId: 'search' },
+    { href: '/messages', label: 'Message', icon: '💬', tourId: 'messages' },
+    { href: '/interests', label: 'Interest', icon: '💌', tourId: 'interests' },
     { href: '/community', label: 'Community', icon: '👨‍👩‍👧‍👦', tourId: 'community' },
-    { href: '/interests/received', label: 'Received', icon: '💌', tourId: 'interests' },
-    { href: '/interests/sent', label: 'Sent', icon: '📤', tourId: 'interests' },
   ];
 
   // Additional links for dropdown menu

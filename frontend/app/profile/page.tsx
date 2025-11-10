@@ -9,6 +9,7 @@ import { useNotifications } from '@/contexts/NotificationContext';
 import LocationSelect from '@/components/LocationSelect';
 import ProfileCompletenessMeter from '@/components/ProfileCompletenessMeter';
 import ProfileBadges from '@/components/ProfileBadges';
+import PhotoUpload from '@/components/PhotoUpload';
 
 export default function MyProfilePage() {
   const router = useRouter();
@@ -23,7 +24,7 @@ export default function MyProfilePage() {
   const [error, setError] = useState('');
   const [mounted, setMounted] = useState(false);
   const [formData, setFormData] = useState<UpdateUserDto>({});
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [educationOptions, setEducationOptions] = useState<Array<{ value: string; label: string }>>([]);
   const [occupationOptions, setOccupationOptions] = useState<Array<{ value: string; label: string }>>([]);
   const [loadingEducation, setLoadingEducation] = useState(false);
@@ -117,25 +118,56 @@ export default function MyProfilePage() {
   const handleSave = async () => {
     setSaving(true);
     setError('');
+    setFieldErrors({});
 
     try {
       const response = await userApi.updateMe(formData);
       if (response.status) {
         setUser(response.data);
         setEditing(false);
+        setFieldErrors({});
         showSuccess(t('profile.profileUpdated'));
       }
     } catch (err: any) {
-      const errorMsg = err.response?.data?.message || 'Failed to update profile';
+      const errorData = err.response?.data;
+      const errorMsg = errorData?.message || 'Failed to update profile';
       setError(errorMsg);
       showError(errorMsg);
+
+      // Parse validation errors from backend
+      if (errorData?.errors || errorData?.validationErrors) {
+        const validationErrors: Record<string, string> = {};
+        const errors = errorData.errors || errorData.validationErrors || {};
+        
+        // Handle Zod validation errors (array format)
+        if (Array.isArray(errors)) {
+          errors.forEach((error: any) => {
+            if (error.path && error.message) {
+              validationErrors[error.path.join('.')] = error.message;
+            }
+          });
+        } else if (typeof errors === 'object') {
+          // Handle object format errors
+          Object.keys(errors).forEach((key) => {
+            const errorValue = errors[key];
+            if (typeof errorValue === 'string') {
+              validationErrors[key] = errorValue;
+            } else if (Array.isArray(errorValue) && errorValue.length > 0) {
+              validationErrors[key] = errorValue[0];
+            }
+          });
+        }
+        
+        if (Object.keys(validationErrors).length > 0) {
+          setFieldErrors(validationErrors);
+        }
+      }
     } finally {
       setSaving(false);
     }
   };
 
-  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
+  const handlePhotoUpload = async (files: File[]) => {
     if (!files || files.length === 0) return;
 
     // Check max photos limit (3)
@@ -151,19 +183,16 @@ export default function MyProfilePage() {
     setError('');
 
     try {
-      const fileArray = Array.from(files);
-      const response = await photoApi.upload(fileArray);
+      const response = await photoApi.upload(files);
       if (response.status) {
         setUser(response.data);
         showSuccess(t('profile.photosUploaded'));
-        if (fileInputRef.current) {
-          fileInputRef.current.value = '';
-        }
       }
     } catch (err: any) {
       const errorMsg = err.response?.data?.message || 'Failed to upload photos';
       setError(errorMsg);
       showError(errorMsg);
+      throw err; // Re-throw to let PhotoUpload component handle it
     } finally {
       setUploadingPhotos(false);
     }
@@ -320,65 +349,61 @@ export default function MyProfilePage() {
           </div>
 
           {/* Photos Section */}
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+          <div className="mb-6 bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-slate-100 mb-4">
               {t('profile.photos')} ({t('profile.maxPhotos')})
-            </label>
-            <div className="grid grid-cols-3 gap-4 mb-4">
-              {(user.photos || []).map((photo, index) => (
-                <div key={index} className="relative group">
-                  <img
-                    src={photo.url}
-                    alt={`Photo ${index + 1}`}
-                    className="w-full aspect-square object-cover rounded-lg border-2 border-gray-200"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  {photo.isPrimary && (
-                    <div className="absolute top-2 left-2 bg-pink-600 text-white text-xs px-2 py-1 rounded-full font-semibold">
-                      {t('profile.primaryPhoto')}
-                    </div>
-                  )}
-                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all rounded-lg flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100">
-                    {!photo.isPrimary && (
-                      <button
-                        onClick={() => handleSetPrimaryPhoto(index)}
-                        className="px-3 py-1 bg-pink-600 text-white text-xs rounded hover:bg-pink-700"
-                      >
-                        {t('profile.setPrimary')}
-                      </button>
+            </h3>
+            
+            {/* Existing Photos Grid */}
+            {(user.photos || []).length > 0 && (
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                {(user.photos || []).map((photo, index) => (
+                  <div key={index} className="relative group">
+                    <img
+                      src={photo.url}
+                      alt={`Photo ${index + 1}`}
+                      className="w-full aspect-square object-cover rounded-lg border-2 border-gray-200 dark:border-slate-700"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    {photo.isPrimary && (
+                      <div className="absolute top-2 left-2 bg-gradient-to-r from-pink-600 to-red-600 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-lg">
+                        ⭐ {t('profile.primaryPhoto')}
+                      </div>
                     )}
-                    <button
-                      onClick={() => handleDeletePhoto(index)}
-                      className="px-3 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700"
-                    >
-                      {t('common.delete')}
-                    </button>
+                    <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all rounded-lg flex items-center justify-center">
+                      <div className="opacity-0 group-hover:opacity-100 transition-all flex gap-2">
+                        {!photo.isPrimary && (
+                          <button
+                            onClick={() => handleSetPrimaryPhoto(index)}
+                            className="bg-pink-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-pink-700 transition-colors shadow-lg"
+                            title="Set as primary photo"
+                          >
+                            ⭐ Primary
+                          </button>
+                        )}
+                        <button
+                          onClick={() => handleDeletePhoto(index)}
+                          className="bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-700 transition-colors shadow-lg"
+                          title="Delete photo"
+                        >
+                          🗑️ Delete
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              ))}
-              {(user.photos?.length || 0) < 3 && (
-                <div
-                  onClick={() => fileInputRef.current?.click()}
-                  className="aspect-square border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-pink-500 hover:bg-pink-50 transition-all"
-                >
-                  <div className="text-4xl text-gray-400 mb-2">📷</div>
-                  <p className="text-sm text-gray-600">{t('profile.uploadPhoto')}</p>
-                </div>
-              )}
-            </div>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={handlePhotoUpload}
-              className="hidden"
-              disabled={uploadingPhotos || (user.photos?.length || 0) >= 3}
-            />
-            {uploadingPhotos && (
-              <p className="text-sm text-gray-600">{t('profile.uploadingPhotos')}</p>
+                ))}
+              </div>
             )}
+
+            {/* Photo Upload Component with Drag & Drop */}
+            <PhotoUpload
+              onUpload={handlePhotoUpload}
+              maxPhotos={3}
+              currentPhotoCount={user.photos?.length || 0}
+              uploading={uploadingPhotos}
+              disabled={editing}
+            />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -399,12 +424,24 @@ export default function MyProfilePage() {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">{t('profile.email')}</label>
               {editing ? (
-                <input
-                  type="email"
-                  value={formData.email || ''}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
-                />
+                <>
+                  <input
+                    type="email"
+                    value={formData.email || ''}
+                    onChange={(e) => {
+                      setFormData({ ...formData, email: e.target.value });
+                      if (fieldErrors.email) {
+                        setFieldErrors({ ...fieldErrors, email: '' });
+                      }
+                    }}
+                    className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-pink-500 ${
+                      fieldErrors.email ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                  />
+                  {fieldErrors.email && (
+                    <p className="text-red-500 text-xs mt-1">{fieldErrors.email}</p>
+                  )}
+                </>
               ) : (
                 <p className="text-gray-900">{user.email || t('profile.notProvided')}</p>
               )}
@@ -429,6 +466,64 @@ export default function MyProfilePage() {
               <p className="text-gray-900">{user.age || t('profile.notProvided')}</p>
             </div>
 
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Blood Group</label>
+              {editing ? (
+                <select
+                  value={formData.bloodGroup || ''}
+                  onChange={(e) => setFormData({ ...formData, bloodGroup: e.target.value || null })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                >
+                  <option value="">Select Blood Group</option>
+                  <option value="A+">A+</option>
+                  <option value="A-">A-</option>
+                  <option value="B+">B+</option>
+                  <option value="B-">B-</option>
+                  <option value="AB+">AB+</option>
+                  <option value="AB-">AB-</option>
+                  <option value="O+">O+</option>
+                  <option value="O-">O-</option>
+                </select>
+              ) : (
+                <p className="text-gray-900">{user.bloodGroup || t('profile.notProvided')}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Disability</label>
+              {editing ? (
+                <select
+                  value={formData.disability || 'no'}
+                  onChange={(e) => setFormData({ ...formData, disability: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                >
+                  <option value="no">No</option>
+                  <option value="yes">Yes</option>
+                  <option value="not-specified">Not Specified</option>
+                </select>
+              ) : (
+                <p className="text-gray-900 capitalize">{user.disability === 'no' ? 'No' : user.disability === 'yes' ? 'Yes' : 'Not Specified'}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Profile Created By</label>
+              {editing ? (
+                <select
+                  value={formData.profileCreatedBy || 'self'}
+                  onChange={(e) => setFormData({ ...formData, profileCreatedBy: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                >
+                  <option value="self">Self</option>
+                  <option value="family">Family</option>
+                  <option value="relative">Relative</option>
+                  <option value="friend">Friend</option>
+                </select>
+              ) : (
+                <p className="text-gray-900 capitalize">{user.profileCreatedBy || 'Self'}</p>
+              )}
+            </div>
+
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">{t('profile.location')}</label>
               {editing ? (
@@ -445,8 +540,78 @@ export default function MyProfilePage() {
                   {user.country && <p><span className="font-medium">{t('profile.country')}:</span> {user.country}</p>}
                   {user.state && <p><span className="font-medium">{t('profile.state')}:</span> {user.state}</p>}
                   {user.city && <p><span className="font-medium">{t('profile.city')}:</span> {user.city}</p>}
+                  {user.town && <p><span className="font-medium">Town:</span> {user.town}</p>}
                   {!user.country && !user.state && !user.city && <p>{t('profile.notProvided')}</p>}
                 </div>
+              )}
+            </div>
+
+            {editing && (
+              <>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Town/Village</label>
+                  <input
+                    type="text"
+                    value={formData.town || ''}
+                    onChange={(e) => setFormData({ ...formData, town: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                    placeholder="Enter town or village name"
+                  />
+                </div>
+
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Present Address</label>
+                  <textarea
+                    value={formData.presentAddress || ''}
+                    onChange={(e) => setFormData({ ...formData, presentAddress: e.target.value })}
+                    rows={2}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                    placeholder="Enter present address"
+                  />
+                </div>
+
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Permanent Address</label>
+                  <textarea
+                    value={formData.permanentAddress || ''}
+                    onChange={(e) => setFormData({ ...formData, permanentAddress: e.target.value })}
+                    rows={2}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                    placeholder="Enter permanent address"
+                  />
+                </div>
+              </>
+            )}
+
+            {!editing && (
+              <>
+                {user.presentAddress && (
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Present Address</label>
+                    <p className="text-gray-900">{user.presentAddress}</p>
+                  </div>
+                )}
+                {user.permanentAddress && (
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Permanent Address</label>
+                    <p className="text-gray-900">{user.permanentAddress}</p>
+                  </div>
+                )}
+              </>
+            )}
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">WhatsApp Number</label>
+              {editing ? (
+                <input
+                  type="tel"
+                  value={formData.whatsappNumber || ''}
+                  onChange={(e) => setFormData({ ...formData, whatsappNumber: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                  placeholder="Enter WhatsApp number"
+                />
+              ) : (
+                <p className="text-gray-900">{user.whatsappNumber || t('profile.notProvided')}</p>
               )}
             </div>
 
@@ -495,6 +660,26 @@ export default function MyProfilePage() {
             </div>
 
             <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Educational Detail</label>
+              {editing ? (
+                <select
+                  value={formData.educationalDetail || ''}
+                  onChange={(e) => setFormData({ ...formData, educationalDetail: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                >
+                  <option value="">Select</option>
+                  <option value="Graduate">Graduate</option>
+                  <option value="Post Graduate">Post Graduate</option>
+                  <option value="Doctorate">Doctorate</option>
+                  <option value="Diploma">Diploma</option>
+                  <option value="Professional">Professional</option>
+                </select>
+              ) : (
+                <p className="text-gray-900">{user.educationalDetail || t('profile.notProvided')}</p>
+              )}
+            </div>
+
+            <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 {t('profile.occupation')}
                 {loadingOccupation && (
@@ -521,6 +706,66 @@ export default function MyProfilePage() {
                     ? occupationOptions.find(opt => opt.value === user.occupation)?.label || user.occupation
                     : t('profile.notProvided')}
                 </p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Profession</label>
+              {editing ? (
+                <input
+                  type="text"
+                  value={formData.profession || ''}
+                  onChange={(e) => setFormData({ ...formData, profession: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                  placeholder="e.g., Computer Software Professional"
+                />
+              ) : (
+                <p className="text-gray-900">{user.profession || t('profile.notProvided')}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Employer/Company</label>
+              {editing ? (
+                <input
+                  type="text"
+                  value={formData.employer || ''}
+                  onChange={(e) => setFormData({ ...formData, employer: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                  placeholder="Company name"
+                />
+              ) : (
+                <p className="text-gray-900">{user.employer || t('profile.notProvided')}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Occupation Detail</label>
+              {editing ? (
+                <input
+                  type="text"
+                  value={formData.occupationDetail || ''}
+                  onChange={(e) => setFormData({ ...formData, occupationDetail: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                  placeholder="Detailed occupation information"
+                />
+              ) : (
+                <p className="text-gray-900">{user.occupationDetail || t('profile.notProvided')}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Annual Income</label>
+              {editing ? (
+                <input
+                  type="text"
+                  value={formData.annualIncome || ''}
+                  onChange={(e) => setFormData({ ...formData, annualIncome: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                  placeholder="e.g., 25-30 lakh"
+                />
+              ) : (
+                <p className="text-gray-900">{user.annualIncome || t('profile.notProvided')}</p>
               )}
             </div>
 

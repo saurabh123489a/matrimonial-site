@@ -212,6 +212,7 @@ export const userApi = {
     state?: string;
     religion?: string;
     education?: string;
+    gahoiId?: string;
     page?: number;
     limit?: number;
   }): Promise<ApiResponse<User[]> & { pagination?: Pagination }> => {

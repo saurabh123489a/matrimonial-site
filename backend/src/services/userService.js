@@ -1,11 +1,65 @@
 import bcrypt from 'bcryptjs';
 import mongoose from 'mongoose';
 import { userRepository } from '../repositories/userRepository.js';
+import User from '../models/User.js';
 
 /**
  * User Service - Business logic layer for user operations
  */
 export const userService = {
+  /**
+   * Get next available Gahoi ID for a gender
+   * Even numbers = Male, Odd numbers = Female
+   */
+  async getNextGahoiId(gender) {
+    const baseId = 10000;
+    
+    if (gender === 'male') {
+      // Find the highest even Gahoi ID
+      const lastMale = await User.findOne({ gender: 'male', gahoiId: { $exists: true } })
+        .sort({ gahoiId: -1 })
+        .exec();
+      
+      if (lastMale && lastMale.gahoiId) {
+        // Get next even number
+        return lastMale.gahoiId + 2;
+      }
+      // Start with 10000 if no males exist
+      return baseId;
+    } else if (gender === 'female') {
+      // Find the highest odd Gahoi ID
+      const lastFemale = await User.findOne({ gender: 'female', gahoiId: { $exists: true } })
+        .sort({ gahoiId: -1 })
+        .exec();
+      
+      if (lastFemale && lastFemale.gahoiId) {
+        // Get next odd number
+        return lastFemale.gahoiId + 2;
+      }
+      // Start with 10001 if no females exist
+      return baseId + 1;
+    } else {
+      // For other genders, use even numbers after all males
+      const lastMale = await User.findOne({ gender: 'male', gahoiId: { $exists: true } })
+        .sort({ gahoiId: -1 })
+        .exec();
+      const lastOther = await User.findOne({ 
+        gender: { $nin: ['male', 'female'] }, 
+        gahoiId: { $exists: true } 
+      })
+        .sort({ gahoiId: -1 })
+        .exec();
+      
+      const lastId = Math.max(
+        lastMale?.gahoiId || baseId,
+        lastOther?.gahoiId || baseId
+      );
+      
+      // Get next even number after the highest
+      return lastId + 2;
+    }
+  },
+
   /**
    * Create a new user profile
    */
@@ -39,6 +93,16 @@ export const userService = {
       userData.age = age;
     }
 
+    // Auto-assign Gahoi ID if not provided and gender is specified
+    if (!userData.gahoiId && userData.gender) {
+      try {
+        userData.gahoiId = await this.getNextGahoiId(userData.gender);
+      } catch (error) {
+        console.error('Error assigning Gahoi ID:', error);
+        // Continue without Gahoi ID if assignment fails
+      }
+    }
+
     // Check profile completeness
     userData.isProfileComplete = checkProfileCompleteness(userData);
 
@@ -66,6 +130,12 @@ export const userService = {
       const error = new Error('User profile is inactive');
       error.status = 404;
       throw error;
+    }
+
+    // Hide phone number for female users when viewed by others
+    // Users can always see their own phone number
+    if (String(userId) !== String(requesterId) && user.gender === 'female') {
+      user.phone = undefined;
     }
 
     return user;

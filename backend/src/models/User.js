@@ -5,10 +5,17 @@ const familySchema = new mongoose.Schema(
   {
     fathersName: String,
     fathersOccupation: String,
+    fathersContactNumber: String,
     mothersName: String,
     mothersOccupation: String,
     numberOfBrothers: { type: Number, default: 0 },
     numberOfSisters: { type: Number, default: 0 },
+    marriedBrothers: { type: Number, default: 0 },
+    unmarriedBrothers: { type: Number, default: 0 },
+    marriedSisters: { type: Number, default: 0 },
+    unmarriedSisters: { type: Number, default: 0 },
+    maternalUncleName: String,
+    maternalUncleAakna: String,
     familyType: { type: String, enum: ['joint', 'nuclear'], default: 'nuclear' },
     familyStatus: { type: String, enum: ['middle-class', 'upper-middle-class', 'upper-class', 'lower-middle-class'], default: 'middle-class' },
     familyValues: { type: String, enum: ['traditional', 'moderate', 'liberal'], default: 'moderate' },
@@ -60,7 +67,16 @@ const userSchema = new mongoose.Schema(
       trim: true,
       index: false, // Explicitly disable auto-index, we create it manually below
     },
+    whatsappNumber: { type: String, trim: true }, // Separate WhatsApp number
     passwordHash: { type: String, required: false }, // Optional for OTP-based auth
+    
+    // Gahoi ID - 5 digit number starting with 1000 (even = male, odd = female)
+    gahoiId: { 
+      type: Number, 
+      unique: true, 
+      sparse: true,
+      index: true
+    },
     
     // Basic Info
     name: { type: String, required: true, trim: true },
@@ -85,12 +101,30 @@ const userSchema = new mongoose.Schema(
       enum: ['very-fair', 'fair', 'wheatish', 'dark', 'not-specified'],
       default: 'not-specified'
     },
+    bloodGroup: { 
+      type: String, 
+      enum: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-', null],
+      default: null
+    },
+    disability: { 
+      type: String, 
+      enum: ['no', 'yes', 'not-specified'],
+      default: 'no'
+    },
+    profileCreatedBy: {
+      type: String,
+      enum: ['self', 'family', 'relative', 'friend'],
+      default: 'self'
+    },
     
     // Location
     city: { type: String },
     state: { type: String },
     country: { type: String, default: 'India' },
+    town: { type: String }, // Town/Village name
     pincode: { type: String },
+    presentAddress: { type: String },
+    permanentAddress: { type: String },
     
     // Family & Background
     religion: { type: String },
@@ -105,14 +139,25 @@ const userSchema = new mongoose.Schema(
       starSign: String, // Optional
       rashi: String, // Optional
       nakshatra: String, // Optional
+      aakna: String, // Optional - Aakna/Gotra from mother's side
+      manglikStatus: { 
+        type: String, 
+        enum: ['manglik', 'angshik', 'non-manglik', null],
+        default: null
+      },
+      timeOfBirth: String, // HH:MM:SS format
+      placeOfBirth: String,
     },
     
     // Education & Career
     education: { type: String },
+    educationalDetail: { type: String }, // Graduate, Post-graduate, etc.
     fieldOfStudy: { type: String }, // Specialization or major
     occupation: { type: String },
+    profession: { type: String }, // Specific profession (e.g., "Computer Software Professional")
     employer: { type: String }, // Company or organization name
-    annualIncome: { type: Number },
+    occupationDetail: { type: String }, // Detailed occupation info
+    annualIncome: { type: String }, // Changed to String to support ranges like "25-30 lakh"
     
     // Family Information
     family: familySchema,
@@ -122,6 +167,17 @@ const userSchema = new mongoose.Schema(
     smoking: { type: Boolean, default: false },
     drinking: { type: Boolean, default: false },
     hobbies: [{ type: String }], // Array of hobbies/interests
+    
+    // Property & Assets
+    hasHouse: {
+      type: String,
+      enum: ['yes-personal', 'yes-rented', 'no', 'not-specified'],
+      default: 'not-specified'
+    },
+    hasCar: {
+      type: Boolean,
+      default: false
+    },
     
     // Profile Content
     bio: { type: String, maxlength: 2000 }, // Increased from 1000
@@ -158,6 +214,7 @@ const userSchema = new mongoose.Schema(
 // Indexes for efficient queries
 userSchema.index({ email: 1 }, { unique: true, sparse: true });
 userSchema.index({ phone: 1 }, { unique: true, sparse: true });
+userSchema.index({ gahoiId: 1 }, { unique: true, sparse: true });
 userSchema.index({ gender: 1, age: 1 });
 userSchema.index({ city: 1, state: 1 });
 userSchema.index({ religion: 1 });

@@ -7,6 +7,7 @@ import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import { connectToDatabase } from './config/database.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
+import { antiScrapingMiddleware, enforcePaginationLimits, securityHeaders } from './middleware/antiScraping.js';
 import router from './routes/index.js';
 
 const app = express();
@@ -83,6 +84,13 @@ app.use('/uploads/photos', express.static(join(__dirname, '../uploads/photos')))
 
 // Logging
 app.use(morgan('dev'));
+
+// Security headers
+app.use(securityHeaders);
+
+// Anti-scraping middleware (before routes)
+app.use('/api', antiScrapingMiddleware);
+app.use('/api', enforcePaginationLimits);
 
 // API routes
 app.use('/api', router);

@@ -143,6 +143,53 @@ export const deleteUserProfile = async (req, res, next) => {
  */
 export const getAllUsers = async (req, res, next) => {
   try {
+    // If Gahoi ID is provided, search by ID
+    if (req.query.gahoiId) {
+      const gahoiId = req.query.gahoiId.trim();
+      
+      // Validate: must be exactly 5 digits starting with 1000
+      if (!/^100[0-9]{2}$/.test(gahoiId)) {
+        return res.status(400).json({
+          status: false,
+          message: 'Gahoi ID must be a 5-digit number starting with 1000 (e.g., 10000-10099)'
+        });
+      }
+      
+      try {
+        // Search for user by gahoiId field (numeric ID)
+        // Gahoi ID format: 5 digits, starting with 1000
+        // Even numbers = Male, Odd numbers = Female
+        const result = await userService.getAllUsers(
+          { gahoiId: parseInt(gahoiId) },
+          { page: 1, limit: 1, excludeUserId: req.user ? req.user.id : null }
+        );
+        
+        if (result.users && result.users.length > 0) {
+          return res.json({
+            status: true,
+            message: 'User retrieved successfully',
+            data: result.users,
+            pagination: {
+              total: 1,
+              pages: 1,
+              page: 1,
+              limit: 1
+            }
+          });
+        } else {
+          return res.status(404).json({
+            status: false,
+            message: 'No profile found with this Gahoi ID'
+          });
+        }
+      } catch (error) {
+        return res.status(404).json({
+          status: false,
+          message: 'No profile found with this Gahoi ID'
+        });
+      }
+    }
+
     // Gahoi Sathi style comprehensive filters
     const filters = {
       ...(req.query.gender && { gender: req.query.gender }),
@@ -170,9 +217,13 @@ export const getAllUsers = async (req, res, next) => {
       }),
     };
 
+    // Enforce pagination limits (already applied by middleware, but ensure here too)
+    const requestedLimit = parseInt(req.query.limit) || 10;
+    const requestedPage = parseInt(req.query.page) || 1;
+    
     const options = {
-      page: parseInt(req.query.page) || 1,
-      limit: parseInt(req.query.limit) || 20,
+      page: Math.min(requestedPage, 100), // Max page 100
+      limit: Math.min(requestedLimit, 50), // Max 50 per page (middleware enforces this)
       // Exclude current user if authenticated
       excludeUserId: req.user ? req.user.id : null
     };

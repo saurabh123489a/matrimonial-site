@@ -8,6 +8,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import Link from 'next/link';
 import BlockReportModal from '@/components/BlockReportModal';
 import ProfileBadges from '@/components/ProfileBadges';
+import ProfileShareModal from '@/components/ProfileShareModal';
 
 export default function ProfileDetailPage() {
   const params = useParams();
@@ -22,6 +23,7 @@ export default function ProfileDetailPage() {
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(0);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [showBlockReportModal, setShowBlockReportModal] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
   const [reportReason, setReportReason] = useState<string>('inappropriate-content');
   const [reportDescription, setReportDescription] = useState('');
   const [reportLoading, setReportLoading] = useState(false);
@@ -244,6 +246,13 @@ export default function ProfileDetailPage() {
                          >
                            {isShortlisted ? '✓ ' + t('shortlist.shortlisted') : '⭐ ' + t('shortlist.addToShortlist')}
                          </button>
+                  {/* Share Profile Button */}
+                  <button
+                    onClick={() => setShowShareModal(true)}
+                    className="w-full px-6 py-3 bg-gradient-to-r from-pink-600 to-red-600 text-white font-semibold rounded-md hover:from-pink-700 hover:to-red-700 transition-all shadow-lg"
+                  >
+                    📤 Share Profile
+                  </button>
                   {/* Block/Report Button */}
                   <button
                     onClick={() => setShowBlockReportModal(true)}
@@ -348,6 +357,17 @@ export default function ProfileDetailPage() {
                 onBlock={handleBlock}
                 onReport={handleReport}
               />
+
+              {/* Profile Share Modal */}
+              {user && (
+                <ProfileShareModal
+                  isOpen={showShareModal}
+                  onClose={() => setShowShareModal(false)}
+                  profileId={id}
+                  profileName={user.name}
+                  profileUrl={`/profiles/${id}`}
+                />
+              )}
               
               {/* Lifestyle */}
               {(user.smoking !== undefined || user.drinking !== undefined) && (

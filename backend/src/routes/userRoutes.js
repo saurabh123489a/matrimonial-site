@@ -1,6 +1,7 @@
 import express from 'express';
 import { requireAuth, optionalAuth } from '../middleware/auth.js';
 import { validate, updateProfileSchema, registerSchema } from '../utils/validation.js';
+import { requireAuthForData } from '../middleware/antiScraping.js';
 import {
   createUser,
   getUserProfile,
@@ -20,8 +21,8 @@ const router = express.Router();
 // Create new user profile (public)
 router.post('/', validate(registerSchema), createUser);
 
-// Get all users with filters (optional auth - to exclude logged-in user)
-router.get('/', optionalAuth, getAllUsers);
+// Get all users with filters - requires authentication to prevent scraping
+router.get('/', requireAuthForData, optionalAuth, getAllUsers);
 
 // Get my profile (authenticated)
 router.get('/me', requireAuth, getMyProfile);
