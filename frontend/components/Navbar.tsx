@@ -8,14 +8,19 @@ import { notificationApi, userApi } from '@/lib/api';
 import { useTranslation } from '@/hooks/useTranslation';
 import LanguageSwitcher from './LanguageSwitcher';
 import ThemeToggle from './ThemeToggle';
+import { useTheme } from '@/contexts/ThemeContext';
+import { useRouter } from 'next/navigation';
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const { t } = useTranslation();
+  const { resolvedTheme, toggleTheme } = useTheme();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const [isAdmin, setIsAdmin] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
 
   // Check authentication on client side only
   useEffect(() => {
@@ -43,6 +48,20 @@ export default function Navbar() {
       }
     }
   }, [mounted, pathname]);
+
+  // Close user menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (showUserMenu && !(event.target as Element).closest('.user-menu-container')) {
+        setShowUserMenu(false);
+      }
+    };
+
+    if (showUserMenu) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [showUserMenu]);
 
   const checkAdminStatus = async () => {
     try {
@@ -116,14 +135,84 @@ export default function Navbar() {
                       </span>
                     )}
                   </Link>
-                  <button
-                    onClick={() => auth.logout()}
-                    className="px-4 py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-pink-600 dark:hover:text-pink-400 transition-colors whitespace-nowrap"
-                  >
-                    {t('common.logout')}
-                  </button>
+                  
+                  {/* User Menu Dropdown */}
+                  <div className="relative user-menu-container">
+                    <button
+                      onClick={() => setShowUserMenu(!showUserMenu)}
+                      className="relative p-2 text-gray-700 dark:text-gray-300 hover:text-pink-600 dark:hover:text-pink-400 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700"
+                      title="User Menu"
+                    >
+                      <span className="text-xl">👤</span>
+                    </button>
+                    
+                    {/* Dropdown Menu */}
+                    {showUserMenu && (
+                      <>
+                        <div 
+                          className="fixed inset-0 z-40"
+                          onClick={() => setShowUserMenu(false)}
+                        />
+                        <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 rounded-lg shadow-xl border border-gray-200 dark:border-slate-700 z-50 overflow-hidden animate-scale-in">
+                          {/* Profile Link */}
+                          <Link
+                            href="/profile"
+                            onClick={() => setShowUserMenu(false)}
+                            className={`flex items-center gap-3 px-4 py-3 text-sm font-medium transition-colors ${
+                              pathname === '/profile'
+                                ? 'bg-pink-50 dark:bg-pink-900/20 text-pink-600 dark:text-pink-400'
+                                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700'
+                            }`}
+                          >
+                            <span className="text-lg">👤</span>
+                            <span>{t('common.profile') || 'Profile'}</span>
+                          </Link>
+                          
+                          {/* Theme Toggle */}
+                          <button
+                            onClick={() => {
+                              toggleTheme();
+                              setShowUserMenu(false);
+                            }}
+                            className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors border-t border-gray-200 dark:border-slate-700"
+                          >
+                            {resolvedTheme === 'dark' ? (
+                              <>
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                                </svg>
+                                <span>Light Mode</span>
+                              </>
+                            ) : (
+                              <>
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                                </svg>
+                                <span>Dark Mode</span>
+                              </>
+                            )}
+                          </button>
+                          
+                          {/* Logout */}
+                          <button
+                            onClick={() => {
+                              auth.logout();
+                              setShowUserMenu(false);
+                              router.push('/login');
+                            }}
+                            className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors border-t border-gray-200 dark:border-slate-700"
+                          >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                            </svg>
+                            <span>{t('common.logout')}</span>
+                          </button>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                  
                   <LanguageSwitcher />
-                  <ThemeToggle />
                 </>
               )}
               {mounted && !isAuthenticated && (
