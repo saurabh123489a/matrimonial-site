@@ -7,6 +7,8 @@ import { auth } from '@/lib/auth';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useNotifications } from '@/contexts/NotificationContext';
 import LocationSelect from '@/components/LocationSelect';
+import ProfileCompletenessMeter from '@/components/ProfileCompletenessMeter';
+import ProfileBadges from '@/components/ProfileBadges';
 
 export default function MyProfilePage() {
   const router = useRouter();
@@ -261,21 +263,43 @@ export default function MyProfilePage() {
         <div className="bg-gradient-to-r from-pink-500 to-red-500 p-6 text-white">
           <div className="flex justify-between items-center">
             <h1 className="text-3xl font-bold">{t('profile.myProfile')}</h1>
-            {!editing && (
-              <button
-                onClick={() => setEditing(true)}
-                className="px-4 py-2 bg-white text-pink-600 rounded-md hover:bg-gray-100"
-              >
-                {t('profile.editProfile')}
-              </button>
-            )}
+            <div className="flex items-center gap-3">
+              {/* One-click Activate button at top - only show if inactive */}
+              {!user.isActive && (
+                <button
+                  onClick={handleToggleActive}
+                  disabled={togglingActive}
+                  className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50 font-medium transition-colors"
+                >
+                  {togglingActive ? t('common.loading') : t('profile.activateProfile')}
+                </button>
+              )}
+              {!editing && (
+                <button
+                  onClick={() => setEditing(true)}
+                  className="px-4 py-2 bg-white text-pink-600 rounded-md hover:bg-gray-100"
+                >
+                  {t('profile.editProfile')}
+                </button>
+              )}
+            </div>
           </div>
         </div>
 
-        <div className="p-6 md:p-8">
+        <div className="p-6 md:p-8 dark:bg-gray-800 dark:text-gray-100 transition-colors">
 
-          {/* Profile Status Toggle */}
-          <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+          {/* Profile Badges */}
+          <div className="mb-6">
+            <ProfileBadges user={user} showOnlineStatus={true} showLastSeen={true} />
+          </div>
+
+          {/* Profile Completeness Meter */}
+          <div className="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
+            <ProfileCompletenessMeter user={user} />
+          </div>
+
+          {/* Profile Status Display */}
+          <div className="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-semibold text-gray-900">{t('profile.profileStatus')}</p>
@@ -285,17 +309,13 @@ export default function MyProfilePage() {
                     : t('profile.inactiveStatusDesc')}
                 </p>
               </div>
-              <button
-                onClick={handleToggleActive}
-                disabled={togglingActive}
-                className={`px-6 py-2 rounded-md font-semibold transition-all ${
-                  user.isActive
-                    ? 'bg-red-600 text-white hover:bg-red-700'
-                    : 'bg-green-600 text-white hover:bg-green-700'
-                } disabled:opacity-50`}
-              >
-                {togglingActive ? t('common.loading') : user.isActive ? t('profile.deactivateProfile') : t('profile.activateProfile')}
-              </button>
+              <div className={`px-3 py-1 rounded-full text-sm font-medium ${
+                user.isActive 
+                  ? 'bg-green-100 text-green-800' 
+                  : 'bg-gray-100 text-gray-800'
+              }`}>
+                {user.isActive ? t('profile.active') : t('profile.inactive')}
+              </div>
             </div>
           </div>
 
@@ -684,6 +704,19 @@ export default function MyProfilePage() {
                   <strong>{t('profile.profileStatus')}:</strong> {user.isProfileComplete ? t('profile.complete') : t('profile.incomplete')}
                 </p>
               </div>
+            </div>
+          )}
+
+          {/* Deactivate Button at Bottom - Only show if active */}
+          {!editing && user.isActive && (
+            <div className="mt-8 pt-6 border-t border-gray-200">
+              <button
+                onClick={handleToggleActive}
+                disabled={togglingActive}
+                className="w-full px-6 py-3 bg-red-600 text-white rounded-md hover:bg-red-700 disabled:opacity-50 font-semibold transition-colors"
+              >
+                {togglingActive ? t('common.loading') : t('profile.deactivateProfile')}
+              </button>
             </div>
           )}
         </div>

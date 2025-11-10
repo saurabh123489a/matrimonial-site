@@ -11,7 +11,7 @@ export default function ProfileCard({ user }: ProfileCardProps) {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden profile-card border border-gray-200">
       {/* Photo Section */}
-      <div className="relative h-72 bg-gradient-to-br from-pink-100 to-red-100">
+      <div className="relative h-56 sm:h-72 bg-gradient-to-br from-pink-100 to-red-100">
         {primaryPhoto ? (
           <>
             <img
@@ -40,7 +40,7 @@ export default function ProfileCard({ user }: ProfileCardProps) {
       </div>
 
       {/* Info Section */}
-      <div className="p-5">
+      <div className="p-4 sm:p-5">
         {/* Name and Age */}
         <div className="flex items-start justify-between mb-3">
           <div>
@@ -94,11 +94,11 @@ export default function ProfileCard({ user }: ProfileCardProps) {
         <div className="flex gap-2">
           <Link
             href={`/profiles/${user._id}`}
-            className="flex-1 text-center px-4 py-2.5 bg-gradient-to-r from-pink-600 to-red-600 text-white font-semibold rounded-md hover:from-pink-700 hover:to-red-700 transition-all text-sm shadow-sm"
+            className="flex-1 text-center px-3 sm:px-4 py-2 sm:py-2.5 bg-gradient-to-r from-pink-600 to-red-600 text-white font-semibold rounded-md hover:from-pink-700 hover:to-red-700 transition-all text-xs sm:text-sm shadow-sm"
           >
             View Profile
           </Link>
-          <button className="px-4 py-2.5 bg-gray-100 text-gray-700 font-semibold rounded-md hover:bg-gray-200 transition-all text-sm">
+          <button className="px-3 sm:px-4 py-2 sm:py-2.5 bg-gray-100 text-gray-700 font-semibold rounded-md hover:bg-gray-200 transition-all text-sm sm:text-base">
             💝
           </button>
         </div>

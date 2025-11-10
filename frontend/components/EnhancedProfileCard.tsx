@@ -6,6 +6,7 @@ import { User, horoscopeApi, HoroscopeMatch } from '@/lib/api';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useNotifications } from '@/contexts/NotificationContext';
 import { auth } from '@/lib/auth';
+import ProfileBadges from './ProfileBadges';
 
 interface EnhancedProfileCardProps {
   user: User;
@@ -55,7 +56,7 @@ export default function EnhancedProfileCard({ user, showActions = true }: Enhanc
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden profile-card border border-gray-100 group">
       {/* Photo Section with Overlay */}
-      <div className="relative h-80 bg-gradient-to-br from-pink-50 to-purple-50">
+      <div className="relative h-64 sm:h-80 bg-gradient-to-br from-pink-50 to-purple-50">
         {primaryPhoto ? (
           <>
             <img
@@ -75,12 +76,8 @@ export default function EnhancedProfileCard({ user, showActions = true }: Enhanc
         )}
         
         {/* Badges */}
-        <div className="absolute top-3 left-3 flex gap-2">
-          {user.isProfileComplete && (
-            <span className="bg-green-500 text-white text-xs px-3 py-1 rounded-full font-bold shadow-lg flex items-center gap-1">
-              <span>✓</span> Verified
-            </span>
-          )}
+        <div className="absolute top-3 left-3 flex gap-2 z-10">
+          <ProfileBadges user={user} showOnlineStatus={false} showLastSeen={false} />
         </div>
 
         {/* Photo Count & Age */}
@@ -99,7 +96,7 @@ export default function EnhancedProfileCard({ user, showActions = true }: Enhanc
       </div>
 
       {/* Info Section */}
-      <div className="p-5">
+      <div className="p-4 sm:p-5">
         {/* Name & Location Header */}
         <div className="mb-4">
           <h3 className="text-xl font-bold text-gray-900 mb-1 line-clamp-1">{user.name}</h3>
@@ -114,7 +111,7 @@ export default function EnhancedProfileCard({ user, showActions = true }: Enhanc
         </div>
 
         {/* Key Details Grid */}
-        <div className="grid grid-cols-2 gap-3 mb-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 mb-3 sm:mb-4">
           {user.education && (
             <div className="flex items-start gap-2">
               <span className="text-pink-600 text-lg">🎓</span>
@@ -162,7 +159,7 @@ export default function EnhancedProfileCard({ user, showActions = true }: Enhanc
 
         {/* Action Buttons */}
         {showActions && (
-          <div className="flex gap-2 pt-3 border-t border-gray-100 flex-wrap">
+          <div className="flex gap-1.5 sm:gap-2 pt-3 border-t border-gray-100 flex-wrap">
             <Link
               href={`/profiles/${user._id}`}
               onClick={(e) => {
@@ -171,28 +168,28 @@ export default function EnhancedProfileCard({ user, showActions = true }: Enhanc
                   e.stopPropagation();
                 }
               }}
-              className="flex-1 text-center px-3 py-2 bg-gradient-to-r from-pink-600 via-red-600 to-pink-600 text-white font-bold rounded-lg hover:shadow-lg transition-all text-xs min-w-[100px]"
+              className="flex-1 text-center px-2 sm:px-3 py-2 bg-gradient-to-r from-pink-600 via-red-600 to-pink-600 text-white font-bold rounded-lg hover:shadow-lg transition-all text-xs sm:text-sm min-w-[80px] sm:min-w-[100px]"
             >
               View Profile
             </Link>
             {auth.isAuthenticated() && (
               <Link
                 href={`/messages/${user._id}`}
-                className="flex-1 text-center px-3 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-all text-xs min-w-[100px]"
+                className="flex-1 text-center px-2 sm:px-3 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-all text-xs sm:text-sm min-w-[80px] sm:min-w-[100px]"
               >
                 💬 Message
               </Link>
             )}
-            <button className="px-4 py-2.5 bg-pink-50 text-pink-600 font-bold rounded-lg hover:bg-pink-100 transition-all text-lg border border-pink-200">
+            <button className="px-3 sm:px-4 py-2 sm:py-2.5 bg-pink-50 text-pink-600 font-bold rounded-lg hover:bg-pink-100 transition-all text-base sm:text-lg border border-pink-200">
               💝
             </button>
-            <button className="px-4 py-2.5 bg-gray-50 text-gray-600 font-bold rounded-lg hover:bg-gray-100 transition-all text-lg border border-gray-200">
+            <button className="px-3 sm:px-4 py-2 sm:py-2.5 bg-gray-50 text-gray-600 font-bold rounded-lg hover:bg-gray-100 transition-all text-base sm:text-lg border border-gray-200">
               ⭐
             </button>
             {(user.horoscopeDetails?.rashi || user.horoscopeDetails?.nakshatra) && (
               <button
                 onClick={handleHoroscopeMatch}
-                className="px-4 py-2.5 bg-purple-50 text-purple-600 font-bold rounded-lg hover:bg-purple-100 transition-all text-lg border border-purple-200"
+                className="px-3 sm:px-4 py-2 sm:py-2.5 bg-purple-50 text-purple-600 font-bold rounded-lg hover:bg-purple-100 transition-all text-base sm:text-lg border border-purple-200"
                 title={t('horoscope.buttonTitle')}
               >
                 🔮
@@ -204,11 +201,11 @@ export default function EnhancedProfileCard({ user, showActions = true }: Enhanc
 
       {/* Horoscope Match Modal */}
       {showHoroscopeModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
-            <div className="sticky top-0 bg-gradient-to-r from-purple-600 to-pink-600 text-white p-6 rounded-t-xl">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
+          <div className="bg-white rounded-xl max-w-2xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto shadow-2xl">
+            <div className="sticky top-0 bg-gradient-to-r from-purple-600 to-pink-600 text-white p-4 sm:p-6 rounded-t-xl">
               <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-bold">🔮 {t('horoscope.title')}</h2>
+                <h2 className="text-xl sm:text-2xl font-bold">🔮 {t('horoscope.title')}</h2>
                 <button
                   onClick={() => {
                     setShowHoroscopeModal(false);
@@ -222,27 +219,27 @@ export default function EnhancedProfileCard({ user, showActions = true }: Enhanc
               </div>
             </div>
 
-            <div className="p-6">
+            <div className="p-4 sm:p-6">
               {loadingMatch ? (
-                <div className="text-center py-12">
-                  <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-purple-600 border-t-transparent"></div>
-                  <p className="mt-4 text-gray-600">{t('horoscope.calculating')}</p>
+                <div className="text-center py-8 sm:py-12">
+                  <div className="inline-block animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-4 border-purple-600 border-t-transparent"></div>
+                  <p className="mt-4 text-sm sm:text-base text-gray-600">{t('horoscope.calculating')}</p>
                 </div>
               ) : matchError ? (
-                <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-md">
+                <div className="bg-red-50 border border-red-200 text-red-800 px-3 sm:px-4 py-2 sm:py-3 rounded-md text-sm sm:text-base">
                   {matchError}
                 </div>
               ) : horoscopeMatch ? (
-                <div className="space-y-6">
+                <div className="space-y-4 sm:space-y-6">
                   {/* Overall Score */}
-                  <div className="text-center bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-lg border-2 border-purple-200">
-                    <div className="text-5xl font-bold text-purple-600 mb-2">
+                  <div className="text-center bg-gradient-to-r from-purple-50 to-pink-50 p-4 sm:p-6 rounded-lg border-2 border-purple-200">
+                    <div className="text-4xl sm:text-5xl font-bold text-purple-600 mb-2">
                       {horoscopeMatch.totalScore}/{horoscopeMatch.maxScore}
                     </div>
-                    <div className="text-2xl font-semibold text-gray-800 mb-1">
+                    <div className="text-xl sm:text-2xl font-semibold text-gray-800 mb-1">
                       {horoscopeMatch.percentage}% Match
                     </div>
-                    <div className={`text-lg font-medium ${
+                    <div className={`text-base sm:text-lg font-medium ${
                       horoscopeMatch.status === 'excellent' ? 'text-green-600' :
                       horoscopeMatch.status === 'good' ? 'text-blue-600' :
                       horoscopeMatch.status === 'moderate' ? 'text-yellow-600' :
@@ -266,8 +263,8 @@ export default function EnhancedProfileCard({ user, showActions = true }: Enhanc
 
                   {/* Detailed Breakdown */}
                   <div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-4">{t('horoscope.breakdown.title')}</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">{t('horoscope.breakdown.title')}</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                       {horoscopeMatch.details.map((detail, idx) => (
                         <div
                           key={idx}
@@ -298,9 +295,9 @@ export default function EnhancedProfileCard({ user, showActions = true }: Enhanc
                   </div>
 
                   {/* Horoscope Info */}
-                  <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-200">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 pt-4 border-t border-gray-200">
                     <div>
-                      <h4 className="font-semibold text-gray-900 mb-2">{t('horoscope.info.yourHoroscope')}</h4>
+                      <h4 className="text-sm sm:text-base font-semibold text-gray-900 mb-2">{t('horoscope.info.yourHoroscope')}</h4>
                       {horoscopeMatch.horoscope1.rashi && (
                         <p className="text-sm text-gray-700">{t('horoscope.info.rashi')}: <span className="font-medium">{horoscopeMatch.horoscope1.rashi}</span></p>
                       )}
@@ -309,7 +306,7 @@ export default function EnhancedProfileCard({ user, showActions = true }: Enhanc
                       )}
                     </div>
                     <div>
-                      <h4 className="font-semibold text-gray-900 mb-2">{t('horoscope.info.theirHoroscope', { name: user.name })}</h4>
+                      <h4 className="text-sm sm:text-base font-semibold text-gray-900 mb-2">{t('horoscope.info.theirHoroscope', { name: user.name })}</h4>
                       {horoscopeMatch.horoscope2.rashi && (
                         <p className="text-sm text-gray-700">{t('horoscope.info.rashi')}: <span className="font-medium">{horoscopeMatch.horoscope2.rashi}</span></p>
                       )}

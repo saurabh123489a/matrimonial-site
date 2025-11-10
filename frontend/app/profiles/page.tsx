@@ -7,6 +7,7 @@ import EnhancedProfileCard from '@/components/EnhancedProfileCard';
 import { useTranslation } from '@/hooks/useTranslation';
 import { auth } from '@/lib/auth';
 import Link from 'next/link';
+import { usePullToRefresh } from '@/hooks/usePullToRefresh';
 
 function ProfilesContent() {
   const { t } = useTranslation();
@@ -51,6 +52,15 @@ function ProfilesContent() {
   });
   const [page, setPage] = useState(1);
   const [pagination, setPagination] = useState({ total: 0, pages: 0 });
+  const [showFilters, setShowFilters] = useState(false);
+
+  // Pull-to-refresh hook
+  const { isRefreshing, isPulling, pullDistance } = usePullToRefresh({
+    onRefresh: async () => {
+      await loadProfiles();
+    },
+    enabled: true,
+  });
 
   const loadProfiles = async () => {
     setLoading(true);
@@ -156,7 +166,24 @@ function ProfilesContent() {
   }, [isAuthenticated]);
 
   return (
-    <div className="min-h-screen bg-gray-50 relative">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 relative transition-colors">
+      {/* Pull-to-refresh indicator */}
+      {(isPulling || isRefreshing) && (
+        <div className="fixed top-0 left-1/2 transform -translate-x-1/2 z-50 bg-white dark:bg-gray-800 px-6 py-3 rounded-b-lg shadow-lg flex items-center gap-3 animate-slide-up">
+          {isRefreshing ? (
+            <>
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-pink-600"></div>
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Refreshing...</span>
+            </>
+          ) : (
+            <>
+              <span className="text-2xl">⬇️</span>
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Pull to refresh</span>
+            </>
+          )}
+        </div>
+      )}
+
       {/* Blur overlay for non-authenticated users - only show after mount to prevent hydration mismatch */}
       {mounted && !isAuthenticated && (
         <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm z-40 pointer-events-none"></div>
@@ -186,10 +213,28 @@ function ProfilesContent() {
           </p>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-6">
+        <div className="flex flex-col lg:flex-row gap-4 sm:gap-6">
+          {/* Mobile Filter Toggle Button */}
+          <div className="lg:hidden">
+            <button
+              onClick={() => setShowFilters(!showFilters)}
+              className="w-full px-4 py-3 bg-white rounded-lg shadow-md flex items-center justify-between text-gray-700 hover:bg-gray-50 transition-all"
+            >
+              <span className="font-semibold">🔍 Refine Search</span>
+              <svg
+                className={`w-5 h-5 transition-transform ${showFilters ? 'rotate-180' : ''}`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+          </div>
+
           {/* Sidebar Filters - Gahoi Sathi Style */}
-          <aside className="lg:w-80 flex-shrink-0">
-            <div className="bg-white rounded-lg shadow-md p-6 filter-section sticky top-4">
+          <aside className={`lg:w-80 flex-shrink-0 ${showFilters ? 'block' : 'hidden'} lg:block`}>
+            <div className="bg-white rounded-lg shadow-md p-4 sm:p-6 filter-section lg:sticky lg:top-4">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-bold text-gray-900">Refine Search</h2>
                 <button
@@ -413,11 +458,11 @@ function ProfilesContent() {
             ) : (
               <>
                 {/* Sort Options */}
-                <div className="bg-white rounded-lg shadow-md p-4 mb-4 flex justify-between items-center">
-                  <p className="text-sm text-gray-600">
+                <div className="bg-white rounded-lg shadow-md p-3 sm:p-4 mb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                  <p className="text-xs sm:text-sm text-gray-600">
                     Showing {users.length} of {pagination.total} profiles
                   </p>
-                  <select className="px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-pink-500">
+                  <select className="w-full sm:w-auto px-3 sm:px-4 py-2 border border-gray-300 rounded-md text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-pink-500">
                     <option>Newest First</option>
                     <option>Most Relevant</option>
                     <option>Age: Low to High</option>
@@ -426,7 +471,7 @@ function ProfilesContent() {
                 </div>
 
                 {/* Profile Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
                   {users.map((user) => (
                     <div 
                       key={user._id} 
@@ -449,11 +494,11 @@ function ProfilesContent() {
 
                 {/* Pagination */}
                 {pagination.pages > 1 && (
-                  <div className="bg-white rounded-lg shadow-md p-4 flex justify-center items-center gap-4">
+                  <div className="bg-white rounded-lg shadow-md p-3 sm:p-4 flex flex-wrap justify-center items-center gap-2 sm:gap-4">
                     <button
                       onClick={() => setPage(p => Math.max(1, p - 1))}
                       disabled={page === 1}
-                      className="px-4 py-2 border-2 border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:border-pink-500 hover:text-pink-600 transition-all font-medium"
+                      className="px-3 sm:px-4 py-2 border-2 border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:border-pink-500 hover:text-pink-600 transition-all font-medium text-sm"
                     >
                       ← Previous
                     </button>
@@ -464,7 +509,7 @@ function ProfilesContent() {
                           <button
                             key={pageNum}
                             onClick={() => setPage(pageNum)}
-                            className={`px-4 py-2 rounded-md font-medium transition-all ${
+                            className={`px-3 sm:px-4 py-2 rounded-md font-medium transition-all text-sm ${
                               page === pageNum
                                 ? 'bg-pink-600 text-white'
                                 : 'border-2 border-gray-300 hover:border-pink-500 hover:text-pink-600'
@@ -475,13 +520,13 @@ function ProfilesContent() {
                         );
                       })}
                     </div>
-                    <span className="text-gray-600 text-sm">
+                    <span className="text-gray-600 text-xs sm:text-sm">
                       Page {page} of {pagination.pages}
                     </span>
                     <button
                       onClick={() => setPage(p => Math.min(pagination.pages, p + 1))}
                       disabled={page === pagination.pages}
-                      className="px-4 py-2 border-2 border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:border-pink-500 hover:text-pink-600 transition-all font-medium"
+                      className="px-3 sm:px-4 py-2 border-2 border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:border-pink-500 hover:text-pink-600 transition-all font-medium text-sm"
                     >
                       Next →
                     </button>

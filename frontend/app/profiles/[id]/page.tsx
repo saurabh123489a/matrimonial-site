@@ -6,6 +6,8 @@ import { userApi, interestApi, shortlistApi, reportApi, User } from '@/lib/api';
 import { auth } from '@/lib/auth';
 import { useTranslation } from '@/hooks/useTranslation';
 import Link from 'next/link';
+import BlockReportModal from '@/components/BlockReportModal';
+import ProfileBadges from '@/components/ProfileBadges';
 
 export default function ProfileDetailPage() {
   const params = useParams();
@@ -19,7 +21,7 @@ export default function ProfileDetailPage() {
   const [actionLoading, setActionLoading] = useState(false);
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(0);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [showReportModal, setShowReportModal] = useState(false);
+  const [showBlockReportModal, setShowBlockReportModal] = useState(false);
   const [reportReason, setReportReason] = useState<string>('inappropriate-content');
   const [reportDescription, setReportDescription] = useState('');
   const [reportLoading, setReportLoading] = useState(false);
@@ -92,18 +94,30 @@ export default function ProfileDetailPage() {
     }
   };
 
-  const handleReport = async () => {
+  const handleBlock = async (userId: string) => {
+    // TODO: Implement block API call when backend is ready
+    // For now, we'll use a local storage approach
+    const blockedUsers = JSON.parse(localStorage.getItem('blockedUsers') || '[]');
+    if (!blockedUsers.includes(userId)) {
+      blockedUsers.push(userId);
+      localStorage.setItem('blockedUsers', JSON.stringify(blockedUsers));
+      alert('User blocked successfully');
+      router.push('/profiles');
+    }
+  };
+
+  const handleReport = async (userId: string, reason: string) => {
     if (!user) return;
     setReportLoading(true);
     try {
       const response = await reportApi.reportProfile({
-        reportedUserId: id,
+        reportedUserId: userId,
         reason: reportReason as any,
-        description: reportDescription || undefined,
+        description: reason || undefined,
       });
       if (response.status) {
         alert('Profile reported successfully. Admin will review it.');
-        setShowReportModal(false);
+        setShowBlockReportModal(false);
         setReportDescription('');
       }
     } catch (err: any) {
@@ -176,11 +190,9 @@ export default function ProfileDetailPage() {
                       👤
                     </div>
                   )}
-                  {user.isProfileComplete && (
-                    <div className="absolute top-3 right-3 bg-green-500 text-white text-xs px-3 py-1 rounded-full font-semibold shadow-lg">
-                      ✓ Verified
-                    </div>
-                  )}
+                  <div className="absolute top-3 right-3 z-10">
+                    <ProfileBadges user={user} showOnlineStatus={true} showLastSeen={true} />
+                  </div>
                 </div>
 
                 {/* Photo Thumbnails */}
@@ -232,15 +244,13 @@ export default function ProfileDetailPage() {
                          >
                            {isShortlisted ? '✓ ' + t('shortlist.shortlisted') : '⭐ ' + t('shortlist.addToShortlist')}
                          </button>
-                  {/* Report Button - Only show if user has community position */}
-                  {currentUser?.communityPosition && (
-                    <button
-                      onClick={() => setShowReportModal(true)}
-                      className="w-full px-6 py-3 bg-red-50 border-2 border-red-300 text-red-700 font-semibold rounded-md hover:bg-red-100 transition-all shadow-md"
-                    >
-                      🚩 Report Profile
-                    </button>
-                  )}
+                  {/* Block/Report Button */}
+                  <button
+                    onClick={() => setShowBlockReportModal(true)}
+                    className="w-full px-6 py-3 bg-gray-50 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 transition-all shadow-md"
+                  >
+                    ⚙️ Block / Report
+                  </button>
                 </div>
               </div>
             </div>
@@ -329,61 +339,15 @@ export default function ProfileDetailPage() {
                 </div>
               )}
 
-              {/* Report Modal */}
-              {showReportModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-                  <div className="bg-white rounded-lg max-w-md w-full p-6">
-                    <h2 className="text-2xl font-bold text-gray-900 mb-4">Report Profile</h2>
-                    <div className="space-y-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Reason</label>
-                        <select
-                          value={reportReason}
-                          onChange={(e) => setReportReason(e.target.value)}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500 focus:border-pink-500"
-                        >
-                          <option value="inappropriate-content">Inappropriate Content</option>
-                          <option value="fake-profile">Fake Profile</option>
-                          <option value="misleading-information">Misleading Information</option>
-                          <option value="harassment">Harassment</option>
-                          <option value="spam">Spam</option>
-                          <option value="other">Other</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Description (Optional)</label>
-                        <textarea
-                          value={reportDescription}
-                          onChange={(e) => setReportDescription(e.target.value)}
-                          rows={3}
-                          maxLength={500}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500 focus:border-pink-500"
-                          placeholder="Provide additional details about the issue..."
-                        />
-                        <p className="text-xs text-gray-500 mt-1">{reportDescription.length}/500</p>
-                      </div>
-                      <div className="flex gap-3 pt-4">
-                        <button
-                          onClick={() => {
-                            setShowReportModal(false);
-                            setReportDescription('');
-                          }}
-                          className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
-                        >
-                          Cancel
-                        </button>
-                        <button
-                          onClick={handleReport}
-                          disabled={reportLoading}
-                          className="flex-1 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 disabled:opacity-50"
-                        >
-                          {reportLoading ? 'Submitting...' : 'Submit Report'}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
+              {/* Block/Report Modal */}
+              <BlockReportModal
+                userId={id}
+                userName={user.name}
+                isOpen={showBlockReportModal}
+                onClose={() => setShowBlockReportModal(false)}
+                onBlock={handleBlock}
+                onReport={handleReport}
+              />
               
               {/* Lifestyle */}
               {(user.smoking !== undefined || user.drinking !== undefined) && (
