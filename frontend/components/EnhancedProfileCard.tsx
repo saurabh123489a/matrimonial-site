@@ -54,7 +54,7 @@ export default function EnhancedProfileCard({ user, showActions = true }: Enhanc
   };
   
   return (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden profile-card gold-border group">
+    <div className="bg-white rounded-xl shadow-lg overflow-hidden profile-card border border-gray-100 group">
       {/* Photo Section with Overlay */}
       <div className="relative h-64 sm:h-80 bg-gradient-to-br from-pink-50 to-purple-50">
         {primaryPhoto ? (
@@ -168,14 +168,14 @@ export default function EnhancedProfileCard({ user, showActions = true }: Enhanc
                   e.stopPropagation();
                 }
               }}
-              className="btn-primary flex-1 text-center px-2 sm:px-3 py-2 font-bold rounded-lg transition-all text-xs sm:text-sm min-w-[80px] sm:min-w-[100px]"
+              className="flex-1 text-center px-2 sm:px-3 py-2 bg-gradient-to-r from-pink-600 via-red-600 to-pink-600 text-white font-bold rounded-lg hover:shadow-lg transition-all text-xs sm:text-sm min-w-[80px] sm:min-w-[100px]"
             >
               View Profile
             </Link>
             {auth.isAuthenticated() && (
               <Link
                 href={`/messages/${user._id}`}
-                className="btn-secondary flex-1 text-center px-2 sm:px-3 py-2 font-bold rounded-lg transition-all text-xs sm:text-sm min-w-[80px] sm:min-w-[100px]"
+                className="flex-1 text-center px-2 sm:px-3 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-all text-xs sm:text-sm min-w-[80px] sm:min-w-[100px]"
               >
                 💬 Message
               </Link>
