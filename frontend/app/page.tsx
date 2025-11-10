@@ -39,21 +39,22 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black transition-colors">
-      {/* Running Welcome Message - Temporary */}
+    <div className="min-h-screen" style={{ backgroundColor: '#FFF8F0' }}>
+      {/* Running Welcome Message - Traditional Style */}
       {showWelcomeMessage && (
-        <div className="bg-gradient-to-r from-pink-600 via-red-600 to-pink-700 dark:from-pink-700 dark:via-red-700 dark:to-pink-800 text-white py-3 overflow-hidden relative animate-slide-up">
+        <div className="relative overflow-hidden animate-slide-up" style={{ background: 'linear-gradient(to right, #8B0000, #A00000, #8B0000)' }}>
+          <div className="absolute inset-0 paisley-pattern opacity-20"></div>
           <button
             onClick={() => setShowWelcomeMessage(false)}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 text-white hover:text-pink-200 transition-colors"
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 text-white hover:opacity-80 transition-opacity"
             aria-label="Close welcome message"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
-          <div className="marquee-container">
-            <div className="marquee-text text-lg sm:text-xl font-medium">
+          <div className="marquee-container py-3 relative z-10">
+            <div className="marquee-text text-lg sm:text-xl font-medium text-white">
               🎉 Saurabh Gupta welcomes you to ekGahoi - Your trusted matrimonial platform 🎉
               <span className="mx-8">💍</span>
               🎉 Saurabh Gupta welcomes you to ekGahoi - Your trusted matrimonial platform 🎉
@@ -64,26 +65,49 @@ export default function Home() {
         </div>
       )}
 
-      {/* Hero Banner Section - Snitch Layout with Pink/Red Theme */}
-      <div className="relative bg-gradient-to-r from-pink-600 via-red-600 to-pink-700 text-white dark:from-pink-700 dark:via-red-700 dark:to-pink-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-32 lg:py-40">
-          <div className="max-w-3xl">
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-light mb-6 tracking-tight leading-none">
+      {/* Hero Banner Section - Traditional Elegance with Warm Gradient */}
+      <div className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #8B0000 0%, #A00000 30%, #F59E0B 70%, #D97706 100%)' }}>
+        {/* Cultural Pattern Overlay */}
+        <div className="absolute inset-0 mandala-pattern opacity-10"></div>
+        <div className="absolute inset-0 paisley-pattern opacity-5"></div>
+        
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-32 lg:py-40">
+          <div className="max-w-3xl text-white">
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl mb-6 tracking-tight leading-none" style={{ fontFamily: 'Playfair Display, Cormorant, serif', fontWeight: 600 }}>
               {t('home.title')}
             </h1>
-            <p className="text-lg sm:text-xl text-pink-100 mb-8 font-light max-w-xl">
+            <p className="text-lg sm:text-xl mb-8 max-w-xl" style={{ color: 'rgba(255, 255, 255, 0.95)', lineHeight: 1.6 }}>
               {t('home.subtitle')}
             </p>
+            
+            {/* Trust Indicators */}
+            <div className="flex flex-wrap gap-4 mb-8">
+              <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
+                <span className="text-xl">✓</span>
+                <span className="text-sm font-medium">Verified Profiles</span>
+              </div>
+              <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
+                <span className="text-xl">🔒</span>
+                <span className="text-sm font-medium">Secure & Private</span>
+              </div>
+              <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
+                <span className="text-xl">⭐</span>
+                <span className="text-sm font-medium">1000+ Success Stories</span>
+              </div>
+            </div>
+            
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
                 href="/register"
-                className="inline-flex items-center justify-center px-8 py-4 bg-white text-pink-600 font-medium hover:bg-gray-100 transition-colors text-sm uppercase tracking-wider"
+                className="inline-flex items-center justify-center px-8 py-4 bg-white font-semibold transition-all text-sm uppercase tracking-wider rounded-md hover:scale-105 active:scale-95"
+                style={{ color: '#8B0000' }}
               >
                 Get Started
               </Link>
               <Link
                 href="/profiles"
-                className="inline-flex items-center justify-center px-8 py-4 border-2 border-white text-white font-medium hover:bg-white hover:text-pink-600 transition-colors text-sm uppercase tracking-wider"
+                className="inline-flex items-center justify-center px-8 py-4 border-2 border-white font-semibold transition-all text-sm uppercase tracking-wider rounded-md hover:bg-white/10 active:scale-95"
+                style={{ color: 'white' }}
               >
                 Browse Profiles
               </Link>
@@ -92,22 +116,23 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Quick Search Section - Clean & Minimal */}
-      <div className="bg-gray-50 dark:bg-black border-b border-gray-200 dark:border-red-900 transition-colors">
+      {/* Quick Search Section - Traditional Styling */}
+      <div className="section-divider"></div>
+      <div style={{ backgroundColor: '#FFF8F0' }}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
           <div className="text-center mb-8">
-            <h2 className="text-2xl sm:text-3xl font-light text-gray-900 dark:text-red-600 mb-2">Find Your Perfect Match</h2>
-            <p className="text-gray-600 dark:text-red-500 text-sm">Search from thousands of verified profiles</p>
+            <h2 className="text-2xl sm:text-3xl mb-2" style={{ fontFamily: 'Playfair Display, Cormorant, serif', color: '#8B0000' }}>Find Your Perfect Match</h2>
+            <p style={{ color: '#6B7280' }}>Search from thousands of verified profiles</p>
           </div>
           
-          <div className="max-w-4xl mx-auto bg-white dark:bg-black p-6 sm:p-8 shadow-sm transition-colors">
+          <div className="max-w-4xl mx-auto traditional-border p-6 sm:p-8" style={{ backgroundColor: 'white' }}>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div>
-                <label className="block text-xs font-medium text-gray-700 mb-2 uppercase tracking-wider">Looking For</label>
+                <label className="block text-xs font-medium mb-2 uppercase tracking-wider" style={{ color: '#374151' }}>Looking For</label>
                 <select
                   value={quickSearch.gender}
                   onChange={(e) => setQuickSearch({...quickSearch, gender: e.target.value})}
-                  className="w-full px-4 py-3 border border-gray-300 text-gray-900 focus:outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500 transition-colors text-sm bg-white"
+                  className="traditional-select w-full text-sm"
                 >
                   <option value="">Select</option>
                   <option value="male">Male</option>
@@ -115,38 +140,38 @@ export default function Home() {
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-700 mb-2 uppercase tracking-wider">Age Range</label>
+                <label className="block text-xs font-medium mb-2 uppercase tracking-wider" style={{ color: '#374151' }}>Age Range</label>
                 <div className="flex gap-2">
                   <input
                     type="number"
                     placeholder="From"
                     value={quickSearch.ageFrom}
                     onChange={(e) => setQuickSearch({...quickSearch, ageFrom: e.target.value})}
-                    className="w-1/2 px-4 py-3 border border-gray-300 text-gray-900 focus:outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500 transition-colors text-sm"
+                    className="search-input w-1/2 text-sm"
                   />
                   <input
                     type="number"
                     placeholder="To"
                     value={quickSearch.ageTo}
                     onChange={(e) => setQuickSearch({...quickSearch, ageTo: e.target.value})}
-                    className="w-1/2 px-4 py-3 border border-gray-300 text-gray-900 focus:outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500 transition-colors text-sm"
+                    className="search-input w-1/2 text-sm"
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-700 mb-2 uppercase tracking-wider">City</label>
+                <label className="block text-xs font-medium mb-2 uppercase tracking-wider" style={{ color: '#374151' }}>City</label>
                 <input
                   type="text"
                   placeholder="Enter city"
                   value={quickSearch.city}
                   onChange={(e) => setQuickSearch({...quickSearch, city: e.target.value})}
-                  className="w-full px-4 py-3 border border-gray-300 text-gray-900 focus:outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500 transition-colors text-sm"
+                  className="search-input w-full text-sm"
                 />
               </div>
               <div className="flex items-end">
                 <button
                   onClick={handleQuickSearch}
-                  className="w-full px-6 py-3 bg-gradient-to-r from-pink-600 to-red-600 text-white font-medium hover:from-pink-700 hover:to-red-700 transition-colors text-sm uppercase tracking-wider"
+                  className="btn-primary w-full text-sm uppercase tracking-wider"
                 >
                   Search
                 </button>
@@ -156,106 +181,141 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Features Section - Clean Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24 animate-fade-in">
+      {/* Features Section - Traditional Grid */}
+      <div className="section-divider"></div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24 animate-fade-in" style={{ backgroundColor: '#FFF8F0' }}>
         <div className="text-center mb-12 sm:mb-16">
-          <h2 className="text-3xl sm:text-4xl font-light text-gray-900 mb-4">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-red-600">
-              Complete Community Platform
-            </span>
+          <h2 className="text-3xl sm:text-4xl mb-4" style={{ fontFamily: 'Playfair Display, Cormorant, serif', color: '#8B0000' }}>
+            Complete Community Platform
           </h2>
-          <p className="text-gray-600 text-base max-w-2xl mx-auto">{t('home.trustedPlatform')}</p>
+          <p style={{ color: '#6B7280', maxWidth: '600px', margin: '0 auto' }}>{t('home.trustedPlatform')}</p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12">
           {/* Marriage Matching */}
-          <div className="text-center group animate-slide-up" style={{ animationDelay: '0.1s' }}>
+          <div className="text-center group animate-slide-up success-card" style={{ animationDelay: '0.1s' }}>
             <div className="text-5xl mb-6 group-hover:scale-105 transition-transform duration-300">💍</div>
-            <h3 className="text-lg font-medium mb-3 text-gray-900 dark:text-white uppercase tracking-wide">{t('home.features.marriage')}</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{t('home.features.marriageDesc')}</p>
-            <div className="mt-4 w-12 h-0.5 bg-gradient-to-r from-pink-600 to-red-600 mx-auto"></div>
+            <h3 className="text-lg font-semibold mb-3 uppercase tracking-wide" style={{ color: '#8B0000' }}>{t('home.features.marriage')}</h3>
+            <p style={{ color: '#6B7280', fontSize: '0.875rem', lineHeight: 1.6 }}>{t('home.features.marriageDesc')}</p>
+            <div className="mt-4 w-12 h-0.5 mx-auto" style={{ background: 'linear-gradient(to right, #8B0000, #F59E0B)' }}></div>
           </div>
           
           {/* Census */}
-          <div className="text-center group animate-slide-up" style={{ animationDelay: '0.2s' }}>
+          <div className="text-center group animate-slide-up success-card" style={{ animationDelay: '0.2s' }}>
             <div className="text-5xl mb-6 group-hover:scale-105 transition-transform duration-300">📊</div>
-            <h3 className="text-lg font-medium mb-3 text-gray-900 dark:text-white uppercase tracking-wide">{t('home.features.census')}</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{t('home.features.censusDesc')}</p>
-            <div className="mt-4 w-12 h-0.5 bg-gradient-to-r from-pink-600 to-red-600 mx-auto"></div>
+            <h3 className="text-lg font-semibold mb-3 uppercase tracking-wide" style={{ color: '#8B0000' }}>{t('home.features.census')}</h3>
+            <p style={{ color: '#6B7280', fontSize: '0.875rem', lineHeight: 1.6 }}>{t('home.features.censusDesc')}</p>
+            <div className="mt-4 w-12 h-0.5 mx-auto" style={{ background: 'linear-gradient(to right, #8B0000, #F59E0B)' }}></div>
           </div>
           
           {/* Family Data */}
-          <div className="text-center group animate-slide-up" style={{ animationDelay: '0.3s' }}>
+          <div className="text-center group animate-slide-up success-card" style={{ animationDelay: '0.3s' }}>
             <div className="text-5xl mb-6 group-hover:scale-105 transition-transform duration-300">👨‍👩‍👧‍👦</div>
-            <h3 className="text-lg font-medium mb-3 text-gray-900 dark:text-white uppercase tracking-wide">{t('home.features.family')}</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{t('home.features.familyDesc')}</p>
-            <div className="mt-4 w-12 h-0.5 bg-gradient-to-r from-pink-600 to-red-600 mx-auto"></div>
+            <h3 className="text-lg font-semibold mb-3 uppercase tracking-wide" style={{ color: '#8B0000' }}>{t('home.features.family')}</h3>
+            <p style={{ color: '#6B7280', fontSize: '0.875rem', lineHeight: 1.6 }}>{t('home.features.familyDesc')}</p>
+            <div className="mt-4 w-12 h-0.5 mx-auto" style={{ background: 'linear-gradient(to right, #8B0000, #F59E0B)' }}></div>
           </div>
           
           {/* Community News */}
-          <div className="text-center group animate-slide-up" style={{ animationDelay: '0.4s' }}>
+          <div className="text-center group animate-slide-up success-card" style={{ animationDelay: '0.4s' }}>
             <div className="text-5xl mb-6 group-hover:scale-105 transition-transform duration-300">📰</div>
-            <h3 className="text-lg font-medium mb-3 text-gray-900 dark:text-white uppercase tracking-wide">{t('home.features.news')}</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{t('home.features.newsDesc')}</p>
-            <div className="mt-4 w-12 h-0.5 bg-gradient-to-r from-pink-600 to-red-600 mx-auto"></div>
+            <h3 className="text-lg font-semibold mb-3 uppercase tracking-wide" style={{ color: '#8B0000' }}>{t('home.features.news')}</h3>
+            <p style={{ color: '#6B7280', fontSize: '0.875rem', lineHeight: 1.6 }}>{t('home.features.newsDesc')}</p>
+            <div className="mt-4 w-12 h-0.5 mx-auto" style={{ background: 'linear-gradient(to right, #8B0000, #F59E0B)' }}></div>
           </div>
         </div>
       </div>
 
-      {/* Stats Section - Minimal Design */}
-      <div className="bg-gradient-to-br from-pink-50 via-red-50 to-pink-100 dark:from-slate-800 dark:via-slate-800 dark:to-slate-900 border-t border-b border-pink-100 dark:border-red-900 transition-colors">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+      {/* Stats Section - Traditional Design */}
+      <div className="section-divider"></div>
+      <div className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, rgba(139, 0, 0, 0.05) 0%, rgba(245, 158, 11, 0.05) 100%)' }}>
+        <div className="absolute inset-0 paisley-pattern opacity-10"></div>
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
           <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-light text-gray-900 dark:text-red-600 mb-4">
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-red-600">
-                Community Impact
-              </span>
+            <h2 className="text-3xl sm:text-4xl mb-4" style={{ fontFamily: 'Playfair Display, Cormorant, serif', color: '#8B0000' }}>
+              Community Impact
             </h2>
-            <p className="text-gray-600 text-base max-w-2xl mx-auto">
+            <p style={{ color: '#6B7280', maxWidth: '600px', margin: '0 auto' }}>
               Serving the Gahoi community with comprehensive solutions
             </p>
           </div>
           
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 text-center">
             <div>
-              <div className="text-4xl sm:text-5xl font-light bg-gradient-to-r from-pink-600 to-red-600 bg-clip-text text-transparent mb-2">1000+</div>
-              <div className="text-sm text-gray-600 uppercase tracking-wider">Happy Marriages</div>
+              <div className="text-4xl sm:text-5xl font-semibold mb-2" style={{ background: 'linear-gradient(135deg, #8B0000, #F59E0B)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>1000+</div>
+              <div style={{ color: '#6B7280', fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Happy Marriages</div>
             </div>
             <div>
-              <div className="text-4xl sm:text-5xl font-light bg-gradient-to-r from-pink-600 to-red-600 bg-clip-text text-transparent mb-2">5000+</div>
-              <div className="text-sm text-gray-600 uppercase tracking-wider">Families Registered</div>
+              <div className="text-4xl sm:text-5xl font-semibold mb-2" style={{ background: 'linear-gradient(135deg, #8B0000, #F59E0B)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>5000+</div>
+              <div style={{ color: '#6B7280', fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Families Registered</div>
             </div>
             <div>
-              <div className="text-4xl sm:text-5xl font-light bg-gradient-to-r from-pink-600 to-red-600 bg-clip-text text-transparent mb-2">10K+</div>
-              <div className="text-sm text-gray-600 uppercase tracking-wider">Census Records</div>
+              <div className="text-4xl sm:text-5xl font-semibold mb-2" style={{ background: 'linear-gradient(135deg, #8B0000, #F59E0B)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>10K+</div>
+              <div style={{ color: '#6B7280', fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Census Records</div>
             </div>
             <div>
-              <div className="text-4xl sm:text-5xl font-light bg-gradient-to-r from-pink-600 to-red-600 bg-clip-text text-transparent mb-2">Active</div>
-              <div className="text-sm text-gray-600 uppercase tracking-wider">Community News</div>
+              <div className="text-4xl sm:text-5xl font-semibold mb-2" style={{ background: 'linear-gradient(135deg, #8B0000, #F59E0B)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Active</div>
+              <div style={{ color: '#6B7280', fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Community News</div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* CTA Section - Clean & Simple */}
-      <div className="bg-gradient-to-r from-pink-600 via-red-600 to-pink-700 dark:from-pink-700 dark:via-red-700 dark:to-pink-800 text-white transition-colors">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light mb-6">
+      {/* Trust & Security Section */}
+      <div className="section-divider"></div>
+      <div style={{ backgroundColor: '#FFF8F0', padding: '4rem 0' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl mb-4" style={{ fontFamily: 'Playfair Display, Cormorant, serif', color: '#8B0000' }}>
+              Trust & Security
+            </h2>
+            <p style={{ color: '#6B7280', maxWidth: '600px', margin: '0 auto' }}>
+              Your privacy and security are our top priorities
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center p-6 success-card">
+              <div className="trust-icon text-5xl mb-4">🛡️</div>
+              <h3 className="text-xl font-semibold mb-2" style={{ color: '#8B0000' }}>Verified Profiles</h3>
+              <p style={{ color: '#6B7280' }}>All profiles are verified through email, phone, and ID verification</p>
+            </div>
+            <div className="text-center p-6 success-card">
+              <div className="security-icon text-5xl mb-4">🔒</div>
+              <h3 className="text-xl font-semibold mb-2" style={{ color: '#8B0000' }}>Privacy Protected</h3>
+              <p style={{ color: '#6B7280' }}>Your personal information is encrypted and never shared without consent</p>
+            </div>
+            <div className="text-center p-6 success-card">
+              <div className="text-5xl mb-4" style={{ color: '#F59E0B' }}>⭐</div>
+              <h3 className="text-xl font-semibold mb-2" style={{ color: '#8B0000' }}>Success Stories</h3>
+              <p style={{ color: '#6B7280' }}>Join 1000+ happy couples who found their perfect match</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* CTA Section - Traditional Style */}
+      <div className="section-divider"></div>
+      <div className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #8B0000 0%, #A00000 30%, #F59E0B 70%, #D97706 100%)' }}>
+        <div className="absolute inset-0 mandala-pattern opacity-10"></div>
+        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center text-white">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl mb-6" style={{ fontFamily: 'Playfair Display, Cormorant, serif', fontWeight: 600 }}>
             Ready to Find Your Perfect Match?
           </h2>
-          <p className="text-lg sm:text-xl text-pink-100 mb-8 max-w-2xl mx-auto">
+          <p className="text-lg sm:text-xl mb-8 max-w-2xl mx-auto" style={{ color: 'rgba(255, 255, 255, 0.95)' }}>
             Join thousands of happy couples who found their life partners through ekGahoi
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link
               href="/register"
-              className="inline-flex items-center justify-center px-8 py-4 bg-white text-pink-600 font-medium hover:bg-gray-100 transition-colors text-sm uppercase tracking-wider"
+              className="inline-flex items-center justify-center px-8 py-4 bg-white font-semibold transition-all text-sm uppercase tracking-wider rounded-md hover:scale-105 active:scale-95"
+              style={{ color: '#8B0000' }}
             >
               Create Free Account
             </Link>
             <Link
               href="/profiles"
-              className="inline-flex items-center justify-center px-8 py-4 border-2 border-white text-white font-medium hover:bg-white hover:text-pink-600 transition-colors text-sm uppercase tracking-wider"
+              className="inline-flex items-center justify-center px-8 py-4 border-2 border-white font-semibold transition-all text-sm uppercase tracking-wider rounded-md hover:bg-white/10 active:scale-95"
             >
               Browse Profiles
             </Link>

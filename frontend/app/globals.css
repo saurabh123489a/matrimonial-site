@@ -1,77 +1,193 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Cormorant:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --primary: #c2185b;
-  --primary-dark: #a0144a;
-  --primary-light: #f5e6ed;
-  --secondary: #333333;
-  --accent: #ff6b9d;
+  /* Traditional Elegance Color Palette */
+  --primary: #8B0000; /* Deep Maroon */
+  --primary-dark: #6B0000;
+  --primary-light: #A00000;
+  --secondary: #F59E0B; /* Gold/Amber */
+  --secondary-dark: #D97706;
+  --secondary-light: #FBBF24;
+  --background: #FFF8F0; /* Warm Cream */
+  --accent: #1E3A8A; /* Royal Blue */
+  --accent-light: #3B82F6;
+  --text: #374151; /* Charcoal */
+  --text-light: #6B7280;
+  --border-gold: #F59E0B;
+  --shadow-warm: rgba(139, 0, 0, 0.1);
 }
 
 @theme inline {
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-.dark {
-  --background: #000000; /* black */
-  --foreground: #dc2626; /* dark red */
+  --color-foreground: var(--text);
+  --font-heading: 'Playfair Display', 'Cormorant', serif;
+  --font-body: 'Inter', 'Open Sans', sans-serif;
 }
 
 body {
   background: var(--background);
-  color: var(--foreground);
-  font-family: 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+  color: var(--text);
+  font-family: var(--font-body);
+  line-height: 1.6;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Shaadi.com style improvements */
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--primary);
+}
+
+h1 {
+  font-size: 3rem;
+}
+
+h2 {
+  font-size: 2.25rem;
+}
+
+/* Cultural Design Elements */
+.traditional-border {
+  border: 2px solid var(--border-gold);
+  border-radius: 8px;
+  position: relative;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 248, 240, 0.9) 100%);
+}
+
+.traditional-border::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, var(--primary), var(--secondary), var(--primary));
+  border-radius: 8px;
+  z-index: -1;
+  opacity: 0.1;
+}
+
+/* Paisley Pattern Background */
+.paisley-pattern {
+  background-image: 
+    radial-gradient(circle at 20% 50%, rgba(139, 0, 0, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(245, 158, 11, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 40% 20%, rgba(139, 0, 0, 0.02) 0%, transparent 50%);
+  background-size: 200px 200px;
+}
+
+/* Mandala Pattern */
+.mandala-pattern {
+  background-image: 
+    repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(139, 0, 0, 0.02) 10px, rgba(139, 0, 0, 0.02) 20px),
+    repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(245, 158, 11, 0.02) 10px, rgba(245, 158, 11, 0.02) 20px);
+}
+
+/* Profile Cards */
 .profile-card {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  border: 2px solid var(--border-gold);
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 4px 6px var(--shadow-warm);
 }
 
 .profile-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  transform: scale(1.02) translateY(-4px);
+  box-shadow: 0 12px 24px rgba(139, 0, 0, 0.15);
+  border-color: var(--secondary);
 }
 
-.filter-section {
-  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+/* Buttons */
+.btn-primary {
+  background: var(--primary);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: all 0.3s ease-in-out;
+  border: none;
+  cursor: pointer;
 }
 
-/* Modal Animation */
-@keyframes scale-in {
-  from {
-    transform: scale(0.9);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
+.btn-primary:hover {
+  background: var(--primary-dark);
+  transform: scale(0.98);
+  box-shadow: 0 4px 12px rgba(139, 0, 0, 0.3);
 }
 
-.animate-scale-in {
-  animation: scale-in 0.2s ease-out;
+.btn-primary:active {
+  transform: scale(0.95);
 }
 
-/* Safe area support for mobile bottom navigation */
-@supports (padding: max(0px)) {
-  .safe-area-inset-bottom {
-    padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
-  }
+.btn-secondary {
+  background: var(--secondary);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: all 0.3s ease-in-out;
+  border: none;
+  cursor: pointer;
 }
 
-/* Better Animations */
+.btn-secondary:hover {
+  background: var(--secondary-dark);
+  transform: scale(0.98);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+/* Gold Accent Border */
+.gold-border {
+  border: 3px solid var(--border-gold);
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.2);
+}
+
+/* Verification Badge */
+.verification-badge {
+  background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  box-shadow: 0 2px 4px rgba(245, 158, 11, 0.3);
+}
+
+/* Traditional Section Divider */
+.section-divider {
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--border-gold), transparent);
+  margin: 3rem 0;
+  position: relative;
+}
+
+.section-divider::before,
+.section-divider::after {
+  content: '✦';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--secondary);
+  font-size: 1.5rem;
+}
+
+.section-divider::before {
+  left: 20%;
+}
+
+.section-divider::after {
+  right: 20%;
+}
+
+/* Animations */
 @keyframes fade-in {
   from {
     opacity: 0;
@@ -94,72 +210,6 @@ body {
   }
 }
 
-@keyframes slide-in-right {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-}
-
-.animate-fade-in {
-  animation: fade-in 0.3s ease-out;
-}
-
-.animate-slide-up {
-  animation: slide-up 0.4s ease-out;
-}
-
-.animate-slide-in-right {
-  animation: slide-in-right 0.3s ease-out;
-}
-
-.animate-pulse-slow {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-/* Smooth transitions for all interactive elements */
-* {
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
-}
-
-/* Pull to refresh indicator */
-.pull-to-refresh-indicator {
-  position: fixed;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 50;
-  padding: 1rem;
-  background: white;
-  border-radius: 0 0 1rem 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-/* Running/Marquee text animation */
-@keyframes marquee {
-  0% {
-    transform: translateX(100%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
-}
-
 @keyframes scale-in {
   0% {
     opacity: 0;
@@ -171,8 +221,54 @@ body {
   }
 }
 
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.4s ease-out;
+}
+
 .animate-scale-in {
   animation: scale-in 0.2s ease-out;
+}
+
+/* Smooth transitions for all interactive elements */
+* {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+/* Safe area support for mobile bottom navigation */
+@supports (padding: max(0px)) {
+  .safe-area-inset-bottom {
+    padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+  }
+}
+
+/* Pull to refresh indicator */
+.pull-to-refresh-indicator {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  padding: 1rem;
+  background: var(--background);
+  border-radius: 0 0 1rem 1rem;
+  box-shadow: 0 4px 6px var(--shadow-warm);
+  border: 2px solid var(--border-gold);
+}
+
+/* Running/Marquee text animation */
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }
 
 .marquee-container {
@@ -190,4 +286,86 @@ body {
 
 .marquee-text:hover {
   animation-play-state: paused;
+}
+
+/* Dark mode support (optional, keeping minimal) */
+.dark {
+  --background: #1a1a1a;
+  --text: #f3f4f6;
+  --text-light: #d1d5db;
+}
+
+/* Modal Animation */
+@keyframes scale-in {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-scale-in {
+  animation: scale-in 0.2s ease-out;
+}
+
+/* Trust & Security Icons */
+.trust-icon {
+  color: var(--primary);
+  filter: drop-shadow(0 2px 4px var(--shadow-warm));
+}
+
+.security-icon {
+  color: var(--accent);
+  filter: drop-shadow(0 2px 4px rgba(30, 58, 138, 0.2));
+}
+
+/* Success Story Card */
+.success-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 248, 240, 0.95) 100%);
+  border: 2px solid var(--border-gold);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.3s ease-in-out;
+}
+
+.success-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(139, 0, 0, 0.15);
+}
+
+/* Search Input Styling */
+.search-input {
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  transition: all 0.3s ease-in-out;
+}
+
+.search-input:focus {
+  border-color: var(--secondary);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+}
+
+/* Traditional Dropdown */
+.traditional-select {
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  background: white;
+  transition: all 0.3s ease-in-out;
+}
+
+.traditional-select:focus {
+  border-color: var(--secondary);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+}
+
+.traditional-select option:checked {
+  background: var(--secondary);
+  color: white;
 }

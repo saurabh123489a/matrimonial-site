@@ -127,14 +127,15 @@ export default function RootLayout({
         )}
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-gray-900`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        style={{ backgroundColor: '#FFF8F0', color: '#374151' }}
       >
         <ThemeProvider>
           <LanguageProvider>
             <NotificationProvider>
               <GoogleAnalytics />
               <Navbar />
-              <main className="min-h-screen bg-gray-50 dark:bg-black transition-colors">
+              <main className="min-h-screen transition-colors" style={{ backgroundColor: '#FFF8F0' }}>
                 {children}
               </main>
               {/* Temporarily disabled to debug black page issue */}

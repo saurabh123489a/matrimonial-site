@@ -109,13 +109,14 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Top Bar - Minimal with Logo and Language Switcher */}
-      <nav className="bg-white dark:bg-black border-b border-gray-200 dark:border-red-900 sticky top-0 z-30 transition-colors">
+      {/* Top Bar - Traditional Styling */}
+      <nav className="sticky top-0 z-30 transition-colors shadow-md" style={{ backgroundColor: 'white', borderBottom: '2px solid #F59E0B' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center min-h-20 py-3">
             <Link 
               href="/" 
-              className="text-xl sm:text-2xl font-light text-gray-900 dark:text-white tracking-tight"
+              className="text-xl sm:text-2xl font-semibold tracking-tight transition-transform hover:scale-105"
+              style={{ fontFamily: 'Playfair Display, Cormorant, serif', color: '#8B0000' }}
             >
               💍 {t('common.appName')}
             </Link>
@@ -225,7 +226,7 @@ export default function Navbar() {
                   </Link>
                   <Link
                     href="/register"
-                    className="px-4 py-2 text-base font-medium text-white bg-black dark:bg-white dark:text-black hover:bg-gray-900 dark:hover:bg-gray-100 transition-colors rounded"
+                    className="btn-primary px-4 py-2 text-base font-medium transition-all rounded-md"
                   >
                     {t('common.signUp')}
                   </Link>
@@ -241,7 +242,7 @@ export default function Navbar() {
       {/* Bottom Navigation Bar - Only show when authenticated - Mobile & Web */}
       {mounted && isAuthenticated ? (
         <>
-          <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-black border-t border-gray-200 dark:border-red-900 z-40 shadow-lg safe-area-inset-bottom transition-colors">
+          <nav className="fixed bottom-0 left-0 right-0 z-40 shadow-lg safe-area-inset-bottom transition-colors" style={{ backgroundColor: 'white', borderTop: '2px solid #F59E0B' }}>
             <div className="max-w-7xl mx-auto">
               <div className="flex justify-around items-center h-16 sm:h-14">
                 {mainNavLinks.map((link) => {
