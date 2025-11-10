@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect, Suspense, useRef } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { userApi, User } from '@/lib/api';
 import EnhancedProfileCard from '@/components/EnhancedProfileCard';
@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { usePullToRefresh } from '@/hooks/usePullToRefresh';
 import SkeletonLoader from '@/components/SkeletonLoader';
 import EmptyState from '@/components/EmptyState';
+import { trackSearch } from '@/lib/analytics';
 
 function ProfilesContent() {
   const { t } = useTranslation();
@@ -81,7 +82,17 @@ function ProfilesContent() {
     enabled: true,
   });
 
+  // Use ref to track if component is mounted and prevent race conditions
+  const isMountedRef = useRef(true);
+  const loadingRef = useRef(false);
+
   const loadProfiles = async () => {
+    // Prevent multiple simultaneous calls
+    if (loadingRef.current) {
+      return;
+    }
+    
+    loadingRef.current = true;
     setLoading(true);
     setError('');
     
@@ -120,7 +131,7 @@ function ProfilesContent() {
       }
 
       // Otherwise, use filters
-      const filterParams: any = { page: 1, limit: 100 }; // Fetch more, but display only 10 initially
+      const filterParams: any = { page: 1, limit: 50 }; // Max limit allowed by API, but display only 10 initially
       Object.entries(filters).forEach(([key, value]) => {
         if (value) {
           if (key === 'minAge' || key === 'maxAge' || key === 'minHeight' || key === 'maxHeight') {
@@ -151,11 +162,18 @@ function ProfilesContent() {
         }
         // Reset display limit when new search is performed
         setDisplayLimit(10);
+        // Track search
+        trackSearch(filterParams);
       }
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to load profiles');
+      if (isMountedRef.current) {
+        setError(err.response?.data?.message || 'Failed to load profiles');
+      }
     } finally {
-      setLoading(false);
+      loadingRef.current = false;
+      if (isMountedRef.current) {
+        setLoading(false);
+      }
     }
   };
 
@@ -165,6 +183,11 @@ function ProfilesContent() {
     if (!isAuthenticated || currentUser !== null) {
       loadProfiles();
     }
+    
+    // Cleanup on unmount
+    return () => {
+      isMountedRef.current = false;
+    };
   }, [page, gahoiId, currentUser, isAuthenticated]);
 
   const handleFilterChange = (key: string, value: string) => {
@@ -237,19 +260,19 @@ function ProfilesContent() {
   }, [isAuthenticated]);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 relative transition-colors">
+    <div className="min-h-screen bg-gray-50 dark:bg-black relative transition-colors">
       {/* Pull-to-refresh indicator */}
       {(isPulling || isRefreshing) && (
-        <div className="fixed top-0 left-1/2 transform -translate-x-1/2 z-50 bg-white dark:bg-slate-800 px-6 py-3 rounded-b-lg shadow-lg flex items-center gap-3 animate-slide-up">
+        <div className="fixed top-0 left-1/2 transform -translate-x-1/2 z-50 bg-white dark:bg-black px-6 py-3 rounded-b-lg shadow-lg flex items-center gap-3 animate-slide-up">
           {isRefreshing ? (
             <>
               <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-pink-600"></div>
-              <span className="text-sm font-medium text-gray-700 dark:text-slate-200">Refreshing...</span>
+              <span className="text-sm font-medium text-gray-700 dark:text-red-600">Refreshing...</span>
             </>
           ) : (
             <>
               <span className="text-2xl">⬇️</span>
-              <span className="text-sm font-medium text-gray-700 dark:text-slate-200">Pull to refresh</span>
+              <span className="text-sm font-medium text-gray-700 dark:text-red-600">Pull to refresh</span>
             </>
           )}
         </div>
@@ -305,9 +328,9 @@ function ProfilesContent() {
 
           {/* Sidebar Filters - Gahoi Sathi Style */}
           <aside className={`lg:w-80 flex-shrink-0 ${showFilters ? 'block' : 'hidden'} lg:block`}>
-            <div className="bg-white dark:bg-slate-800 rounded-lg shadow-md p-4 sm:p-6 filter-section lg:sticky lg:top-4 transition-colors">
+            <div className="bg-white dark:bg-black rounded-lg shadow-md p-4 sm:p-6 filter-section lg:sticky lg:top-4 transition-colors">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-lg font-bold text-gray-900 dark:text-slate-100">Refine Search</h2>
+                <h2 className="text-lg font-bold text-gray-900 dark:text-red-600">Refine Search</h2>
                 <button
                   onClick={clearFilters}
                   className="text-sm text-pink-600 hover:text-pink-700 font-medium"
@@ -319,7 +342,7 @@ function ProfilesContent() {
               <div className="space-y-5">
                 {/* Gahoi ID Search */}
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2">
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-red-500 mb-2">
                     Search by Gahoi ID
                   </label>
                   <div className="flex gap-2">
@@ -335,7 +358,7 @@ function ProfilesContent() {
                         }
                       }}
                       placeholder="10000"
-                      className="flex-1 px-4 py-2 border-2 border-gray-200 dark:border-slate-600 rounded-md focus:outline-none focus:border-pink-500 text-gray-800 dark:text-slate-100 dark:bg-slate-700"
+                      className="flex-1 px-4 py-2 border-2 border-gray-200 dark:border-red-900 rounded-md focus:outline-none focus:border-pink-500 text-gray-800 dark:text-red-600 dark:bg-gray-900"
                       maxLength={5}
                     />
                     {gahoiId && (
@@ -344,20 +367,20 @@ function ProfilesContent() {
                           setGahoiId('');
                           setPage(1);
                         }}
-                        className="px-3 py-2 text-gray-500 hover:text-gray-700 dark:text-slate-400 dark:hover:text-slate-200"
+                        className="px-3 py-2 text-gray-500 hover:text-gray-700 dark:text-red-500 dark:hover:text-slate-200"
                         aria-label="Clear Gahoi ID"
                       >
                         ✕
                       </button>
                     )}
                   </div>
-                  <p className="text-xs text-gray-500 dark:text-slate-400 mt-1">
+                  <p className="text-xs text-gray-500 dark:text-red-500 mt-1">
                     5-digit ID (10000-10099). Even = Male, Odd = Female
                   </p>
                 </div>
 
-                <div className="border-t border-gray-200 dark:border-slate-700 pt-4">
-                  <p className="text-sm font-semibold text-gray-700 dark:text-slate-300 mb-3">OR use filters below</p>
+                <div className="border-t border-gray-200 dark:border-red-900 pt-4">
+                  <p className="text-sm font-semibold text-gray-700 dark:text-red-500 mb-3">OR use filters below</p>
                 </div>
 
                 {/* Gender - "I'm looking for a" */}
@@ -569,8 +592,8 @@ function ProfilesContent() {
             ) : (
               <>
                 {/* Sort Options */}
-                <div className="bg-white dark:bg-slate-800 rounded-lg shadow-md p-3 sm:p-4 mb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 transition-colors">
-                  <p className="text-xs sm:text-sm text-gray-600 dark:text-slate-400">
+                <div className="bg-white dark:bg-black rounded-lg shadow-md p-3 sm:p-4 mb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 transition-colors">
+                  <p className="text-xs sm:text-sm text-gray-600 dark:text-red-500">
                     Showing {Math.min(displayLimit, users.length)} of {users.length} profiles
                     {pagination.total > users.length && ` (${pagination.total} total)`}
                   </p>

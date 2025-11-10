@@ -183,7 +183,7 @@ export default function PhotoUpload({
             relative border-2 border-dashed rounded-lg p-8 text-center transition-all
             ${dragActive
               ? 'border-pink-500 bg-pink-50 dark:bg-pink-900/20'
-              : 'border-gray-300 dark:border-slate-600 bg-gray-50 dark:bg-slate-800'
+              : 'border-gray-300 dark:border-red-900 bg-gray-50 dark:bg-black'
             }
             ${disabled || uploading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:border-pink-400'}
           `}
@@ -217,13 +217,13 @@ export default function PhotoUpload({
             </div>
             
             <div>
-              <p className="text-lg font-semibold text-gray-900 dark:text-slate-100">
+              <p className="text-lg font-semibold text-gray-900 dark:text-red-600">
                 {dragActive ? 'Drop photos here' : 'Drag & drop photos here'}
               </p>
-              <p className="text-sm text-gray-500 dark:text-slate-400 mt-2">
+              <p className="text-sm text-gray-500 dark:text-red-500 mt-2">
                 or <span className="text-pink-600 dark:text-pink-400 font-medium">click to browse</span>
               </p>
-              <p className="text-xs text-gray-400 dark:text-slate-500 mt-2">
+              <p className="text-xs text-gray-400 dark:text-red-500 mt-2">
                 JPEG, PNG, WebP up to 5MB • {remainingSlots} slot{remainingSlots !== 1 ? 's' : ''} remaining
               </p>
             </div>
@@ -238,7 +238,7 @@ export default function PhotoUpload({
             {previews.map((preview, index) => (
               <div
                 key={index}
-                className="relative group aspect-square rounded-lg overflow-hidden border-2 border-gray-200 dark:border-slate-700 bg-gray-100 dark:bg-slate-800"
+                className="relative group aspect-square rounded-lg overflow-hidden border-2 border-gray-200 dark:border-red-900 bg-gray-100 dark:bg-black"
               >
                 <img
                   src={preview.preview}
@@ -274,7 +274,7 @@ export default function PhotoUpload({
           {/* Upload Button and Progress */}
           <div className="space-y-2">
             {uploadProgress > 0 && uploadProgress < 100 && (
-              <div className="w-full bg-gray-200 dark:bg-slate-700 rounded-full h-2.5">
+              <div className="w-full bg-gray-200 dark:bg-gray-900 rounded-full h-2.5">
                 <div
                   className="bg-gradient-to-r from-pink-600 to-red-600 h-2.5 rounded-full transition-all duration-300"
                   style={{ width: `${uploadProgress}%` }}
@@ -330,7 +330,7 @@ export default function PhotoUpload({
                   }
                 }}
                 disabled={uploading}
-                className="px-6 py-3 border-2 border-gray-300 dark:border-slate-600 text-gray-700 dark:text-slate-300 font-semibold rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-6 py-3 border-2 border-gray-300 dark:border-red-900 text-gray-700 dark:text-red-500 font-semibold rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Cancel
               </button>
@@ -341,7 +341,7 @@ export default function PhotoUpload({
 
       {/* Upload More Button (when previews are empty but can upload more) */}
       {previews.length === 0 && !canUploadMore && (
-        <div className="text-center py-4 text-gray-500 dark:text-slate-400">
+        <div className="text-center py-4 text-gray-500 dark:text-red-500">
           <p>Maximum {maxPhotos} photos reached</p>
           <p className="text-sm mt-1">Delete a photo to upload a new one</p>
         </div>

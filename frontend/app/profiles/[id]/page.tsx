@@ -9,6 +9,8 @@ import Link from 'next/link';
 import BlockReportModal from '@/components/BlockReportModal';
 import ProfileBadges from '@/components/ProfileBadges';
 import ProfileShareModal from '@/components/ProfileShareModal';
+import StructuredData from '@/components/StructuredData';
+import { trackProfileView, trackInterestSent } from '@/lib/analytics';
 
 export default function ProfileDetailPage() {
   const params = useParams();
@@ -34,16 +36,25 @@ export default function ProfileDetailPage() {
       return;
     }
 
+    let isMounted = true;
+    const abortController = new AbortController();
+
     const loadProfile = async () => {
       try {
+        setLoading(true);
         const [profileResponse, shortlistResponse, myProfileResponse] = await Promise.all([
           userApi.getById(id),
           shortlistApi.check(id).catch(() => ({ status: true, data: { isShortlisted: false } })),
           userApi.getMe().catch(() => ({ status: false, data: null }))
         ]);
         
+        // Only update state if component is still mounted
+        if (!isMounted) return;
+        
         if (profileResponse.status) {
           setUser(profileResponse.data);
+          // Track profile view
+          trackProfileView(id, profileResponse.data.name);
         }
         
         if (shortlistResponse.status) {
@@ -54,15 +65,24 @@ export default function ProfileDetailPage() {
           setCurrentUser(myProfileResponse.data);
         }
       } catch (err: any) {
+        if (!isMounted) return;
         setError(err.response?.data?.message || 'Failed to load profile');
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
     if (id) {
       loadProfile();
     }
+
+    // Cleanup function
+    return () => {
+      isMounted = false;
+      abortController.abort();
+    };
   }, [id, router]);
 
   const handleSendInterest = async () => {
@@ -70,6 +90,7 @@ export default function ProfileDetailPage() {
     setActionLoading(true);
     try {
       await interestApi.send(id);
+      trackInterestSent(id);
       alert(t('interests.interestSent'));
     } catch (err: any) {
       alert(err.response?.data?.message || 'Failed to send interest');
@@ -163,8 +184,24 @@ export default function ProfileDetailPage() {
   });
   const selectedPhoto = photos[selectedPhotoIndex] || photos[0];
 
+  // Structured data for profile page
+  const siteUrl = typeof window !== 'undefined' ? window.location.origin : 'https://ekgahoi.vercel.app';
+  const profileStructuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: user.name,
+    ...(user.age && { age: user.age }),
+    ...(user.city && { address: { '@type': 'PostalAddress', addressLocality: user.city, addressRegion: user.state } }),
+    ...(user.bio && { description: user.bio }),
+    url: `${siteUrl}/profiles/${id}`,
+    ...(user.photos?.[0] && {
+      image: user.photos.find((p: any) => p.isPrimary)?.url || user.photos[0].url,
+    }),
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 py-8">
+      <StructuredData data={profileStructuredData} />
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Back Button */}
         <Link href="/profiles" className="inline-flex items-center text-pink-600 hover:text-pink-700 mb-6 font-medium">
@@ -366,6 +403,7 @@ export default function ProfileDetailPage() {
                   profileId={id}
                   profileName={user.name}
                   profileUrl={`/profiles/${id}`}
+                  user={user}
                 />
               )}
               

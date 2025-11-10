@@ -23,8 +23,8 @@
 }
 
 .dark {
-  --background: #0f172a; /* slate-900 */
-  --foreground: #f1f5f9; /* slate-100 */
+  --background: #000000; /* black */
+  --foreground: #dc2626; /* dark red */
 }
 
 body {

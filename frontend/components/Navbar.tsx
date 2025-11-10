@@ -110,7 +110,7 @@ export default function Navbar() {
   return (
     <>
       {/* Top Bar - Minimal with Logo and Language Switcher */}
-      <nav className="bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700 sticky top-0 z-30 transition-colors">
+      <nav className="bg-white dark:bg-black border-b border-gray-200 dark:border-red-900 sticky top-0 z-30 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center min-h-20 py-3">
             <Link 
@@ -153,7 +153,7 @@ export default function Navbar() {
                           className="fixed inset-0 z-40"
                           onClick={() => setShowUserMenu(false)}
                         />
-                        <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 rounded-lg shadow-xl border border-gray-200 dark:border-slate-700 z-50 overflow-hidden animate-scale-in">
+                        <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-black rounded-lg shadow-xl border border-gray-200 dark:border-red-900 z-50 overflow-hidden animate-scale-in">
                           {/* Profile Link */}
                           <Link
                             href="/profile"
@@ -174,7 +174,7 @@ export default function Navbar() {
                               toggleTheme();
                               setShowUserMenu(false);
                             }}
-                            className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors border-t border-gray-200 dark:border-slate-700"
+                            className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 dark:text-red-600 hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors border-t border-gray-200 dark:border-red-900"
                           >
                             {resolvedTheme === 'dark' ? (
                               <>
@@ -200,7 +200,7 @@ export default function Navbar() {
                               setShowUserMenu(false);
                               router.push('/login');
                             }}
-                            className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors border-t border-gray-200 dark:border-slate-700"
+                            className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-red-600 dark:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors border-t border-gray-200 dark:border-red-900"
                           >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -241,7 +241,7 @@ export default function Navbar() {
       {/* Bottom Navigation Bar - Only show when authenticated - Mobile & Web */}
       {mounted && isAuthenticated ? (
         <>
-          <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-800 border-t border-gray-200 dark:border-slate-700 z-40 shadow-lg safe-area-inset-bottom transition-colors">
+          <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-black border-t border-gray-200 dark:border-red-900 z-40 shadow-lg safe-area-inset-bottom transition-colors">
             <div className="max-w-7xl mx-auto">
               <div className="flex justify-around items-center h-16 sm:h-14">
                 {mainNavLinks.map((link) => {

@@ -40,10 +40,10 @@ export default function EmptyState({
   ) : null;
 
   return (
-    <div className={`bg-white dark:bg-slate-800 rounded-lg shadow-md p-12 text-center ${className}`}>
+    <div className={`bg-white dark:bg-black rounded-lg shadow-md p-12 text-center ${className}`}>
       <div className="text-6xl mb-4">{icon}</div>
-      <h3 className="text-xl font-semibold text-gray-900 dark:text-slate-100 mb-2">{title}</h3>
-      <p className="text-gray-600 dark:text-slate-400 mb-6 max-w-md mx-auto">{description}</p>
+      <h3 className="text-xl font-semibold text-gray-900 dark:text-red-600 mb-2">{title}</h3>
+      <p className="text-gray-600 dark:text-red-500 mb-6 max-w-md mx-auto">{description}</p>
       {ActionButton}
     </div>
   );

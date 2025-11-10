@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import StructuredData from '@/components/StructuredData';
 
 export default function Home() {
   const { t } = useTranslation();
@@ -38,7 +39,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors">
+    <div className="min-h-screen bg-white dark:bg-black transition-colors">
       {/* Running Welcome Message - Temporary */}
       {showWelcomeMessage && (
         <div className="bg-gradient-to-r from-pink-600 via-red-600 to-pink-700 dark:from-pink-700 dark:via-red-700 dark:to-pink-800 text-white py-3 overflow-hidden relative animate-slide-up">
@@ -92,14 +93,14 @@ export default function Home() {
       </div>
 
       {/* Quick Search Section - Clean & Minimal */}
-      <div className="bg-gray-50 dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700 transition-colors">
+      <div className="bg-gray-50 dark:bg-black border-b border-gray-200 dark:border-red-900 transition-colors">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
           <div className="text-center mb-8">
-            <h2 className="text-2xl sm:text-3xl font-light text-gray-900 dark:text-slate-100 mb-2">Find Your Perfect Match</h2>
-            <p className="text-gray-600 dark:text-slate-300 text-sm">Search from thousands of verified profiles</p>
+            <h2 className="text-2xl sm:text-3xl font-light text-gray-900 dark:text-red-600 mb-2">Find Your Perfect Match</h2>
+            <p className="text-gray-600 dark:text-red-500 text-sm">Search from thousands of verified profiles</p>
           </div>
           
-          <div className="max-w-4xl mx-auto bg-white dark:bg-slate-800 p-6 sm:p-8 shadow-sm transition-colors">
+          <div className="max-w-4xl mx-auto bg-white dark:bg-black p-6 sm:p-8 shadow-sm transition-colors">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div>
                 <label className="block text-xs font-medium text-gray-700 mb-2 uppercase tracking-wider">Looking For</label>
@@ -202,10 +203,10 @@ export default function Home() {
       </div>
 
       {/* Stats Section - Minimal Design */}
-      <div className="bg-gradient-to-br from-pink-50 via-red-50 to-pink-100 dark:from-slate-800 dark:via-slate-800 dark:to-slate-900 border-t border-b border-pink-100 dark:border-slate-700 transition-colors">
+      <div className="bg-gradient-to-br from-pink-50 via-red-50 to-pink-100 dark:from-slate-800 dark:via-slate-800 dark:to-slate-900 border-t border-b border-pink-100 dark:border-red-900 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
           <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-light text-gray-900 dark:text-slate-100 mb-4">
+            <h2 className="text-3xl sm:text-4xl font-light text-gray-900 dark:text-red-600 mb-4">
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-red-600">
                 Community Impact
               </span>

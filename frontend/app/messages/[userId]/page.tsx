@@ -38,22 +38,35 @@ export default function ChatPage() {
       return;
     }
 
-    loadUserProfile();
-    loadConversation();
-    
-    // Get current user ID
-    userApi.getMe().then(res => {
-      if (res.status && res.data) {
-        setCurrentUserId(res.data._id);
-      }
-    });
+    let isMounted = true;
+
+    const loadData = async () => {
+      await Promise.all([
+        loadUserProfile(),
+        loadConversation()
+      ]);
+      
+      // Get current user ID
+      userApi.getMe().then(res => {
+        if (isMounted && res.status && res.data) {
+          setCurrentUserId(res.data._id);
+        }
+      });
+    };
+
+    loadData();
 
     // Auto-refresh messages every 5 seconds
     const interval = setInterval(() => {
-      loadConversation(false); // Silent refresh
+      if (isMounted) {
+        loadConversation(false); // Silent refresh
+      }
     }, 5000);
 
-    return () => clearInterval(interval);
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
   }, [userId, router]);
 
   useEffect(() => {
@@ -78,7 +91,7 @@ export default function ChatPage() {
   const loadConversation = async (showLoading = true) => {
     try {
       if (showLoading) setLoading(true);
-      const response = await messageApi.getConversation(userId, { limit: 100 });
+      const response = await messageApi.getConversation(userId, { limit: 50 });
       if (response.status) {
         // Reverse to show oldest first (easier for chat UI)
         const reversedMessages = [...(response.data || [])].reverse();

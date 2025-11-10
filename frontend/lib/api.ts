@@ -119,9 +119,12 @@ export interface User {
   employer?: string;
   annualIncome?: string;
   diet?: string;
+  dietaryHabit?: string;
+  partnerPreference?: string;
   smoking?: boolean;
   drinking?: boolean;
   hobbies?: string[];
+  mobileCountryCode?: number;
   family?: {
     fathersName?: string;
     fathersOccupation?: string;
@@ -142,6 +145,7 @@ export interface User {
   };
   hasHouse?: 'yes-personal' | 'yes-rented' | 'no' | 'not-specified';
   hasCar?: boolean;
+  gahoiId?: number;
   isActive?: boolean;
   isAdmin?: boolean;
   isProfileComplete: boolean;

@@ -58,7 +58,8 @@ function hasSuspiciousPatterns(req) {
     }
   }
   
-  // Check for excessive pagination
+  // Check for excessive pagination (only for unauthenticated users)
+  // Authenticated users are already skipped above, so this only applies to unauthenticated requests
   if (query.limit && parseInt(query.limit) > 50) {
     return true;
   }
@@ -139,7 +140,11 @@ export const antiScrapingMiddleware = (req, res, next) => {
   }
   
   // Skip anti-scraping checks for authenticated users
-  if (req.user) {
+  // Check both req.user (set by auth middleware) and Authorization header
+  const authHeader = req.headers.authorization;
+  const hasAuthToken = authHeader && (authHeader.startsWith('Bearer ') || authHeader.length > 0);
+  
+  if (req.user || hasAuthToken) {
     return next();
   }
   

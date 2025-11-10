@@ -164,9 +164,11 @@ const userSchema = new mongoose.Schema(
     
     // Lifestyle
     diet: { type: String, enum: ['vegetarian', 'non-vegetarian', 'vegan', 'jain'] },
+    dietaryHabit: { type: String }, // Alternative field name for compatibility (e.g., "Veg / शाकाहारी")
     smoking: { type: Boolean, default: false },
     drinking: { type: Boolean, default: false },
     hobbies: [{ type: String }], // Array of hobbies/interests
+    partnerPreference: { type: String, maxlength: 500 }, // Text field for partner preference description
     
     // Property & Assets
     hasHouse: {

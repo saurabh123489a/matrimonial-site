@@ -37,7 +37,7 @@ export default function InterestSentPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white dark:bg-slate-900 pb-20">
+      <div className="min-h-screen bg-white dark:bg-black pb-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="space-y-4">
             <SkeletonLoader type="text" count={5} className="h-24" />
@@ -48,7 +48,7 @@ export default function InterestSentPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-900 pb-20 transition-colors">
+    <div className="min-h-screen bg-white dark:bg-black pb-20 transition-colors">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex items-center gap-3 mb-8">
           <div className="p-2 bg-gradient-to-r from-pink-100 to-red-100 dark:from-pink-900 dark:to-red-900 rounded-lg">
@@ -56,7 +56,7 @@ export default function InterestSentPage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
             </svg>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-light text-gray-900 dark:text-slate-100">Interest Sent</h1>
+          <h1 className="text-2xl sm:text-3xl font-light text-gray-900 dark:text-red-600">Interest Sent</h1>
         </div>
 
         {interests.length === 0 ? (
@@ -74,7 +74,7 @@ export default function InterestSentPage() {
             {interests.map((interest: any) => (
               <div
                 key={interest._id || interest.id}
-                className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 p-6 hover:shadow-md transition-all rounded-lg"
+                className="bg-white dark:bg-black border border-gray-200 dark:border-red-900 p-6 hover:shadow-md transition-all rounded-lg"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">

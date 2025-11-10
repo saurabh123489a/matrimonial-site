@@ -10,6 +10,7 @@ import LocationSelect from '@/components/LocationSelect';
 import ProfileCompletenessMeter from '@/components/ProfileCompletenessMeter';
 import ProfileBadges from '@/components/ProfileBadges';
 import PhotoUpload from '@/components/PhotoUpload';
+import ProfileShareModal from '@/components/ProfileShareModal';
 
 export default function MyProfilePage() {
   const router = useRouter();
@@ -29,6 +30,7 @@ export default function MyProfilePage() {
   const [occupationOptions, setOccupationOptions] = useState<Array<{ value: string; label: string }>>([]);
   const [loadingEducation, setLoadingEducation] = useState(false);
   const [loadingOccupation, setLoadingOccupation] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
 
   useEffect(() => {
     // Only run on client side
@@ -288,7 +290,7 @@ export default function MyProfilePage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg overflow-hidden transition-colors">
+      <div className="bg-white dark:bg-black rounded-lg shadow-lg overflow-hidden transition-colors">
         <div className="bg-gradient-to-r from-pink-500 to-red-500 p-6 text-white">
           <div className="flex justify-between items-center">
             <h1 className="text-3xl font-bold">{t('profile.myProfile')}</h1>
@@ -304,12 +306,21 @@ export default function MyProfilePage() {
                 </button>
               )}
               {!editing && (
-                <button
-                  onClick={() => setEditing(true)}
-                  className="px-4 py-2 bg-white text-pink-600 rounded-md hover:bg-gray-100"
-                >
-                  {t('profile.editProfile')}
-                </button>
+                <>
+                  <button
+                    onClick={() => setShowShareModal(true)}
+                    className="px-4 py-2 bg-white text-pink-600 rounded-md hover:bg-gray-100 font-medium transition-colors"
+                    title="Share Profile"
+                  >
+                    📤 Share
+                  </button>
+                  <button
+                    onClick={() => setEditing(true)}
+                    className="px-4 py-2 bg-white text-pink-600 rounded-md hover:bg-gray-100"
+                  >
+                    {t('profile.editProfile')}
+                  </button>
+                </>
               )}
             </div>
           </div>
@@ -349,8 +360,8 @@ export default function MyProfilePage() {
           </div>
 
           {/* Photos Section */}
-          <div className="mb-6 bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-slate-100 mb-4">
+          <div className="mb-6 bg-white dark:bg-black p-6 rounded-lg shadow-md">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-red-600 mb-4">
               {t('profile.photos')} ({t('profile.maxPhotos')})
             </h3>
             
@@ -362,7 +373,7 @@ export default function MyProfilePage() {
                     <img
                       src={photo.url}
                       alt={`Photo ${index + 1}`}
-                      className="w-full aspect-square object-cover rounded-lg border-2 border-gray-200 dark:border-slate-700"
+                      className="w-full aspect-square object-cover rounded-lg border-2 border-gray-200 dark:border-red-900"
                       loading="lazy"
                       decoding="async"
                     />
@@ -966,6 +977,18 @@ export default function MyProfilePage() {
           )}
         </div>
       </div>
+      
+      {/* Profile Share Modal */}
+      {user && (
+        <ProfileShareModal
+          isOpen={showShareModal}
+          onClose={() => setShowShareModal(false)}
+          profileId={user._id}
+          profileName={user.name}
+          profileUrl={`/profiles/${user._id}`}
+          user={user}
+        />
+      )}
     </div>
   );
 }
