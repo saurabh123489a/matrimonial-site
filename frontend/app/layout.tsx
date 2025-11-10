@@ -42,7 +42,7 @@ export default function RootLayout({
           <LanguageProvider>
             <NotificationProvider>
               <Navbar />
-              <main className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
+              <main className="min-h-screen bg-gray-50 dark:bg-slate-900 transition-colors">
                 {children}
               </main>
               {/* Temporarily disabled to debug black page issue */}

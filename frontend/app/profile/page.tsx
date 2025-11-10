@@ -259,7 +259,7 @@ export default function MyProfilePage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+      <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg overflow-hidden transition-colors">
         <div className="bg-gradient-to-r from-pink-500 to-red-500 p-6 text-white">
           <div className="flex justify-between items-center">
             <h1 className="text-3xl font-bold">{t('profile.myProfile')}</h1>

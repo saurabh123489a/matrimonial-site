@@ -166,19 +166,19 @@ function ProfilesContent() {
   }, [isAuthenticated]);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 relative transition-colors">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 relative transition-colors">
       {/* Pull-to-refresh indicator */}
       {(isPulling || isRefreshing) && (
-        <div className="fixed top-0 left-1/2 transform -translate-x-1/2 z-50 bg-white dark:bg-gray-800 px-6 py-3 rounded-b-lg shadow-lg flex items-center gap-3 animate-slide-up">
+        <div className="fixed top-0 left-1/2 transform -translate-x-1/2 z-50 bg-white dark:bg-slate-800 px-6 py-3 rounded-b-lg shadow-lg flex items-center gap-3 animate-slide-up">
           {isRefreshing ? (
             <>
               <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-pink-600"></div>
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Refreshing...</span>
+              <span className="text-sm font-medium text-gray-700 dark:text-slate-200">Refreshing...</span>
             </>
           ) : (
             <>
               <span className="text-2xl">⬇️</span>
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Pull to refresh</span>
+              <span className="text-sm font-medium text-gray-700 dark:text-slate-200">Pull to refresh</span>
             </>
           )}
         </div>

@@ -91,7 +91,7 @@ export default function Navbar() {
   return (
     <>
       {/* Top Bar - Minimal with Logo and Language Switcher */}
-      <nav className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-30 transition-colors">
+      <nav className="bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700 sticky top-0 z-30 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center min-h-20 py-3">
             <Link 
@@ -150,9 +150,9 @@ export default function Navbar() {
       </nav>
 
       {/* Bottom Navigation Bar - Only show when authenticated - Mobile & Web */}
-      {mounted && isAuthenticated && (
+      {mounted && isAuthenticated ? (
         <>
-          <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 z-40 shadow-lg safe-area-inset-bottom transition-colors">
+          <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-800 border-t border-gray-200 dark:border-slate-700 z-40 shadow-lg safe-area-inset-bottom transition-colors">
             <div className="max-w-7xl mx-auto">
               <div className="flex justify-around items-center h-16 sm:h-14">
                 {mainNavLinks.map((link) => {
@@ -187,7 +187,7 @@ export default function Navbar() {
           {/* Spacer to prevent content from being hidden behind bottom nav */}
           <div className="h-16"></div>
         </>
-      )}
+      ) : null}
     </>
   );
 }
