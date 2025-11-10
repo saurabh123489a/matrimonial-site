@@ -2,12 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import { useTranslation } from '@/hooks/useTranslation';
+import { useLanguage, Language } from '@/contexts/LanguageContext';
 import { useRouter } from 'next/navigation';
 import { auth } from '@/lib/auth';
 import Link from 'next/link';
 
 export default function LanguageSettingsPage() {
-  const { language, setLanguage } = useTranslation();
+  const { language } = useTranslation();
+  const { setLanguage } = useLanguage();
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
 
@@ -24,9 +26,11 @@ export default function LanguageSettingsPage() {
   ];
 
   const handleLanguageChange = (langCode: string) => {
-    setLanguage(langCode);
-    if (mounted && typeof window !== 'undefined') {
-      localStorage.setItem('language', langCode);
+    if (langCode === 'en' || langCode === 'hi') {
+      setLanguage(langCode as Language);
+      if (mounted && typeof window !== 'undefined') {
+        localStorage.setItem('language', langCode);
+      }
     }
   };
 
