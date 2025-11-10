@@ -151,9 +151,15 @@ export default function ProfileShareCard({ user, onClose }: ProfileShareCardProp
 
           {/* Hidden card for image generation */}
           <div ref={cardRef} className="hidden">
-            <div className="w-[600px] h-[800px] bg-gradient-to-br from-pink-600 via-red-600 to-pink-700 p-8 text-white relative overflow-hidden">
+            <div 
+              className="w-[600px] h-[800px] p-8 text-white relative overflow-hidden"
+              style={{ 
+                background: 'linear-gradient(to bottom right, #DB2777, #DC2626, #BE185D)',
+                color: 'white'
+              }}
+            >
               {/* Background Pattern */}
-              <div className="absolute inset-0 opacity-10">
+              <div className="absolute inset-0" style={{ opacity: 0.1 }}>
                 <div className="absolute top-0 left-0 w-64 h-64 bg-white rounded-full -translate-x-1/2 -translate-y-1/2"></div>
                 <div className="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full translate-x-1/2 translate-y-1/2"></div>
               </div>
@@ -163,7 +169,7 @@ export default function ProfileShareCard({ user, onClose }: ProfileShareCardProp
                 {/* Logo/Header */}
                 <div className="mb-6">
                   <div className="text-3xl font-bold mb-2">💍 ekGahoi</div>
-                  <div className="text-sm opacity-90">Your Trusted Matrimonial Platform</div>
+                  <div className="text-sm" style={{ opacity: 0.9 }}>Your Trusted Matrimonial Platform</div>
                 </div>
 
                 {/* Profile Photo */}
@@ -193,17 +199,20 @@ export default function ProfileShareCard({ user, onClose }: ProfileShareCardProp
                 <div className="text-center mb-4">
                   <h2 className="text-4xl font-bold mb-2">{user.name}</h2>
                   {user.age && (
-                    <p className="text-xl opacity-90">{user.age} years</p>
+                    <p className="text-xl" style={{ opacity: 0.9 }}>{user.age} years</p>
                   )}
                 </div>
 
                 {/* Details */}
-                <div className="flex-1 bg-white/10 backdrop-blur-sm rounded-2xl p-6 space-y-4">
+                <div 
+                  className="flex-1 rounded-2xl p-6 space-y-4"
+                  style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
+                >
                   {user.city && user.state && (
                     <div className="flex items-center gap-3">
                       <span className="text-2xl">📍</span>
                       <div>
-                        <div className="text-sm opacity-80">Location</div>
+                        <div className="text-sm" style={{ opacity: 0.8 }}>Location</div>
                         <div className="text-lg font-semibold">{user.city}, {user.state}</div>
                       </div>
                     </div>
@@ -213,7 +222,7 @@ export default function ProfileShareCard({ user, onClose }: ProfileShareCardProp
                     <div className="flex items-center gap-3">
                       <span className="text-2xl">🎓</span>
                       <div>
-                        <div className="text-sm opacity-80">Education</div>
+                        <div className="text-sm" style={{ opacity: 0.8 }}>Education</div>
                         <div className="text-lg font-semibold">{user.education}</div>
                       </div>
                     </div>
@@ -223,22 +232,25 @@ export default function ProfileShareCard({ user, onClose }: ProfileShareCardProp
                     <div className="flex items-center gap-3">
                       <span className="text-2xl">💼</span>
                       <div>
-                        <div className="text-sm opacity-80">Occupation</div>
+                        <div className="text-sm" style={{ opacity: 0.8 }}>Occupation</div>
                         <div className="text-lg font-semibold">{user.occupation}</div>
                       </div>
                     </div>
                   )}
 
                   {user.bio && (
-                    <div className="mt-4 pt-4 border-t border-white/20">
-                      <div className="text-sm opacity-80 mb-2">About</div>
+                    <div 
+                      className="mt-4 pt-4"
+                      style={{ borderTop: '1px solid rgba(255, 255, 255, 0.2)' }}
+                    >
+                      <div className="text-sm mb-2" style={{ opacity: 0.8 }}>About</div>
                       <div className="text-base leading-relaxed">{user.bio}</div>
                     </div>
                   )}
                 </div>
 
                 {/* Footer */}
-                <div className="mt-6 text-center text-sm opacity-80">
+                <div className="mt-6 text-center text-sm" style={{ opacity: 0.8 }}>
                   <div>Visit ekGahoi to connect</div>
                   <div className="font-semibold">ekgahoi.com</div>
                 </div>
@@ -277,7 +289,8 @@ export default function ProfileShareCard({ user, onClose }: ProfileShareCardProp
 
                 <button
                   onClick={shareViaInstagram}
-                  className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity shadow-lg"
+                  className="w-full flex items-center justify-center gap-3 px-6 py-4 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity shadow-lg"
+                  style={{ background: 'linear-gradient(to right, #9333EA, #DB2777, #F97316)' }}
                 >
                   <span className="text-2xl">📷</span>
                   <span>Share on Instagram</span>
