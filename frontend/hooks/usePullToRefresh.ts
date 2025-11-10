@@ -74,24 +74,24 @@ export function usePullToRefresh({
     };
 
     if (element === window) {
-      window.addEventListener('touchstart', handleTouchStart, { passive: true });
-      window.addEventListener('touchmove', handleTouchMove, { passive: false });
-      window.addEventListener('touchend', handleTouchEnd, { passive: true });
+      window.addEventListener('touchstart', handleTouchStart as EventListener, { passive: true });
+      window.addEventListener('touchmove', handleTouchMove as EventListener, { passive: false });
+      window.addEventListener('touchend', handleTouchEnd as EventListener, { passive: true });
     } else {
-      element.addEventListener('touchstart', handleTouchStart, { passive: true });
-      element.addEventListener('touchmove', handleTouchMove, { passive: false });
-      element.addEventListener('touchend', handleTouchEnd, { passive: true });
+      element.addEventListener('touchstart', handleTouchStart as EventListener, { passive: true });
+      element.addEventListener('touchmove', handleTouchMove as EventListener, { passive: false });
+      element.addEventListener('touchend', handleTouchEnd as EventListener, { passive: true });
     }
 
     return () => {
       if (element === window) {
-        window.removeEventListener('touchstart', handleTouchStart);
-        window.removeEventListener('touchmove', handleTouchMove);
-        window.removeEventListener('touchend', handleTouchEnd);
+        window.removeEventListener('touchstart', handleTouchStart as EventListener);
+        window.removeEventListener('touchmove', handleTouchMove as EventListener);
+        window.removeEventListener('touchend', handleTouchEnd as EventListener);
       } else {
-        element.removeEventListener('touchstart', handleTouchStart);
-        element.removeEventListener('touchmove', handleTouchMove);
-        element.removeEventListener('touchend', handleTouchEnd);
+        element.removeEventListener('touchstart', handleTouchStart as EventListener);
+        element.removeEventListener('touchmove', handleTouchMove as EventListener);
+        element.removeEventListener('touchend', handleTouchEnd as EventListener);
       }
     };
   }, [enabled, onRefresh, threshold, resistance, pullDistance, isRefreshing]);

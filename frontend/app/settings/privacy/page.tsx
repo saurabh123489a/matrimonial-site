@@ -38,15 +38,16 @@ export default function PrivacySettingsPage() {
       const response = await userApi.getMe();
       if (response.status && response.data) {
         // Load privacy settings from user profile
+        const userData = response.data as any; // Type assertion for privacy settings
         setSettings({
-          profileVisibility: response.data.profileVisibility || 'public',
-          showOnlineStatus: response.data.showOnlineStatus !== false,
-          showLastSeen: response.data.showLastSeen !== false,
-          allowProfileViews: response.data.allowProfileViews !== false,
-          allowMessages: response.data.allowMessages !== false,
-          allowInterests: response.data.allowInterests !== false,
-          showPhoneNumber: response.data.showPhoneNumber || false,
-          showEmail: response.data.showEmail || false,
+          profileVisibility: userData.profileVisibility || 'public',
+          showOnlineStatus: userData.showOnlineStatus !== false,
+          showLastSeen: userData.showLastSeen !== false,
+          allowProfileViews: userData.allowProfileViews !== false,
+          allowMessages: userData.allowMessages !== false,
+          allowInterests: userData.allowInterests !== false,
+          showPhoneNumber: userData.showPhoneNumber || false,
+          showEmail: userData.showEmail || false,
         });
       }
     } catch (error) {
@@ -59,7 +60,8 @@ export default function PrivacySettingsPage() {
   const handleSave = async () => {
     try {
       setSaving(true);
-      const response = await userApi.updateMe(settings);
+      // Cast to any since privacy settings are not in UpdateUserDto type
+      const response = await userApi.updateMe(settings as any);
       if (response.status) {
         showSuccess('Privacy settings updated successfully');
       }
