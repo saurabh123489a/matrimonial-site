@@ -74,12 +74,8 @@ export default function Home() {
             style={{
               backgroundImage: 'url(https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&q=80)',
               backgroundPosition: 'left center',
-              opacity: 0.3,
-              animation: 'fadeInOut 8s ease-in-out infinite',
-            }}
-            onError={(e) => {
-              // Fallback to gradient if image fails to load
-              e.currentTarget.style.display = 'none';
+              backgroundSize: 'cover',
+              animation: 'slidePan 20s ease-in-out infinite',
             }}
           />
           {/* Wedding Image - Right Side */}
@@ -88,16 +84,12 @@ export default function Home() {
             style={{
               backgroundImage: 'url(https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1200&q=80)',
               backgroundPosition: 'right center',
-              opacity: 0.3,
-              animation: 'fadeInOut 8s ease-in-out infinite 4s',
-            }}
-            onError={(e) => {
-              // Fallback to gradient if image fails to load
-              e.currentTarget.style.display = 'none';
+              backgroundSize: 'cover',
+              animation: 'slidePanReverse 20s ease-in-out infinite',
             }}
           />
-          {/* Gradient Overlay for better text readability */}
-          <div className="absolute inset-0 bg-gradient-to-r from-pink-600/80 via-red-600/80 to-pink-700/80 dark:from-pink-700/80 dark:via-red-700/80 dark:to-pink-800/80"></div>
+          {/* Gradient Overlay for better text readability - reduced opacity */}
+          <div className="absolute inset-0 bg-gradient-to-r from-pink-600/60 via-red-600/60 to-pink-700/60 dark:from-pink-700/60 dark:via-red-700/60 dark:to-pink-800/60"></div>
         </div>
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-32 lg:py-40">
@@ -278,16 +270,12 @@ export default function Home() {
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage: 'url(https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=1200&q=80)',
-            opacity: 0.4,
-            animation: 'slowZoom 20s ease-in-out infinite alternate',
-          }}
-          onError={(e) => {
-            // Fallback to gradient if image fails to load
-            e.currentTarget.style.display = 'none';
+            backgroundSize: 'cover',
+            animation: 'slowZoom 25s ease-in-out infinite',
           }}
         />
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-pink-600/70 via-red-600/70 to-pink-700/70 dark:from-pink-700/70 dark:via-red-700/70 dark:to-pink-800/70"></div>
+        {/* Gradient Overlay - reduced opacity */}
+        <div className="absolute inset-0 bg-gradient-to-r from-pink-600/50 via-red-600/50 to-pink-700/50 dark:from-pink-700/50 dark:via-red-700/50 dark:to-pink-800/50"></div>
         
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light mb-6 drop-shadow-lg">
