@@ -53,43 +53,63 @@ export default function Home() {
             </svg>
           </button>
           <div className="marquee-container">
-            <div className="marquee-text text-lg sm:text-xl font-medium">
+            <div className="marquee-text text-lg sm:text-xl font-medium whitespace-nowrap">
               🎉 Saurabh Gupta welcomes you to ekGahoi - Your trusted matrimonial platform 🎉
               <span className="mx-8">💍</span>
               🎉 Saurabh Gupta welcomes you to ekGahoi - Your trusted matrimonial platform 🎉
               <span className="mx-8">💍</span>
               🎉 Saurabh Gupta welcomes you to ekGahoi - Your trusted matrimonial platform 🎉
+              <span className="mx-8">💍</span>
             </div>
           </div>
         </div>
       )}
 
-      {/* Hero Banner Section - With Animated Engagement/Wedding Images */}
+      {/* Hero Banner Section - With Indian Wedding Ceremony Images (Mandap, Reception, Mehndi, Haldi) */}
       <div className="relative overflow-hidden text-white">
-        {/* Animated Background Images */}
+        {/* Animated Sliding Background Images - Indian Wedding Ceremonies */}
         <div className="absolute inset-0">
-          {/* Engagement Image - Left Side */}
+          {/* Mandap (Wedding Ceremony) - Sliding Left */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: 'url(https://images.unsplash.com/photo-1606800057522-569310b3cbf8?w=1200&q=80)',
+              backgroundSize: 'cover',
+              animation: 'slideHorizontal 20s linear infinite',
+            }}
+          />
+          {/* Reception - Sliding Right */}
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
               backgroundImage: 'url(https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&q=80)',
-              backgroundPosition: 'left center',
               backgroundSize: 'cover',
-              animation: 'slidePan 20s ease-in-out infinite',
+              animation: 'slideHorizontalReverse 20s linear infinite',
+              animationDelay: '5s',
             }}
           />
-          {/* Wedding Image - Right Side */}
+          {/* Mehndi (Henna Ceremony) - Sliding Left */}
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
               backgroundImage: 'url(https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1200&q=80)',
-              backgroundPosition: 'right center',
               backgroundSize: 'cover',
-              animation: 'slidePanReverse 20s ease-in-out infinite',
+              animation: 'slideHorizontal 25s linear infinite',
+              animationDelay: '10s',
             }}
           />
-          {/* Gradient Overlay for better text readability - reduced opacity */}
-          <div className="absolute inset-0 bg-gradient-to-r from-pink-600/60 via-red-600/60 to-pink-700/60 dark:from-pink-700/60 dark:via-red-700/60 dark:to-pink-800/60"></div>
+          {/* Haldi (Turmeric Ceremony) - Sliding Right */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: 'url(https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=1200&q=80)',
+              backgroundSize: 'cover',
+              animation: 'slideHorizontalReverse 22s linear infinite',
+              animationDelay: '15s',
+            }}
+          />
+          {/* Gradient Overlay - very minimal for text readability only */}
+          <div className="absolute inset-0 bg-gradient-to-r from-pink-600/10 via-red-600/10 to-pink-700/10 dark:from-pink-700/10 dark:via-red-700/10 dark:to-pink-800/10"></div>
         </div>
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-32 lg:py-40">
@@ -263,19 +283,52 @@ export default function Home() {
         </div>
       </div>
 
-      {/* CTA Section - With Animated Wedding Image */}
+      {/* CTA Section - With Indian Wedding Ceremony Images */}
       <div className="relative overflow-hidden text-white">
-        {/* Animated Wedding Background Image */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: 'url(https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=1200&q=80)',
-            backgroundSize: 'cover',
-            animation: 'slowZoom 25s ease-in-out infinite',
-          }}
-        />
-        {/* Gradient Overlay - reduced opacity */}
-        <div className="absolute inset-0 bg-gradient-to-r from-pink-600/50 via-red-600/50 to-pink-700/50 dark:from-pink-700/50 dark:via-red-700/50 dark:to-pink-800/50"></div>
+        {/* Sliding Indian Wedding Ceremony Images */}
+        <div className="absolute inset-0">
+          {/* Mandap */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: 'url(https://images.unsplash.com/photo-1606800057522-569310b3cbf8?w=1200&q=80)',
+              backgroundSize: 'cover',
+              animation: 'slideHorizontal 25s linear infinite',
+            }}
+          />
+          {/* Reception */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: 'url(https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&q=80)',
+              backgroundSize: 'cover',
+              animation: 'slideHorizontalReverse 25s linear infinite',
+              animationDelay: '8s',
+            }}
+          />
+          {/* Mehndi */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: 'url(https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1200&q=80)',
+              backgroundSize: 'cover',
+              animation: 'slideHorizontal 28s linear infinite',
+              animationDelay: '16s',
+            }}
+          />
+          {/* Haldi */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: 'url(https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=1200&q=80)',
+              backgroundSize: 'cover',
+              animation: 'slideHorizontalReverse 30s linear infinite',
+              animationDelay: '12s',
+            }}
+          />
+        </div>
+        {/* Gradient Overlay - very minimal for text readability only */}
+        <div className="absolute inset-0 bg-gradient-to-r from-pink-600/10 via-red-600/10 to-pink-700/10 dark:from-pink-700/10 dark:via-red-700/10 dark:to-pink-800/10"></div>
         
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light mb-6 drop-shadow-lg">

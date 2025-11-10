@@ -184,8 +184,9 @@ body {
 
 .marquee-text {
   display: inline-block;
-  animation: marquee 50s linear infinite;
+  animation: marquee 30s linear infinite;
   padding-left: 100%;
+  will-change: transform;
 }
 
 .marquee-text:hover {
@@ -246,5 +247,54 @@ body {
   100% {
     transform: translateX(-10%) scale(1.1);
     opacity: 0.6;
+  }
+}
+
+/* Sliding Carousel Animation for Indian Couple Images */
+@keyframes slideLeft {
+  0% {
+    transform: translateX(0);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateX(-20%);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateX(-40%);
+    opacity: 0.7;
+  }
+}
+
+@keyframes slideRight {
+  0% {
+    transform: translateX(0);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateX(20%);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateX(40%);
+    opacity: 0.7;
+  }
+}
+
+@keyframes slideHorizontal {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes slideHorizontalReverse {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
   }
 }
