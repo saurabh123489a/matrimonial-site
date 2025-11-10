@@ -69,43 +69,58 @@ export default function Home() {
       <div className="relative overflow-hidden text-white">
         {/* Animated Sliding Background Images - Indian Wedding Ceremonies */}
         <div className="absolute inset-0">
-          {/* Mandap (Wedding Ceremony) - Sliding Left */}
+          {/* Mandap (Wedding Ceremony) - Sliding Left - Landscape Indian Traditional */}
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: 'url(https://images.unsplash.com/photo-1606800057522-569310b3cbf8?w=1200&q=80)',
+              backgroundImage: 'url(https://images.unsplash.com/photo-1606800057522-569310b3cbf8?w=1920&h=1080&fit=crop&q=90)',
               backgroundSize: 'cover',
+              backgroundPosition: 'center',
               animation: 'slideHorizontal 20s linear infinite',
             }}
           />
-          {/* Reception - Sliding Right */}
+          {/* Reception - Sliding Right - Landscape Indian Wedding Reception */}
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: 'url(https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&q=80)',
+              backgroundImage: 'url(https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&h=1080&fit=crop&q=90)',
               backgroundSize: 'cover',
+              backgroundPosition: 'center',
               animation: 'slideHorizontalReverse 20s linear infinite',
               animationDelay: '5s',
             }}
           />
-          {/* Mehndi (Henna Ceremony) - Sliding Left */}
+          {/* Mehndi (Henna Ceremony) - Sliding Left - Landscape Bridal Mehndi */}
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: 'url(https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1200&q=80)',
+              backgroundImage: 'url(https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1920&h=1080&fit=crop&q=90)',
               backgroundSize: 'cover',
+              backgroundPosition: 'center',
               animation: 'slideHorizontal 25s linear infinite',
               animationDelay: '10s',
             }}
           />
-          {/* Haldi (Turmeric Ceremony) - Sliding Right */}
+          {/* Haldi (Turmeric Ceremony) - Sliding Right - Landscape Haldi Ceremony */}
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: 'url(https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=1200&q=80)',
+              backgroundImage: 'url(https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=1920&h=1080&fit=crop&q=90)',
               backgroundSize: 'cover',
+              backgroundPosition: 'center',
               animation: 'slideHorizontalReverse 22s linear infinite',
               animationDelay: '15s',
+            }}
+          />
+          {/* Additional Indian Wedding Image - Landscape Bridal Photography */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: 'url(https://images.unsplash.com/photo-1606800057522-569310b3cbf8?w=1920&h=1080&fit=crop&q=90)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              animation: 'slideHorizontal 28s linear infinite',
+              animationDelay: '18s',
             }}
           />
           {/* Gradient Overlay - very minimal for text readability only */}
@@ -285,43 +300,47 @@ export default function Home() {
 
       {/* CTA Section - With Indian Wedding Ceremony Images */}
       <div className="relative overflow-hidden text-white">
-        {/* Sliding Indian Wedding Ceremony Images */}
+        {/* Sliding Indian Wedding Ceremony Images - Bridal Photography Style */}
         <div className="absolute inset-0">
-          {/* Mandap */}
+          {/* Mandap - Landscape Indian Wedding Ceremony */}
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: 'url(https://images.unsplash.com/photo-1606800057522-569310b3cbf8?w=1200&q=80)',
+              backgroundImage: 'url(https://images.unsplash.com/photo-1606800057522-569310b3cbf8?w=1920&h=1080&fit=crop&q=90)',
               backgroundSize: 'cover',
+              backgroundPosition: 'center',
               animation: 'slideHorizontal 25s linear infinite',
             }}
           />
-          {/* Reception */}
+          {/* Reception - Landscape Wedding Reception */}
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: 'url(https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&q=80)',
+              backgroundImage: 'url(https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&h=1080&fit=crop&q=90)',
               backgroundSize: 'cover',
+              backgroundPosition: 'center',
               animation: 'slideHorizontalReverse 25s linear infinite',
               animationDelay: '8s',
             }}
           />
-          {/* Mehndi */}
+          {/* Mehndi - Landscape Henna Ceremony */}
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: 'url(https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1200&q=80)',
+              backgroundImage: 'url(https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1920&h=1080&fit=crop&q=90)',
               backgroundSize: 'cover',
+              backgroundPosition: 'center',
               animation: 'slideHorizontal 28s linear infinite',
               animationDelay: '16s',
             }}
           />
-          {/* Haldi */}
+          {/* Haldi - Landscape Turmeric Ceremony */}
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: 'url(https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=1200&q=80)',
+              backgroundImage: 'url(https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=1920&h=1080&fit=crop&q=90)',
               backgroundSize: 'cover',
+              backgroundPosition: 'center',
               animation: 'slideHorizontalReverse 30s linear infinite',
               animationDelay: '12s',
             }}
