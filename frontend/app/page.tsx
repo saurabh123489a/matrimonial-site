@@ -15,9 +15,16 @@ export default function Home() {
     city: '',
   });
   const [mounted, setMounted] = useState(false);
+  const [showWelcomeMessage, setShowWelcomeMessage] = useState(true);
 
   useEffect(() => {
     setMounted(true);
+    // Hide welcome message after 10 seconds
+    const timer = setTimeout(() => {
+      setShowWelcomeMessage(false);
+    }, 10000); // 10 seconds
+
+    return () => clearTimeout(timer);
   }, []);
 
   const handleQuickSearch = () => {
@@ -32,6 +39,30 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors">
+      {/* Running Welcome Message - Temporary */}
+      {showWelcomeMessage && (
+        <div className="bg-gradient-to-r from-pink-600 via-red-600 to-pink-700 dark:from-pink-700 dark:via-red-700 dark:to-pink-800 text-white py-3 overflow-hidden relative animate-slide-up">
+          <button
+            onClick={() => setShowWelcomeMessage(false)}
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 text-white hover:text-pink-200 transition-colors"
+            aria-label="Close welcome message"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+          <div className="marquee-container">
+            <div className="marquee-text text-lg sm:text-xl font-medium">
+              🎉 Saurabh Gupta welcomes you to ekGahoi - Your trusted matrimonial platform 🎉
+              <span className="mx-8">💍</span>
+              🎉 Saurabh Gupta welcomes you to ekGahoi - Your trusted matrimonial platform 🎉
+              <span className="mx-8">💍</span>
+              🎉 Saurabh Gupta welcomes you to ekGahoi - Your trusted matrimonial platform 🎉
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Hero Banner Section - Snitch Layout with Pink/Red Theme */}
       <div className="relative bg-gradient-to-r from-pink-600 via-red-600 to-pink-700 text-white dark:from-pink-700 dark:via-red-700 dark:to-pink-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-32 lg:py-40">

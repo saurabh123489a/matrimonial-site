@@ -149,3 +149,30 @@ body {
   border-radius: 0 0 1rem 1rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+
+/* Running/Marquee text animation */
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.marquee-container {
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+  width: 100%;
+}
+
+.marquee-text {
+  display: inline-block;
+  animation: marquee 50s linear infinite;
+  padding-left: 100%;
+}
+
+.marquee-text:hover {
+  animation-play-state: paused;
+}
