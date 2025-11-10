@@ -133,8 +133,13 @@ function checkRapidRequests(req) {
  * Main anti-scraping middleware
  */
 export const antiScrapingMiddleware = (req, res, next) => {
-  // Skip for health checks and static files
+  // Skip for health checks, static files, and authenticated API requests
   if (req.path === '/health' || req.path === '/' || req.path.startsWith('/uploads/')) {
+    return next();
+  }
+  
+  // Skip anti-scraping checks for authenticated users
+  if (req.user) {
     return next();
   }
   
@@ -212,21 +217,16 @@ export const enforcePaginationLimits = (req, res, next) => {
 
 /**
  * Require authentication for sensitive endpoints
+ * Note: This is now optional - we allow unauthenticated access but log it
+ * The actual route handlers use optionalAuth middleware
  */
 export const requireAuthForData = (req, res, next) => {
-  // List of endpoints that require authentication
-  const protectedPaths = [
-    '/api/users',
-    '/api/profiles',
-  ];
-  
-  const isProtected = protectedPaths.some(path => req.path.startsWith(path));
-  
-  if (isProtected && !req.user) {
-    return res.status(401).json({
-      status: false,
-      message: 'Authentication required to access this data.',
-    });
+  // This middleware is now informational only
+  // Routes use optionalAuth which allows both authenticated and unauthenticated access
+  // We just log unauthenticated access attempts for monitoring
+  if (!req.user && (req.path.startsWith('/api/users') || req.path.startsWith('/api/profiles'))) {
+    // Log but don't block - let optionalAuth handle it
+    console.log(`[Anti-Scraping] Unauthenticated access to ${req.path} from IP: ${getClientIp(req)}`);
   }
   
   next();

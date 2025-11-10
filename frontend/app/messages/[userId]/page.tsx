@@ -20,7 +20,8 @@ interface Message {
 export default function ChatPage() {
   const params = useParams();
   const router = useRouter();
-  const { t, language } = useTranslation();
+  const { t } = useTranslation();
+  const { language } = useTranslation();
   const userId = params.userId as string;
   const [otherUser, setOtherUser] = useState<User | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);

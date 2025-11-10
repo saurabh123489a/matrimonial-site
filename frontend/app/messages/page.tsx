@@ -21,7 +21,8 @@ interface Conversation {
 
 export default function MessagesPage() {
   const router = useRouter();
-  const { t, language } = useTranslation();
+  const { t } = useTranslation();
+  const { language } = useTranslation();
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
