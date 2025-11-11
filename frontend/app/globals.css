@@ -24,12 +24,12 @@
 
 .dark {
   --background: #1a1a1a; /* dark background */
-  --foreground: #4ade80; /* green */
-  --primary: #22c55e; /* green primary */
-  --primary-dark: #16a34a; /* darker green */
-  --primary-light: #86efac; /* light green */
-  --secondary: #10b981; /* emerald green */
-  --accent: #34d399; /* green accent */
+  --foreground: #a7c4a0; /* warm green with skin tone */
+  --primary: #7fb069; /* warm green primary */
+  --primary-dark: #6a9c5a; /* darker warm green */
+  --primary-light: #b8d4b0; /* light warm green */
+  --secondary: #8db580; /* warm emerald green */
+  --accent: #9bc88f; /* warm green accent */
 }
 
 body {
