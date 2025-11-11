@@ -116,7 +116,7 @@ export default function Home() {
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: 'url(/images/bridal-lehenga-1.jpg)',
+              backgroundImage: 'url(/images/bridal-lehenga-1.jpg), url(https://images.unsplash.com/photo-1606800057522-569310b3cbf8?w=1920&h=1080&fit=crop&q=90)',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               animation: 'slideHorizontal 28s linear infinite',
@@ -127,7 +127,7 @@ export default function Home() {
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: 'url(/images/bridal-lehenga-2.jpg)',
+              backgroundImage: 'url(/images/bridal-lehenga-2.jpg), url(https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&h=1080&fit=crop&q=90)',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               animation: 'slideHorizontalReverse 30s linear infinite',
@@ -138,7 +138,7 @@ export default function Home() {
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: 'url(/images/bridal-lehenga-3.jpg)',
+              backgroundImage: 'url(/images/bridal-lehenga-3.jpg), url(https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1920&h=1080&fit=crop&q=90)',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               animation: 'slideHorizontal 32s linear infinite',
@@ -371,7 +371,7 @@ export default function Home() {
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: 'url(/images/bridal-lehenga-1.jpg)',
+              backgroundImage: 'url(/images/bridal-lehenga-1.jpg), url(https://images.unsplash.com/photo-1606800057522-569310b3cbf8?w=1920&h=1080&fit=crop&q=90)',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               animation: 'slideHorizontal 32s linear infinite',
@@ -382,7 +382,7 @@ export default function Home() {
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: 'url(/images/bridal-lehenga-2.jpg)',
+              backgroundImage: 'url(/images/bridal-lehenga-2.jpg), url(https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&h=1080&fit=crop&q=90)',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               animation: 'slideHorizontalReverse 34s linear infinite',
@@ -393,7 +393,7 @@ export default function Home() {
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: 'url(/images/bridal-lehenga-3.jpg)',
+              backgroundImage: 'url(/images/bridal-lehenga-3.jpg), url(https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1920&h=1080&fit=crop&q=90)',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               animation: 'slideHorizontal 36s linear infinite',
