@@ -42,7 +42,7 @@ export default function Home() {
     <div className="min-h-screen bg-white dark:bg-black transition-colors">
       {/* Running Welcome Message - Temporary */}
       {showWelcomeMessage && (
-        <div className="bg-gradient-to-r from-pink-600 via-red-600 to-pink-700 dark:from-pink-700 dark:via-red-700 dark:to-pink-800 text-white py-3 overflow-hidden relative animate-slide-up">
+        <div className="bg-gradient-to-r from-pink-600 via-red-600 to-pink-700 dark:from-green-700 dark:via-green-600 dark:to-green-800 text-white py-3 overflow-hidden relative animate-slide-up">
           <button
             onClick={() => setShowWelcomeMessage(false)}
             className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 text-white hover:text-pink-200 transition-colors"
@@ -146,7 +146,7 @@ export default function Home() {
             }}
           />
           {/* Gradient Overlay - very minimal for text readability only */}
-          <div className="absolute inset-0 bg-gradient-to-r from-pink-600/10 via-red-600/10 to-pink-700/10 dark:from-pink-700/10 dark:via-red-700/10 dark:to-pink-800/10"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-pink-600/10 via-red-600/10 to-pink-700/10 dark:from-green-700/10 dark:via-green-600/10 dark:to-green-800/10"></div>
         </div>
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-32 lg:py-40">
@@ -176,11 +176,11 @@ export default function Home() {
       </div>
 
       {/* Quick Search Section - Clean & Minimal */}
-      <div className="bg-gray-50 dark:bg-black border-b border-gray-200 dark:border-red-900 transition-colors">
+      <div className="bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-green-700 transition-colors">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
           <div className="text-center mb-8">
-            <h2 className="text-2xl sm:text-3xl font-light text-gray-900 dark:text-red-600 mb-2">Find Your Perfect Match</h2>
-            <p className="text-gray-600 dark:text-red-500 text-sm">Search from thousands of verified profiles</p>
+            <h2 className="text-2xl sm:text-3xl font-light text-gray-900 dark:text-green-500 mb-2">Find Your Perfect Match</h2>
+            <p className="text-gray-600 dark:text-green-400 text-sm">Search from thousands of verified profiles</p>
           </div>
           
           <div className="max-w-4xl mx-auto bg-white dark:bg-black p-6 sm:p-8 shadow-sm transition-colors">
@@ -286,10 +286,10 @@ export default function Home() {
       </div>
 
       {/* Stats Section - Minimal Design */}
-      <div className="bg-gradient-to-br from-pink-50 via-red-50 to-pink-100 dark:from-slate-800 dark:via-slate-800 dark:to-slate-900 border-t border-b border-pink-100 dark:border-red-900 transition-colors">
+      <div className="bg-gradient-to-br from-pink-50 via-red-50 to-pink-100 dark:from-gray-800 dark:via-gray-800 dark:to-gray-900 border-t border-b border-pink-100 dark:border-green-700 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
           <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-light text-gray-900 dark:text-red-600 mb-4">
+            <h2 className="text-3xl sm:text-4xl font-light text-gray-900 dark:text-green-500 mb-4">
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-red-600">
                 Community Impact
               </span>

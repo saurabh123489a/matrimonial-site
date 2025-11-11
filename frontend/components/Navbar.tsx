@@ -155,7 +155,7 @@ export default function Navbar() {
   return (
     <>
       {/* Top Bar - Minimal with Logo and Language Switcher */}
-      <nav className="bg-white dark:bg-black border-b border-gray-200 dark:border-red-900 sticky top-0 z-30 transition-colors">
+      <nav className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-green-700 sticky top-0 z-30 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center min-h-20 py-3">
             <Link 
@@ -170,7 +170,7 @@ export default function Navbar() {
                 <>
                   <Link
                     href="/notifications"
-                    className="relative p-2 text-gray-700 dark:text-gray-300 hover:text-pink-600 dark:hover:text-pink-400 transition-colors"
+                    className="relative p-2 text-gray-700 dark:text-gray-300 hover:text-pink-600 dark:hover:text-green-400 transition-colors"
                     title={t('common.notifications')}
                   >
                     <span className="text-lg">🔔</span>
@@ -198,14 +198,14 @@ export default function Navbar() {
                           className="fixed inset-0 z-40"
                           onClick={() => setShowUserMenu(false)}
                         />
-                        <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-black rounded-lg shadow-xl border border-gray-200 dark:border-red-900 z-50 overflow-hidden animate-scale-in">
+                        <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-green-700 z-50 overflow-hidden animate-scale-in">
                           {/* Profile Link */}
                           <Link
                             href="/profile"
                             onClick={() => setShowUserMenu(false)}
                             className={`flex items-center gap-3 px-4 py-3 text-sm font-medium transition-colors ${
                               pathname === '/profile'
-                                ? 'bg-pink-50 dark:bg-pink-900/20 text-pink-600 dark:text-pink-400'
+                                ? 'bg-pink-50 dark:bg-green-900/20 text-pink-600 dark:text-green-400'
                                 : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700'
                             }`}
                           >
@@ -219,7 +219,7 @@ export default function Navbar() {
                               toggleTheme();
                               setShowUserMenu(false);
                             }}
-                            className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 dark:text-red-600 hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors border-t border-gray-200 dark:border-red-900"
+                            className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 dark:text-green-500 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors border-t border-gray-200 dark:border-green-700"
                           >
                             {resolvedTheme === 'dark' ? (
                               <>
@@ -245,7 +245,7 @@ export default function Navbar() {
                               setShowUserMenu(false);
                               router.push('/login');
                             }}
-                            className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-red-600 dark:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors border-t border-gray-200 dark:border-red-900"
+                            className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-red-600 dark:text-green-500 hover:bg-red-50 dark:hover:bg-green-900/20 transition-colors border-t border-gray-200 dark:border-green-700"
                           >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -286,7 +286,7 @@ export default function Navbar() {
       {/* Bottom Navigation Bar - Only show when authenticated - Mobile & Web */}
       {mounted && isAuthenticated ? (
         <>
-          <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-black border-t-2 border-pink-200 dark:border-pink-900 z-40 shadow-2xl safe-area-inset-bottom transition-colors backdrop-blur-sm bg-opacity-95 dark:bg-opacity-95">
+          <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t-2 border-pink-200 dark:border-green-700 z-40 shadow-2xl safe-area-inset-bottom transition-colors backdrop-blur-sm bg-opacity-95 dark:bg-opacity-95">
             <div className="max-w-7xl mx-auto">
               <div className="flex justify-around items-center h-20 sm:h-16 px-2">
                 {mainNavLinks.map((link) => {
@@ -301,8 +301,8 @@ export default function Navbar() {
                       data-tour={link.tourId}
                       className={`relative flex flex-col items-center justify-center flex-1 py-2 px-2 transition-all duration-300 min-w-0 group ${
                         isActive
-                          ? 'text-pink-600 dark:text-pink-400'
-                          : 'text-gray-500 dark:text-gray-400 hover:text-pink-500 dark:hover:text-pink-400'
+                          ? 'text-pink-600 dark:text-green-400'
+                          : 'text-gray-500 dark:text-gray-400 hover:text-pink-500 dark:hover:text-green-400'
                       }`}
                     >
                       {/* Icon with improved styling */}
@@ -323,10 +323,10 @@ export default function Navbar() {
                       </span>
                       {/* Active state indicator (pink line at top) */}
                       {isActive && (
-                        <span className="absolute top-0 left-1/2 transform -translate-x-1/2 w-12 h-1 bg-gradient-to-r from-pink-500 to-pink-600 dark:from-pink-400 dark:to-pink-500 rounded-full shadow-lg"></span>
+                        <span className="absolute top-0 left-1/2 transform -translate-x-1/2 w-12 h-1 bg-gradient-to-r from-pink-500 to-pink-600 dark:from-green-400 dark:to-green-500 rounded-full shadow-lg"></span>
                       )}
                       {/* Hover effect background */}
-                      <div className="absolute inset-0 rounded-lg bg-pink-50 dark:bg-pink-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
+                      <div className="absolute inset-0 rounded-lg bg-pink-50 dark:bg-green-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
                     </Link>
                   );
                 })}

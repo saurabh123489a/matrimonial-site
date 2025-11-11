@@ -23,8 +23,13 @@
 }
 
 .dark {
-  --background: #000000; /* black */
-  --foreground: #dc2626; /* dark red */
+  --background: #1a1a1a; /* dark background */
+  --foreground: #4ade80; /* green */
+  --primary: #22c55e; /* green primary */
+  --primary-dark: #16a34a; /* darker green */
+  --primary-light: #86efac; /* light green */
+  --secondary: #10b981; /* emerald green */
+  --accent: #34d399; /* green accent */
 }
 
 body {
