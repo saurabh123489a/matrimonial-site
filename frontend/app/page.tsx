@@ -112,7 +112,7 @@ export default function Home() {
               animationDelay: '15s',
             }}
           />
-          {/* Additional Indian Wedding Image - Landscape Bridal Photography */}
+          {/* Bridal Photography - Landscape Red & Gold Lehenga */}
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
@@ -121,6 +121,17 @@ export default function Home() {
               backgroundPosition: 'center',
               animation: 'slideHorizontal 28s linear infinite',
               animationDelay: '18s',
+            }}
+          />
+          {/* Additional Bridal Image - Landscape Traditional Indian Bride */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: 'url(https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1920&h=1080&fit=crop&q=90)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              animation: 'slideHorizontalReverse 30s linear infinite',
+              animationDelay: '22s',
             }}
           />
           {/* Gradient Overlay - very minimal for text readability only */}
@@ -343,6 +354,17 @@ export default function Home() {
               backgroundPosition: 'center',
               animation: 'slideHorizontalReverse 30s linear infinite',
               animationDelay: '12s',
+            }}
+          />
+          {/* Bridal Photography - Landscape Red & Gold Lehenga Bride */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: 'url(https://images.unsplash.com/photo-1606800057522-569310b3cbf8?w=1920&h=1080&fit=crop&q=90)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              animation: 'slideHorizontal 32s linear infinite',
+              animationDelay: '20s',
             }}
           />
         </div>
