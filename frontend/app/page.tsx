@@ -39,7 +39,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black transition-colors">
+    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors">
       {/* Running Welcome Message - Temporary */}
       {showWelcomeMessage && (
         <div className="bg-gradient-to-r from-pink-600 via-red-600 to-pink-700 dark:from-green-700 dark:via-green-600 dark:to-green-800 text-white py-3 overflow-hidden relative animate-slide-up">
@@ -183,7 +183,7 @@ export default function Home() {
             <p className="text-gray-600 dark:text-green-400 text-sm">Search from thousands of verified profiles</p>
           </div>
           
-          <div className="max-w-4xl mx-auto bg-white dark:bg-black p-6 sm:p-8 shadow-sm transition-colors">
+          <div className="max-w-4xl mx-auto bg-white dark:bg-gray-800 p-6 sm:p-8 shadow-sm transition-colors">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div>
                 <label className="block text-xs font-medium text-gray-700 mb-2 uppercase tracking-wider">Looking For</label>
