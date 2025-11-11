@@ -112,26 +112,37 @@ export default function Home() {
               animationDelay: '15s',
             }}
           />
-          {/* Bridal Photography - Landscape Red & Gold Lehenga */}
+          {/* Bridal Photography 1 - Landscape Red & Gold Lehenga (Lying Down) */}
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: 'url(/images/bridal-lehenga.jpg)',
+              backgroundImage: 'url(/images/bridal-lehenga-1.jpg)',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               animation: 'slideHorizontal 28s linear infinite',
               animationDelay: '18s',
             }}
           />
-          {/* Additional Bridal Image - Landscape Traditional Indian Bride */}
+          {/* Bridal Photography 2 - Overhead Shot with Rotated View */}
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: 'url(https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1920&h=1080&fit=crop&q=90)',
+              backgroundImage: 'url(/images/bridal-lehenga-2.jpg)',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               animation: 'slideHorizontalReverse 30s linear infinite',
               animationDelay: '22s',
+            }}
+          />
+          {/* Bridal Photography 3 - Close-up Overhead with Eyes Closed */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: 'url(/images/bridal-lehenga-3.jpg)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              animation: 'slideHorizontal 32s linear infinite',
+              animationDelay: '26s',
             }}
           />
           {/* Gradient Overlay - very minimal for text readability only */}
@@ -356,15 +367,37 @@ export default function Home() {
               animationDelay: '12s',
             }}
           />
-          {/* Bridal Photography - Landscape Red & Gold Lehenga Bride */}
+          {/* Bridal Photography 1 - Landscape Red & Gold Lehenga */}
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: 'url(/images/bridal-lehenga.jpg)',
+              backgroundImage: 'url(/images/bridal-lehenga-1.jpg)',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               animation: 'slideHorizontal 32s linear infinite',
               animationDelay: '20s',
+            }}
+          />
+          {/* Bridal Photography 2 - Overhead Shot */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: 'url(/images/bridal-lehenga-2.jpg)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              animation: 'slideHorizontalReverse 34s linear infinite',
+              animationDelay: '24s',
+            }}
+          />
+          {/* Bridal Photography 3 - Close-up Overhead */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: 'url(/images/bridal-lehenga-3.jpg)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              animation: 'slideHorizontal 36s linear infinite',
+              animationDelay: '28s',
             }}
           />
         </div>
