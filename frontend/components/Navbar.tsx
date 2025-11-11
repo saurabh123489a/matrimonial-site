@@ -87,11 +87,56 @@ export default function Navbar() {
 
   // Main navigation links for bottom bar - 5 items (Interests combined)
   const mainNavLinks = [
-    { href: '/profile', label: 'Profile', icon: '👤', tourId: 'profile' },
-    { href: '/profiles', label: 'Search', icon: '🔍', tourId: 'search' },
-    { href: '/messages', label: 'Message', icon: '💬', tourId: 'messages' },
-    { href: '/interests', label: 'Interest', icon: '💌', tourId: 'interests' },
-    { href: '/community', label: 'Community', icon: '👨‍👩‍👧‍👦', tourId: 'community' },
+    { 
+      href: '/profile', 
+      label: 'Profile', 
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+        </svg>
+      ), 
+      tourId: 'profile' 
+    },
+    { 
+      href: '/profiles', 
+      label: 'Search', 
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+      ), 
+      tourId: 'search' 
+    },
+    { 
+      href: '/messages', 
+      label: 'Message', 
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+        </svg>
+      ), 
+      tourId: 'messages' 
+    },
+    { 
+      href: '/interests', 
+      label: 'Interest', 
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+        </svg>
+      ), 
+      tourId: 'interests' 
+    },
+    { 
+      href: '/community', 
+      label: 'Community', 
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+      ), 
+      tourId: 'community' 
+    },
   ];
 
   // Additional links for dropdown menu
@@ -241,9 +286,9 @@ export default function Navbar() {
       {/* Bottom Navigation Bar - Only show when authenticated - Mobile & Web */}
       {mounted && isAuthenticated ? (
         <>
-          <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-black border-t border-gray-200 dark:border-red-900 z-40 shadow-lg safe-area-inset-bottom transition-colors">
+          <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-black border-t-2 border-pink-200 dark:border-pink-900 z-40 shadow-2xl safe-area-inset-bottom transition-colors backdrop-blur-sm bg-opacity-95 dark:bg-opacity-95">
             <div className="max-w-7xl mx-auto">
-              <div className="flex justify-around items-center h-16 sm:h-14">
+              <div className="flex justify-around items-center h-20 sm:h-16 px-2">
                 {mainNavLinks.map((link) => {
                   // Check if current path matches (including sub-routes)
                   const isActive = pathname === link.href || 
@@ -254,18 +299,34 @@ export default function Navbar() {
                       key={link.href}
                       href={link.href}
                       data-tour={link.tourId}
-                      className={`relative flex flex-col items-center justify-center flex-1 py-2 px-1 transition-all duration-300 min-w-0 group ${
+                      className={`relative flex flex-col items-center justify-center flex-1 py-2 px-2 transition-all duration-300 min-w-0 group ${
                         isActive
                           ? 'text-pink-600 dark:text-pink-400'
-                          : 'text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-400'
+                          : 'text-gray-500 dark:text-gray-400 hover:text-pink-500 dark:hover:text-pink-400'
                       }`}
                     >
-                      {/* Mobile: larger icons (text-3xl), Desktop: bigger icons (text-2xl) with zoom on hover */}
-                      <span className="text-3xl sm:text-2xl leading-none transition-transform duration-300 hover:scale-125 active:scale-110">{link.icon}</span>
+                      {/* Icon with improved styling */}
+                      <div className={`relative transition-all duration-300 ${
+                        isActive 
+                          ? 'scale-110' 
+                          : 'group-hover:scale-110 active:scale-95'
+                      }`}>
+                        {link.icon}
+                      </div>
+                      {/* Label text */}
+                      <span className={`text-[10px] sm:text-xs font-medium mt-1 transition-all duration-300 ${
+                        isActive 
+                          ? 'opacity-100' 
+                          : 'opacity-70 group-hover:opacity-100'
+                      }`}>
+                        {link.label}
+                      </span>
                       {/* Active state indicator (pink line at top) */}
                       {isActive && (
-                        <span className="absolute top-0 left-1/2 transform -translate-x-1/2 w-10 h-0.5 bg-pink-600 rounded-full"></span>
+                        <span className="absolute top-0 left-1/2 transform -translate-x-1/2 w-12 h-1 bg-gradient-to-r from-pink-500 to-pink-600 dark:from-pink-400 dark:to-pink-500 rounded-full shadow-lg"></span>
                       )}
+                      {/* Hover effect background */}
+                      <div className="absolute inset-0 rounded-lg bg-pink-50 dark:bg-pink-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
                     </Link>
                   );
                 })}
@@ -274,7 +335,7 @@ export default function Navbar() {
           </nav>
 
           {/* Spacer to prevent content from being hidden behind bottom nav */}
-          <div className="h-16"></div>
+          <div className="h-20 sm:h-16"></div>
         </>
       ) : null}
     </>
