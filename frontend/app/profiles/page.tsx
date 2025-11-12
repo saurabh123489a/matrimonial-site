@@ -26,6 +26,7 @@ function ProfilesContent() {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [currentUserLoaded, setCurrentUserLoaded] = useState(false);
 
   // Check authentication on mount (client-side only)
   useEffect(() => {
@@ -39,9 +40,14 @@ function ProfilesContent() {
         if (response.status) {
           setCurrentUser(response.data);
         }
+        setCurrentUserLoaded(true);
       }).catch(() => {
-        // Silently fail
+        // If getMe fails, still mark as loaded so profiles can load without gender filtering
+        setCurrentUserLoaded(true);
       });
+    } else {
+      // If not authenticated, mark as loaded immediately
+      setCurrentUserLoaded(true);
     }
     
     // Show modal if not authenticated (after a brief delay for better UX)
@@ -76,6 +82,11 @@ function ProfilesContent() {
   
   // Debounced search filters - these trigger the actual API call
   const [searchFilters, setSearchFilters] = useState(filters);
+  
+  // Initialize searchFilters when filters change from URL params
+  useEffect(() => {
+    setSearchFilters(filters);
+  }, []); // Only on mount
   const [page, setPage] = useState(1);
   const [pagination, setPagination] = useState({ total: 0, pages: 0 });
   const [showFilters, setShowFilters] = useState(false);
@@ -204,18 +215,22 @@ function ProfilesContent() {
     }
   };
 
+  // Track searchFilters as string for dependency tracking
+  const searchFiltersKey = useMemo(() => JSON.stringify(searchFilters), [searchFilters]);
+  
+  // Load profiles when filters, gahoiId, or currentUser changes
   useEffect(() => {
-    // Load profiles when searchFilters or gahoiId change, or when currentUser is loaded (for gender filtering)
-    // If authenticated, wait for currentUser to load; if not authenticated, load immediately
-    if (!isAuthenticated || currentUser !== null) {
-    loadProfiles();
+    // Wait for currentUser to finish loading (success or failure) before loading profiles
+    if (currentUserLoaded) {
+      loadProfiles();
     }
     
     // Cleanup on unmount
     return () => {
       isMountedRef.current = false;
     };
-  }, [page, gahoiId, searchFilters, currentUser, isAuthenticated]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, gahoiId, searchFiltersKey, currentUser, currentUserLoaded]);
 
   // Debounced function to update search filters (triggers API call)
   const debouncedUpdateSearchFilters = useMemo(

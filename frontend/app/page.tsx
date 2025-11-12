@@ -37,18 +37,18 @@ export default function Home() {
     <div className="min-h-screen bg-white dark:bg-[#0f1117] transition-colors">
       {/* Running Welcome Message - Temporary */}
       {showWelcomeMessage && (
-        <div className="bg-gradient-to-r from-pink-600 via-red-600 to-pink-700 dark:from-pink-700 dark:via-pink-600 dark:to-pink-800 text-white py-3 overflow-hidden relative animate-slide-up">
+        <div className="bg-gradient-to-r from-pink-600 via-red-600 to-pink-700 dark:from-pink-700 dark:via-pink-600 dark:to-pink-800 text-white py-3 overflow-hidden relative z-20">
           <button
             onClick={() => setShowWelcomeMessage(false)}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 text-white hover:text-pink-200 transition-colors"
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 z-30 text-white hover:text-pink-200 transition-colors bg-black/20 rounded-full p-1"
             aria-label="Close welcome message"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
-          <div className="marquee-container">
-            <div className="marquee-text text-lg sm:text-xl font-medium whitespace-nowrap">
+          <div className="marquee-container pr-16 sm:pr-20">
+            <div className="marquee-text text-base sm:text-lg font-medium whitespace-nowrap">
               🎉 Saurabh Gupta welcomes you to ekGahoi - Your trusted matrimonial platform 🎉
               <span className="mx-8">💍</span>
               🎉 Saurabh Gupta welcomes you to ekGahoi - Your trusted matrimonial platform 🎉
