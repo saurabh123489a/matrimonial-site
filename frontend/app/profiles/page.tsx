@@ -14,6 +14,7 @@ import EmptyState from '@/components/EmptyState';
 import { trackSearch } from '@/lib/analytics';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { debounce } from '@/lib/utils/debounce';
+import { metaDataApi } from '@/lib/api';
 
 function ProfilesContent() {
   const { t } = useTranslation();
@@ -27,6 +28,23 @@ function ProfilesContent() {
   const [mounted, setMounted] = useState(false);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [currentUserLoaded, setCurrentUserLoaded] = useState(false);
+  const [occupationOptions, setOccupationOptions] = useState<Array<{ value: string; label: string }>>([]);
+  const [loadingOccupation, setLoadingOccupation] = useState(false);
+
+  // Load occupation options
+  const loadOccupationOptions = useCallback(async (gender?: string) => {
+    setLoadingOccupation(true);
+    try {
+      const response = await metaDataApi.getOccupation(gender);
+      if (response.status && response.data) {
+        setOccupationOptions(response.data);
+      }
+    } catch (error) {
+      console.error('Failed to load occupation options:', error);
+    } finally {
+      setLoadingOccupation(false);
+    }
+  }, []);
 
   // Check authentication on mount (client-side only)
   useEffect(() => {
@@ -39,14 +57,20 @@ function ProfilesContent() {
       userApi.getMe().then(response => {
         if (response.status) {
           setCurrentUser(response.data);
+          // Load occupation options with user's gender to prioritize "House Wife" for females
+          loadOccupationOptions(response.data.gender);
+        } else {
+          loadOccupationOptions();
         }
         setCurrentUserLoaded(true);
       }).catch(() => {
         // If getMe fails, still mark as loaded so profiles can load without gender filtering
+        loadOccupationOptions();
         setCurrentUserLoaded(true);
       });
     } else {
-      // If not authenticated, mark as loaded immediately
+      // If not authenticated, mark as loaded immediately and load occupation options
+      loadOccupationOptions();
       setCurrentUserLoaded(true);
     }
     
@@ -57,7 +81,7 @@ function ProfilesContent() {
       }, 500); // Small delay to let page render
       return () => clearTimeout(timer);
     }
-  }, []);
+  }, [loadOccupationOptions]);
   
   // Gahoi ID search - local state for immediate UI updates
   const [gahoiIdInput, setGahoiIdInput] = useState(searchParams.get('gahoiId') || '');
@@ -559,16 +583,25 @@ function ProfilesContent() {
 
                 {/* Occupation */}
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-pink-300 mb-2">
                     Occupation
+                    {loadingOccupation && (
+                      <span className="ml-2 text-xs text-gray-500 dark:text-pink-400">(Loading...)</span>
+                    )}
                   </label>
-                  <input
-                    type="text"
+                  <select
                     value={filters.occupation}
-                    onChange={(e) => handleFilterChange('occupation', e.target.value, true)}
-                    className="w-full px-4 py-2 border-2 border-gray-200 rounded-md focus:outline-none focus:border-pink-500 text-gray-800"
-                    placeholder="Occupation"
-                  />
+                    onChange={(e) => handleFilterChange('occupation', e.target.value)}
+                    disabled={loadingOccupation}
+                    className="w-full px-4 py-2 border-2 border-gray-200 dark:border-pink-800 rounded-md focus:outline-none focus:border-pink-500 text-gray-800 dark:text-pink-200 dark:bg-black disabled:opacity-50"
+                  >
+                    <option value="">Select Occupation</option>
+                    {occupationOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
                 {/* Marital Status */}
@@ -639,7 +672,8 @@ function ProfilesContent() {
             )}
 
             {loading ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+              <div className="flex flex-col items-center justify-center py-12">
+                <LoadingSpinner size="lg" showWelcomeMessage={true} className="mb-4" />
                 <SkeletonLoader type="profile-list" count={8} />
               </div>
             ) : users.length === 0 ? (

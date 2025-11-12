@@ -10,6 +10,7 @@ import BlockReportModal from '@/components/BlockReportModal';
 import ProfileBadges from '@/components/ProfileBadges';
 import ProfileShareModal from '@/components/ProfileShareModal';
 import StructuredData from '@/components/StructuredData';
+import LoadingSpinner from '@/components/LoadingSpinner';
 import { trackProfileView, trackInterestSent } from '@/lib/analytics';
 
 export default function ProfileDetailPage() {
@@ -152,10 +153,9 @@ export default function ProfileDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-black flex items-center justify-center">
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-pink-600 border-t-transparent"></div>
-          <p className="mt-4 text-gray-600">{t('common.loading')}</p>
+          <LoadingSpinner size="lg" showWelcomeMessage={true} />
         </div>
       </div>
     );

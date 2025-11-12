@@ -47,7 +47,7 @@ router.use('/profile-views', profileViewRoutes);
 router.use('/messages', messageRoutes);
 // Notification routes
 router.use('/notifications', notificationRoutes);
-// Meta data routes (education, occupation, religion)
+// Meta data routes (education, occupation)
 router.use('/meta', metaDataRoutes);
 // Report routes (profile reporting/flagging)
 router.use('/reports', reportRoutes);

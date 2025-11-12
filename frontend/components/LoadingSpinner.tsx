@@ -1,21 +1,28 @@
 'use client';
 
+import { useTranslation } from '@/hooks/useTranslation';
+
 interface LoadingSpinnerProps {
   size?: 'sm' | 'md' | 'lg';
   className?: string;
   text?: string;
+  showWelcomeMessage?: boolean;
 }
 
 export default function LoadingSpinner({ 
   size = 'md', 
   className = '',
-  text 
+  text,
+  showWelcomeMessage = false
 }: LoadingSpinnerProps) {
+  const { t } = useTranslation();
   const sizeClasses = {
     sm: 'h-4 w-4',
     md: 'h-8 w-8',
     lg: 'h-12 w-12',
   };
+
+  const displayText = text || (showWelcomeMessage ? t('common.loadingMessage') : t('common.loading'));
 
   return (
     <div className={`flex flex-col items-center justify-center ${className}`}>
@@ -26,8 +33,8 @@ export default function LoadingSpinner({
       >
         <span className="sr-only">Loading...</span>
       </div>
-      {text && (
-        <p className="mt-2 text-sm text-gray-600 dark:text-pink-300">{text}</p>
+      {displayText && (
+        <p className="mt-2 text-sm text-gray-600 dark:text-pink-300 text-center">{displayText}</p>
       )}
     </div>
   );

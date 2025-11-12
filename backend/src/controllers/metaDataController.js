@@ -1,6 +1,6 @@
 /**
  * Meta Data Controller - Provides static/API data for dropdowns
- * Education, Occupation, Religion options
+ * Education, Occupation options
  */
 
 /**
