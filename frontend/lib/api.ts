@@ -711,6 +711,169 @@ export const horoscopeApi = {
   },
 };
 
+// Events API
+export interface Event {
+  _id: string;
+  title: string;
+  description: string;
+  eventDate: string; // ISO date string
+  eventTime: string; // HH:MM format
+  endDate?: string;
+  location: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  organizer: string | { _id: string; name: string; email?: string; phone?: string };
+  organizerName: string;
+  category: 'gathering' | 'meeting' | 'celebration' | 'workshop' | 'seminar' | 'other';
+  maxAttendees?: number;
+  isPublic: boolean;
+  imageUrl?: string;
+  status: 'upcoming' | 'ongoing' | 'completed' | 'cancelled';
+  tags?: string[];
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface RSVP {
+  _id: string;
+  event: string | Event;
+  user: string | User;
+  status: 'going' | 'maybe' | 'notGoing';
+  createdAt?: string;
+}
+
+export const eventApi = {
+  getAll: async (options?: {
+    page?: number;
+    limit?: number;
+    status?: string;
+    category?: string;
+    city?: string;
+    startDate?: string;
+    endDate?: string;
+  }): Promise<ApiResponse<Event[]>> => {
+    const params = new URLSearchParams();
+    if (options) {
+      Object.entries(options).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) params.append(key, String(value));
+      });
+    }
+    const response = await api.get(`/events?${params.toString()}`);
+    return response.data;
+  },
+  getById: async (id: string): Promise<ApiResponse<Event>> => {
+    const response = await api.get(`/events/${id}`);
+    return response.data;
+  },
+  create: async (data: Partial<Event>): Promise<ApiResponse<Event>> => {
+    const response = await api.post('/events', data);
+    return response.data;
+  },
+  update: async (id: string, data: Partial<Event>): Promise<ApiResponse<Event>> => {
+    const response = await api.put(`/events/${id}`, data);
+    return response.data;
+  },
+  delete: async (id: string): Promise<ApiResponse<null>> => {
+    const response = await api.delete(`/events/${id}`);
+    return response.data;
+  },
+  rsvp: async (eventId: string, status: 'going' | 'maybe' | 'notGoing'): Promise<ApiResponse<RSVP>> => {
+    const response = await api.post(`/events/${eventId}/rsvp`, { status });
+    return response.data;
+  },
+  cancelRSVP: async (eventId: string): Promise<ApiResponse<null>> => {
+    const response = await api.delete(`/events/${eventId}/rsvp`);
+    return response.data;
+  },
+  getMyRSVPs: async (): Promise<ApiResponse<RSVP[]>> => {
+    const response = await api.get('/events/my/rsvps');
+    return response.data;
+  },
+};
+
+// Health API
+export interface DatabaseStatus {
+  status: boolean;
+  message: string;
+  connectionState: string;
+  stateCode: number;
+  database: string;
+  host: string;
+  port: string | number;
+  collections: number;
+  collectionNames: string[];
+  mongoUri: string;
+  timestamp: string;
+}
+
+// Polls API
+export interface PollOption {
+  _id: string;
+  text: string;
+  votes: number;
+}
+
+export interface Poll {
+  _id: string;
+  title: string;
+  description?: string;
+  createdBy: string | { _id: string; name: string; email?: string };
+  options: PollOption[];
+  category: 'general' | 'community' | 'platform' | 'feature' | 'other';
+  isActive: boolean;
+  isPublic: boolean;
+  allowMultipleVotes: boolean;
+  expiresAt?: string;
+  totalVotes: number;
+  hasVoted?: boolean; // Whether current user has voted
+  userVote?: string; // Option ID that user voted for
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export const pollApi = {
+  getAll: async (options?: {
+    page?: number;
+    limit?: number;
+    category?: string;
+    isActive?: boolean;
+  }): Promise<ApiResponse<Poll[]>> => {
+    const params = new URLSearchParams();
+    if (options) {
+      Object.entries(options).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) params.append(key, String(value));
+      });
+    }
+    const response = await api.get(`/polls?${params.toString()}`);
+    return response.data;
+  },
+  getActive: async (): Promise<ApiResponse<Poll[]>> => {
+    const response = await api.get('/polls/active');
+    return response.data;
+  },
+  getById: async (id: string): Promise<ApiResponse<Poll>> => {
+    const response = await api.get(`/polls/${id}`);
+    return response.data;
+  },
+  create: async (data: Partial<Poll>): Promise<ApiResponse<Poll>> => {
+    const response = await api.post('/polls', data);
+    return response.data;
+  },
+  update: async (id: string, data: Partial<Poll>): Promise<ApiResponse<Poll>> => {
+    const response = await api.patch(`/polls/${id}`, data);
+    return response.data;
+  },
+  delete: async (id: string): Promise<ApiResponse<null>> => {
+    const response = await api.delete(`/polls/${id}`);
+    return response.data;
+  },
+  vote: async (pollId: string, optionId: string): Promise<ApiResponse<Poll>> => {
+    const response = await api.post(`/polls/${pollId}/vote`, { optionId });
+    return response.data;
+  },
+};
+
 // Health API
 export interface DatabaseStatus {
   status: boolean;

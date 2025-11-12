@@ -176,18 +176,43 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Top Bar - Minimal with Logo and Language Switcher */}
+      {/* Top Bar - Hamburger Menu (Left) | Logo (Center) | Icons (Right) */}
       <nav className="bg-white dark:bg-[#0f1117] border-b border-gray-200 dark:border-[#262932] sticky top-0 z-30 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center min-h-20 py-3">
+          <div className="flex items-center justify-between min-h-20 py-3 relative">
+            {/* Left: Hamburger Menu Button */}
+            <button
+              onClick={() => setShowUserMenu(!showUserMenu)}
+              className="p-2 text-gray-700 dark:text-pink-100 hover:text-pink-600 dark:hover:text-pink-300 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700"
+              title="Menu"
+              aria-label="Open menu"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+            
+            {/* Center: Logo */}
             <Link 
               href="/" 
-              className="text-xl sm:text-2xl font-light text-gray-900 dark:text-white tracking-tight"
+              className="absolute left-1/2 transform -translate-x-1/2 text-xl sm:text-2xl font-light text-gray-900 dark:text-white tracking-tight"
             >
               💍 {t('common.appName')}
             </Link>
             
-            <div className="flex items-center space-x-3 sm:space-x-4">
+            {/* Right: Icons */}
+            <div className="flex items-center space-x-2 sm:space-x-3">
+              {/* Search Icon */}
+              <Link
+                href="/profiles"
+                className="p-2 text-gray-700 dark:text-pink-100 hover:text-pink-600 dark:hover:text-pink-300 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700"
+                title="Search"
+              >
+                <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </Link>
+              
               {/* Language Switcher - Always visible */}
               {mounted && <LanguageSwitcher />}
               
@@ -195,24 +220,28 @@ export default function Navbar() {
                 <>
                   <Link
                     href="/notifications"
-                    className="relative p-2 text-gray-700 dark:text-pink-100 hover:text-pink-600 dark:hover:text-pink-300 transition-colors"
+                    className="relative p-2 text-gray-700 dark:text-pink-100 hover:text-pink-600 dark:hover:text-pink-300 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700"
                     title={t('common.notifications')}
                   >
-                    <span className="text-lg">🔔</span>
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                    </svg>
                     {unreadCount > 0 && (
-                      <span className="absolute top-0 right-0 inline-flex items-center justify-center w-4 h-4 text-xs font-bold text-white bg-red-600 rounded-full">
+                      <span className="absolute top-1 right-1 inline-flex items-center justify-center w-4 h-4 text-xs font-bold text-white bg-red-600 rounded-full">
                         {unreadCount > 9 ? '9+' : unreadCount}
                       </span>
                     )}
                   </Link>
                   
-                  {/* User Menu Button */}
+                  {/* User Profile Icon */}
                   <button
                     onClick={() => setShowUserMenu(!showUserMenu)}
-                    className="relative p-2 text-gray-700 dark:text-pink-100 hover:text-pink-600 dark:hover:text-pink-300 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700"
+                    className="p-2 text-gray-700 dark:text-pink-100 hover:text-pink-600 dark:hover:text-pink-300 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700"
                     title="User Menu"
                   >
-                    <span className="text-xl">👤</span>
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
                   </button>
                   
                   {/* Side Menu Drawer */}
@@ -371,37 +400,19 @@ export default function Navbar() {
               )}
               {mounted && !isAuthenticated && (
                 <>
-                  {/* Mobile: Show login/signup buttons */}
-                  <div className="flex sm:hidden items-center space-x-2">
-                    <Link
-                      href="/login"
-                      className="px-3 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-pink-600 dark:hover:text-pink-400 transition-colors"
-                    >
-                      {t('common.login')}
-                    </Link>
-                    <Link
-                      href="/register"
-                      className="px-3 py-1.5 text-sm font-medium text-white bg-black dark:bg-white dark:text-black hover:bg-gray-900 dark:hover:bg-gray-100 transition-colors rounded"
-                    >
-                      {t('common.signUp')}
-                    </Link>
-                  </div>
-                  {/* Desktop: Show login/signup buttons */}
-                  <div className="hidden sm:flex items-center space-x-3">
-                    <Link
-                      href="/login"
-                      className="px-4 py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-pink-600 dark:hover:text-pink-400 transition-colors"
-                    >
-                      {t('common.login')}
-                    </Link>
-                    <Link
-                      href="/register"
-                      className="px-4 py-2 text-base font-medium text-white bg-black dark:bg-white dark:text-black hover:bg-gray-900 dark:hover:bg-gray-100 transition-colors rounded"
-                    >
-                      {t('common.signUp')}
-                    </Link>
-                    <ThemeToggle />
-                  </div>
+                  {/* Theme Toggle */}
+                  <ThemeToggle />
+                  
+                  {/* User Profile Icon (for login/signup) */}
+                  <Link
+                    href="/login"
+                    className="p-2 text-gray-700 dark:text-pink-100 hover:text-pink-600 dark:hover:text-pink-300 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700"
+                    title="Login"
+                  >
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                  </Link>
                 </>
               )}
             </div>

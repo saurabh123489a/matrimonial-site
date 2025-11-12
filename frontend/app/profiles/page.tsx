@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, Suspense, useRef, useCallback } from 'react';
+import { useState, useEffect, Suspense, useRef, useCallback, useMemo } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { userApi, User } from '@/lib/api';
 import EnhancedProfileCard from '@/components/EnhancedProfileCard';
@@ -13,6 +13,7 @@ import SkeletonLoader from '@/components/SkeletonLoader';
 import EmptyState from '@/components/EmptyState';
 import { trackSearch } from '@/lib/analytics';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import { debounce } from '@/lib/utils/debounce';
 
 function ProfilesContent() {
   const { t } = useTranslation();
@@ -52,10 +53,11 @@ function ProfilesContent() {
     }
   }, []);
   
-  // Gahoi ID search
+  // Gahoi ID search - local state for immediate UI updates
+  const [gahoiIdInput, setGahoiIdInput] = useState(searchParams.get('gahoiId') || '');
   const [gahoiId, setGahoiId] = useState(searchParams.get('gahoiId') || '');
   
-  // Gahoi Sathi style comprehensive filters
+  // Gahoi Sathi style comprehensive filters - local state for immediate UI updates
   const [filters, setFilters] = useState({
     gender: searchParams.get('gender') || '',
     minAge: searchParams.get('minAge') || '',
@@ -71,6 +73,9 @@ function ProfilesContent() {
     maxHeight: '',
     subCaste: '',
   });
+  
+  // Debounced search filters - these trigger the actual API call
+  const [searchFilters, setSearchFilters] = useState(filters);
   const [page, setPage] = useState(1);
   const [pagination, setPagination] = useState({ total: 0, pages: 0 });
   const [showFilters, setShowFilters] = useState(false);
@@ -152,9 +157,9 @@ function ProfilesContent() {
         return;
       }
 
-      // Otherwise, use filters
+      // Otherwise, use searchFilters (debounced for text inputs)
       const filterParams: any = { page: 1, limit: 50 }; // Max limit allowed by API, but display only 10 initially
-      Object.entries(filters).forEach(([key, value]) => {
+      Object.entries(searchFilters).forEach(([key, value]) => {
         if (value) {
           if (key === 'minAge' || key === 'maxAge' || key === 'minHeight' || key === 'maxHeight') {
             filterParams[key] = parseInt(value);
@@ -200,7 +205,7 @@ function ProfilesContent() {
   };
 
   useEffect(() => {
-    // Load profiles when filters change or when currentUser is loaded (for gender filtering)
+    // Load profiles when searchFilters or gahoiId change, or when currentUser is loaded (for gender filtering)
     // If authenticated, wait for currentUser to load; if not authenticated, load immediately
     if (!isAuthenticated || currentUser !== null) {
     loadProfiles();
@@ -210,11 +215,40 @@ function ProfilesContent() {
     return () => {
       isMountedRef.current = false;
     };
-  }, [page, gahoiId, currentUser, isAuthenticated]);
+  }, [page, gahoiId, searchFilters, currentUser, isAuthenticated]);
 
-  const handleFilterChange = (key: string, value: string) => {
-    setFilters({ ...filters, [key]: value });
-    setPage(1);
+  // Debounced function to update search filters (triggers API call)
+  const debouncedUpdateSearchFilters = useMemo(
+    () => debounce((newFilters: typeof filters) => {
+      setSearchFilters(newFilters);
+      setPage(1);
+    }, 500),
+    []
+  );
+
+  // Debounced Gahoi ID search
+  const debouncedGahoiIdSearch = useMemo(
+    () => debounce((id: string) => {
+      setGahoiId(id);
+      setPage(1);
+    }, 500),
+    []
+  );
+
+  // Handle filter changes
+  const handleFilterChange = (key: string, value: string, isTextInput: boolean = false) => {
+    // Update local state immediately for UI responsiveness
+    const newFilters = { ...filters, [key]: value };
+    setFilters(newFilters);
+    
+    if (isTextInput) {
+      // For text inputs, debounce the search trigger
+      debouncedUpdateSearchFilters(newFilters);
+    } else {
+      // For selects and number inputs, update search filters immediately
+      setSearchFilters(newFilters);
+      setPage(1);
+    }
   };
 
   const handleSearch = () => {
@@ -223,8 +257,7 @@ function ProfilesContent() {
   };
 
   const clearFilters = () => {
-    setGahoiId('');
-    setFilters({
+    const emptyFilters = {
       gender: '',
       minAge: '',
       maxAge: '',
@@ -238,7 +271,11 @@ function ProfilesContent() {
       minHeight: '',
       maxHeight: '',
       subCaste: '',
-    });
+    };
+    setGahoiIdInput('');
+    setGahoiId('');
+    setFilters(emptyFilters);
+    setSearchFilters(emptyFilters);
     setPage(1);
   };
 
@@ -370,22 +407,25 @@ function ProfilesContent() {
                   <div className="flex gap-2">
                     <input
                       type="text"
-                      value={gahoiId}
+                      value={gahoiIdInput}
                       onChange={(e) => {
                         const value = e.target.value;
                         // Only allow 5-digit numbers starting with 1000
                         if (value === '' || /^1000[0-9]$/.test(value) || /^100[0-9]{2}$/.test(value)) {
-                          setGahoiId(value);
-                          setPage(1);
+                          // Update UI immediately for responsiveness
+                          setGahoiIdInput(value);
+                          // Debounce the actual search
+                          debouncedGahoiIdSearch(value);
                         }
                       }}
                       placeholder="10000"
                       className="flex-1 px-4 py-2 border-2 border-gray-200 dark:border-pink-800 rounded-md focus:outline-none focus:border-pink-500 text-gray-800 dark:text-pink-200 dark:bg-black"
                       maxLength={5}
                     />
-                    {gahoiId && (
+                    {gahoiIdInput && (
                       <button
                         onClick={() => {
+                          setGahoiIdInput('');
                           setGahoiId('');
                           setPage(1);
                         }}
@@ -456,14 +496,14 @@ function ProfilesContent() {
                   <input
                     type="text"
                     value={filters.city}
-                    onChange={(e) => handleFilterChange('city', e.target.value)}
+                    onChange={(e) => handleFilterChange('city', e.target.value, true)}
                     className="w-full px-4 py-2 border-2 border-gray-200 rounded-md focus:outline-none focus:border-pink-500 text-gray-800 mb-2"
                     placeholder="City"
                   />
                   <input
                     type="text"
                     value={filters.state}
-                    onChange={(e) => handleFilterChange('state', e.target.value)}
+                    onChange={(e) => handleFilterChange('state', e.target.value, true)}
                     className="w-full px-4 py-2 border-2 border-gray-200 rounded-md focus:outline-none focus:border-pink-500 text-gray-800"
                     placeholder="State"
                   />
@@ -477,7 +517,7 @@ function ProfilesContent() {
                   <input
                     type="text"
                     value={filters.religion}
-                    onChange={(e) => handleFilterChange('religion', e.target.value)}
+                    onChange={(e) => handleFilterChange('religion', e.target.value, true)}
                     className="w-full px-4 py-2 border-2 border-gray-200 rounded-md focus:outline-none focus:border-pink-500 text-gray-800"
                     placeholder="Religion"
                   />
@@ -491,14 +531,14 @@ function ProfilesContent() {
                   <input
                     type="text"
                     value={filters.caste}
-                    onChange={(e) => handleFilterChange('caste', e.target.value)}
+                    onChange={(e) => handleFilterChange('caste', e.target.value, true)}
                     className="w-full px-4 py-2 border-2 border-gray-200 rounded-md focus:outline-none focus:border-pink-500 text-gray-800 mb-2"
                     placeholder="Caste"
                   />
                   <input
                     type="text"
                     value={filters.subCaste}
-                    onChange={(e) => handleFilterChange('subCaste', e.target.value)}
+                    onChange={(e) => handleFilterChange('subCaste', e.target.value, true)}
                     className="w-full px-4 py-2 border-2 border-gray-200 rounded-md focus:outline-none focus:border-pink-500 text-gray-800"
                     placeholder="Sub-Caste"
                   />
@@ -512,7 +552,7 @@ function ProfilesContent() {
                   <input
                     type="text"
                     value={filters.education}
-                    onChange={(e) => handleFilterChange('education', e.target.value)}
+                    onChange={(e) => handleFilterChange('education', e.target.value, true)}
                     className="w-full px-4 py-2 border-2 border-gray-200 rounded-md focus:outline-none focus:border-pink-500 text-gray-800"
                     placeholder="Education"
                   />
@@ -526,7 +566,7 @@ function ProfilesContent() {
                   <input
                     type="text"
                     value={filters.occupation}
-                    onChange={(e) => handleFilterChange('occupation', e.target.value)}
+                    onChange={(e) => handleFilterChange('occupation', e.target.value, true)}
                     className="w-full px-4 py-2 border-2 border-gray-200 rounded-md focus:outline-none focus:border-pink-500 text-gray-800"
                     placeholder="Occupation"
                   />
