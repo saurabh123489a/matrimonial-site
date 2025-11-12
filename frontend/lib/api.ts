@@ -889,6 +889,92 @@ export interface DatabaseStatus {
   timestamp: string;
 }
 
+// Badges API
+export interface Badge {
+  _id: string;
+  name: string;
+  displayName: string;
+  description: string;
+  icon: string; // Emoji or icon identifier
+  color: string; // Hex color code
+  category: 'achievement' | 'verification' | 'community' | 'activity' | 'special';
+  criteria?: any;
+  isActive: boolean;
+  isAutoAssigned: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface UserBadge {
+  _id: string;
+  userId: string | User;
+  badgeId: string | Badge;
+  assignedBy?: string | User;
+  assignedAt: string;
+  reason?: string;
+  isVisible: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export const badgeApi = {
+  getAll: async (options?: { isActive?: boolean }): Promise<ApiResponse<Badge[]>> => {
+    const params = new URLSearchParams();
+    if (options?.isActive !== undefined) {
+      params.append('isActive', String(options.isActive));
+    }
+    const response = await api.get(`/badges?${params.toString()}`);
+    return response.data;
+  },
+  getActive: async (): Promise<ApiResponse<Badge[]>> => {
+    const response = await api.get('/badges/active');
+    return response.data;
+  },
+  getById: async (id: string): Promise<ApiResponse<Badge>> => {
+    const response = await api.get(`/badges/${id}`);
+    return response.data;
+  },
+  getUserBadges: async (userId: string): Promise<ApiResponse<UserBadge[]>> => {
+    const response = await api.get(`/badges/user/${userId}`);
+    return response.data;
+  },
+  create: async (data: Partial<Badge>): Promise<ApiResponse<Badge>> => {
+    const response = await api.post('/badges', data);
+    return response.data;
+  },
+  update: async (id: string, data: Partial<Badge>): Promise<ApiResponse<Badge>> => {
+    const response = await api.patch(`/badges/${id}`, data);
+    return response.data;
+  },
+  delete: async (id: string): Promise<ApiResponse<null>> => {
+    const response = await api.delete(`/badges/${id}`);
+    return response.data;
+  },
+  assign: async (badgeId: string, userId: string, reason?: string): Promise<ApiResponse<UserBadge>> => {
+    const response = await api.post(`/badges/${badgeId}/assign/${userId}`, { reason });
+    return response.data;
+  },
+  remove: async (badgeId: string, userId: string): Promise<ApiResponse<null>> => {
+    const response = await api.delete(`/badges/${badgeId}/user/${userId}`);
+    return response.data;
+  },
+};
+
+// Health API
+export interface DatabaseStatus {
+  status: boolean;
+  message: string;
+  connectionState: string;
+  stateCode: number;
+  database: string;
+  host: string;
+  port: string | number;
+  collections: number;
+  collectionNames: string[];
+  mongoUri: string;
+  timestamp: string;
+}
+
 export const healthApi = {
   checkDatabase: async (): Promise<ApiResponse<DatabaseStatus>> => {
     const response = await api.get('/health/db');

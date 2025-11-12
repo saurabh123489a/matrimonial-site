@@ -247,10 +247,11 @@ export default function Navbar() {
                   {/* Side Menu Drawer */}
                   {showUserMenu && (
                     <>
-                      {/* Backdrop */}
+                      {/* Backdrop - Dims and blurs the background */}
                       <div 
-                        className="fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity"
+                        className="fixed inset-0 bg-black bg-opacity-20 dark:bg-opacity-30 backdrop-blur-[1px] z-40 transition-opacity"
                         onClick={() => setShowUserMenu(false)}
+                        aria-hidden="true"
                       />
                       
                       {/* Side Drawer */}

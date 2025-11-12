@@ -12,6 +12,7 @@ import ProfileBadges from '@/components/ProfileBadges';
 import PhotoUpload from '@/components/PhotoUpload';
 import ProfileShareModal from '@/components/ProfileShareModal';
 import LazyImage from '@/components/LazyImage';
+import { sanitizeFormInput } from '@/hooks/useSanitizedInput';
 
 export default function MyProfilePage() {
   const router = useRouter();
@@ -424,7 +425,7 @@ export default function MyProfilePage() {
                 <input
                   type="text"
                   value={formData.name || ''}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  onChange={(e) => setFormData({ ...formData, name: sanitizeFormInput(e.target.value, 'text') })}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
                 />
               ) : (
@@ -464,7 +465,7 @@ export default function MyProfilePage() {
                 <input
                   type="tel"
                   value={formData.phone || ''}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  onChange={(e) => setFormData({ ...formData, phone: sanitizeFormInput(e.target.value, 'phone') })}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
                 />
               ) : (
@@ -564,7 +565,7 @@ export default function MyProfilePage() {
                   <input
                     type="text"
                     value={formData.town || ''}
-                    onChange={(e) => setFormData({ ...formData, town: e.target.value })}
+                    onChange={(e) => setFormData({ ...formData, town: sanitizeFormInput(e.target.value, 'text') })}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
                     placeholder="Enter town or village name"
                   />
@@ -574,7 +575,7 @@ export default function MyProfilePage() {
                   <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Present Address</label>
                   <textarea
                     value={formData.presentAddress || ''}
-                    onChange={(e) => setFormData({ ...formData, presentAddress: e.target.value })}
+                    onChange={(e) => setFormData({ ...formData, presentAddress: sanitizeFormInput(e.target.value, 'textarea') })}
                     rows={2}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
                     placeholder="Enter present address"
@@ -585,7 +586,7 @@ export default function MyProfilePage() {
                   <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Permanent Address</label>
                   <textarea
                     value={formData.permanentAddress || ''}
-                    onChange={(e) => setFormData({ ...formData, permanentAddress: e.target.value })}
+                    onChange={(e) => setFormData({ ...formData, permanentAddress: sanitizeFormInput(e.target.value, 'textarea') })}
                     rows={2}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
                     placeholder="Enter permanent address"
@@ -617,7 +618,7 @@ export default function MyProfilePage() {
                 <input
                   type="tel"
                   value={formData.whatsappNumber || ''}
-                  onChange={(e) => setFormData({ ...formData, whatsappNumber: e.target.value })}
+                  onChange={(e) => setFormData({ ...formData, whatsappNumber: sanitizeFormInput(e.target.value, 'phone') })}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
                   placeholder="Enter WhatsApp number"
                 />
@@ -632,7 +633,7 @@ export default function MyProfilePage() {
                 <input
                   type="text"
                   value={formData.religion || ''}
-                  onChange={(e) => setFormData({ ...formData, religion: e.target.value })}
+                  onChange={(e) => setFormData({ ...formData, religion: sanitizeFormInput(e.target.value, 'text') })}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
                 />
               ) : (
@@ -726,7 +727,7 @@ export default function MyProfilePage() {
                 <input
                   type="text"
                   value={formData.profession || ''}
-                  onChange={(e) => setFormData({ ...formData, profession: e.target.value })}
+                  onChange={(e) => setFormData({ ...formData, profession: sanitizeFormInput(e.target.value, 'text') })}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
                   placeholder="e.g., Computer Software Professional"
                 />
@@ -741,7 +742,7 @@ export default function MyProfilePage() {
                 <input
                   type="text"
                   value={formData.employer || ''}
-                  onChange={(e) => setFormData({ ...formData, employer: e.target.value })}
+                  onChange={(e) => setFormData({ ...formData, employer: sanitizeFormInput(e.target.value, 'text') })}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
                   placeholder="Company name"
                 />
@@ -756,7 +757,7 @@ export default function MyProfilePage() {
                 <input
                   type="text"
                   value={formData.occupationDetail || ''}
-                  onChange={(e) => setFormData({ ...formData, occupationDetail: e.target.value })}
+                  onChange={(e) => setFormData({ ...formData, occupationDetail: sanitizeFormInput(e.target.value, 'text') })}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
                   placeholder="Detailed occupation information"
                 />
@@ -771,7 +772,7 @@ export default function MyProfilePage() {
                 <input
                   type="text"
                   value={formData.annualIncome || ''}
-                  onChange={(e) => setFormData({ ...formData, annualIncome: e.target.value })}
+                  onChange={(e) => setFormData({ ...formData, annualIncome: sanitizeFormInput(e.target.value, 'text') })}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
                   placeholder="e.g., 25-30 lakh"
                 />
@@ -785,7 +786,7 @@ export default function MyProfilePage() {
               {editing ? (
                 <textarea
                   value={formData.bio || ''}
-                  onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+                  onChange={(e) => setFormData({ ...formData, bio: sanitizeFormInput(e.target.value, 'textarea') })}
                   rows={4}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
                   dir="auto"

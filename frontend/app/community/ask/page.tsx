@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { questionApi } from '@/lib/api';
 import { auth } from '@/lib/auth';
+import { sanitizeFormInput } from '@/hooks/useSanitizedInput';
 
 export default function AskQuestionPage() {
   const router = useRouter();
@@ -92,7 +93,7 @@ export default function AskQuestionPage() {
             required
             maxLength={200}
             value={formData.title}
-            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+            onChange={(e) => setFormData({ ...formData, title: sanitizeFormInput(e.target.value, 'text') })}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
             placeholder="What's your question?"
           />
@@ -123,7 +124,7 @@ export default function AskQuestionPage() {
             rows={8}
             maxLength={5000}
             value={formData.content}
-            onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+            onChange={(e) => setFormData({ ...formData, content: sanitizeFormInput(e.target.value, 'textarea') })}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
             placeholder="Provide details about your question..."
           />
@@ -136,7 +137,7 @@ export default function AskQuestionPage() {
           <input
             type="text"
             value={formData.tags}
-            onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
+            onChange={(e) => setFormData({ ...formData, tags: sanitizeFormInput(e.target.value, 'text') })}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
             placeholder="e.g., marriage, dowry, traditions"
           />

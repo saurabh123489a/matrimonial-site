@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { userApi } from '@/lib/api';
 import { auth } from '@/lib/auth';
 import { useTranslation } from '@/hooks/useTranslation';
+import { sanitizeFormInput } from '@/hooks/useSanitizedInput';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -88,7 +89,7 @@ export default function RegisterPage() {
                 className="appearance-none relative block w-full px-4 py-3 border-2 border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 sm:text-sm"
                 placeholder={t('auth.fullName')}
                 value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                onChange={(e) => setFormData({ ...formData, name: sanitizeFormInput(e.target.value, 'text') })}
               />
             </div>
             <div>
@@ -102,7 +103,7 @@ export default function RegisterPage() {
                 className="appearance-none relative block w-full px-4 py-3 border-2 border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 sm:text-sm"
                 placeholder={t('auth.emailOptional')}
                 value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                onChange={(e) => setFormData({ ...formData, email: sanitizeFormInput(e.target.value, 'email') })}
               />
             </div>
             <div>
@@ -116,7 +117,7 @@ export default function RegisterPage() {
                 className="appearance-none relative block w-full px-4 py-3 border-2 border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 sm:text-sm"
                 placeholder={t('auth.phoneOptional')}
                 value={formData.phone}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                onChange={(e) => setFormData({ ...formData, phone: sanitizeFormInput(e.target.value, 'phone') })}
               />
             </div>
             <div>
