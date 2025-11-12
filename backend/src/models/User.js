@@ -31,9 +31,6 @@ const preferenceSchema = new mongoose.Schema(
     gender: { type: String, enum: ['male', 'female', 'other'] },
     minHeight: { type: Number },
     maxHeight: { type: Number },
-    religion: String,
-    caste: String,
-    subCaste: String,
     location: String,
     education: String,
     occupation: String,
@@ -94,7 +91,7 @@ const userSchema = new mongoose.Schema(
     },
     
     // Physical Attributes
-    height: { type: Number }, // in cm
+    height: { type: Number }, // in inches
     weight: { type: Number }, // in kg
     complexion: { 
       type: String, 
@@ -127,9 +124,6 @@ const userSchema = new mongoose.Schema(
     permanentAddress: { type: String },
     
     // Family & Background
-    religion: { type: String },
-    caste: { type: String },
-    subCaste: { type: String },
     gotra: { type: String }, // Ancestral lineage
     motherTongue: { type: String },
     
@@ -219,8 +213,6 @@ userSchema.index({ phone: 1 }, { unique: true, sparse: true });
 userSchema.index({ gahoiId: 1 }, { unique: true, sparse: true });
 userSchema.index({ gender: 1, age: 1 });
 userSchema.index({ city: 1, state: 1 });
-userSchema.index({ religion: 1 });
-userSchema.index({ caste: 1 });
 userSchema.index({ maritalStatus: 1 });
 userSchema.index({ education: 1 });
 userSchema.index({ occupation: 1 });

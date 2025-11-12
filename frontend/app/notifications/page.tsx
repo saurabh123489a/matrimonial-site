@@ -88,10 +88,10 @@ export default function NotificationsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-[#0f1117] py-8 transition-colors">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold text-gray-900">Notifications</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-pink-100">Notifications</h1>
           <div className="flex gap-2">
             <button
               onClick={() => setFilter(filter === 'all' ? 'unread' : 'all')}
@@ -131,17 +131,17 @@ export default function NotificationsPage() {
             {notifications.map((notification) => (
               <div
                 key={notification._id}
-                className={`p-4 bg-white rounded-lg shadow-sm border ${
-                  !notification.isRead ? 'border-pink-300 bg-pink-50' : 'border-gray-200'
+                className={`p-4 bg-white dark:bg-[#181b23] rounded-lg shadow-sm border transition-colors ${
+                  !notification.isRead ? 'border-pink-300 bg-pink-50 dark:bg-pink-900/10 dark:border-pink-700' : 'border-gray-200 dark:border-[#303341]'
                 }`}
               >
                 <div className="flex items-start justify-between">
                   <div className="flex items-start space-x-3 flex-1">
                     <span className="text-2xl">{getNotificationIcon(notification.type)}</span>
                     <div className="flex-1">
-                      <h3 className="font-semibold text-gray-900">{notification.title}</h3>
-                      <p className="text-gray-600 text-sm mt-1">{notification.message}</p>
-                      <p className="text-xs text-gray-400 mt-2">
+                      <h3 className="font-semibold text-gray-900 dark:text-pink-100">{notification.title}</h3>
+                      <p className="text-gray-600 dark:text-pink-200 text-sm mt-1">{notification.message}</p>
+                      <p className="text-xs text-gray-400 dark:text-pink-300 mt-2">
                         {new Date(notification.createdAt).toLocaleString()}
                       </p>
                       {notification.relatedUserId && (

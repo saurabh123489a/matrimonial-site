@@ -310,7 +310,7 @@ export default function Navbar() {
                     {showNotifications && (
                       <>
                         <div 
-                          className="fixed inset-0 bg-black bg-opacity-20 dark:bg-opacity-30 backdrop-blur-[1px] z-40 transition-opacity duration-300 ease-in-out animate-fade-in"
+                          className="fixed inset-0 bg-black bg-opacity-10 dark:bg-opacity-15 backdrop-blur-[0.5px] z-40 transition-opacity duration-300 ease-in-out animate-fade-in"
                           onClick={() => setShowNotifications(false)}
                           aria-hidden="true"
                         />
@@ -344,16 +344,18 @@ export default function Navbar() {
                             ) : (
                               <div className="divide-y divide-gray-200 dark:divide-[#303341]">
                                 {notifications.map((notification) => (
-                                  <div
+                                  <Link
                                     key={notification._id}
-                                    className={`p-4 hover:bg-gray-50 dark:hover:bg-[#1f212a] transition-colors cursor-pointer ${
-                                      !notification.isRead ? 'bg-pink-50/50 dark:bg-pink-900/10' : ''
-                                    }`}
+                                    href="/notifications"
                                     onClick={() => {
+                                      setShowNotifications(false);
                                       if (!notification.isRead) {
                                         handleMarkAsRead(notification._id);
                                       }
                                     }}
+                                    className={`block p-4 hover:bg-gray-50 dark:hover:bg-[#1f212a] transition-colors cursor-pointer ${
+                                      !notification.isRead ? 'bg-pink-50/50 dark:bg-pink-900/10' : ''
+                                    }`}
                                   >
                                     <div className="flex items-start gap-3">
                                       <span className="text-2xl flex-shrink-0">{getNotificationIcon(notification.type)}</span>
@@ -372,7 +374,7 @@ export default function Navbar() {
                                         <span className="w-2 h-2 bg-pink-600 rounded-full flex-shrink-0 mt-1"></span>
                                       )}
                                     </div>
-                                  </div>
+                                  </Link>
                                 ))}
                               </div>
                             )}
@@ -419,7 +421,7 @@ export default function Navbar() {
                       }`}>
                         {/* Header */}
                         <div className="sticky top-0 bg-white dark:bg-[#181b23] border-b border-gray-200 dark:border-[#303341] px-4 py-4 flex items-center justify-between z-10">
-                          <h2 className="text-lg font-semibold text-gray-900 dark:text-pink-100">
+                          <h2 className="text-base font-semibold text-gray-900 dark:text-pink-100">
                             {t('common.menu') || 'Menu'}
                           </h2>
                           <button
@@ -439,14 +441,14 @@ export default function Navbar() {
                           <Link
                             href="/profile"
                             onClick={() => setShowUserMenu(false)}
-                            className={`flex items-center gap-3 px-4 py-3 text-base font-medium transition-all duration-200 rounded-lg transform active:scale-95 ${
+                            className={`flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-all duration-200 rounded-lg transform active:scale-95 ${
                               pathname === '/profile'
                                 ? 'bg-pink-50 dark:bg-pink-900/10 text-pink-600 dark:text-pink-200'
                                 : 'text-gray-700 dark:text-pink-100 hover:bg-gray-50 dark:hover:bg-[#1f212a]'
                             }`}
                             style={{ animationDelay: '0.05s' }}
                           >
-                            <span className="text-xl">👤</span>
+                            <span className="text-lg">👤</span>
                             <span>{t('common.profile') || 'Profile'}</span>
                           </Link>
                           
@@ -455,7 +457,7 @@ export default function Navbar() {
                             onClick={() => {
                               toggleTheme();
                             }}
-                            className="w-full flex items-center gap-3 px-4 py-3 text-base font-medium text-gray-700 dark:text-pink-100 hover:bg-gray-50 dark:hover:bg-[#1f212a] transition-all duration-200 rounded-lg transform active:scale-95"
+                            className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-pink-100 hover:bg-gray-50 dark:hover:bg-[#1f212a] transition-all duration-200 rounded-lg transform active:scale-95"
                           >
                             {resolvedTheme === 'dark' ? (
                               <>
@@ -477,7 +479,7 @@ export default function Navbar() {
                           {/* Language Switcher in Side Menu */}
                           <div className="px-4 py-3 border-t border-gray-200 dark:border-[#303341] mt-2">
                             <div className="flex items-center gap-3 mb-2">
-                              <span className="text-lg">🌐</span>
+                              <span className="text-base">🌐</span>
                               <span className="text-sm font-medium text-gray-700 dark:text-pink-100">
                                 {t('common.language') || 'Language'}
                               </span>
@@ -515,14 +517,14 @@ export default function Navbar() {
                               key={link.href}
                               href={link.href}
                               onClick={() => setShowUserMenu(false)}
-                              className={`flex items-center gap-3 px-4 py-3 text-base font-medium transition-all duration-200 rounded-lg transform active:scale-95 ${
+                              className={`flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-all duration-200 rounded-lg transform active:scale-95 ${
                                 pathname === link.href
                                   ? 'bg-pink-50 dark:bg-pink-900/10 text-pink-600 dark:text-pink-200'
                                   : 'text-gray-700 dark:text-pink-100 hover:bg-gray-50 dark:hover:bg-[#1f212a]'
                               }`}
                               style={{ animationDelay: `${(index + 2) * 0.05}s` }}
                             >
-                              <span className="text-xl">
+                              <span className="text-lg">
                                 {link.href === '/donation' ? '💝' : 
                                  link.href === '/about' ? '📧' :
                                  link.href === '/notifications' ? '🔔' :
@@ -547,7 +549,7 @@ export default function Navbar() {
                               setShowUserMenu(false);
                               router.push('/login');
                             }}
-                            className="w-full flex items-center gap-3 px-4 py-3 text-base font-medium text-red-600 dark:text-pink-200 hover:bg-red-50 dark:hover:bg-pink-900/10 transition-all duration-200 rounded-lg transform active:scale-95"
+                            className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-red-600 dark:text-pink-200 hover:bg-red-50 dark:hover:bg-pink-900/10 transition-all duration-200 rounded-lg transform active:scale-95"
                           >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -587,7 +589,7 @@ export default function Navbar() {
                       }`}>
                         {/* Header */}
                         <div className="sticky top-0 bg-white dark:bg-[#181b23] border-b border-gray-200 dark:border-[#303341] px-4 py-4 flex items-center justify-between z-10">
-                          <h2 className="text-lg font-semibold text-gray-900 dark:text-pink-100">
+                          <h2 className="text-base font-semibold text-gray-900 dark:text-pink-100">
                             {t('common.menu') || 'Menu'}
                           </h2>
                           <button
@@ -607,7 +609,7 @@ export default function Navbar() {
                           <Link
                             href="/about"
                             onClick={() => setShowUserMenu(false)}
-                            className={`flex items-center gap-3 px-4 py-3 text-base font-medium transition-all duration-200 rounded-lg transform active:scale-95 ${
+                            className={`flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-all duration-200 rounded-lg transform active:scale-95 ${
                               pathname === '/about'
                                 ? 'bg-pink-50 dark:bg-pink-900/10 text-pink-600 dark:text-pink-200'
                                 : 'text-gray-700 dark:text-pink-100 hover:bg-gray-50 dark:hover:bg-[#1f212a]'
@@ -622,7 +624,7 @@ export default function Navbar() {
                           <Link
                             href="/login"
                             onClick={() => setShowUserMenu(false)}
-                            className={`flex items-center gap-3 px-4 py-3 text-base font-medium transition-all duration-200 rounded-lg transform active:scale-95 ${
+                            className={`flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-all duration-200 rounded-lg transform active:scale-95 ${
                               pathname === '/login'
                                 ? 'bg-pink-50 dark:bg-pink-900/10 text-pink-600 dark:text-pink-200'
                                 : 'text-gray-700 dark:text-pink-100 hover:bg-gray-50 dark:hover:bg-[#1f212a]'
@@ -637,7 +639,7 @@ export default function Navbar() {
                           <Link
                             href="/register"
                             onClick={() => setShowUserMenu(false)}
-                            className={`flex items-center gap-3 px-4 py-3 text-base font-medium transition-all duration-200 rounded-lg transform active:scale-95 ${
+                            className={`flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-all duration-200 rounded-lg transform active:scale-95 ${
                               pathname === '/register'
                                 ? 'bg-pink-50 dark:bg-pink-900/10 text-pink-600 dark:text-pink-200'
                                 : 'text-gray-700 dark:text-pink-100 hover:bg-gray-50 dark:hover:bg-[#1f212a]'

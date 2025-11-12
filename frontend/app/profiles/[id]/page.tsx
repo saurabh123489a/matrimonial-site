@@ -324,16 +324,6 @@ export default function ProfileDetailPage() {
               {/* Personal Details */}
               <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-500 uppercase mb-2">{t('profile.religion')}</h3>
-                  <p className="text-gray-900 font-medium">{user.religion || 'Not specified'}</p>
-                </div>
-                {user.caste && (
-                  <div>
-                    <h3 className="text-sm font-semibold text-gray-500 uppercase mb-2">Caste</h3>
-                    <p className="text-gray-900 font-medium">{user.caste}</p>
-                  </div>
-                )}
-                <div>
                   <h3 className="text-sm font-semibold text-gray-500 uppercase mb-2">{t('profile.education')}</h3>
                   <p className="text-gray-900 font-medium">{user.education || 'Not specified'}</p>
                 </div>
@@ -356,7 +346,7 @@ export default function ProfileDetailPage() {
                 {user.height && (
                   <div>
                     <h3 className="text-sm font-semibold text-gray-500 uppercase mb-2">Height</h3>
-                    <p className="text-gray-900 font-medium">{user.height} cm</p>
+                    <p className="text-gray-900 font-medium">{user.height}" ({Math.round(user.height * 2.54)} cm)</p>
                   </div>
                 )}
                 {user.diet && (

@@ -62,9 +62,6 @@ export const updateProfileSchema = z.object({
   pincode: z.string().optional(),
   
   // Family & Background
-  religion: z.string().optional(),
-  caste: z.string().optional(),
-  subCaste: z.string().optional(),
   gotra: z.string().optional(),
   motherTongue: z.string().optional(),
   
@@ -116,9 +113,6 @@ export const updateProfileSchema = z.object({
     gender: z.enum(['male', 'female', 'other']).optional(),
     minHeight: z.number().positive().optional(),
     maxHeight: z.number().positive().optional(),
-    religion: z.string().optional(),
-    caste: z.string().optional(),
-    subCaste: z.string().optional(),
     location: z.string().optional(),
     education: z.string().optional(),
     occupation: z.string().optional(),

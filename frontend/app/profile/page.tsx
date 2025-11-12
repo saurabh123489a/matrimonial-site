@@ -93,7 +93,6 @@ export default function MyProfilePage() {
           city: response.data.city || '',
           state: response.data.state || '',
           country: response.data.country || '',
-          religion: response.data.religion || '',
           education: response.data.education || '',
           occupation: response.data.occupation || '',
           bio: response.data.bio || '',
@@ -512,6 +511,25 @@ export default function MyProfilePage() {
             </div>
 
             <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Date of Birth</label>
+              {editing ? (
+                <input
+                  type="date"
+                  value={typeof formData.dateOfBirth === 'string' ? formData.dateOfBirth : (formData.dateOfBirth instanceof Date ? formData.dateOfBirth.toISOString().split('T')[0] : '')}
+                  onChange={(e) => {
+                    setFormData({ ...formData, dateOfBirth: e.target.value });
+                  }}
+                  max={new Date().toISOString().split('T')[0]}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
+                />
+              ) : (
+                <p className="text-gray-900 dark:text-pink-100">
+                  {user.dateOfBirth ? new Date(user.dateOfBirth).toLocaleDateString() : t('profile.notProvided')}
+                </p>
+              )}
+            </div>
+
+            <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Blood Group</label>
               {editing ? (
                 <select
@@ -657,20 +675,6 @@ export default function MyProfilePage() {
                 />
               ) : (
                 <p className="text-gray-900 dark:text-pink-100">{user.whatsappNumber || t('profile.notProvided')}</p>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">{t('profile.religion')}</label>
-              {editing ? (
-                <input
-                  type="text"
-                  value={formData.religion || ''}
-                  onChange={(e) => setFormData({ ...formData, religion: sanitizeFormInput(e.target.value, 'text') })}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
-                />
-              ) : (
-                <p className="text-gray-900 dark:text-pink-100">{user.religion || t('profile.notProvided')}</p>
               )}
             </div>
 
@@ -904,7 +908,14 @@ export default function MyProfilePage() {
             {/* Horoscope Details Section */}
             <div className="md:col-span-2 border-t border-gray-200 dark:border-pink-800 pt-6 mt-4">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-pink-300">🔮 {t('profile.horoscopeDetails') || 'Horoscope Details'} {user.horoscopeDetails?.rashi && user.horoscopeDetails?.nakshatra && <span className="text-sm font-normal text-green-600 dark:text-green-400">(Auto-calculated)</span>}</h3>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-pink-300">
+                  🔮 {t('profile.horoscopeDetails') || 'Horoscope Details'}
+                  {user.horoscopeDetails?.rashi && user.horoscopeDetails?.nakshatra && (
+                    <span className="text-sm font-normal text-green-600 dark:text-green-400 ml-2">
+                      (Auto-calculated - You can manually edit below)
+                    </span>
+                  )}
+                </h3>
                 {!editing && !editingHoroscope && (
                   <button
                     onClick={() => {
@@ -926,10 +937,17 @@ export default function MyProfilePage() {
                   </button>
                 )}
               </div>
+              {editing && formData.dateOfBirth && formData.horoscopeDetails?.timeOfBirth && (formData.city || formData.state || formData.country) && (
+                <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md">
+                  <p className="text-sm text-blue-800 dark:text-blue-200">
+                    💡 Horoscope will be auto-calculated on save, but you can manually select/edit Rashi and Nakshatra below if needed.
+                  </p>
+                </div>
+              )}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
-                    {t('profile.rashi') || 'Rashi (Moon Sign)'}
+                    {t('profile.rashi') || 'Rashi (Moon Sign)'} <span className="text-xs text-gray-500 dark:text-gray-400">(Manual Selection)</span>
                   </label>
                   {(editing || editingHoroscope) ? (
                     <select
@@ -943,7 +961,7 @@ export default function MyProfilePage() {
                       })}
                       className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
                     >
-                      <option value="">Select Rashi</option>
+                      <option value="">Select Rashi (or leave empty for auto-calculation)</option>
                       <option value="Aries">Aries (Mesha)</option>
                       <option value="Taurus">Taurus (Vrishabha)</option>
                       <option value="Gemini">Gemini (Mithuna)</option>
@@ -966,7 +984,7 @@ export default function MyProfilePage() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
-                    {t('profile.nakshatra') || 'Nakshatra'}
+                    {t('profile.nakshatra') || 'Nakshatra'} <span className="text-xs text-gray-500 dark:text-gray-400">(Manual Selection)</span>
                   </label>
                   {(editing || editingHoroscope) ? (
                     <select
@@ -980,7 +998,7 @@ export default function MyProfilePage() {
                       })}
                       className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
                     >
-                      <option value="">Select Nakshatra</option>
+                      <option value="">Select Nakshatra (or leave empty for auto-calculation)</option>
                       <option value="Ashwini">Ashwini</option>
                       <option value="Bharani">Bharani</option>
                       <option value="Krittika">Krittika</option>
@@ -1096,7 +1114,6 @@ export default function MyProfilePage() {
                     city: user.city || '',
                     state: user.state || '',
                     country: user.country || '',
-                    religion: user.religion || '',
                     education: user.education || '',
                     occupation: user.occupation || '',
                     bio: user.bio || '',

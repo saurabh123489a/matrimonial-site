@@ -77,12 +77,6 @@ export default function ProfileCard({ user }: ProfileCardProps) {
               </span>
             </div>
           )}
-          {user.religion && (
-            <div className="flex items-center text-gray-700">
-              <span className="text-pink-600 mr-2">🕌</span>
-              <span className="truncate">{user.religion}</span>
-            </div>
-          )}
         </div>
 
         {/* Bio Preview */}

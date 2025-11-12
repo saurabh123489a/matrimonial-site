@@ -70,14 +70,11 @@ function ProfilesContent() {
     maxAge: searchParams.get('maxAge') || '',
     city: searchParams.get('city') || '',
     state: searchParams.get('state') || '',
-    religion: searchParams.get('religion') || '',
-    caste: searchParams.get('caste') || '',
     education: searchParams.get('education') || '',
     occupation: searchParams.get('occupation') || '',
-    maritalStatus: '',
-    minHeight: '',
-    maxHeight: '',
-    subCaste: '',
+    maritalStatus: searchParams.get('maritalStatus') || '',
+    minHeight: searchParams.get('minHeight') || '',
+    maxHeight: searchParams.get('maxHeight') || '',
   });
   
   // Debounced search filters - these trigger the actual API call
@@ -171,9 +168,11 @@ function ProfilesContent() {
       // Otherwise, use searchFilters (debounced for text inputs)
       const filterParams: any = { page: 1, limit: 50 }; // Max limit allowed by API, but display only 10 initially
       Object.entries(searchFilters).forEach(([key, value]) => {
-        if (value) {
-          if (key === 'minAge' || key === 'maxAge' || key === 'minHeight' || key === 'maxHeight') {
+        if (value && value !== '') {
+          if (key === 'minAge' || key === 'maxAge') {
             filterParams[key] = parseInt(value);
+          } else if (key === 'minHeight' || key === 'maxHeight') {
+            filterParams[key] = parseFloat(value); // Height is in inches, can have decimals
           } else {
             filterParams[key] = value;
           }
@@ -288,8 +287,10 @@ function ProfilesContent() {
   };
 
   const handleSearch = () => {
+    // Sync searchFilters with current filters when search button is clicked
+    setSearchFilters(filters);
     setPage(1);
-    loadProfiles();
+    // loadProfiles will be triggered by useEffect when searchFilters changes
   };
 
   const clearFilters = () => {
@@ -299,14 +300,11 @@ function ProfilesContent() {
       maxAge: '',
       city: '',
       state: '',
-      religion: '',
-      caste: '',
       education: '',
       occupation: '',
       maritalStatus: '',
       minHeight: '',
       maxHeight: '',
-      subCaste: '',
     };
     setGahoiIdInput('');
     setGahoiId('');
@@ -545,41 +543,6 @@ function ProfilesContent() {
                   />
                 </div>
 
-                {/* Religion */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Religion
-                  </label>
-                  <input
-                    type="text"
-                    value={filters.religion}
-                    onChange={(e) => handleFilterChange('religion', e.target.value, true)}
-                    className="w-full px-4 py-2 border-2 border-gray-200 rounded-md focus:outline-none focus:border-pink-500 text-gray-800"
-                    placeholder="Religion"
-                  />
-                </div>
-
-                {/* Caste */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Caste
-                  </label>
-                  <input
-                    type="text"
-                    value={filters.caste}
-                    onChange={(e) => handleFilterChange('caste', e.target.value, true)}
-                    className="w-full px-4 py-2 border-2 border-gray-200 rounded-md focus:outline-none focus:border-pink-500 text-gray-800 mb-2"
-                    placeholder="Caste"
-                  />
-                  <input
-                    type="text"
-                    value={filters.subCaste}
-                    onChange={(e) => handleFilterChange('subCaste', e.target.value, true)}
-                    className="w-full px-4 py-2 border-2 border-gray-200 rounded-md focus:outline-none focus:border-pink-500 text-gray-800"
-                    placeholder="Sub-Caste"
-                  />
-                </div>
-
                 {/* Education */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -629,13 +592,14 @@ function ProfilesContent() {
                 {/* Height Range */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Height (cm)
+                    Height (inches)
                   </label>
                   <div className="grid grid-cols-2 gap-2">
                     <input
                       type="number"
-                      min="100"
-                      max="250"
+                      min="40"
+                      max="100"
+                      step="0.5"
                       value={filters.minHeight}
                       onChange={(e) => handleFilterChange('minHeight', e.target.value)}
                       className="w-full px-4 py-2 border-2 border-gray-200 rounded-md focus:outline-none focus:border-pink-500 text-gray-800"
@@ -643,8 +607,9 @@ function ProfilesContent() {
                     />
                     <input
                       type="number"
-                      min="100"
-                      max="250"
+                      min="40"
+                      max="100"
+                      step="0.5"
                       value={filters.maxHeight}
                       onChange={(e) => handleFilterChange('maxHeight', e.target.value)}
                       className="w-full px-4 py-2 border-2 border-gray-200 rounded-md focus:outline-none focus:border-pink-500 text-gray-800"

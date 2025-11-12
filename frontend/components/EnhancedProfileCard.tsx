@@ -151,21 +151,12 @@ export default function EnhancedProfileCard({ user, showActions = true }: Enhanc
               </div>
             </div>
           )}
-          {user.religion && (
-            <div className="flex items-start gap-2">
-              <span className="text-pink-600 text-lg">🕌</span>
-              <div className="flex-1 min-w-0">
-                <p className="text-xs text-gray-500 uppercase font-semibold">Religion</p>
-                <p className="text-sm text-gray-800 font-medium truncate">{user.religion}</p>
-              </div>
-            </div>
-          )}
           {user.height && (
             <div className="flex items-start gap-2">
               <span className="text-pink-600 text-lg">📏</span>
               <div className="flex-1 min-w-0">
                 <p className="text-xs text-gray-500 uppercase font-semibold">Height</p>
-                <p className="text-sm text-gray-800 font-medium">{user.height} cm</p>
+                <p className="text-sm text-gray-800 font-medium">{user.height}" ({Math.round(user.height * 2.54)} cm)</p>
               </div>
             </div>
           )}

@@ -202,17 +202,14 @@ export const getAllUsers = async (req, res, next) => {
       }),
       ...(req.query.city && { city: new RegExp(req.query.city, 'i') }),
       ...(req.query.state && { state: new RegExp(req.query.state, 'i') }),
-      ...(req.query.religion && { religion: new RegExp(req.query.religion, 'i') }),
-      ...(req.query.caste && { caste: new RegExp(req.query.caste, 'i') }),
-      ...(req.query.subCaste && { subCaste: new RegExp(req.query.subCaste, 'i') }),
       ...(req.query.education && { education: new RegExp(req.query.education, 'i') }),
       ...(req.query.occupation && { occupation: new RegExp(req.query.occupation, 'i') }),
       ...(req.query.maritalStatus && { maritalStatus: req.query.maritalStatus }),
-      ...(req.query.minHeight && { height: { $gte: parseInt(req.query.minHeight) } }),
+      ...(req.query.minHeight && { height: { $gte: parseFloat(req.query.minHeight) } }),
       ...(req.query.maxHeight && { 
         height: { 
-          ...(req.query.minHeight ? { $gte: parseInt(req.query.minHeight) } : {}),
-          $lte: parseInt(req.query.maxHeight)
+          ...(req.query.minHeight ? { $gte: parseFloat(req.query.minHeight) } : {}),
+          $lte: parseFloat(req.query.maxHeight)
         }
       }),
     };

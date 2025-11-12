@@ -76,7 +76,6 @@ export interface User {
   city?: string;
   state?: string;
   country?: string;
-  religion?: string;
   education?: string;
   occupation?: string;
   bio?: string;
@@ -85,7 +84,6 @@ export interface User {
     minAge?: number;
     maxAge?: number;
     gender?: string;
-    religion?: string;
     location?: string;
   };
   horoscopeDetails?: {
@@ -109,8 +107,6 @@ export interface User {
   presentAddress?: string;
   permanentAddress?: string;
   whatsappNumber?: string;
-  caste?: string;
-  subCaste?: string;
   gotra?: string;
   motherTongue?: string;
   fieldOfStudy?: string;
@@ -195,7 +191,6 @@ export interface UpdateUserDto {
     minAge?: number;
     maxAge?: number;
     gender?: string;
-    religion?: string;
     location?: string;
   };
   horoscopeDetails?: {
@@ -275,8 +270,11 @@ export const userApi = {
     maxAge?: number;
     city?: string;
     state?: string;
-    religion?: string;
     education?: string;
+    occupation?: string;
+    maritalStatus?: string;
+    minHeight?: number;
+    maxHeight?: number;
     gahoiId?: string;
     page?: number;
     limit?: number;

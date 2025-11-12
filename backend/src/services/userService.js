@@ -209,11 +209,20 @@ export const userService = {
           
           if (horoscopeResult && horoscopeResult.success && horoscopeResult.data) {
             // Merge calculated horoscope with existing horoscope details
+            // Only auto-fill if user hasn't manually set these values
+            const manuallySetRashi = updateData.horoscopeDetails?.rashi && updateData.horoscopeDetails.rashi !== '';
+            const manuallySetNakshatra = updateData.horoscopeDetails?.nakshatra && updateData.horoscopeDetails.nakshatra !== '';
+            
             updateData.horoscopeDetails = {
               ...existing?.horoscopeDetails,
               ...updateData.horoscopeDetails,
-              rashi: horoscopeResult.data.rashi || updateData.horoscopeDetails?.rashi || existing?.horoscopeDetails?.rashi,
-              nakshatra: horoscopeResult.data.nakshatra || updateData.horoscopeDetails?.nakshatra || existing?.horoscopeDetails?.nakshatra,
+              // Only use calculated values if user hasn't manually set them
+              rashi: manuallySetRashi 
+                ? updateData.horoscopeDetails.rashi 
+                : (horoscopeResult.data.rashi || updateData.horoscopeDetails?.rashi || existing?.horoscopeDetails?.rashi),
+              nakshatra: manuallySetNakshatra 
+                ? updateData.horoscopeDetails.nakshatra 
+                : (horoscopeResult.data.nakshatra || updateData.horoscopeDetails?.nakshatra || existing?.horoscopeDetails?.nakshatra),
               manglikStatus: horoscopeResult.data.manglikStatus || updateData.horoscopeDetails?.manglikStatus || existing?.horoscopeDetails?.manglikStatus,
               timeOfBirth: timeOfBirth || updateData.horoscopeDetails?.timeOfBirth || existing?.horoscopeDetails?.timeOfBirth,
             };
@@ -260,8 +269,12 @@ export const userService = {
     const { page = 1, limit = 20, excludeUserId = null } = options;
     const skip = (page - 1) * limit;
 
-    // Only show active users
-    filters.isActive = true;
+    // Only show active users (or users where isActive is not explicitly set to false)
+    // This ensures profiles show even if isActive field wasn't explicitly set
+    // Only add this filter if isActive is not already specified in filters
+    if (!filters.hasOwnProperty('isActive')) {
+      filters.isActive = { $ne: false }; // Show if isActive is true or not set (null/undefined)
+    }
 
     // Exclude current user if provided
     if (excludeUserId) {
