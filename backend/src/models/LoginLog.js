@@ -35,6 +35,12 @@ const loginLogSchema = new mongoose.Schema(
       ipAddress: String,
       location: String,
     },
+    source: {
+      type: String,
+      enum: ['browser', 'mobile', 'apk'],
+      default: 'browser',
+      index: true,
+    },
     status: {
       type: String,
       enum: ['success', 'failed', 'blocked'],

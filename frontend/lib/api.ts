@@ -460,6 +460,28 @@ export const adminApi = {
     const response = await api.get(`/admin/messages?${params.toString()}`);
     return response.data;
   },
+  getLoginLogs: async (filters?: {
+    page?: number;
+    limit?: number;
+    userId?: string;
+    status?: 'success' | 'failed' | 'blocked';
+    source?: 'browser' | 'mobile' | 'apk';
+    loginMethod?: 'password' | 'otp' | 'token';
+    startDate?: string;
+    endDate?: string;
+    search?: string;
+  }): Promise<ApiResponse<any[]> & { pagination?: Pagination }> => {
+    const params = new URLSearchParams();
+    if (filters) {
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          params.append(key, String(value));
+        }
+      });
+    }
+    const response = await api.get(`/admin/login-logs?${params.toString()}`);
+    return response.data;
+  },
 };
 
 // Community API - Questions

@@ -10,6 +10,7 @@ import {
   createAdminUser,
   getDashboardStats,
   getAllMessagesAdmin,
+  getLoginLogs,
 } from '../controllers/adminController.js';
 
 const router = express.Router();
@@ -39,6 +40,9 @@ router.post('/users/create-admin', createAdminUser);
 
 // Messages management (Admin only)
 router.get('/messages', getAllMessagesAdmin);
+
+// Login logs (Admin only)
+router.get('/login-logs', getLoginLogs);
 
 export default router;
 

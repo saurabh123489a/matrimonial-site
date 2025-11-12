@@ -30,5 +30,20 @@ export const loginLogRepository = {
       .limit(limit)
       .populate('userId', 'name email phone');
   },
+
+  async findWithFilters(filters, options = {}) {
+    const {
+      skip = 0,
+      limit = 50,
+      sortBy = 'createdAt',
+      sortOrder = -1,
+    } = options;
+
+    return await LoginLog.find(filters)
+      .populate('userId', 'name email phone gahoiId')
+      .sort({ [sortBy]: sortOrder })
+      .skip(skip)
+      .limit(limit);
+  },
 };
 

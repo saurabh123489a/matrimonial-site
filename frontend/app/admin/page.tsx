@@ -24,7 +24,7 @@ export default function AdminDashboardPage() {
   const { showError } = useNotifications();
   const [loading, setLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState<any>(null);
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'users' | 'messages' | 'notifications' | 'create-admin'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'users' | 'messages' | 'notifications' | 'create-admin' | 'login-logs'>('dashboard');
   const [stats, setStats] = useState<DashboardStats | null>(null);
 
   useEffect(() => {
@@ -106,6 +106,7 @@ export default function AdminDashboardPage() {
                 { id: 'users', label: t('admin.manageUsers'), icon: '👥' },
                 { id: 'messages', label: t('admin.allMessages'), icon: '💬' },
                 { id: 'notifications', label: t('admin.notifications'), icon: '🔔' },
+                { id: 'login-logs', label: 'Login Logs', icon: '📋' },
                 { id: 'create-admin', label: t('admin.createAdmin'), icon: '➕' },
               ].map((tab) => (
                 <button
@@ -136,6 +137,9 @@ export default function AdminDashboardPage() {
             )}
             {activeTab === 'notifications' && (
               <NotificationsTab />
+            )}
+            {activeTab === 'login-logs' && (
+              <LoginLogsTab />
             )}
             {activeTab === 'create-admin' && (
               <CreateAdminTab />
@@ -1066,6 +1070,221 @@ function NotificationsTab() {
           {loading ? 'Sending...' : `Send ${notificationType === 'global' ? 'Global' : 'Personal'} Notification`}
         </button>
       </div>
+    </div>
+  );
+}
+
+function LoginLogsTab() {
+  const { t } = useTranslation();
+  const { showError } = useNotifications();
+  const [logs, setLogs] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [filters, setFilters] = useState({
+    status: '' as 'success' | 'failed' | 'blocked' | '',
+    source: '' as 'browser' | 'mobile' | 'apk' | '',
+    loginMethod: '' as 'password' | 'otp' | 'token' | '',
+    search: '',
+  });
+
+  useEffect(() => {
+    loadLogs();
+  }, [page, filters]);
+
+  const loadLogs = async () => {
+    setLoading(true);
+    try {
+      const response = await adminApi.getLoginLogs({
+        page,
+        limit: 50,
+        ...(filters.status && { status: filters.status }),
+        ...(filters.source && { source: filters.source }),
+        ...(filters.loginMethod && { loginMethod: filters.loginMethod }),
+        ...(filters.search && { search: filters.search }),
+      });
+      if (response.status) {
+        setLogs(response.data || []);
+        setTotalPages(response.pagination?.pages || 1);
+      }
+    } catch (error) {
+      showError('Failed to load login logs');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getSourceBadge = (source: string) => {
+    const colors = {
+      browser: 'bg-blue-100 text-blue-800',
+      mobile: 'bg-green-100 text-green-800',
+      apk: 'bg-purple-100 text-purple-800',
+    };
+    return (
+      <span className={`px-2 py-1 rounded-full text-xs font-medium ${colors[source as keyof typeof colors] || 'bg-gray-100 text-gray-800'}`}>
+        {source.toUpperCase()}
+      </span>
+    );
+  };
+
+  const getStatusBadge = (status: string) => {
+    const colors = {
+      success: 'bg-green-100 text-green-800',
+      failed: 'bg-red-100 text-red-800',
+      blocked: 'bg-yellow-100 text-yellow-800',
+    };
+    return (
+      <span className={`px-2 py-1 rounded-full text-xs font-medium ${colors[status as keyof typeof colors] || 'bg-gray-100 text-gray-800'}`}>
+        {status.toUpperCase()}
+      </span>
+    );
+  };
+
+  return (
+    <div>
+      <h2 className="text-2xl font-bold text-gray-900 mb-6">Login Logs</h2>
+      
+      {/* Filters */}
+      <div className="mb-6 grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Search</label>
+          <input
+            type="text"
+            placeholder="Search by name..."
+            value={filters.search}
+            onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+          <select
+            value={filters.status}
+            onChange={(e) => setFilters({ ...filters, status: e.target.value as any })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+          >
+            <option value="">All</option>
+            <option value="success">Success</option>
+            <option value="failed">Failed</option>
+            <option value="blocked">Blocked</option>
+          </select>
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Source</label>
+          <select
+            value={filters.source}
+            onChange={(e) => setFilters({ ...filters, source: e.target.value as any })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+          >
+            <option value="">All</option>
+            <option value="browser">Browser</option>
+            <option value="mobile">Mobile</option>
+            <option value="apk">APK</option>
+          </select>
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Method</label>
+          <select
+            value={filters.loginMethod}
+            onChange={(e) => setFilters({ ...filters, loginMethod: e.target.value as any })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+          >
+            <option value="">All</option>
+            <option value="password">Password</option>
+            <option value="otp">OTP</option>
+            <option value="token">Token</option>
+          </select>
+        </div>
+      </div>
+
+      {/* Table */}
+      {loading ? (
+        <div className="text-center py-12">
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-pink-600"></div>
+          <p className="mt-4 text-gray-600">Loading login logs...</p>
+        </div>
+      ) : logs.length === 0 ? (
+        <div className="text-center py-12 text-gray-500">No login logs found</div>
+      ) : (
+        <>
+          <div className="overflow-x-auto">
+            <table className="min-w-full bg-white border border-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Source</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Method</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Device</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">IP Address</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {logs.map((log) => (
+                  <tr key={log._id} className="hover:bg-gray-50">
+                    <td className="px-4 py-3 whitespace-nowrap">
+                      <div className="text-sm font-medium text-gray-900">
+                        {log.userId?.name || log.name || 'N/A'}
+                      </div>
+                      {log.userId?.gahoiId && (
+                        <div className="text-xs text-gray-500">ID: {log.userId.gahoiId}</div>
+                      )}
+                    </td>
+                    <td className="px-4 py-3 whitespace-nowrap">
+                      {getStatusBadge(log.status)}
+                      {log.failureReason && (
+                        <div className="text-xs text-red-600 mt-1">{log.failureReason}</div>
+                      )}
+                    </td>
+                    <td className="px-4 py-3 whitespace-nowrap">
+                      {getSourceBadge(log.source || 'browser')}
+                    </td>
+                    <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                      {log.loginMethod?.toUpperCase() || 'N/A'}
+                    </td>
+                    <td className="px-4 py-3 text-sm text-gray-500">
+                      <div>{log.device || 'N/A'}</div>
+                      {log.deviceInfo?.platform && (
+                        <div className="text-xs text-gray-400">{log.deviceInfo.platform} - {log.deviceInfo.browser}</div>
+                      )}
+                    </td>
+                    <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                      {log.deviceInfo?.ipAddress || 'N/A'}
+                    </td>
+                    <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                      {new Date(log.createdAt).toLocaleString()}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="mt-4 flex justify-between items-center">
+              <button
+                onClick={() => setPage(p => Math.max(1, p - 1))}
+                disabled={page === 1}
+                className="px-4 py-2 border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+              >
+                Previous
+              </button>
+              <span className="text-sm text-gray-700">
+                Page {page} of {totalPages}
+              </span>
+              <button
+                onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+                disabled={page === totalPages}
+                className="px-4 py-2 border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+              >
+                Next
+              </button>
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 }

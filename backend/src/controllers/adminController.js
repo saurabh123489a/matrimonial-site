@@ -261,3 +261,59 @@ export const getAllMessagesAdmin = async (req, res, next) => {
   }
 };
 
+/**
+ * Get login logs (Admin only)
+ * GET /api/admin/login-logs
+ */
+export const getLoginLogs = async (req, res, next) => {
+  try {
+    const { page = 1, limit = 50, userId, status, source, loginMethod, startDate, endDate, search } = req.query;
+    
+    const { loginLogRepository } = await import('../repositories/loginLogRepository.js');
+    
+    const filters = {};
+    if (userId) filters.userId = userId;
+    if (status) filters.status = status;
+    if (source) filters.source = source;
+    if (loginMethod) filters.loginMethod = loginMethod;
+    
+    // Date range filter
+    if (startDate || endDate) {
+      filters.createdAt = {};
+      if (startDate) filters.createdAt.$gte = new Date(startDate);
+      if (endDate) filters.createdAt.$lte = new Date(endDate);
+    }
+    
+    // Search filter (by name)
+    if (search) {
+      filters.name = new RegExp(search, 'i');
+    }
+
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+
+    const [logs, total] = await Promise.all([
+      loginLogRepository.findWithFilters(filters, {
+        skip,
+        limit: parseInt(limit),
+        sortBy: 'createdAt',
+        sortOrder: -1,
+      }),
+      loginLogRepository.count(filters),
+    ]);
+
+    res.json({
+      status: true,
+      message: 'Login logs retrieved successfully',
+      data: logs,
+      pagination: {
+        page: parseInt(page),
+        limit: parseInt(limit),
+        total,
+        pages: Math.ceil(total / parseInt(limit)),
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
