@@ -257,10 +257,10 @@ export default function Navbar() {
               <div className="flex-shrink-0 min-w-[44px] min-h-[44px]"></div>
             )}
             
-            {/* Center: Logo */}
+            {/* Logo - Left on mobile (right after hamburger/spacer), Center on larger screens */}
             <Link 
               href="/" 
-              className="absolute left-1/2 transform -translate-x-1/2 text-lg sm:text-xl md:text-2xl font-light text-gray-900 dark:text-white tracking-tight px-2 truncate max-w-[60vw] sm:max-w-none flex items-center justify-center"
+              className="absolute left-[56px] sm:left-1/2 sm:transform sm:-translate-x-1/2 text-lg sm:text-xl md:text-2xl font-light text-gray-900 dark:text-white tracking-tight px-2 truncate max-w-[60vw] sm:max-w-none flex items-center justify-center"
             >
               💍 {t('common.appName')}
             </Link>
