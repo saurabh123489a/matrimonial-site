@@ -239,17 +239,23 @@ export default function Navbar() {
       <nav className="bg-white dark:bg-[#0f1117] border-b border-gray-200 dark:border-[#262932] sticky top-0 z-30 transition-colors">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 sm:h-20 relative">
-            {/* Left: Hamburger Menu Button */}
-            <button
-              onClick={() => setShowUserMenu(!showUserMenu)}
-              className="flex-shrink-0 min-w-[44px] min-h-[44px] p-2 text-gray-700 dark:text-pink-100 hover:text-pink-600 dark:hover:text-pink-300 active:bg-gray-200 dark:active:bg-slate-600 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 touch-manipulation flex items-center justify-center"
-              title="Menu"
-              aria-label="Open menu"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
+            {/* Left: Hamburger Menu Button - Only show when NOT authenticated */}
+            {mounted && !isAuthenticated && (
+              <button
+                onClick={() => setShowUserMenu(!showUserMenu)}
+                className="flex-shrink-0 min-w-[44px] min-h-[44px] p-2 text-gray-700 dark:text-pink-100 hover:text-pink-600 dark:hover:text-pink-300 active:bg-gray-200 dark:active:bg-slate-600 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 touch-manipulation flex items-center justify-center"
+                title="Menu"
+                aria-label="Open menu"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </button>
+            )}
+            {/* Spacer when authenticated to keep logo centered */}
+            {mounted && isAuthenticated && (
+              <div className="flex-shrink-0 min-w-[44px] min-h-[44px]"></div>
+            )}
             
             {/* Center: Logo */}
             <Link 
@@ -737,9 +743,6 @@ export default function Navbar() {
               </div>
             </div>
           </nav>
-
-          {/* Spacer to prevent content from being hidden behind bottom nav */}
-          <div className="h-20 sm:h-16"></div>
         </>
       ) : null}
     </>
