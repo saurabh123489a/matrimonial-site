@@ -75,14 +75,14 @@ export default function PrivacySettingsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center pb-20">
+      <div className="min-h-screen bg-white dark:bg-black flex items-center justify-center pb-20">
         <div className="text-gray-600 dark:text-gray-400">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 pb-20">
+    <div className="min-h-screen bg-white dark:bg-black pb-20">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Settings Navigation */}
         <div className="flex gap-4 mb-6 border-b border-gray-200 dark:border-gray-700">

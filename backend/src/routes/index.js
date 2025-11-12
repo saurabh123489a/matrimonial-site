@@ -15,6 +15,9 @@ import reportRoutes from './reportRoutes.js';
 import adminRoutes from './adminRoutes.js';
 import horoscopeRoutes from './horoscopeRoutes.js';
 import healthRoutes from './healthRoutes.js';
+import eventRoutes from './eventRoutes.js';
+import pollRoutes from './pollRoutes.js';
+import badgeRoutes from './badgeRoutes.js';
 
 const router = express.Router();
 
@@ -54,6 +57,12 @@ router.use('/admin', adminRoutes);
 router.use('/horoscope', horoscopeRoutes);
 // Health check routes
 router.use('/health', healthRoutes);
+// Event routes (community gatherings)
+router.use('/events', eventRoutes);
+// Poll routes (admin surveys)
+router.use('/polls', pollRoutes);
+// Badge routes (user achievements)
+router.use('/badges', badgeRoutes);
 
 export default router;
 

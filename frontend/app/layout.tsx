@@ -134,7 +134,7 @@ export default function RootLayout({
             <NotificationProvider>
               <GoogleAnalytics />
               <Navbar />
-              <main className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors pb-20 sm:pb-16">
+              <main className="min-h-screen bg-gray-50 dark:bg-black transition-colors pb-20 sm:pb-16">
                 {children}
               </main>
               {/* Temporarily disabled to debug black page issue */}

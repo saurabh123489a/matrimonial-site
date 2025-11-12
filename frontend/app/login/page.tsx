@@ -87,26 +87,26 @@ export default function LoginPage() {
         <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 space-y-6">
           <div className="text-center">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-              {step === 'phone' ? t('auth.login') : t('auth.enterOTP')}
-            </h2>
+            {step === 'phone' ? t('auth.login') : t('auth.enterOTP')}
+          </h2>
             <p className="text-sm text-gray-600">
-              {step === 'phone' ? (
-                <>
-                  {t('auth.or')}{' '}
-                  <Link href="/register" className="font-medium text-pink-600 hover:text-pink-500">
-                    {t('auth.createAccount')}
-                  </Link>
-                </>
-              ) : (
-                <>
-                  {t('auth.otpSentTo')}{' '}
-                  <span className="font-medium">{phone}</span>
-                </>
-              )}
-            </p>
-          </div>
+            {step === 'phone' ? (
+              <>
+                {t('auth.or')}{' '}
+                <Link href="/register" className="font-medium text-pink-600 hover:text-pink-500">
+                  {t('auth.createAccount')}
+                </Link>
+              </>
+            ) : (
+              <>
+                {t('auth.otpSentTo')}{' '}
+                <span className="font-medium">{phone}</span>
+              </>
+            )}
+          </p>
+        </div>
 
-          {step === 'phone' ? (
+        {step === 'phone' ? (
             <form className="space-y-5" onSubmit={handleSendOTP}>
               {/* Google Sign In Button */}
               <button

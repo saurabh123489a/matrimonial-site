@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, Suspense, useRef } from 'react';
+import { useState, useEffect, Suspense, useRef, useCallback } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { userApi, User } from '@/lib/api';
 import EnhancedProfileCard from '@/components/EnhancedProfileCard';
@@ -8,9 +8,11 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { auth } from '@/lib/auth';
 import Link from 'next/link';
 import { usePullToRefresh } from '@/hooks/usePullToRefresh';
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import SkeletonLoader from '@/components/SkeletonLoader';
 import EmptyState from '@/components/EmptyState';
 import { trackSearch } from '@/lib/analytics';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 function ProfilesContent() {
   const { t } = useTranslation();
@@ -73,6 +75,7 @@ function ProfilesContent() {
   const [pagination, setPagination] = useState({ total: 0, pages: 0 });
   const [showFilters, setShowFilters] = useState(false);
   const [displayLimit, setDisplayLimit] = useState(10); // Show only 10 initially
+  const [loadingMore, setLoadingMore] = useState(false);
 
   // Pull-to-refresh hook
   const { isRefreshing, isPulling, pullDistance } = usePullToRefresh({
@@ -80,6 +83,25 @@ function ProfilesContent() {
       await loadProfiles();
     },
     enabled: true,
+  });
+
+  // Infinite scroll handler
+  const handleLoadMore = useCallback(() => {
+    if (displayLimit < users.length && !loadingMore) {
+      setLoadingMore(true);
+      // Simulate loading delay for better UX
+      setTimeout(() => {
+        setDisplayLimit(prev => Math.min(prev + 10, users.length));
+        setLoadingMore(false);
+      }, 300);
+    }
+  }, [displayLimit, users.length, loadingMore]);
+
+  // Infinite scroll hook
+  const loadMoreRef = useInfiniteScroll({
+    hasMore: displayLimit < users.length,
+    loading: loadingMore,
+    onLoadMore: handleLoadMore,
   });
 
   // Use ref to track if component is mounted and prevent race conditions
@@ -167,12 +189,12 @@ function ProfilesContent() {
       }
     } catch (err: any) {
       if (isMountedRef.current) {
-        setError(err.response?.data?.message || 'Failed to load profiles');
+      setError(err.response?.data?.message || 'Failed to load profiles');
       }
     } finally {
       loadingRef.current = false;
       if (isMountedRef.current) {
-        setLoading(false);
+      setLoading(false);
       }
     }
   };
@@ -181,7 +203,7 @@ function ProfilesContent() {
     // Load profiles when filters change or when currentUser is loaded (for gender filtering)
     // If authenticated, wait for currentUser to load; if not authenticated, load immediately
     if (!isAuthenticated || currentUser !== null) {
-      loadProfiles();
+    loadProfiles();
     }
     
     // Cleanup on unmount
@@ -260,19 +282,19 @@ function ProfilesContent() {
   }, [isAuthenticated]);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 relative transition-colors">
+    <div className="min-h-screen bg-gray-50 dark:bg-black relative transition-colors">
       {/* Pull-to-refresh indicator */}
       {(isPulling || isRefreshing) && (
-        <div className="fixed top-0 left-1/2 transform -translate-x-1/2 z-50 bg-white dark:bg-gray-800 px-6 py-3 rounded-b-lg shadow-lg flex items-center gap-3 animate-slide-up">
+        <div className="fixed top-0 left-1/2 transform -translate-x-1/2 z-50 bg-white dark:bg-[#111111] px-6 py-3 rounded-b-lg shadow-lg flex items-center gap-3 animate-slide-up">
           {isRefreshing ? (
             <>
               <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-pink-600"></div>
-              <span className="text-sm font-medium text-gray-700 dark:text-green-400">Refreshing...</span>
+              <span className="text-sm font-medium text-gray-700 dark:text-pink-300">Refreshing...</span>
             </>
           ) : (
             <>
               <span className="text-2xl">⬇️</span>
-              <span className="text-sm font-medium text-gray-700 dark:text-green-400">Pull to refresh</span>
+              <span className="text-sm font-medium text-gray-700 dark:text-pink-300">Pull to refresh</span>
             </>
           )}
         </div>
@@ -328,9 +350,9 @@ function ProfilesContent() {
 
           {/* Sidebar Filters - Gahoi Sathi Style */}
           <aside className={`lg:w-80 flex-shrink-0 ${showFilters ? 'block' : 'hidden'} lg:block`}>
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 sm:p-6 filter-section lg:sticky lg:top-4 transition-colors">
+            <div className="bg-white dark:bg-[#111111] rounded-lg shadow-md p-4 sm:p-6 filter-section lg:sticky lg:top-4 transition-colors">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-lg font-bold text-gray-900 dark:text-green-400">Refine Search</h2>
+                <h2 className="text-lg font-bold text-gray-900 dark:text-pink-300">Refine Search</h2>
                 <button
                   onClick={clearFilters}
                   className="text-sm text-pink-600 hover:text-pink-700 font-medium"
@@ -342,7 +364,7 @@ function ProfilesContent() {
               <div className="space-y-5">
                 {/* Gahoi ID Search */}
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-green-400 mb-2">
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-pink-300 mb-2">
                     Search by Gahoi ID
                   </label>
                   <div className="flex gap-2">
@@ -358,7 +380,7 @@ function ProfilesContent() {
                         }
                       }}
                       placeholder="10000"
-                      className="flex-1 px-4 py-2 border-2 border-gray-200 dark:border-red-900 rounded-md focus:outline-none focus:border-pink-500 text-gray-800 dark:text-red-600 dark:bg-gray-900"
+                      className="flex-1 px-4 py-2 border-2 border-gray-200 dark:border-pink-800 rounded-md focus:outline-none focus:border-pink-500 text-gray-800 dark:text-pink-200 dark:bg-black"
                       maxLength={5}
                     />
                     {gahoiId && (
@@ -367,20 +389,20 @@ function ProfilesContent() {
                           setGahoiId('');
                           setPage(1);
                         }}
-                        className="px-3 py-2 text-gray-500 hover:text-gray-700 dark:text-red-500 dark:hover:text-slate-200"
+                        className="px-3 py-2 text-gray-500 hover:text-gray-700 dark:text-pink-200 dark:hover:text-pink-100"
                         aria-label="Clear Gahoi ID"
                       >
                         ✕
                       </button>
                     )}
                   </div>
-                  <p className="text-xs text-gray-500 dark:text-red-500 mt-1">
+                  <p className="text-xs text-gray-500 dark:text-pink-200 mt-1">
                     5-digit ID (10000-10099). Even = Male, Odd = Female
                   </p>
                 </div>
 
-                <div className="border-t border-gray-200 dark:border-red-900 pt-4">
-                  <p className="text-sm font-semibold text-gray-700 dark:text-red-500 mb-3">OR use filters below</p>
+                <div className="border-t border-gray-200 dark:border-pink-800 pt-4">
+                  <p className="text-sm font-semibold text-gray-700 dark:text-pink-200 mb-3">OR use filters below</p>
                 </div>
 
                 {/* Gender - "I'm looking for a" */}
@@ -593,7 +615,7 @@ function ProfilesContent() {
               <>
                 {/* Sort Options */}
                 <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-3 sm:p-4 mb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 transition-colors">
-                  <p className="text-xs sm:text-sm text-gray-600 dark:text-red-500">
+                  <p className="text-xs sm:text-sm text-gray-600 dark:text-pink-200">
                     Showing {Math.min(displayLimit, users.length)} of {users.length} profiles
                     {pagination.total > users.length && ` (${pagination.total} total)`}
                   </p>
@@ -610,28 +632,40 @@ function ProfilesContent() {
                   {users.slice(0, displayLimit).map((user) => (
                     <div 
                       key={user._id} 
-                      className={mounted && !isAuthenticated ? 'cursor-pointer relative' : ''}
+                      className="relative"
+                      onClick={(e) => {
+                        // Prevent card from being clickable - only buttons should navigate
+                        e.stopPropagation();
+                        if (!isAuthenticated && mounted) {
+                          setShowAuthModal(true);
+                        }
+                      }}
                     >
-                      {mounted && !isAuthenticated && (
-                        <div 
-                          className="absolute inset-0 z-10" 
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            setShowAuthModal(true);
-                          }}
-                        ></div>
-                      )}
                       <EnhancedProfileCard user={user} />
                     </div>
                   ))}
                 </div>
 
-                {/* Load More Button */}
+                {/* Infinite Scroll Trigger */}
                 {displayLimit < users.length && (
-                  <div className="mt-8 text-center">
+                  <div ref={loadMoreRef} className="mt-8 text-center">
+                    {loadingMore ? (
+                      <LoadingSpinner size="md" text="Loading more profiles..." />
+                    ) : (
+                      <div className="py-4">
+                        <p className="text-gray-600 dark:text-pink-300 text-sm">
+                          Scroll down to load more ({users.length - displayLimit} remaining)
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Load More Button (Fallback for manual loading) */}
+                {displayLimit < users.length && !loadingMore && (
+                  <div className="mt-4 text-center">
                     <button
-                      onClick={() => setDisplayLimit(prev => Math.min(prev + 10, users.length))}
+                      onClick={handleLoadMore}
                       className="px-6 py-3 bg-pink-600 text-white rounded-lg hover:bg-pink-700 transition-colors font-medium shadow-md hover:shadow-lg"
                     >
                       Load More ({users.length - displayLimit} remaining)

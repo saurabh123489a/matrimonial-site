@@ -95,10 +95,10 @@ export default function ProfileShareModal({
       <div className="bg-white dark:bg-black rounded-2xl shadow-xl max-w-md w-full animate-scale-in">
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
-            <h3 className="text-xl font-bold text-gray-900 dark:text-red-600">Share Profile</h3>
+            <h3 className="text-xl font-bold text-gray-900 dark:text-pink-300">Share Profile</h3>
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 dark:hover:text-red-400 transition-colors"
+              className="text-gray-400 hover:text-gray-600 dark:hover:text-pink-300 transition-colors"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -115,7 +115,7 @@ export default function ProfileShareModal({
                 className="w-full flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-pink-50 to-red-50 dark:from-pink-900/20 dark:to-red-900/20 border-2 border-pink-200 dark:border-pink-800 rounded-lg hover:bg-pink-100 dark:hover:bg-pink-900/30 transition-colors"
               >
                 <span className="text-2xl">🖼️</span>
-                <span className="flex-1 text-left font-medium text-gray-900 dark:text-red-600">Share as Profile Card</span>
+                <span className="flex-1 text-left font-medium text-gray-900 dark:text-pink-300">Share as Profile Card</span>
                 <svg className="w-5 h-5 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
@@ -127,7 +127,7 @@ export default function ProfileShareModal({
               className="w-full flex items-center gap-3 px-4 py-3 bg-green-50 dark:bg-green-900/20 border-2 border-green-200 dark:border-green-800 rounded-lg hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors"
             >
               <span className="text-2xl">💬</span>
-              <span className="flex-1 text-left font-medium text-gray-900 dark:text-red-600">Share via WhatsApp</span>
+              <span className="flex-1 text-left font-medium text-gray-900 dark:text-white">Share via WhatsApp</span>
               <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
@@ -139,7 +139,7 @@ export default function ProfileShareModal({
               className="w-full flex items-center gap-3 px-4 py-3 bg-blue-50 dark:bg-blue-900/20 border-2 border-blue-200 dark:border-blue-800 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors"
             >
               <span className="text-2xl">📧</span>
-              <span className="flex-1 text-left font-medium text-gray-900 dark:text-red-600">Share via Email</span>
+              <span className="flex-1 text-left font-medium text-gray-900 dark:text-white">Share via Email</span>
               <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
@@ -151,7 +151,7 @@ export default function ProfileShareModal({
                 type="text"
                 value={shareLink}
                 readOnly
-                className="flex-1 px-4 py-3 border-2 border-gray-200 dark:border-red-900 rounded-lg bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-red-600 text-sm"
+                className="flex-1 px-4 py-3 border-2 border-gray-200 dark:border-pink-800 rounded-lg bg-gray-50 dark:bg-black text-gray-900 dark:text-pink-300 text-sm"
               />
               <button
                 onClick={copyToClipboard}
@@ -168,10 +168,10 @@ export default function ProfileShareModal({
 
           {/* QR Code */}
           {qrCodeUrl && (
-            <div className="border-t border-gray-200 dark:border-red-900 pt-6">
-              <p className="text-sm font-medium text-gray-700 dark:text-red-500 mb-3 text-center">Scan QR Code</p>
+            <div className="border-t border-gray-200 dark:border-pink-800 pt-6">
+              <p className="text-sm font-medium text-gray-700 dark:text-pink-300 mb-3 text-center">Scan QR Code</p>
               <div className="flex justify-center">
-                <div className="p-4 bg-white rounded-lg border-2 border-gray-200 dark:border-red-900">
+                <div className="p-4 bg-white rounded-lg border-2 border-gray-200 dark:border-pink-800">
                   <img src={qrCodeUrl} alt="QR Code" className="w-48 h-48" />
                 </div>
               </div>

@@ -7,6 +7,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { useNotifications } from '@/contexts/NotificationContext';
 import { auth } from '@/lib/auth';
 import ProfileBadges from './ProfileBadges';
+import LazyImage from './LazyImage';
 
 interface EnhancedProfileCardProps {
   user: User;
@@ -54,17 +55,23 @@ export default function EnhancedProfileCard({ user, showActions = true }: Enhanc
   };
   
   return (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden profile-card border border-gray-100 group">
+    <div 
+      className="bg-white rounded-xl shadow-lg overflow-hidden profile-card border border-gray-100 group"
+      onClick={(e) => {
+        // Prevent any accidental navigation when clicking on the card
+        // Only allow navigation through explicit buttons
+        e.stopPropagation();
+      }}
+    >
       {/* Photo Section with Overlay */}
       <div className="relative h-64 sm:h-80 bg-gradient-to-br from-pink-50 to-purple-50">
         {primaryPhoto ? (
           <>
-            <img
+            <LazyImage
               src={primaryPhoto.url}
               alt={user.name}
               className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-              loading="lazy"
-              decoding="async"
+              placeholder="👤"
             />
             {/* Gradient Overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>

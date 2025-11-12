@@ -23,13 +23,13 @@
 }
 
 .dark {
-  --background: #1a1a1a; /* dark background */
-  --foreground: #a7c4a0; /* warm green with skin tone */
-  --primary: #7fb069; /* warm green primary */
-  --primary-dark: #6a9c5a; /* darker warm green */
-  --primary-light: #b8d4b0; /* light warm green */
-  --secondary: #8db580; /* warm emerald green */
-  --accent: #9bc88f; /* warm green accent */
+  --background: #0f1117; /* charcoal */
+  --foreground: #f5f6f9; /* soft white */
+  --primary: #ff6584; /* vibrant soft pink */
+  --primary-dark: #f2466c; /* deeper pink */
+  --primary-light: #ff8fa3; /* lighter pink */
+  --secondary: #1a1c23; /* surface charcoal */
+  --accent: #ffd1dc; /* blush accent */
 }
 
 body {

@@ -11,6 +11,7 @@ import ProfileCompletenessMeter from '@/components/ProfileCompletenessMeter';
 import ProfileBadges from '@/components/ProfileBadges';
 import PhotoUpload from '@/components/PhotoUpload';
 import ProfileShareModal from '@/components/ProfileShareModal';
+import LazyImage from '@/components/LazyImage';
 
 export default function MyProfilePage() {
   const router = useRouter();
@@ -342,8 +343,8 @@ export default function MyProfilePage() {
           <div className="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-semibold text-gray-900">{t('profile.profileStatus')}</p>
-                <p className="text-sm text-gray-600" dir="auto">
+                <p className="font-semibold text-gray-900 dark:text-pink-200">{t('profile.profileStatus')}</p>
+                <p className="text-sm text-gray-600 dark:text-pink-300" dir="auto">
                   {user.isActive 
                     ? t('profile.activeStatusDesc')
                     : t('profile.inactiveStatusDesc')}
@@ -351,8 +352,8 @@ export default function MyProfilePage() {
               </div>
               <div className={`px-3 py-1 rounded-full text-sm font-medium ${
                 user.isActive 
-                  ? 'bg-green-100 text-green-800' 
-                  : 'bg-gray-100 text-gray-800'
+                  ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300' 
+                  : 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-300'
               }`}>
                 {user.isActive ? t('profile.active') : t('profile.inactive')}
               </div>
@@ -361,7 +362,7 @@ export default function MyProfilePage() {
 
           {/* Photos Section */}
           <div className="mb-6 bg-white dark:bg-black p-6 rounded-lg shadow-md">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-red-600 mb-4">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-pink-300 mb-4">
               {t('profile.photos')} ({t('profile.maxPhotos')})
             </h3>
             
@@ -370,12 +371,11 @@ export default function MyProfilePage() {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
                 {(user.photos || []).map((photo, index) => (
                   <div key={index} className="relative group">
-                    <img
+                    <LazyImage
                       src={photo.url}
                       alt={`Photo ${index + 1}`}
-                      className="w-full aspect-square object-cover rounded-lg border-2 border-gray-200 dark:border-red-900"
-                      loading="lazy"
-                      decoding="async"
+                      className="w-full aspect-square object-cover rounded-lg border-2 border-gray-200 dark:border-pink-800"
+                      placeholder="📷"
                     />
                     {photo.isPrimary && (
                       <div className="absolute top-2 left-2 bg-gradient-to-r from-pink-600 to-red-600 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-lg">
@@ -419,21 +419,21 @@ export default function MyProfilePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">{t('profile.name')}</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">{t('profile.name')}</label>
               {editing ? (
                 <input
                   type="text"
                   value={formData.name || ''}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
                 />
               ) : (
-                <p className="text-gray-900">{user.name}</p>
+                <p className="text-gray-900 dark:text-pink-100">{user.name}</p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">{t('profile.email')}</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">{t('profile.email')}</label>
               {editing ? (
                 <>
                   <input
@@ -445,45 +445,45 @@ export default function MyProfilePage() {
                         setFieldErrors({ ...fieldErrors, email: '' });
                       }
                     }}
-                    className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-pink-500 ${
-                      fieldErrors.email ? 'border-red-500' : 'border-gray-300'
+                    className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400 dark:bg-gray-900 dark:text-pink-100 ${
+                      fieldErrors.email ? 'border-red-500 dark:border-red-600' : 'border-gray-300 dark:border-pink-800'
                     }`}
                   />
                   {fieldErrors.email && (
-                    <p className="text-red-500 text-xs mt-1">{fieldErrors.email}</p>
+                    <p className="text-red-500 dark:text-red-400 text-xs mt-1">{fieldErrors.email}</p>
                   )}
                 </>
               ) : (
-                <p className="text-gray-900">{user.email || t('profile.notProvided')}</p>
+                <p className="text-gray-900 dark:text-pink-100">{user.email || t('profile.notProvided')}</p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">{t('profile.phone')}</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">{t('profile.phone')}</label>
               {editing ? (
                 <input
                   type="tel"
                   value={formData.phone || ''}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
                 />
               ) : (
-                <p className="text-gray-900">{user.phone || t('profile.notProvided')}</p>
+                <p className="text-gray-900 dark:text-pink-100">{user.phone || t('profile.notProvided')}</p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">{t('profile.age')}</label>
-              <p className="text-gray-900">{user.age || t('profile.notProvided')}</p>
+              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">{t('profile.age')}</label>
+              <p className="text-gray-900 dark:text-pink-100">{user.age || t('profile.notProvided')}</p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Blood Group</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Blood Group</label>
               {editing ? (
                 <select
                   value={formData.bloodGroup || ''}
                   onChange={(e) => setFormData({ ...formData, bloodGroup: e.target.value || null })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
                 >
                   <option value="">Select Blood Group</option>
                   <option value="A+">A+</option>
@@ -496,34 +496,34 @@ export default function MyProfilePage() {
                   <option value="O-">O-</option>
                 </select>
               ) : (
-                <p className="text-gray-900">{user.bloodGroup || t('profile.notProvided')}</p>
+                <p className="text-gray-900 dark:text-pink-100">{user.bloodGroup || t('profile.notProvided')}</p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Disability</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Disability</label>
               {editing ? (
                 <select
                   value={formData.disability || 'no'}
                   onChange={(e) => setFormData({ ...formData, disability: e.target.value as 'no' | 'yes' | 'not-specified' })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
                 >
                   <option value="no">No</option>
                   <option value="yes">Yes</option>
                   <option value="not-specified">Not Specified</option>
                 </select>
               ) : (
-                <p className="text-gray-900 capitalize">{user.disability === 'no' ? 'No' : user.disability === 'yes' ? 'Yes' : 'Not Specified'}</p>
+                <p className="text-gray-900 dark:text-pink-100 capitalize">{user.disability === 'no' ? 'No' : user.disability === 'yes' ? 'Yes' : 'Not Specified'}</p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Profile Created By</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Profile Created By</label>
               {editing ? (
                 <select
                   value={formData.profileCreatedBy || 'self'}
                   onChange={(e) => setFormData({ ...formData, profileCreatedBy: e.target.value as 'self' | 'family' | 'relative' | 'friend' })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
                 >
                   <option value="self">Self</option>
                   <option value="family">Family</option>
@@ -531,12 +531,12 @@ export default function MyProfilePage() {
                   <option value="friend">Friend</option>
                 </select>
               ) : (
-                <p className="text-gray-900 capitalize">{user.profileCreatedBy || 'Self'}</p>
+                <p className="text-gray-900 dark:text-pink-100 capitalize">{user.profileCreatedBy || 'Self'}</p>
               )}
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">{t('profile.location')}</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">{t('profile.location')}</label>
               {editing ? (
                 <LocationSelect
                   selectedCountry={formData.country || user?.country || ''}
@@ -547,11 +547,11 @@ export default function MyProfilePage() {
                   onCityChange={handleCityChange}
                 />
               ) : (
-                <div className="space-y-1 text-gray-900">
-                  {user.country && <p><span className="font-medium">{t('profile.country')}:</span> {user.country}</p>}
-                  {user.state && <p><span className="font-medium">{t('profile.state')}:</span> {user.state}</p>}
-                  {user.city && <p><span className="font-medium">{t('profile.city')}:</span> {user.city}</p>}
-                  {user.town && <p><span className="font-medium">Town:</span> {user.town}</p>}
+                <div className="space-y-1 text-gray-900 dark:text-pink-100">
+                  {user.country && <p><span className="font-medium dark:text-pink-200">{t('profile.country')}:</span> {user.country}</p>}
+                  {user.state && <p><span className="font-medium dark:text-pink-200">{t('profile.state')}:</span> {user.state}</p>}
+                  {user.city && <p><span className="font-medium dark:text-pink-200">{t('profile.city')}:</span> {user.city}</p>}
+                  {user.town && <p><span className="font-medium dark:text-pink-200">Town:</span> {user.town}</p>}
                   {!user.country && !user.state && !user.city && <p>{t('profile.notProvided')}</p>}
                 </div>
               )}
@@ -560,34 +560,34 @@ export default function MyProfilePage() {
             {editing && (
               <>
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Town/Village</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Town/Village</label>
                   <input
                     type="text"
                     value={formData.town || ''}
                     onChange={(e) => setFormData({ ...formData, town: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
                     placeholder="Enter town or village name"
                   />
                 </div>
 
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Present Address</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Present Address</label>
                   <textarea
                     value={formData.presentAddress || ''}
                     onChange={(e) => setFormData({ ...formData, presentAddress: e.target.value })}
                     rows={2}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
                     placeholder="Enter present address"
                   />
                 </div>
 
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Permanent Address</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Permanent Address</label>
                   <textarea
                     value={formData.permanentAddress || ''}
                     onChange={(e) => setFormData({ ...formData, permanentAddress: e.target.value })}
                     rows={2}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
                     placeholder="Enter permanent address"
                   />
                 </div>
@@ -598,53 +598,53 @@ export default function MyProfilePage() {
               <>
                 {user.presentAddress && (
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Present Address</label>
-                    <p className="text-gray-900">{user.presentAddress}</p>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Present Address</label>
+                    <p className="text-gray-900 dark:text-pink-100">{user.presentAddress}</p>
                   </div>
                 )}
                 {user.permanentAddress && (
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Permanent Address</label>
-                    <p className="text-gray-900">{user.permanentAddress}</p>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Permanent Address</label>
+                    <p className="text-gray-900 dark:text-pink-100">{user.permanentAddress}</p>
                   </div>
                 )}
               </>
             )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">WhatsApp Number</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">WhatsApp Number</label>
               {editing ? (
                 <input
                   type="tel"
                   value={formData.whatsappNumber || ''}
                   onChange={(e) => setFormData({ ...formData, whatsappNumber: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
                   placeholder="Enter WhatsApp number"
                 />
               ) : (
-                <p className="text-gray-900">{user.whatsappNumber || t('profile.notProvided')}</p>
+                <p className="text-gray-900 dark:text-pink-100">{user.whatsappNumber || t('profile.notProvided')}</p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">{t('profile.religion')}</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">{t('profile.religion')}</label>
               {editing ? (
                 <input
                   type="text"
                   value={formData.religion || ''}
                   onChange={(e) => setFormData({ ...formData, religion: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
                 />
               ) : (
-                <p className="text-gray-900">{user.religion || t('profile.notProvided')}</p>
+                <p className="text-gray-900 dark:text-pink-100">{user.religion || t('profile.notProvided')}</p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
                 {t('profile.education')}
                 {loadingEducation && (
-                  <span className="ml-2 text-xs text-gray-500">(Loading...)</span>
+                  <span className="ml-2 text-xs text-gray-500 dark:text-pink-400">(Loading...)</span>
                 )}
               </label>
               {editing ? (
@@ -652,7 +652,7 @@ export default function MyProfilePage() {
                   value={formData.education || ''}
                   onChange={(e) => setFormData({ ...formData, education: e.target.value })}
                   disabled={loadingEducation}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500 disabled:opacity-50"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400 disabled:opacity-50"
                 >
                   <option value="">Select Education</option>
                   {educationOptions.map((option) => (
@@ -662,7 +662,7 @@ export default function MyProfilePage() {
                   ))}
                 </select>
               ) : (
-                <p className="text-gray-900">
+                <p className="text-gray-900 dark:text-pink-100">
                   {user.education 
                     ? educationOptions.find(opt => opt.value === user.education)?.label || user.education
                     : t('profile.notProvided')}
@@ -671,12 +671,12 @@ export default function MyProfilePage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Educational Detail</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Educational Detail</label>
               {editing ? (
                 <select
                   value={formData.educationalDetail || ''}
                   onChange={(e) => setFormData({ ...formData, educationalDetail: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
                 >
                   <option value="">Select</option>
                   <option value="Graduate">Graduate</option>
@@ -686,15 +686,15 @@ export default function MyProfilePage() {
                   <option value="Professional">Professional</option>
                 </select>
               ) : (
-                <p className="text-gray-900">{user.educationalDetail || t('profile.notProvided')}</p>
+                <p className="text-gray-900 dark:text-pink-100">{user.educationalDetail || t('profile.notProvided')}</p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
                 {t('profile.occupation')}
                 {loadingOccupation && (
-                  <span className="ml-2 text-xs text-gray-500">(Loading...)</span>
+                  <span className="ml-2 text-xs text-gray-500 dark:text-pink-400">(Loading...)</span>
                 )}
               </label>
               {editing ? (
@@ -702,7 +702,7 @@ export default function MyProfilePage() {
                   value={formData.occupation || ''}
                   onChange={(e) => setFormData({ ...formData, occupation: e.target.value })}
                   disabled={loadingOccupation}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500 disabled:opacity-50"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400 disabled:opacity-50"
                 >
                   <option value="">Select Occupation</option>
                   {occupationOptions.map((option) => (
@@ -712,7 +712,7 @@ export default function MyProfilePage() {
                   ))}
                 </select>
               ) : (
-                <p className="text-gray-900">
+                <p className="text-gray-900 dark:text-pink-100">
                   {user.occupation 
                     ? occupationOptions.find(opt => opt.value === user.occupation)?.label || user.occupation
                     : t('profile.notProvided')}
@@ -721,86 +721,86 @@ export default function MyProfilePage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Profession</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Profession</label>
               {editing ? (
                 <input
                   type="text"
                   value={formData.profession || ''}
                   onChange={(e) => setFormData({ ...formData, profession: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
                   placeholder="e.g., Computer Software Professional"
                 />
               ) : (
-                <p className="text-gray-900">{user.profession || t('profile.notProvided')}</p>
+                <p className="text-gray-900 dark:text-pink-100">{user.profession || t('profile.notProvided')}</p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Employer/Company</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Employer/Company</label>
               {editing ? (
                 <input
                   type="text"
                   value={formData.employer || ''}
                   onChange={(e) => setFormData({ ...formData, employer: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
                   placeholder="Company name"
                 />
               ) : (
-                <p className="text-gray-900">{user.employer || t('profile.notProvided')}</p>
+                <p className="text-gray-900 dark:text-pink-100">{user.employer || t('profile.notProvided')}</p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Occupation Detail</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Occupation Detail</label>
               {editing ? (
                 <input
                   type="text"
                   value={formData.occupationDetail || ''}
                   onChange={(e) => setFormData({ ...formData, occupationDetail: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
                   placeholder="Detailed occupation information"
                 />
               ) : (
-                <p className="text-gray-900">{user.occupationDetail || t('profile.notProvided')}</p>
+                <p className="text-gray-900 dark:text-pink-100">{user.occupationDetail || t('profile.notProvided')}</p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Annual Income</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Annual Income</label>
               {editing ? (
                 <input
                   type="text"
                   value={formData.annualIncome || ''}
                   onChange={(e) => setFormData({ ...formData, annualIncome: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
                   placeholder="e.g., 25-30 lakh"
                 />
               ) : (
-                <p className="text-gray-900">{user.annualIncome || t('profile.notProvided')}</p>
+                <p className="text-gray-900 dark:text-pink-100">{user.annualIncome || t('profile.notProvided')}</p>
               )}
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">{t('profile.bio')}</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">{t('profile.bio')}</label>
               {editing ? (
                 <textarea
                   value={formData.bio || ''}
                   onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
                   rows={4}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
                   dir="auto"
                 />
               ) : (
-                <p className="text-gray-900" dir="auto">{user.bio || t('profile.noBio')}</p>
+                <p className="text-gray-900 dark:text-pink-100" dir="auto">{user.bio || t('profile.noBio')}</p>
               )}
             </div>
 
             {/* Horoscope Details Section */}
-            <div className="md:col-span-2 border-t pt-6 mt-4">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">🔮 {t('profile.horoscopeDetails') || 'Horoscope Details'}</h3>
+            <div className="md:col-span-2 border-t border-gray-200 dark:border-pink-800 pt-6 mt-4">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-pink-300 mb-4">🔮 {t('profile.horoscopeDetails') || 'Horoscope Details'}</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
                     {t('profile.rashi') || 'Rashi (Moon Sign)'}
                   </label>
                   {editing ? (
@@ -813,7 +813,7 @@ export default function MyProfilePage() {
                           rashi: e.target.value,
                         },
                       })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
                     >
                       <option value="">Select Rashi</option>
                       <option value="Aries">Aries (Mesha)</option>
@@ -830,14 +830,14 @@ export default function MyProfilePage() {
                       <option value="Pisces">Pisces (Meena)</option>
                     </select>
                   ) : (
-                    <p className="text-gray-900">
+                    <p className="text-gray-900 dark:text-pink-100">
                       {user.horoscopeDetails?.rashi || t('profile.notProvided')}
                     </p>
                   )}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
                     {t('profile.nakshatra') || 'Nakshatra'}
                   </label>
                   {editing ? (
@@ -850,7 +850,7 @@ export default function MyProfilePage() {
                           nakshatra: e.target.value,
                         },
                       })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
                     >
                       <option value="">Select Nakshatra</option>
                       <option value="Ashwini">Ashwini</option>
@@ -882,14 +882,14 @@ export default function MyProfilePage() {
                       <option value="Revati">Revati</option>
                     </select>
                   ) : (
-                    <p className="text-gray-900">
+                    <p className="text-gray-900 dark:text-pink-100">
                       {user.horoscopeDetails?.nakshatra || t('profile.notProvided')}
                     </p>
                   )}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
                     {t('profile.starSign') || 'Star Sign'}
                   </label>
                   {editing ? (
@@ -903,11 +903,11 @@ export default function MyProfilePage() {
                           starSign: e.target.value,
                         },
                       })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
                       placeholder="Optional"
                     />
                   ) : (
-                    <p className="text-gray-900">
+                    <p className="text-gray-900 dark:text-pink-100">
                       {user.horoscopeDetails?.starSign || t('profile.notProvided')}
                     </p>
                   )}
@@ -955,8 +955,8 @@ export default function MyProfilePage() {
 
           {!editing && (
             <div className="mt-6">
-              <div className="bg-yellow-50 border border-yellow-200 rounded-md p-4">
-                <p className="text-sm text-yellow-800" dir="auto">
+              <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-md p-4">
+                <p className="text-sm text-yellow-800 dark:text-yellow-300" dir="auto">
                   <strong>{t('profile.profileStatus')}:</strong> {user.isProfileComplete ? t('profile.complete') : t('profile.incomplete')}
                 </p>
               </div>
@@ -965,11 +965,11 @@ export default function MyProfilePage() {
 
           {/* Deactivate Button at Bottom - Only show if active */}
           {!editing && user.isActive && (
-            <div className="mt-8 pt-6 border-t border-gray-200">
+            <div className="mt-8 pt-6 border-t border-gray-200 dark:border-pink-800">
               <button
                 onClick={handleToggleActive}
                 disabled={togglingActive}
-                className="w-full px-6 py-3 bg-red-600 text-white rounded-md hover:bg-red-700 disabled:opacity-50 font-semibold transition-colors"
+                className="w-full px-6 py-3 bg-red-600 dark:bg-red-700 text-white rounded-md hover:bg-red-700 dark:hover:bg-red-800 disabled:opacity-50 font-semibold transition-colors"
               >
                 {togglingActive ? t('common.loading') : t('profile.deactivateProfile')}
               </button>

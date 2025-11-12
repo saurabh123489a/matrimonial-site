@@ -20,12 +20,7 @@ export default function Home() {
 
   useEffect(() => {
     setMounted(true);
-    // Hide welcome message after 10 seconds
-    const timer = setTimeout(() => {
-      setShowWelcomeMessage(false);
-    }, 10000); // 10 seconds
-
-    return () => clearTimeout(timer);
+    // Welcome message stays visible until user closes it manually
   }, []);
 
   const handleQuickSearch = () => {
@@ -39,10 +34,10 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors">
+    <div className="min-h-screen bg-white dark:bg-[#0f1117] transition-colors">
       {/* Running Welcome Message - Temporary */}
       {showWelcomeMessage && (
-        <div className="bg-gradient-to-r from-pink-600 via-red-600 to-pink-700 dark:from-green-700 dark:via-green-600 dark:to-green-800 text-white py-3 overflow-hidden relative animate-slide-up">
+        <div className="bg-gradient-to-r from-pink-600 via-red-600 to-pink-700 dark:from-pink-700 dark:via-pink-600 dark:to-pink-800 text-white py-3 overflow-hidden relative animate-slide-up">
           <button
             onClick={() => setShowWelcomeMessage(false)}
             className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 text-white hover:text-pink-200 transition-colors"
@@ -146,7 +141,7 @@ export default function Home() {
             }}
           />
           {/* Gradient Overlay - very minimal for text readability only */}
-          <div className="absolute inset-0 bg-gradient-to-r from-pink-600/10 via-red-600/10 to-pink-700/10 dark:from-green-700/10 dark:via-green-600/10 dark:to-green-800/10"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-pink-600/10 via-red-600/10 to-pink-700/10 dark:from-pink-600/20 dark:via-pink-700/20 dark:to-pink-800/20"></div>
         </div>
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-32 lg:py-40">
@@ -176,21 +171,21 @@ export default function Home() {
       </div>
 
       {/* Quick Search Section - Clean & Minimal */}
-      <div className="bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-green-700 transition-colors">
+      <div className="bg-gray-50 dark:bg-[#0f1117] border-b border-gray-200 dark:border-[#262932] transition-colors">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
           <div className="text-center mb-8">
-            <h2 className="text-2xl sm:text-3xl font-light text-gray-900 dark:text-green-500 mb-2">Find Your Perfect Match</h2>
-            <p className="text-gray-600 dark:text-green-400 text-sm">Search from thousands of verified profiles</p>
+            <h2 className="text-2xl sm:text-3xl font-light text-gray-900 dark:text-pink-300 mb-2">Find Your Perfect Match</h2>
+            <p className="text-gray-600 dark:text-pink-200 text-sm">Search from thousands of verified profiles</p>
           </div>
           
-          <div className="max-w-4xl mx-auto bg-white dark:bg-gray-800 p-6 sm:p-8 shadow-sm transition-colors">
+          <div className="max-w-4xl mx-auto bg-white dark:bg-[#181b23] p-6 sm:p-8 shadow-sm transition-colors">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div>
-                <label className="block text-xs font-medium text-gray-700 dark:text-green-400 mb-2 uppercase tracking-wider">Looking For</label>
+                <label className="block text-xs font-medium text-gray-700 dark:text-pink-200 mb-2 uppercase tracking-wider">Looking For</label>
                 <select
                   value={quickSearch.gender}
                   onChange={(e) => setQuickSearch({...quickSearch, gender: e.target.value})}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-green-700 text-gray-900 dark:text-green-100 focus:outline-none focus:border-pink-500 dark:focus:border-green-500 focus:ring-1 focus:ring-pink-500 dark:focus:ring-green-500 transition-colors text-sm bg-white dark:bg-gray-800"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-[#303341] text-gray-900 dark:text-pink-50 focus:outline-none focus:border-pink-500 dark:focus:border-pink-400 focus:ring-1 focus:ring-pink-500 dark:focus:ring-pink-400 transition-colors text-sm bg-white dark:bg-[#181b23]"
                 >
                   <option value="">Select</option>
                   <option value="male">Male</option>
@@ -198,32 +193,32 @@ export default function Home() {
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-700 dark:text-green-400 mb-2 uppercase tracking-wider">Age Range</label>
+                <label className="block text-xs font-medium text-gray-700 dark:text-pink-200 mb-2 uppercase tracking-wider">Age Range</label>
                 <div className="flex gap-2">
                   <input
                     type="number"
                     placeholder="From"
                     value={quickSearch.ageFrom}
                     onChange={(e) => setQuickSearch({...quickSearch, ageFrom: e.target.value})}
-                    className="w-1/2 px-4 py-3 border border-gray-300 dark:border-green-700 text-gray-900 dark:text-green-100 bg-white dark:bg-gray-800 focus:outline-none focus:border-pink-500 dark:focus:border-green-500 focus:ring-1 focus:ring-pink-500 dark:focus:ring-green-500 transition-colors text-sm"
+                    className="w-1/2 px-4 py-3 border border-gray-300 dark:border-[#303341] text-gray-900 dark:text-pink-50 bg-white dark:bg-[#181b23] focus:outline-none focus:border-pink-500 dark:focus:border-pink-400 focus:ring-1 focus:ring-pink-500 dark:focus:ring-pink-400 transition-colors text-sm"
                   />
                   <input
                     type="number"
                     placeholder="To"
                     value={quickSearch.ageTo}
                     onChange={(e) => setQuickSearch({...quickSearch, ageTo: e.target.value})}
-                    className="w-1/2 px-4 py-3 border border-gray-300 dark:border-green-700 text-gray-900 dark:text-green-100 bg-white dark:bg-gray-800 focus:outline-none focus:border-pink-500 dark:focus:border-green-500 focus:ring-1 focus:ring-pink-500 dark:focus:ring-green-500 transition-colors text-sm"
+                    className="w-1/2 px-4 py-3 border border-gray-300 dark:border-[#303341] text-gray-900 dark:text-pink-50 bg-white dark:bg-[#181b23] focus:outline-none focus:border-pink-500 dark:focus:border-pink-400 focus:ring-1 focus:ring-pink-500 dark:focus:ring-pink-400 transition-colors text-sm"
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-700 dark:text-green-400 mb-2 uppercase tracking-wider">City</label>
+                <label className="block text-xs font-medium text-gray-700 dark:text-pink-200 mb-2 uppercase tracking-wider">City</label>
                 <input
                   type="text"
                   placeholder="Enter city"
                   value={quickSearch.city}
                   onChange={(e) => setQuickSearch({...quickSearch, city: e.target.value})}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-green-700 text-gray-900 dark:text-green-100 bg-white dark:bg-gray-800 focus:outline-none focus:border-pink-500 dark:focus:border-green-500 focus:ring-1 focus:ring-pink-500 dark:focus:ring-green-500 transition-colors text-sm"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-[#303341] text-gray-900 dark:text-pink-50 bg-white dark:bg-[#181b23] focus:outline-none focus:border-pink-500 dark:focus:border-pink-400 focus:ring-1 focus:ring-pink-500 dark:focus:ring-pink-400 transition-colors text-sm"
                 />
               </div>
               <div className="flex items-end">
@@ -286,10 +281,10 @@ export default function Home() {
       </div>
 
       {/* Stats Section - Minimal Design */}
-      <div className="bg-gradient-to-br from-pink-50 via-red-50 to-pink-100 dark:from-gray-800 dark:via-gray-800 dark:to-gray-900 border-t border-b border-pink-100 dark:border-green-700 transition-colors">
+      <div className="bg-gradient-to-br from-pink-50 via-red-50 to-pink-100 dark:from-[#161821] dark:via-[#151720] dark:to-[#12141b] border-t border-b border-pink-100 dark:border-[#262932] transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
           <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-light text-gray-900 dark:text-green-500 mb-4">
+            <h2 className="text-3xl sm:text-4xl font-light text-gray-900 dark:text-pink-200 mb-4">
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-red-600">
                 Community Impact
               </span>
@@ -402,7 +397,7 @@ export default function Home() {
           />
         </div>
         {/* Gradient Overlay - very minimal for text readability only */}
-        <div className="absolute inset-0 bg-gradient-to-r from-pink-600/10 via-red-600/10 to-pink-700/10 dark:from-pink-700/10 dark:via-red-700/10 dark:to-pink-800/10"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-pink-600/10 via-red-600/10 to-pink-700/10 dark:from-pink-500/10 dark:via-pink-600/10 dark:to-pink-700/10"></div>
         
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light mb-6 drop-shadow-lg">

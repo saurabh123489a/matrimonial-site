@@ -1,5 +1,8 @@
+'use client';
+
 import Link from 'next/link';
 import { User } from '@/lib/api';
+import LazyImage from './LazyImage';
 
 interface ProfileCardProps {
   user: User;
@@ -14,14 +17,13 @@ export default function ProfileCard({ user }: ProfileCardProps) {
       <div className="relative h-56 sm:h-72 bg-gradient-to-br from-pink-100 to-red-100">
         {primaryPhoto ? (
           <>
-            <img
+            <LazyImage
               src={primaryPhoto.url}
               alt={user.name}
               className="w-full h-full object-cover"
-              loading="lazy"
-              decoding="async"
+              placeholder="👤"
             />
-            <div className="absolute top-2 right-2 bg-pink-600 text-white text-xs px-2 py-1 rounded-full font-semibold">
+            <div className="absolute top-2 right-2 bg-pink-600 text-white text-xs px-2 py-1 rounded-full font-semibold z-10">
               {user.isProfileComplete ? '✓ Verified' : 'New'}
             </div>
           </>
