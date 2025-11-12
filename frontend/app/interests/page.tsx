@@ -98,7 +98,7 @@ export default function InterestsPage() {
   const filteredInterests = getFilteredInterests(currentInterests);
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black pb-20 transition-colors">
+    <div className="min-h-screen bg-white dark:bg-gray-900 pb-20 transition-colors">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header with Tabs */}
         <div className="mb-6">
@@ -108,11 +108,11 @@ export default function InterestsPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-light text-gray-900 dark:text-red-600">Interests</h1>
+            <h1 className="text-2xl sm:text-3xl font-light text-gray-900 dark:text-green-400">Interests</h1>
           </div>
 
           {/* Tabs */}
-          <div className="flex gap-2 mb-4 border-b border-gray-200 dark:border-red-900">
+          <div className="flex gap-2 mb-4 border-b border-gray-200 dark:border-green-700">
             <button
               onClick={() => {
                 setActiveTab('received');
@@ -158,7 +158,7 @@ export default function InterestsPage() {
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                 filterStatus === 'all'
                   ? 'bg-pink-600 text-white'
-                  : 'bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-red-500 hover:bg-gray-200 dark:hover:bg-gray-800'
+                  : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-green-400 hover:bg-gray-200 dark:hover:bg-gray-700'
               }`}
             >
               All ({currentInterests.length})
@@ -168,7 +168,7 @@ export default function InterestsPage() {
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                 filterStatus === 'pending'
                   ? 'bg-yellow-100 text-yellow-700 border-2 border-yellow-300'
-                  : 'bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-red-500 hover:bg-gray-200 dark:hover:bg-gray-800'
+                  : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-green-400 hover:bg-gray-200 dark:hover:bg-gray-700'
               }`}
             >
               Pending ({currentInterests.filter(i => i.status === 'pending').length})
@@ -178,7 +178,7 @@ export default function InterestsPage() {
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                 filterStatus === 'accepted'
                   ? 'bg-green-100 text-green-700 border-2 border-green-300'
-                  : 'bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-red-500 hover:bg-gray-200 dark:hover:bg-gray-800'
+                  : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-green-400 hover:bg-gray-200 dark:hover:bg-gray-700'
               }`}
             >
               Accepted ({currentInterests.filter(i => i.status === 'accepted').length})
@@ -188,7 +188,7 @@ export default function InterestsPage() {
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                 filterStatus === 'rejected'
                   ? 'bg-gray-100 text-gray-600 border-2 border-gray-300'
-                  : 'bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-red-500 hover:bg-gray-200 dark:hover:bg-gray-800'
+                  : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-green-400 hover:bg-gray-200 dark:hover:bg-gray-700'
               }`}
             >
               Declined ({currentInterests.filter(i => i.status === 'rejected').length})
@@ -218,7 +218,7 @@ export default function InterestsPage() {
               return (
                 <div
                   key={interest._id || interest.id}
-                  className="bg-white dark:bg-black border border-gray-200 dark:border-red-900 p-6 hover:shadow-md transition-all rounded-lg"
+                  className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-green-700 p-6 hover:shadow-md transition-all rounded-lg"
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -226,15 +226,15 @@ export default function InterestsPage() {
                         href={`/profiles/${userId}`}
                         className="block"
                       >
-                        <h3 className="text-lg font-medium text-gray-900 dark:text-red-600 mb-2">
+                        <h3 className="text-lg font-medium text-gray-900 dark:text-green-400 mb-2">
                           {user?.name || 'Unknown User'}
                         </h3>
-                        <p className="text-sm text-gray-600 dark:text-red-500 mb-4">
+                        <p className="text-sm text-gray-600 dark:text-green-300 mb-4">
                           {user?.age && `${user.age} years`}
                           {user?.city && ` • ${user.city}`}
                         </p>
                       </Link>
-                      <p className="text-xs text-gray-500 dark:text-red-500 mb-4">
+                      <p className="text-xs text-gray-500 dark:text-green-400 mb-4">
                         {activeTab === 'received' ? 'Received' : 'Sent'} on {new Date(interest.createdAt || interest.sentAt).toLocaleDateString()}
                       </p>
                       
@@ -259,7 +259,7 @@ export default function InterestsPage() {
                           </button>
                           <button
                             onClick={() => handleRespond(userId, 'reject')}
-                            className="flex items-center gap-2 px-6 py-2 border-2 border-gray-300 dark:border-red-900 text-gray-700 dark:text-red-500 font-medium hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors text-sm rounded-lg"
+                            className="flex items-center gap-2 px-6 py-2 border-2 border-gray-300 dark:border-green-700 text-gray-700 dark:text-green-400 font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-sm rounded-lg"
                           >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />

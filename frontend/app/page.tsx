@@ -186,11 +186,11 @@ export default function Home() {
           <div className="max-w-4xl mx-auto bg-white dark:bg-gray-800 p-6 sm:p-8 shadow-sm transition-colors">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div>
-                <label className="block text-xs font-medium text-gray-700 mb-2 uppercase tracking-wider">Looking For</label>
+                <label className="block text-xs font-medium text-gray-700 dark:text-green-400 mb-2 uppercase tracking-wider">Looking For</label>
                 <select
                   value={quickSearch.gender}
                   onChange={(e) => setQuickSearch({...quickSearch, gender: e.target.value})}
-                  className="w-full px-4 py-3 border border-gray-300 text-gray-900 focus:outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500 transition-colors text-sm bg-white"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-green-700 text-gray-900 dark:text-green-100 focus:outline-none focus:border-pink-500 dark:focus:border-green-500 focus:ring-1 focus:ring-pink-500 dark:focus:ring-green-500 transition-colors text-sm bg-white dark:bg-gray-800"
                 >
                   <option value="">Select</option>
                   <option value="male">Male</option>
@@ -198,32 +198,32 @@ export default function Home() {
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-700 mb-2 uppercase tracking-wider">Age Range</label>
+                <label className="block text-xs font-medium text-gray-700 dark:text-green-400 mb-2 uppercase tracking-wider">Age Range</label>
                 <div className="flex gap-2">
                   <input
                     type="number"
                     placeholder="From"
                     value={quickSearch.ageFrom}
                     onChange={(e) => setQuickSearch({...quickSearch, ageFrom: e.target.value})}
-                    className="w-1/2 px-4 py-3 border border-gray-300 text-gray-900 focus:outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500 transition-colors text-sm"
+                    className="w-1/2 px-4 py-3 border border-gray-300 dark:border-green-700 text-gray-900 dark:text-green-100 bg-white dark:bg-gray-800 focus:outline-none focus:border-pink-500 dark:focus:border-green-500 focus:ring-1 focus:ring-pink-500 dark:focus:ring-green-500 transition-colors text-sm"
                   />
                   <input
                     type="number"
                     placeholder="To"
                     value={quickSearch.ageTo}
                     onChange={(e) => setQuickSearch({...quickSearch, ageTo: e.target.value})}
-                    className="w-1/2 px-4 py-3 border border-gray-300 text-gray-900 focus:outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500 transition-colors text-sm"
+                    className="w-1/2 px-4 py-3 border border-gray-300 dark:border-green-700 text-gray-900 dark:text-green-100 bg-white dark:bg-gray-800 focus:outline-none focus:border-pink-500 dark:focus:border-green-500 focus:ring-1 focus:ring-pink-500 dark:focus:ring-green-500 transition-colors text-sm"
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-700 mb-2 uppercase tracking-wider">City</label>
+                <label className="block text-xs font-medium text-gray-700 dark:text-green-400 mb-2 uppercase tracking-wider">City</label>
                 <input
                   type="text"
                   placeholder="Enter city"
                   value={quickSearch.city}
                   onChange={(e) => setQuickSearch({...quickSearch, city: e.target.value})}
-                  className="w-full px-4 py-3 border border-gray-300 text-gray-900 focus:outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500 transition-colors text-sm"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-green-700 text-gray-900 dark:text-green-100 bg-white dark:bg-gray-800 focus:outline-none focus:border-pink-500 dark:focus:border-green-500 focus:ring-1 focus:ring-pink-500 dark:focus:ring-green-500 transition-colors text-sm"
                 />
               </div>
               <div className="flex items-end">

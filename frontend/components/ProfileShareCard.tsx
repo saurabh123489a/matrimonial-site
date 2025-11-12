@@ -135,10 +135,10 @@ export default function ProfileShareCard({ user, onClose }: ProfileShareCardProp
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-black rounded-2xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-scale-in">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-scale-in">
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
-            <h3 className="text-xl font-bold text-gray-900 dark:text-red-600">Share Profile Card</h3>
+            <h3 className="text-xl font-bold text-gray-900 dark:text-green-400">Share Profile Card</h3>
             <button
               onClick={onClose}
               className="text-gray-400 hover:text-gray-600 dark:hover:text-red-400 transition-colors"
@@ -263,13 +263,13 @@ export default function ProfileShareCard({ user, onClose }: ProfileShareCardProp
             <div className="flex items-center justify-center py-12">
               <div className="text-center">
                 <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-pink-600 border-t-transparent mb-4"></div>
-                <p className="text-gray-600 dark:text-red-500">Generating your profile card...</p>
+                <p className="text-gray-600 dark:text-green-300">Generating your profile card...</p>
               </div>
             </div>
           ) : cardImageUrl ? (
             <div className="space-y-6">
               {/* Card Preview */}
-              <div className="border-2 border-gray-200 dark:border-red-900 rounded-lg overflow-hidden">
+              <div className="border-2 border-gray-200 dark:border-green-700 rounded-lg overflow-hidden">
                 <img
                   src={cardImageUrl}
                   alt="Profile Card"
@@ -307,7 +307,7 @@ export default function ProfileShareCard({ user, onClose }: ProfileShareCardProp
             </div>
           ) : (
             <div className="text-center py-12">
-              <p className="text-gray-600 dark:text-red-500">Preparing your profile card...</p>
+              <p className="text-gray-600 dark:text-green-300">Preparing your profile card...</p>
             </div>
           )}
         </div>

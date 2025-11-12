@@ -260,19 +260,19 @@ function ProfilesContent() {
   }, [isAuthenticated]);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-black relative transition-colors">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 relative transition-colors">
       {/* Pull-to-refresh indicator */}
       {(isPulling || isRefreshing) && (
-        <div className="fixed top-0 left-1/2 transform -translate-x-1/2 z-50 bg-white dark:bg-black px-6 py-3 rounded-b-lg shadow-lg flex items-center gap-3 animate-slide-up">
+        <div className="fixed top-0 left-1/2 transform -translate-x-1/2 z-50 bg-white dark:bg-gray-800 px-6 py-3 rounded-b-lg shadow-lg flex items-center gap-3 animate-slide-up">
           {isRefreshing ? (
             <>
               <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-pink-600"></div>
-              <span className="text-sm font-medium text-gray-700 dark:text-red-600">Refreshing...</span>
+              <span className="text-sm font-medium text-gray-700 dark:text-green-400">Refreshing...</span>
             </>
           ) : (
             <>
               <span className="text-2xl">⬇️</span>
-              <span className="text-sm font-medium text-gray-700 dark:text-red-600">Pull to refresh</span>
+              <span className="text-sm font-medium text-gray-700 dark:text-green-400">Pull to refresh</span>
             </>
           )}
         </div>
@@ -328,9 +328,9 @@ function ProfilesContent() {
 
           {/* Sidebar Filters - Gahoi Sathi Style */}
           <aside className={`lg:w-80 flex-shrink-0 ${showFilters ? 'block' : 'hidden'} lg:block`}>
-            <div className="bg-white dark:bg-black rounded-lg shadow-md p-4 sm:p-6 filter-section lg:sticky lg:top-4 transition-colors">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 sm:p-6 filter-section lg:sticky lg:top-4 transition-colors">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-lg font-bold text-gray-900 dark:text-red-600">Refine Search</h2>
+                <h2 className="text-lg font-bold text-gray-900 dark:text-green-400">Refine Search</h2>
                 <button
                   onClick={clearFilters}
                   className="text-sm text-pink-600 hover:text-pink-700 font-medium"
@@ -342,7 +342,7 @@ function ProfilesContent() {
               <div className="space-y-5">
                 {/* Gahoi ID Search */}
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-red-500 mb-2">
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-green-400 mb-2">
                     Search by Gahoi ID
                   </label>
                   <div className="flex gap-2">
@@ -592,7 +592,7 @@ function ProfilesContent() {
             ) : (
               <>
                 {/* Sort Options */}
-                <div className="bg-white dark:bg-black rounded-lg shadow-md p-3 sm:p-4 mb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 transition-colors">
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-3 sm:p-4 mb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 transition-colors">
                   <p className="text-xs sm:text-sm text-gray-600 dark:text-red-500">
                     Showing {Math.min(displayLimit, users.length)} of {users.length} profiles
                     {pagination.total > users.length && ` (${pagination.total} total)`}
