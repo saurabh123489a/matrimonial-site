@@ -917,7 +917,6 @@ export default function MyProfilePage() {
                           nakshatra: user?.horoscopeDetails?.nakshatra || '',
                           starSign: user?.horoscopeDetails?.starSign || '',
                           timeOfBirth: user?.horoscopeDetails?.timeOfBirth || '',
-                          placeOfBirth: user?.horoscopeDetails?.placeOfBirth || '',
                         },
                       });
                     }}
@@ -1064,7 +1063,6 @@ export default function MyProfilePage() {
                           nakshatra: user?.horoscopeDetails?.nakshatra || '',
                           starSign: user?.horoscopeDetails?.starSign || '',
                           timeOfBirth: user?.horoscopeDetails?.timeOfBirth || '',
-                          placeOfBirth: user?.horoscopeDetails?.placeOfBirth || '',
                         },
                       });
                     }}
