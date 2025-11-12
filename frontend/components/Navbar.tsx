@@ -52,24 +52,33 @@ export default function Navbar() {
     }
   }, [mounted, pathname]);
 
-  // Close side menu when pressing Escape key
+  // Close side menu when pressing Escape key and prevent body scroll
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && showUserMenu) {
-        setShowUserMenu(false);
+      if (event.key === 'Escape' && (showUserMenu || showAuthModal)) {
+        if (showUserMenu) setShowUserMenu(false);
+        if (showAuthModal) {
+          setShowAuthModal(false);
+          router.push('/');
+        }
       }
     };
 
-    if (showUserMenu) {
+    if (showUserMenu || showAuthModal) {
       document.addEventListener('keydown', handleEscape);
-      // Prevent body scroll when menu is open
+      // Prevent body scroll when menu/modal is open
       document.body.style.overflow = 'hidden';
+      // Prevent scrolling on iOS
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
       return () => {
         document.removeEventListener('keydown', handleEscape);
         document.body.style.overflow = '';
+        document.body.style.position = '';
+        document.body.style.width = '';
       };
     }
-  }, [showUserMenu]);
+  }, [showUserMenu, showAuthModal, router]);
 
   const checkAdminStatus = async () => {
     try {
@@ -178,17 +187,17 @@ export default function Navbar() {
   return (
     <>
       {/* Top Bar - Hamburger Menu (Left) | Logo (Center) | Icons (Right) */}
-      <nav className="bg-white dark:bg-[#0f1117] border-b border-gray-200 dark:border-[#262932] sticky top-0 z-30 transition-colors">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between min-h-20 py-3 relative">
+      <nav className="bg-white dark:bg-[#0f1117] border-b border-gray-200 dark:border-[#262932] sticky top-0 z-30 transition-colors safe-area-inset-top">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+          <div className="flex items-center justify-between min-h-16 sm:min-h-20 py-2 sm:py-3 relative">
             {/* Left: Hamburger Menu Button */}
             <button
               onClick={() => setShowUserMenu(!showUserMenu)}
-              className="p-2 text-gray-700 dark:text-pink-100 hover:text-pink-600 dark:hover:text-pink-300 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700"
+              className="min-w-[44px] min-h-[44px] p-2.5 sm:p-2 text-gray-700 dark:text-pink-100 hover:text-pink-600 dark:hover:text-pink-300 active:bg-gray-200 dark:active:bg-slate-600 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 touch-manipulation"
               title="Menu"
               aria-label="Open menu"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-6 h-6 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
@@ -196,18 +205,18 @@ export default function Navbar() {
             {/* Center: Logo */}
             <Link 
               href="/" 
-              className="absolute left-1/2 transform -translate-x-1/2 text-xl sm:text-2xl font-light text-gray-900 dark:text-white tracking-tight"
+              className="absolute left-1/2 transform -translate-x-1/2 text-lg sm:text-xl md:text-2xl font-light text-gray-900 dark:text-white tracking-tight px-2 truncate max-w-[60vw] sm:max-w-none"
             >
               💍 {t('common.appName')}
             </Link>
             
             {/* Right: Icons */}
-            <div className="flex items-center space-x-2 sm:space-x-3">
+            <div className="flex items-center space-x-1 sm:space-x-2 md:space-x-3">
               {/* Search Icon - Show auth modal if not authenticated */}
               {mounted && !isAuthenticated ? (
                 <button
                   onClick={() => setShowAuthModal(true)}
-                  className="p-2 text-gray-700 dark:text-pink-100 hover:text-pink-600 dark:hover:text-pink-300 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700"
+                  className="min-w-[44px] min-h-[44px] p-2 text-gray-700 dark:text-pink-100 hover:text-pink-600 dark:hover:text-pink-300 active:bg-gray-200 dark:active:bg-slate-600 transition-all duration-200 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 touch-manipulation"
                   title="Search"
                 >
                   <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -217,7 +226,7 @@ export default function Navbar() {
               ) : (
                 <Link
                   href="/profiles"
-                  className="p-2 text-gray-700 dark:text-pink-100 hover:text-pink-600 dark:hover:text-pink-300 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700"
+                  className="min-w-[44px] min-h-[44px] p-2 text-gray-700 dark:text-pink-100 hover:text-pink-600 dark:hover:text-pink-300 active:bg-gray-200 dark:active:bg-slate-600 transition-all duration-200 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 touch-manipulation flex items-center justify-center"
                   title="Search"
                 >
                   <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -233,14 +242,14 @@ export default function Navbar() {
                 <>
                   <Link
                     href="/notifications"
-                    className="relative p-2 text-gray-700 dark:text-pink-100 hover:text-pink-600 dark:hover:text-pink-300 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700"
+                    className="relative min-w-[44px] min-h-[44px] p-2 text-gray-700 dark:text-pink-100 hover:text-pink-600 dark:hover:text-pink-300 active:bg-gray-200 dark:active:bg-slate-600 transition-all duration-200 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 touch-manipulation flex items-center justify-center"
                     title={t('common.notifications')}
                   >
                     <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                     </svg>
                     {unreadCount > 0 && (
-                      <span className="absolute top-1 right-1 inline-flex items-center justify-center w-4 h-4 text-xs font-bold text-white bg-red-600 rounded-full">
+                      <span className="absolute top-0.5 right-0.5 sm:top-1 sm:right-1 inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] sm:text-xs font-bold text-white bg-red-600 rounded-full">
                         {unreadCount > 9 ? '9+' : unreadCount}
                       </span>
                     )}
@@ -249,7 +258,7 @@ export default function Navbar() {
                   {/* User Profile Icon */}
                   <button
                     onClick={() => setShowUserMenu(!showUserMenu)}
-                    className="p-2 text-gray-700 dark:text-pink-100 hover:text-pink-600 dark:hover:text-pink-300 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700"
+                    className="min-w-[44px] min-h-[44px] p-2 text-gray-700 dark:text-pink-100 hover:text-pink-600 dark:hover:text-pink-300 active:bg-gray-200 dark:active:bg-slate-600 transition-all duration-200 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 touch-manipulation"
                     title="User Menu"
                   >
                     <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -262,15 +271,15 @@ export default function Navbar() {
                     <>
                       {/* Backdrop - Dims and blurs the background */}
                       <div 
-                        className="fixed inset-0 bg-black bg-opacity-20 dark:bg-opacity-30 backdrop-blur-[1px] z-40 transition-opacity"
+                        className="fixed inset-0 bg-black bg-opacity-20 dark:bg-opacity-30 backdrop-blur-[1px] z-40 transition-opacity duration-300 ease-in-out animate-fade-in"
                         onClick={() => setShowUserMenu(false)}
                         aria-hidden="true"
                       />
                       
                       {/* Side Drawer */}
-                      <div className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-white dark:bg-[#181b23] shadow-2xl z-50 transform transition-transform duration-300 ease-in-out ${
+                      <div className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] sm:max-w-[90vw] bg-white dark:bg-[#181b23] shadow-2xl z-50 transform transition-transform duration-300 ease-out overflow-y-auto ${
                         showUserMenu ? 'translate-x-0' : 'translate-x-full'
-                      } overflow-y-auto`}>
+                      }`}>
                         {/* Header */}
                         <div className="sticky top-0 bg-white dark:bg-[#181b23] border-b border-gray-200 dark:border-[#303341] px-4 py-4 flex items-center justify-between z-10">
                           <h2 className="text-lg font-semibold text-gray-900 dark:text-pink-100">
@@ -293,11 +302,12 @@ export default function Navbar() {
                           <Link
                             href="/profile"
                             onClick={() => setShowUserMenu(false)}
-                            className={`flex items-center gap-3 px-4 py-3 text-base font-medium transition-colors rounded-lg ${
+                            className={`flex items-center gap-3 px-4 py-3 text-base font-medium transition-all duration-200 rounded-lg transform active:scale-95 ${
                               pathname === '/profile'
                                 ? 'bg-pink-50 dark:bg-pink-900/10 text-pink-600 dark:text-pink-200'
                                 : 'text-gray-700 dark:text-pink-100 hover:bg-gray-50 dark:hover:bg-[#1f212a]'
                             }`}
+                            style={{ animationDelay: '0.05s' }}
                           >
                             <span className="text-xl">👤</span>
                             <span>{t('common.profile') || 'Profile'}</span>
@@ -308,7 +318,7 @@ export default function Navbar() {
                             onClick={() => {
                               toggleTheme();
                             }}
-                            className="w-full flex items-center gap-3 px-4 py-3 text-base font-medium text-gray-700 dark:text-pink-100 hover:bg-gray-50 dark:hover:bg-[#1f212a] transition-colors rounded-lg"
+                            className="w-full flex items-center gap-3 px-4 py-3 text-base font-medium text-gray-700 dark:text-pink-100 hover:bg-gray-50 dark:hover:bg-[#1f212a] transition-all duration-200 rounded-lg transform active:scale-95"
                           >
                             {resolvedTheme === 'dark' ? (
                               <>
@@ -363,16 +373,17 @@ export default function Navbar() {
                           <div className="border-t border-gray-200 dark:border-[#303341] my-2"></div>
                           
                           {/* Additional Links */}
-                          {additionalLinks.map((link) => (
+                          {additionalLinks.map((link, index) => (
                             <Link
                               key={link.href}
                               href={link.href}
                               onClick={() => setShowUserMenu(false)}
-                              className={`flex items-center gap-3 px-4 py-3 text-base font-medium transition-colors rounded-lg ${
+                              className={`flex items-center gap-3 px-4 py-3 text-base font-medium transition-all duration-200 rounded-lg transform active:scale-95 ${
                                 pathname === link.href
                                   ? 'bg-pink-50 dark:bg-pink-900/10 text-pink-600 dark:text-pink-200'
                                   : 'text-gray-700 dark:text-pink-100 hover:bg-gray-50 dark:hover:bg-[#1f212a]'
                               }`}
+                              style={{ animationDelay: `${(index + 2) * 0.05}s` }}
                             >
                               <span className="text-xl">
                                 {link.href === '/donation' ? '💝' : 
@@ -399,7 +410,7 @@ export default function Navbar() {
                               setShowUserMenu(false);
                               router.push('/login');
                             }}
-                            className="w-full flex items-center gap-3 px-4 py-3 text-base font-medium text-red-600 dark:text-pink-200 hover:bg-red-50 dark:hover:bg-pink-900/10 transition-colors rounded-lg"
+                            className="w-full flex items-center gap-3 px-4 py-3 text-base font-medium text-red-600 dark:text-pink-200 hover:bg-red-50 dark:hover:bg-pink-900/10 transition-all duration-200 rounded-lg transform active:scale-95"
                           >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -417,7 +428,7 @@ export default function Navbar() {
                   {/* Login Button */}
                   <Link
                     href="/login"
-                    className="px-4 py-2 text-sm font-medium text-white bg-pink-600 hover:bg-pink-700 rounded-lg transition-colors"
+                    className="px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-white bg-pink-600 hover:bg-pink-700 active:bg-pink-800 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform active:scale-95 min-h-[36px] sm:min-h-[40px] flex items-center justify-center touch-manipulation whitespace-nowrap"
                     title="Login"
                   >
                     {t('auth.login') || 'Login'}
@@ -428,15 +439,15 @@ export default function Navbar() {
                     <>
                       {/* Backdrop - Dims and blurs the background */}
                       <div 
-                        className="fixed inset-0 bg-black bg-opacity-20 dark:bg-opacity-30 backdrop-blur-[1px] z-40 transition-opacity"
+                        className="fixed inset-0 bg-black bg-opacity-20 dark:bg-opacity-30 backdrop-blur-[1px] z-40 transition-opacity duration-300 ease-in-out animate-fade-in"
                         onClick={() => setShowUserMenu(false)}
                         aria-hidden="true"
                       />
                       
                       {/* Side Drawer */}
-                      <div className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-white dark:bg-[#181b23] shadow-2xl z-50 transform transition-transform duration-300 ease-in-out ${
+                      <div className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] sm:max-w-[90vw] bg-white dark:bg-[#181b23] shadow-2xl z-50 transform transition-transform duration-300 ease-out overflow-y-auto ${
                         showUserMenu ? 'translate-x-0' : 'translate-x-full'
-                      } overflow-y-auto`}>
+                      }`}>
                         {/* Header */}
                         <div className="sticky top-0 bg-white dark:bg-[#181b23] border-b border-gray-200 dark:border-[#303341] px-4 py-4 flex items-center justify-between z-10">
                           <h2 className="text-lg font-semibold text-gray-900 dark:text-pink-100">
@@ -459,11 +470,12 @@ export default function Navbar() {
                           <Link
                             href="/about"
                             onClick={() => setShowUserMenu(false)}
-                            className={`flex items-center gap-3 px-4 py-3 text-base font-medium transition-colors rounded-lg ${
+                            className={`flex items-center gap-3 px-4 py-3 text-base font-medium transition-all duration-200 rounded-lg transform active:scale-95 ${
                               pathname === '/about'
                                 ? 'bg-pink-50 dark:bg-pink-900/10 text-pink-600 dark:text-pink-200'
                                 : 'text-gray-700 dark:text-pink-100 hover:bg-gray-50 dark:hover:bg-[#1f212a]'
                             }`}
+                            style={{ animationDelay: '0.05s' }}
                           >
                             <span className="text-xl">📧</span>
                             <span>{t('common.contact') || 'Contact Us'}</span>
@@ -473,11 +485,12 @@ export default function Navbar() {
                           <Link
                             href="/login"
                             onClick={() => setShowUserMenu(false)}
-                            className={`flex items-center gap-3 px-4 py-3 text-base font-medium transition-colors rounded-lg ${
+                            className={`flex items-center gap-3 px-4 py-3 text-base font-medium transition-all duration-200 rounded-lg transform active:scale-95 ${
                               pathname === '/login'
                                 ? 'bg-pink-50 dark:bg-pink-900/10 text-pink-600 dark:text-pink-200'
                                 : 'text-gray-700 dark:text-pink-100 hover:bg-gray-50 dark:hover:bg-[#1f212a]'
                             }`}
+                            style={{ animationDelay: '0.1s' }}
                           >
                             <span className="text-xl">🔐</span>
                             <span>{t('auth.login') || 'Login'}</span>
@@ -487,11 +500,12 @@ export default function Navbar() {
                           <Link
                             href="/register"
                             onClick={() => setShowUserMenu(false)}
-                            className={`flex items-center gap-3 px-4 py-3 text-base font-medium transition-colors rounded-lg ${
+                            className={`flex items-center gap-3 px-4 py-3 text-base font-medium transition-all duration-200 rounded-lg transform active:scale-95 ${
                               pathname === '/register'
                                 ? 'bg-pink-50 dark:bg-pink-900/10 text-pink-600 dark:text-pink-200'
                                 : 'text-gray-700 dark:text-pink-100 hover:bg-gray-50 dark:hover:bg-[#1f212a]'
                             }`}
+                            style={{ animationDelay: '0.15s' }}
                           >
                             <span className="text-xl">✨</span>
                             <span>{t('auth.signUp') || 'Sign Up'}</span>
@@ -509,49 +523,52 @@ export default function Navbar() {
 
       {/* Auth Modal for Non-Authenticated Users */}
       {mounted && showAuthModal && !isAuthenticated && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="bg-black bg-opacity-50 absolute inset-0" onClick={() => {
-            setShowAuthModal(false);
-            router.push('/');
-          }}></div>
-          <div className="bg-white dark:bg-[#181b23] rounded-lg shadow-2xl max-w-md w-full relative z-10 animate-scale-in">
-            <div className="p-8">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fade-in">
+          <div 
+            className="bg-black bg-opacity-50 absolute inset-0 transition-opacity duration-300 ease-in-out" 
+            onClick={() => {
+              setShowAuthModal(false);
+              router.push('/');
+            }}
+          ></div>
+          <div className="bg-white dark:bg-[#181b23] rounded-lg sm:rounded-xl shadow-2xl max-w-md w-full relative z-10 animate-scale-in transform transition-all duration-300 ease-out">
+            <div className="p-6 sm:p-8">
               {/* Close Button */}
               <button
                 onClick={() => {
                   setShowAuthModal(false);
                   router.push('/');
                 }}
-                className="absolute top-4 right-4 text-gray-400 dark:text-pink-300 hover:text-gray-600 dark:hover:text-pink-100 text-2xl font-bold"
+                className="absolute top-3 right-3 sm:top-4 sm:right-4 min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-400 dark:text-pink-300 hover:text-gray-600 dark:hover:text-pink-100 text-2xl sm:text-3xl font-bold transition-all duration-200 hover:scale-110 active:scale-95 rounded-full hover:bg-gray-100 dark:hover:bg-[#1f212a]"
                 aria-label="Close"
               >
                 ×
               </button>
 
               {/* Modal Content */}
-              <div className="text-center mb-6">
-                <div className="text-6xl mb-4">🔒</div>
-                <h2 className="text-3xl font-bold text-gray-900 dark:text-pink-100 mb-2">
+              <div className="text-center mb-6 animate-slide-up">
+                <div className="text-5xl sm:text-6xl mb-4 transform transition-transform duration-300 hover:scale-110">🔒</div>
+                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-pink-100 mb-2">
                   Login Required
                 </h2>
-                <p className="text-gray-600 dark:text-pink-200 mb-6">
+                <p className="text-sm sm:text-base text-gray-600 dark:text-pink-200 mb-6 px-2">
                   Please login or sign up to search profiles, send interests, and connect with matches.
                 </p>
               </div>
 
               {/* Action Buttons */}
-              <div className="space-y-3">
+              <div className="space-y-3 animate-slide-up" style={{ animationDelay: '0.1s' }}>
                 <Link
                   href="/login"
                   onClick={() => setShowAuthModal(false)}
-                  className="block w-full px-6 py-3 bg-gradient-to-r from-pink-600 to-red-600 text-white font-semibold rounded-md hover:from-pink-700 hover:to-red-700 transition-all shadow-lg text-center"
+                  className="block w-full px-6 py-3.5 sm:py-3 bg-gradient-to-r from-pink-600 to-red-600 text-white font-semibold rounded-md hover:from-pink-700 hover:to-red-700 transition-all duration-200 shadow-lg text-center transform active:scale-95 hover:shadow-xl min-h-[48px] flex items-center justify-center"
                 >
                   {t('auth.login') || 'Login'}
                 </Link>
                 <Link
                   href="/register"
                   onClick={() => setShowAuthModal(false)}
-                  className="block w-full px-6 py-3 bg-white dark:bg-[#1f212a] border-2 border-pink-600 text-pink-600 dark:text-pink-300 font-semibold rounded-md hover:bg-pink-50 dark:hover:bg-pink-900/10 transition-all shadow-md text-center"
+                  className="block w-full px-6 py-3.5 sm:py-3 bg-white dark:bg-[#1f212a] border-2 border-pink-600 text-pink-600 dark:text-pink-300 font-semibold rounded-md hover:bg-pink-50 dark:hover:bg-pink-900/10 transition-all duration-200 shadow-md text-center transform active:scale-95 hover:shadow-lg min-h-[48px] flex items-center justify-center"
                 >
                   {t('auth.signUp') || 'Sign Up'}
                 </Link>
@@ -560,7 +577,7 @@ export default function Navbar() {
                     setShowAuthModal(false);
                     router.push('/');
                   }}
-                  className="block w-full px-6 py-2 text-gray-600 dark:text-pink-300 hover:text-gray-800 dark:hover:text-pink-100 font-medium text-sm"
+                  className="block w-full px-6 py-2.5 sm:py-2 text-gray-600 dark:text-pink-300 hover:text-gray-800 dark:hover:text-pink-100 font-medium text-sm transition-colors duration-200 min-h-[44px] flex items-center justify-center"
                 >
                   Continue Browsing
                 </button>

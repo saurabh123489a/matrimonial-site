@@ -80,12 +80,14 @@ body {
 @keyframes fade-in {
   from {
     opacity: 0;
-    transform: translateY(10px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out;
 }
 
 @keyframes slide-up {
@@ -97,6 +99,17 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.4s ease-out forwards;
+  opacity: 0;
+}
+
+/* Touch manipulation for better mobile performance */
+.touch-manipulation {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 @keyframes slide-in-right {
