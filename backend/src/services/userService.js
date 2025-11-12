@@ -207,7 +207,7 @@ export const userService = {
             placeOfBirth
           );
           
-          if (horoscopeResult.success && horoscopeResult.data) {
+          if (horoscopeResult && horoscopeResult.success && horoscopeResult.data) {
             // Merge calculated horoscope with existing horoscope details
             updateData.horoscopeDetails = {
               ...existing?.horoscopeDetails,
@@ -220,7 +220,8 @@ export const userService = {
           }
         } catch (error) {
           console.error('Error calculating horoscope:', error);
-          // Don't fail the update if horoscope calculation fails
+          console.error('Error stack:', error.stack);
+          // Don't fail the update if horoscope calculation fails - continue without horoscope
         }
       }
     }

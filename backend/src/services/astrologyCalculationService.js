@@ -43,7 +43,10 @@ const CITY_COORDINATES = {
  * Get coordinates from place name
  */
 function getCoordinates(placeName) {
-  if (!placeName) return null;
+  if (!placeName) {
+    // Default to Delhi, India if no place provided
+    return { lat: 28.6139, lon: 77.2090 };
+  }
   
   // Try exact match first
   const normalizedPlace = placeName.trim();
@@ -56,6 +59,11 @@ function getCoordinates(placeName) {
     if (city.toLowerCase() === normalizedPlace.toLowerCase()) {
       return coords;
     }
+  }
+  
+  // If it's a country name like "India", use Delhi coordinates
+  if (normalizedPlace.toLowerCase() === 'india') {
+    return { lat: 28.6139, lon: 77.2090 };
   }
   
   // Default to Delhi if not found
@@ -136,9 +144,7 @@ function calculateManglikStatus(rashi) {
 async function calculateUsingProkeralaAPI(dateOfBirth, timeOfBirth, placeOfBirth) {
   try {
     const coords = getCoordinates(placeOfBirth);
-    if (!coords) {
-      throw new Error('Place coordinates not found');
-    }
+    // getCoordinates always returns coordinates now, so no need to check
     
     const date = new Date(dateOfBirth);
     const [hours, minutes = 0, seconds = 0] = (timeOfBirth || '12:00:00').split(':').map(Number);
@@ -202,8 +208,14 @@ async function calculateUsingProkeralaAPI(dateOfBirth, timeOfBirth, placeOfBirth
       return null;
     } catch (error) {
       console.error('Prokerala API error:', error.response?.data || error.message);
+      console.error('Error stack:', error.stack);
       return null;
     }
+  } catch (error) {
+    console.error('Error in calculateUsingProkeralaAPI:', error.message);
+    console.error('Error stack:', error.stack);
+    return null;
+  }
 }
 
 /**
