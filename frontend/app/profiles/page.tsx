@@ -190,27 +190,48 @@ function ProfilesContent() {
         }
       }
 
+      console.log('Loading profiles with filters:', filterParams);
       const response = await userApi.search(filterParams);
+      console.log('API Response:', response);
       
       if (response.status) {
         const allUsers = response.data || [];
+        console.log('Profiles loaded:', allUsers.length);
         setUsers(allUsers);
         if (response.pagination) {
           setPagination(response.pagination);
+        } else {
+          setPagination({ total: allUsers.length, pages: 1 });
         }
         // Reset display limit when new search is performed
         setDisplayLimit(10);
         // Track search
         trackSearch(filterParams);
+        
+        // If no users found, set appropriate message
+        if (allUsers.length === 0) {
+          setError('No profiles found matching your criteria. Try adjusting your filters.');
+        } else {
+          // Clear error if we have results
+          setError('');
+        }
+      } else {
+        // API returned error status
+        console.error('API returned error:', response.message);
+        setError(response.message || 'Failed to load profiles');
+        setUsers([]);
       }
     } catch (err: any) {
+      console.error('Error loading profiles:', err);
       if (isMountedRef.current) {
-      setError(err.response?.data?.message || 'Failed to load profiles');
+        const errorMessage = err.response?.data?.message || err.message || 'Failed to load profiles. Please try again.';
+        setError(errorMessage);
+        setUsers([]);
       }
     } finally {
       loadingRef.current = false;
       if (isMountedRef.current) {
-      setLoading(false);
+        setLoading(false);
       }
     }
   };
