@@ -353,7 +353,7 @@ export default function MyProfilePage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-0 pb-8">
       <div className="bg-white dark:bg-black rounded-lg shadow-lg overflow-hidden transition-colors">
         <div className="bg-gradient-to-r from-pink-500 to-red-500 p-6 text-white">
           <div className="flex justify-between items-center">

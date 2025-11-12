@@ -236,17 +236,17 @@ export default function Navbar() {
   return (
     <>
       {/* Top Bar - Hamburger Menu (Left) | Logo (Center) | Icons (Right) */}
-      <nav className="bg-white dark:bg-[#0f1117] border-b border-gray-200 dark:border-[#262932] sticky top-0 z-30 transition-colors safe-area-inset-top">
+      <nav className="bg-white dark:bg-[#0f1117] border-b border-gray-200 dark:border-[#262932] sticky top-0 z-30 transition-colors">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
-          <div className="flex items-center justify-between min-h-16 sm:min-h-20 py-2 sm:py-3 relative">
+          <div className="flex items-center justify-between h-16 sm:h-20 relative">
             {/* Left: Hamburger Menu Button */}
             <button
               onClick={() => setShowUserMenu(!showUserMenu)}
-              className="min-w-[44px] min-h-[44px] p-2.5 sm:p-2 text-gray-700 dark:text-pink-100 hover:text-pink-600 dark:hover:text-pink-300 active:bg-gray-200 dark:active:bg-slate-600 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 touch-manipulation"
+              className="flex-shrink-0 min-w-[44px] min-h-[44px] p-2 text-gray-700 dark:text-pink-100 hover:text-pink-600 dark:hover:text-pink-300 active:bg-gray-200 dark:active:bg-slate-600 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 touch-manipulation flex items-center justify-center"
               title="Menu"
               aria-label="Open menu"
             >
-              <svg className="w-6 h-6 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
@@ -254,18 +254,18 @@ export default function Navbar() {
             {/* Center: Logo */}
             <Link 
               href="/" 
-              className="absolute left-1/2 transform -translate-x-1/2 text-lg sm:text-xl md:text-2xl font-light text-gray-900 dark:text-white tracking-tight px-2 truncate max-w-[60vw] sm:max-w-none"
+              className="absolute left-1/2 transform -translate-x-1/2 text-lg sm:text-xl md:text-2xl font-light text-gray-900 dark:text-white tracking-tight px-2 truncate max-w-[60vw] sm:max-w-none flex items-center justify-center"
             >
               💍 {t('common.appName')}
             </Link>
             
             {/* Right: Icons */}
-            <div className="flex items-center space-x-1 sm:space-x-2 md:space-x-3">
+            <div className="flex items-center space-x-1 sm:space-x-2 md:space-x-3 flex-shrink-0">
               {/* Search Icon - Show auth modal if not authenticated */}
               {mounted && !isAuthenticated ? (
                 <button
                   onClick={() => setShowAuthModal(true)}
-                  className="min-w-[44px] min-h-[44px] p-2 text-gray-700 dark:text-pink-100 hover:text-pink-600 dark:hover:text-pink-300 active:bg-gray-200 dark:active:bg-slate-600 transition-all duration-200 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 touch-manipulation"
+                  className="min-w-[44px] min-h-[44px] p-2 text-gray-700 dark:text-pink-100 hover:text-pink-600 dark:hover:text-pink-300 active:bg-gray-200 dark:active:bg-slate-600 transition-all duration-200 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 touch-manipulation flex items-center justify-center"
                   title="Search"
                 >
                   <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -396,7 +396,7 @@ export default function Navbar() {
                   {/* User Profile Icon */}
                   <button
                     onClick={() => setShowUserMenu(!showUserMenu)}
-                    className="min-w-[44px] min-h-[44px] p-2 text-gray-700 dark:text-pink-100 hover:text-pink-600 dark:hover:text-pink-300 active:bg-gray-200 dark:active:bg-slate-600 transition-all duration-200 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 touch-manipulation"
+                    className="min-w-[44px] min-h-[44px] p-2 text-gray-700 dark:text-pink-100 hover:text-pink-600 dark:hover:text-pink-300 active:bg-gray-200 dark:active:bg-slate-600 transition-all duration-200 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 touch-manipulation flex items-center justify-center"
                     title="User Menu"
                   >
                     <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
