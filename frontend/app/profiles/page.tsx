@@ -220,29 +220,41 @@ function ProfilesContent() {
       if (response.status) {
         const allUsers = response.data || [];
         console.log('Profiles loaded:', allUsers.length);
-        setUsers(allUsers);
-        if (response.pagination) {
-          setPagination(response.pagination);
-        } else {
-          setPagination({ total: allUsers.length, pages: 1 });
-        }
-        // Reset display limit when new search is performed
-        setDisplayLimit(10);
-        // Track search
-        trackSearch(filterParams);
+        console.log('Setting users state with', allUsers.length, 'profiles');
         
-        // If no users found, set appropriate message
-        if (allUsers.length === 0) {
-          setError('No profiles found matching your criteria. Try adjusting your filters.');
-        } else {
-          // Clear error if we have results
-          setError('');
+        // Update state in a batch to ensure React re-renders
+        if (isMountedRef.current) {
+          setUsers(allUsers);
+          if (response.pagination) {
+            setPagination(response.pagination);
+          } else {
+            setPagination({ total: allUsers.length, pages: 1 });
+          }
+          // Reset display limit when new search is performed
+          setDisplayLimit(10);
+          setLoading(false);
+          
+          // If no users found, set appropriate message
+          if (allUsers.length === 0) {
+            setError('No profiles found matching your criteria. Try adjusting your filters.');
+          } else {
+            // Clear error if we have results
+            setError('');
+          }
+          
+          // Track search
+          trackSearch(filterParams);
+          
+          console.log('State updated - users:', allUsers.length, 'loading:', false);
         }
       } else {
         // API returned error status
         console.error('API returned error:', response.message);
-        setError(response.message || 'Failed to load profiles');
-        setUsers([]);
+        if (isMountedRef.current) {
+          setError(response.message || 'Failed to load profiles');
+          setUsers([]);
+          setLoading(false);
+        }
       }
     } catch (err: any) {
       console.error('Error loading profiles:', err);
@@ -250,12 +262,10 @@ function ProfilesContent() {
         const errorMessage = err.response?.data?.message || err.message || 'Failed to load profiles. Please try again.';
         setError(errorMessage);
         setUsers([]);
+        setLoading(false);
       }
     } finally {
       loadingRef.current = false;
-      if (isMountedRef.current) {
-        setLoading(false);
-      }
     }
   };
 
@@ -266,6 +276,7 @@ function ProfilesContent() {
   useEffect(() => {
     // Wait for currentUser to finish loading (success or failure) before loading profiles
     if (currentUserLoaded) {
+      console.log('useEffect triggered - loading profiles. currentUserLoaded:', currentUserLoaded);
       loadProfiles();
     }
     
@@ -275,6 +286,11 @@ function ProfilesContent() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, gahoiId, searchFiltersKey, currentUser, currentUserLoaded]);
+  
+  // Debug: Log state changes
+  useEffect(() => {
+    console.log('Users state changed:', users.length, 'Loading:', loading, 'DisplayLimit:', displayLimit);
+  }, [users, loading, displayLimit]);
 
   // Debounced function to update search filters (triggers API call)
   const debouncedUpdateSearchFilters = useMemo(
@@ -704,21 +720,33 @@ function ProfilesContent() {
 
                 {/* Profile Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
-                  {users.slice(0, displayLimit).map((user) => (
-                    <div 
-                      key={user._id} 
-                      className="relative"
-                      onClick={(e) => {
-                        // Prevent card from being clickable - only buttons should navigate
-                        e.stopPropagation();
-                        if (!isAuthenticated && mounted) {
-                          setShowAuthModal(true);
-                        }
-                      }}
-                    >
-                      <EnhancedProfileCard user={user} />
+                  {users && users.length > 0 ? (
+                    users.slice(0, displayLimit).map((user) => {
+                      if (!user || !user._id) {
+                        console.warn('Invalid user object:', user);
+                        return null;
+                      }
+                      return (
+                        <div 
+                          key={user._id} 
+                          className="relative"
+                          onClick={(e) => {
+                            // Prevent card from being clickable - only buttons should navigate
+                            e.stopPropagation();
+                            if (!isAuthenticated && mounted) {
+                              setShowAuthModal(true);
+                            }
+                          }}
+                        >
+                          <EnhancedProfileCard user={user} />
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <div className="col-span-full text-center py-8 text-gray-500">
+                      No profiles to display
                     </div>
-                  ))}
+                  )}
                 </div>
 
                 {/* Infinite Scroll Trigger */}

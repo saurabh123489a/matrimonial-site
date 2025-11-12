@@ -86,7 +86,12 @@
     "volunteer": "Volunteer",
     "creatingAccount": "Creating account...",
     "signUp": "Sign up",
-    "registrationFailed": "Registration failed. Please try again."
+    "registrationFailed": "Registration failed. Please try again.",
+    "nameMinLength": "Name must be at least 2 characters",
+    "ageRange": "Age must be between 18 and 100",
+    "emailOrPhoneRequired": "Either email or phone number is required",
+    "passwordMinLength": "Password must be at least 6 characters",
+    "validationErrors": "Please fix the errors below"
   },
   "profile": {
     "myProfile": "My Profile",

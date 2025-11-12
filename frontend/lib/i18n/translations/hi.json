@@ -84,7 +84,12 @@
     "volunteer": "स्वयंसेवक",
     "creatingAccount": "खाता बनाया जा रहा है...",
     "signUp": "साइन अप करें",
-    "registrationFailed": "पंजीकरण विफल। कृपया पुनः प्रयास करें।"
+    "registrationFailed": "पंजीकरण विफल। कृपया पुनः प्रयास करें।",
+    "nameMinLength": "नाम कम से कम 2 वर्ण का होना चाहिए",
+    "ageRange": "उम्र 18 से 100 के बीच होनी चाहिए",
+    "emailOrPhoneRequired": "ईमेल या फोन नंबर आवश्यक है",
+    "passwordMinLength": "पासवर्ड कम से कम 6 वर्ण का होना चाहिए",
+    "validationErrors": "कृपया नीचे दी गई त्रुटियों को ठीक करें"
   },
   "profile": {
     "myProfile": "मेरी प्रोफाइल",
