@@ -12,7 +12,7 @@ const pushSubscriptionSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
-      index: true,
+      // Note: unique: true automatically creates an index
     },
     keys: {
       p256dh: {
@@ -43,7 +43,7 @@ const pushSubscriptionSchema = new mongoose.Schema(
 
 // Index for efficient queries
 pushSubscriptionSchema.index({ userId: 1, isActive: 1 });
-pushSubscriptionSchema.index({ endpoint: 1 });
+// Note: endpoint already has unique: true which creates an index automatically
 
 export default mongoose.model('PushSubscription', pushSubscriptionSchema);
 

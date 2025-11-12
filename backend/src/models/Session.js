@@ -33,7 +33,7 @@ const sessionSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
-      index: true,
+      // Note: unique: true automatically creates an index
     },
     isActive: {
       type: Boolean,

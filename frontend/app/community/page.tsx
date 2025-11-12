@@ -16,7 +16,7 @@ interface Question {
     _id: string;
     name: string;
     photos?: Array<{ url: string }>;
-  };
+  } | null;
   upvotes: number;
   downvotes: number;
   views: number;
@@ -200,7 +200,7 @@ export default function CommunityPage() {
                     <span className="px-2 py-1 bg-pink-100 text-pink-700 rounded">
                       {question.category}
                     </span>
-                    <span>by {question.author.name}</span>
+                    <span>by {question.author?.name || 'Unknown User'}</span>
                     <span>• {new Date(question.createdAt).toLocaleDateString()}</span>
                     <span>• {question.views} views</span>
                   </div>

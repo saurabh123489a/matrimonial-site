@@ -48,7 +48,7 @@ const badgeSchema = new mongoose.Schema(
 
 // Indexes
 badgeSchema.index({ isActive: 1, category: 1 });
-badgeSchema.index({ name: 1 });
+// Note: name field already has unique: true which creates an index automatically
 
 export default mongoose.model('Badge', badgeSchema);
 

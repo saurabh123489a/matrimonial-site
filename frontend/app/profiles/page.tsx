@@ -52,9 +52,19 @@ function ProfilesContent() {
     const authenticated = auth.isAuthenticated();
     setIsAuthenticated(authenticated);
     
+    // Set a timeout to ensure currentUserLoaded is set even if API calls hang
+    const timeoutId = setTimeout(() => {
+      if (!currentUserLoaded) {
+        console.warn('Timeout: Setting currentUserLoaded to true after timeout');
+        setCurrentUserLoaded(true);
+        loadOccupationOptions();
+      }
+    }, 5000); // 5 second timeout
+    
     // Load current user for gender-based filtering
     if (authenticated) {
       userApi.getMe().then(response => {
+        clearTimeout(timeoutId);
         if (response.status) {
           setCurrentUser(response.data);
           // Load occupation options with user's gender to prioritize "House Wife" for females
@@ -63,12 +73,15 @@ function ProfilesContent() {
           loadOccupationOptions();
         }
         setCurrentUserLoaded(true);
-      }).catch(() => {
+      }).catch((error) => {
+        clearTimeout(timeoutId);
+        console.error('Failed to load current user:', error);
         // If getMe fails, still mark as loaded so profiles can load without gender filtering
         loadOccupationOptions();
         setCurrentUserLoaded(true);
       });
     } else {
+      clearTimeout(timeoutId);
       // If not authenticated, mark as loaded immediately and load occupation options
       loadOccupationOptions();
       setCurrentUserLoaded(true);
@@ -79,8 +92,15 @@ function ProfilesContent() {
       const timer = setTimeout(() => {
         setShowAuthModal(true);
       }, 500); // Small delay to let page render
-      return () => clearTimeout(timer);
+      return () => {
+        clearTimeout(timer);
+        clearTimeout(timeoutId);
+      };
     }
+    
+    return () => {
+      clearTimeout(timeoutId);
+    };
   }, [loadOccupationOptions]);
   
   // Gahoi ID search - local state for immediate UI updates
@@ -154,6 +174,17 @@ function ProfilesContent() {
     loadingRef.current = true;
     setLoading(true);
     setError('');
+    
+    // Set a timeout to prevent infinite loading
+    let timeoutId: NodeJS.Timeout | null = null;
+    timeoutId = setTimeout(() => {
+      if (loadingRef.current && isMountedRef.current) {
+        console.error('Profile loading timeout - API may be unreachable');
+        setError('Unable to connect to server. Please check your internet connection or try again later.');
+        setLoading(false);
+        loadingRef.current = false;
+      }
+    }, 10000); // 10 second timeout
     
     try {
       // If Gahoi ID is provided, search by ID via search API
@@ -265,6 +296,9 @@ function ProfilesContent() {
         setLoading(false);
       }
     } finally {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
       loadingRef.current = false;
     }
   };

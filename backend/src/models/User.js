@@ -76,7 +76,7 @@ const userSchema = new mongoose.Schema(
       type: Number, 
       unique: true, 
       sparse: true,
-      index: true
+      // Note: unique: true automatically creates an index, explicit index defined below
     },
     
     // Basic Info
