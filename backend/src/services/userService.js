@@ -184,6 +184,47 @@ export const userService = {
       updateData.age = age;
     }
 
+    // Auto-calculate horoscope if DOB, time, and place are provided
+    const shouldCalculateHoroscope = 
+      updateData.dateOfBirth || 
+      updateData.horoscopeDetails?.timeOfBirth || 
+      updateData.horoscopeDetails?.placeOfBirth ||
+      (existing && (existing.dateOfBirth || existing.horoscopeDetails?.timeOfBirth || existing.horoscopeDetails?.placeOfBirth));
+    
+    if (shouldCalculateHoroscope) {
+      const { astrologyCalculationService } = await import('./astrologyCalculationService.js');
+      
+      const dob = updateData.dateOfBirth || existing?.dateOfBirth;
+      const timeOfBirth = updateData.horoscopeDetails?.timeOfBirth || existing?.horoscopeDetails?.timeOfBirth;
+      const placeOfBirth = updateData.horoscopeDetails?.placeOfBirth || existing?.horoscopeDetails?.placeOfBirth;
+      
+      if (dob) {
+        try {
+          const horoscopeResult = await astrologyCalculationService.calculateHoroscope(
+            dob,
+            timeOfBirth,
+            placeOfBirth
+          );
+          
+          if (horoscopeResult.success && horoscopeResult.data) {
+            // Merge calculated horoscope with existing horoscope details
+            updateData.horoscopeDetails = {
+              ...existing?.horoscopeDetails,
+              ...updateData.horoscopeDetails,
+              rashi: horoscopeResult.data.rashi || updateData.horoscopeDetails?.rashi || existing?.horoscopeDetails?.rashi,
+              nakshatra: horoscopeResult.data.nakshatra || updateData.horoscopeDetails?.nakshatra || existing?.horoscopeDetails?.nakshatra,
+              manglikStatus: horoscopeResult.data.manglikStatus || updateData.horoscopeDetails?.manglikStatus || existing?.horoscopeDetails?.manglikStatus,
+              timeOfBirth: timeOfBirth || updateData.horoscopeDetails?.timeOfBirth || existing?.horoscopeDetails?.timeOfBirth,
+              placeOfBirth: placeOfBirth || updateData.horoscopeDetails?.placeOfBirth || existing?.horoscopeDetails?.placeOfBirth,
+            };
+          }
+        } catch (error) {
+          console.error('Error calculating horoscope:', error);
+          // Don't fail the update if horoscope calculation fails
+        }
+      }
+    }
+
     // Update profile completeness
     const mergedData = { ...existing.toObject(), ...updateData };
     updateData.isProfileComplete = checkProfileCompleteness(mergedData);

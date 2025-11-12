@@ -72,6 +72,7 @@ export interface User {
   phone?: string;
   gender: 'male' | 'female' | 'other';
   age: number;
+  dateOfBirth?: string | Date;
   city?: string;
   state?: string;
   country?: string;
@@ -170,6 +171,7 @@ export interface UpdateUserDto {
   whatsappNumber?: string;
   gender?: 'male' | 'female' | 'other';
   age?: number;
+  dateOfBirth?: string | Date;
   city?: string;
   state?: string;
   country?: string;

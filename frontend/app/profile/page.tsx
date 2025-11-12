@@ -97,10 +97,13 @@ export default function MyProfilePage() {
           education: response.data.education || '',
           occupation: response.data.occupation || '',
           bio: response.data.bio || '',
+          dateOfBirth: response.data.dateOfBirth ? new Date(response.data.dateOfBirth).toISOString().split('T')[0] : '',
           horoscopeDetails: {
             rashi: response.data.horoscopeDetails?.rashi || '',
             nakshatra: response.data.horoscopeDetails?.nakshatra || '',
             starSign: response.data.horoscopeDetails?.starSign || '',
+            timeOfBirth: response.data.horoscopeDetails?.timeOfBirth || '',
+            placeOfBirth: response.data.horoscopeDetails?.placeOfBirth || '',
           },
         });
       } else {
@@ -827,10 +830,104 @@ export default function MyProfilePage() {
               )}
             </div>
 
+            {/* Birth Details Section - For Auto Horoscope Calculation */}
+            <div className="md:col-span-2 border-t border-gray-200 dark:border-pink-800 pt-6 mt-4">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-pink-300">📅 Birth Details (For Auto Horoscope Calculation)</h3>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
+                    Date of Birth
+                  </label>
+                  {editing ? (
+                    <input
+                      type="date"
+                      value={typeof formData.dateOfBirth === 'string' ? formData.dateOfBirth : (formData.dateOfBirth instanceof Date ? formData.dateOfBirth.toISOString().split('T')[0] : '')}
+                      onChange={(e) => {
+                        setFormData({ ...formData, dateOfBirth: e.target.value });
+                        // Trigger auto-calculation when DOB is changed
+                        if (e.target.value && formData.horoscopeDetails?.timeOfBirth && formData.horoscopeDetails?.placeOfBirth) {
+                          // Auto-calculation will happen on save
+                        }
+                      }}
+                      max={new Date().toISOString().split('T')[0]}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
+                    />
+                  ) : (
+                    <p className="text-gray-900 dark:text-pink-100">
+                      {user.dateOfBirth ? new Date(user.dateOfBirth).toLocaleDateString() : t('profile.notProvided')}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
+                    Time of Birth (HH:MM:SS)
+                  </label>
+                  {editing ? (
+                    <input
+                      type="time"
+                      step="1"
+                      value={formData.horoscopeDetails?.timeOfBirth ? formData.horoscopeDetails.timeOfBirth.substring(0, 5) : ''}
+                      onChange={(e) => {
+                        const timeValue = e.target.value ? e.target.value + ':00' : ''; // Add seconds
+                        setFormData({
+                          ...formData,
+                          horoscopeDetails: {
+                            ...formData.horoscopeDetails,
+                            timeOfBirth: timeValue,
+                          },
+                        });
+                      }}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
+                      placeholder="HH:MM:SS"
+                    />
+                  ) : (
+                    <p className="text-gray-900 dark:text-pink-100">
+                      {user.horoscopeDetails?.timeOfBirth || t('profile.notProvided')}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
+                    Place of Birth (City)
+                  </label>
+                  {editing ? (
+                    <input
+                      type="text"
+                      value={formData.horoscopeDetails?.placeOfBirth || ''}
+                      onChange={(e) => setFormData({
+                        ...formData,
+                        horoscopeDetails: {
+                          ...formData.horoscopeDetails,
+                          placeOfBirth: sanitizeFormInput(e.target.value, 'text'),
+                        },
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
+                      placeholder="Enter city name (e.g., Mumbai, Delhi)"
+                    />
+                  ) : (
+                    <p className="text-gray-900 dark:text-pink-100">
+                      {user.horoscopeDetails?.placeOfBirth || t('profile.notProvided')}
+                    </p>
+                  )}
+                </div>
+              </div>
+              {editing && formData.dateOfBirth && formData.horoscopeDetails?.timeOfBirth && formData.horoscopeDetails?.placeOfBirth && (
+                <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md">
+                  <p className="text-sm text-blue-800 dark:text-blue-200">
+                    💡 Horoscope (Rashi & Nakshatra) will be automatically calculated when you save your profile.
+                  </p>
+                </div>
+              )}
+            </div>
+
             {/* Horoscope Details Section */}
             <div className="md:col-span-2 border-t border-gray-200 dark:border-pink-800 pt-6 mt-4">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-pink-300">🔮 {t('profile.horoscopeDetails') || 'Horoscope Details'}</h3>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-pink-300">🔮 {t('profile.horoscopeDetails') || 'Horoscope Details'} {user.horoscopeDetails?.rashi && user.horoscopeDetails?.nakshatra && <span className="text-sm font-normal text-green-600 dark:text-green-400">(Auto-calculated)</span>}</h3>
                 {!editing && !editingHoroscope && (
                   <button
                     onClick={() => {
@@ -842,6 +939,8 @@ export default function MyProfilePage() {
                           rashi: user?.horoscopeDetails?.rashi || '',
                           nakshatra: user?.horoscopeDetails?.nakshatra || '',
                           starSign: user?.horoscopeDetails?.starSign || '',
+                          timeOfBirth: user?.horoscopeDetails?.timeOfBirth || '',
+                          placeOfBirth: user?.horoscopeDetails?.placeOfBirth || '',
                         },
                       });
                     }}
@@ -987,6 +1086,8 @@ export default function MyProfilePage() {
                           rashi: user?.horoscopeDetails?.rashi || '',
                           nakshatra: user?.horoscopeDetails?.nakshatra || '',
                           starSign: user?.horoscopeDetails?.starSign || '',
+                          timeOfBirth: user?.horoscopeDetails?.timeOfBirth || '',
+                          placeOfBirth: user?.horoscopeDetails?.placeOfBirth || '',
                         },
                       });
                     }}
@@ -1024,10 +1125,13 @@ export default function MyProfilePage() {
                     education: user.education || '',
                     occupation: user.occupation || '',
                     bio: user.bio || '',
+                    dateOfBirth: user.dateOfBirth ? new Date(user.dateOfBirth).toISOString().split('T')[0] : '',
                     horoscopeDetails: {
                       rashi: user.horoscopeDetails?.rashi || '',
                       nakshatra: user.horoscopeDetails?.nakshatra || '',
                       starSign: user.horoscopeDetails?.starSign || '',
+                      timeOfBirth: user.horoscopeDetails?.timeOfBirth || '',
+                      placeOfBirth: user.horoscopeDetails?.placeOfBirth || '',
                     },
                   });
                 }}
