@@ -5,6 +5,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import StructuredData from '@/components/StructuredData';
+import SEOStructuredData from '@/components/SEOStructuredData';
 
 export default function Home() {
   const { t } = useTranslation();
@@ -35,6 +36,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-[#0f1117] transition-colors">
+      <SEOStructuredData type="home" />
       {/* Running Welcome Message - Temporary */}
       {showWelcomeMessage && (
         <div className="bg-gradient-to-r from-pink-600 via-red-600 to-pink-700 dark:from-pink-700 dark:via-pink-600 dark:to-pink-800 text-white py-3 overflow-hidden relative z-20">
