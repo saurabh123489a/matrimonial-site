@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { profileViewApi, messageApi } from '@/lib/api';
 import { auth } from '@/lib/auth';
 import ProfileCard from '@/components/ProfileCard';
+import { getProfileUrl } from '@/lib/profileUtils';
 
 export default function ProfileViewsPage() {
   const router = useRouter();
@@ -100,7 +101,7 @@ export default function ProfileViewsPage() {
                           {sendingMessage === viewer._id ? 'Sending...' : 'Send Message'}
                         </button>
                         <Link
-                          href={`/profiles/${viewer._id}`}
+                          href={getProfileUrl(viewer)}
                           className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
                         >
                           View Profile

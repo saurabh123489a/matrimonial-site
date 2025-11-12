@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { reportApi, userApi } from '@/lib/api';
 import { auth } from '@/lib/auth';
 import Link from 'next/link';
+import { getProfileUrl } from '@/lib/profileUtils';
 
 interface Report {
   _id: string;
@@ -13,6 +14,7 @@ interface Report {
     name: string;
     email?: string;
     photos?: Array<{ url: string }>;
+    gahoiId?: number;
   };
   reportedBy: {
     _id: string;
@@ -209,7 +211,7 @@ export default function AdminReportsPage() {
                     <tr key={report._id} className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <Link
-                          href={`/profiles/${report.reportedUserId._id}`}
+                          href={getProfileUrl({ _id: report.reportedUserId._id, gahoiId: report.reportedUserId.gahoiId })}
                           className="flex items-center gap-3 text-pink-600 hover:text-pink-700"
                         >
                           {report.reportedUserId.photos?.[0] && (
@@ -289,7 +291,7 @@ export default function AdminReportsPage() {
                   <div>
                     <label className="block text-sm font-medium text-gray-700">Reported Profile</label>
                     <Link
-                      href={`/profiles/${selectedReport.reportedUserId._id}`}
+                      href={getProfileUrl({ _id: selectedReport.reportedUserId._id, gahoiId: selectedReport.reportedUserId.gahoiId })}
                       className="mt-1 flex items-center gap-3 text-pink-600 hover:text-pink-700"
                     >
                       {selectedReport.reportedUserId.photos?.[0] && (

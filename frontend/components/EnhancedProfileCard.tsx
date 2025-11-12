@@ -8,6 +8,7 @@ import { useNotifications } from '@/contexts/NotificationContext';
 import { auth } from '@/lib/auth';
 import ProfileBadges from './ProfileBadges';
 import LazyImage from './LazyImage';
+import { getProfileUrl } from '@/lib/profileUtils';
 
 interface EnhancedProfileCardProps {
   user: User;
@@ -173,7 +174,7 @@ export default function EnhancedProfileCard({ user, showActions = true }: Enhanc
         {showActions && (
           <div className="flex gap-1.5 sm:gap-2 pt-3 border-t border-gray-100 flex-wrap">
             <Link
-              href={`/profiles/${user._id}`}
+              href={getProfileUrl(user)}
               onClick={(e) => {
                 if (!auth.isAuthenticated()) {
                   e.preventDefault();

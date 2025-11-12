@@ -23,7 +23,9 @@
     "close": "Close",
     "aboutUs": "About Us",
     "donation": "Donation",
-    "contact": "Contact Us"
+    "contact": "Contact Us",
+    "view": "View",
+    "profile": "Profile"
   },
   "home": {
     "title": "ekGahoi - Complete Community Platform",
@@ -562,6 +564,20 @@
     "verifiedFamily": "Verified Family",
     "communityHelper": "Community Helper",
     "activeParticipant": "Active Participant"
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Manage your account settings and preferences",
+    "profile": "Profile",
+    "profileDescription": "Manage your profile information and preferences",
+    "language": "Language Settings",
+    "languageDescription": "Choose your preferred language",
+    "theme": "Theme",
+    "themeDescription": "Switch between light and dark mode",
+    "privacy": "Privacy Settings",
+    "privacyDescription": "Control your privacy and visibility settings",
+    "switchToLight": "Switch to Light Mode",
+    "switchToDark": "Switch to Dark Mode"
   }
 }
 

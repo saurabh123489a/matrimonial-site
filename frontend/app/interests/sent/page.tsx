@@ -7,6 +7,7 @@ import { auth } from '@/lib/auth';
 import Link from 'next/link';
 import SkeletonLoader from '@/components/SkeletonLoader';
 import EmptyState from '@/components/EmptyState';
+import { getProfileUrl } from '@/lib/profileUtils';
 
 export default function InterestSentPage() {
   const router = useRouter();
@@ -78,7 +79,7 @@ export default function InterestSentPage() {
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <Link href={`/profiles/${interest.toUser?._id || interest.toUserId}`} className="block">
+                    <Link href={getProfileUrl({ _id: interest.toUser?._id || interest.toUserId, gahoiId: interest.toUser?.gahoiId })} className="block">
                       <h3 className="text-lg font-medium text-gray-900 dark:text-pink-300 mb-2">
                         {interest.toUser?.name || 'Unknown User'}
                       </h3>

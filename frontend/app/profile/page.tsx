@@ -13,6 +13,7 @@ import PhotoUpload from '@/components/PhotoUpload';
 import ProfileShareModal from '@/components/ProfileShareModal';
 import LazyImage from '@/components/LazyImage';
 import { sanitizeFormInput } from '@/hooks/useSanitizedInput';
+import { getProfileUrl } from '@/lib/profileUtils';
 
 export default function MyProfilePage() {
   const router = useRouter();
@@ -30,8 +31,10 @@ export default function MyProfilePage() {
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [educationOptions, setEducationOptions] = useState<Array<{ value: string; label: string }>>([]);
   const [occupationOptions, setOccupationOptions] = useState<Array<{ value: string; label: string }>>([]);
+  const [professionOptions, setProfessionOptions] = useState<Array<{ value: string; label: string }>>([]);
   const [loadingEducation, setLoadingEducation] = useState(false);
   const [loadingOccupation, setLoadingOccupation] = useState(false);
+  const [loadingProfession, setLoadingProfession] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
   const [editingHoroscope, setEditingHoroscope] = useState(false);
   const [savingHoroscope, setSavingHoroscope] = useState(false);
@@ -47,9 +50,16 @@ export default function MyProfilePage() {
 
     loadProfile();
     loadEducationOptions();
-    loadOccupationOptions();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Load occupation options when user data is available (to get gender)
+  useEffect(() => {
+    if (user?.gender) {
+      loadOccupationOptions();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.gender]);
 
   const loadEducationOptions = async () => {
     setLoadingEducation(true);
@@ -68,7 +78,9 @@ export default function MyProfilePage() {
   const loadOccupationOptions = async () => {
     setLoadingOccupation(true);
     try {
-      const response = await metaDataApi.getOccupation();
+      // Pass gender parameter to prioritize "House Wife" for females
+      const gender = user?.gender || '';
+      const response = await metaDataApi.getOccupation(gender);
       if (response.status && response.data) {
         setOccupationOptions(response.data);
       }
@@ -97,6 +109,24 @@ export default function MyProfilePage() {
           occupation: response.data.occupation || '',
           bio: response.data.bio || '',
           dateOfBirth: response.data.dateOfBirth ? new Date(response.data.dateOfBirth).toISOString().split('T')[0] : '',
+          family: {
+            fathersName: response.data.family?.fathersName || '',
+            fathersOccupationType: response.data.family?.fathersOccupationType || undefined,
+            fathersOccupationDesc: response.data.family?.fathersOccupationDesc || '',
+            fathersContactNumber: response.data.family?.fathersContactNumber || '',
+            mothersName: response.data.family?.mothersName || '',
+            mothersOccupationType: response.data.family?.mothersOccupationType || undefined,
+            mothersOccupationDesc: response.data.family?.mothersOccupationDesc || '',
+            numberOfBrothers: response.data.family?.numberOfBrothers || 0,
+            numberOfSisters: response.data.family?.numberOfSisters || 0,
+            marriedBrothers: response.data.family?.marriedBrothers || 0,
+            unmarriedBrothers: response.data.family?.unmarriedBrothers || 0,
+            marriedSisters: response.data.family?.marriedSisters || 0,
+            unmarriedSisters: response.data.family?.unmarriedSisters || 0,
+            familyType: response.data.family?.familyType || 'nuclear',
+            familyStatus: response.data.family?.familyStatus || 'middle-class',
+            familyValues: response.data.family?.familyValues || 'moderate',
+          },
           horoscopeDetails: {
             rashi: response.data.horoscopeDetails?.rashi || '',
             nakshatra: response.data.horoscopeDetails?.nakshatra || '',
@@ -833,6 +863,198 @@ export default function MyProfilePage() {
               )}
             </div>
 
+            {/* Family Information Section */}
+            <div className="md:col-span-2 border-t border-gray-200 dark:border-pink-800 pt-6 mt-4">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-pink-300">👨‍👩‍👧‍👦 Family Information</h3>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Father's Name */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Father's Name</label>
+                  {editing ? (
+                    <input
+                      type="text"
+                      value={formData.family?.fathersName || ''}
+                      onChange={(e) => setFormData({
+                        ...formData,
+                        family: {
+                          ...formData.family,
+                          fathersName: sanitizeFormInput(e.target.value, 'text'),
+                        },
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
+                      placeholder="Enter father's name"
+                    />
+                  ) : (
+                    <p className="text-gray-900 dark:text-pink-100">{user.family?.fathersName || t('profile.notProvided')}</p>
+                  )}
+                </div>
+
+                {/* Father's Occupation Type */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Father's Occupation Type</label>
+                  {editing ? (
+                    <select
+                      value={formData.family?.fathersOccupationType || ''}
+                      onChange={(e) => setFormData({
+                        ...formData,
+                        family: {
+                          ...formData.family,
+                          fathersOccupationType: e.target.value as 'job' | 'private' | 'govt' | 'business' | undefined,
+                          fathersOccupationDesc: e.target.value ? formData.family?.fathersOccupationDesc : '', // Clear desc if type is cleared
+                        },
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
+                    >
+                      <option value="">Select Type</option>
+                      <option value="job">Job</option>
+                      <option value="private">Private</option>
+                      <option value="govt">Government</option>
+                      <option value="business">Business</option>
+                    </select>
+                  ) : (
+                    <p className="text-gray-900 dark:text-pink-100">
+                      {user.family?.fathersOccupationType 
+                        ? user.family.fathersOccupationType.charAt(0).toUpperCase() + user.family.fathersOccupationType.slice(1)
+                        : t('profile.notProvided')}
+                    </p>
+                  )}
+                </div>
+
+                {/* Father's Occupation Description - Show only when type is selected */}
+                {editing && formData.family?.fathersOccupationType && (
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Father's Occupation Description</label>
+                    <input
+                      type="text"
+                      value={formData.family?.fathersOccupationDesc || ''}
+                      onChange={(e) => setFormData({
+                        ...formData,
+                        family: {
+                          ...formData.family,
+                          fathersOccupationDesc: sanitizeFormInput(e.target.value, 'text'),
+                        },
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
+                      placeholder={`Enter ${formData.family.fathersOccupationType} details`}
+                    />
+                  </div>
+                )}
+
+                {/* Display Father's Occupation Description when not editing */}
+                {!editing && user.family?.fathersOccupationDesc && (
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Father's Occupation Description</label>
+                    <p className="text-gray-900 dark:text-pink-100">{user.family.fathersOccupationDesc}</p>
+                  </div>
+                )}
+
+                {/* Father's Contact Number */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Father's Contact Number</label>
+                  {editing ? (
+                    <input
+                      type="tel"
+                      value={formData.family?.fathersContactNumber || ''}
+                      onChange={(e) => setFormData({
+                        ...formData,
+                        family: {
+                          ...formData.family,
+                          fathersContactNumber: sanitizeFormInput(e.target.value, 'phone'),
+                        },
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
+                      placeholder="Enter contact number"
+                    />
+                  ) : (
+                    <p className="text-gray-900 dark:text-pink-100">{user.family?.fathersContactNumber || t('profile.notProvided')}</p>
+                  )}
+                </div>
+
+                {/* Mother's Name */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Mother's Name</label>
+                  {editing ? (
+                    <input
+                      type="text"
+                      value={formData.family?.mothersName || ''}
+                      onChange={(e) => setFormData({
+                        ...formData,
+                        family: {
+                          ...formData.family,
+                          mothersName: sanitizeFormInput(e.target.value, 'text'),
+                        },
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
+                      placeholder="Enter mother's name"
+                    />
+                  ) : (
+                    <p className="text-gray-900 dark:text-pink-100">{user.family?.mothersName || t('profile.notProvided')}</p>
+                  )}
+                </div>
+
+                {/* Mother's Occupation Type */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Mother's Occupation Type</label>
+                  {editing ? (
+                    <select
+                      value={formData.family?.mothersOccupationType || ''}
+                      onChange={(e) => setFormData({
+                        ...formData,
+                        family: {
+                          ...formData.family,
+                          mothersOccupationType: e.target.value as 'job' | 'private' | 'govt' | 'business' | undefined,
+                          mothersOccupationDesc: e.target.value ? formData.family?.mothersOccupationDesc : '', // Clear desc if type is cleared
+                        },
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
+                    >
+                      <option value="">Select Type</option>
+                      <option value="job">Job</option>
+                      <option value="private">Private</option>
+                      <option value="govt">Government</option>
+                      <option value="business">Business</option>
+                    </select>
+                  ) : (
+                    <p className="text-gray-900 dark:text-pink-100">
+                      {user.family?.mothersOccupationType 
+                        ? user.family.mothersOccupationType.charAt(0).toUpperCase() + user.family.mothersOccupationType.slice(1)
+                        : t('profile.notProvided')}
+                    </p>
+                  )}
+                </div>
+
+                {/* Mother's Occupation Description - Show only when type is selected */}
+                {editing && formData.family?.mothersOccupationType && (
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Mother's Occupation Description</label>
+                    <input
+                      type="text"
+                      value={formData.family?.mothersOccupationDesc || ''}
+                      onChange={(e) => setFormData({
+                        ...formData,
+                        family: {
+                          ...formData.family,
+                          mothersOccupationDesc: sanitizeFormInput(e.target.value, 'text'),
+                        },
+                      })}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
+                      placeholder={`Enter ${formData.family.mothersOccupationType} details`}
+                    />
+                  </div>
+                )}
+
+                {/* Display Mother's Occupation Description when not editing */}
+                {!editing && user.family?.mothersOccupationDesc && (
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Mother's Occupation Description</label>
+                    <p className="text-gray-900 dark:text-pink-100">{user.family.mothersOccupationDesc}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+
             {/* Birth Details Section - For Auto Horoscope Calculation */}
             <div className="md:col-span-2 border-t border-gray-200 dark:border-pink-800 pt-6 mt-4">
               <div className="flex items-center justify-between mb-4">
@@ -1118,6 +1340,24 @@ export default function MyProfilePage() {
                     occupation: user.occupation || '',
                     bio: user.bio || '',
                     dateOfBirth: user.dateOfBirth ? new Date(user.dateOfBirth).toISOString().split('T')[0] : '',
+                    family: {
+                      fathersName: user.family?.fathersName || '',
+                      fathersOccupationType: user.family?.fathersOccupationType || undefined,
+                      fathersOccupationDesc: user.family?.fathersOccupationDesc || '',
+                      fathersContactNumber: user.family?.fathersContactNumber || '',
+                      mothersName: user.family?.mothersName || '',
+                      mothersOccupationType: user.family?.mothersOccupationType || undefined,
+                      mothersOccupationDesc: user.family?.mothersOccupationDesc || '',
+                      numberOfBrothers: user.family?.numberOfBrothers || 0,
+                      numberOfSisters: user.family?.numberOfSisters || 0,
+                      marriedBrothers: user.family?.marriedBrothers || 0,
+                      unmarriedBrothers: user.family?.unmarriedBrothers || 0,
+                      marriedSisters: user.family?.marriedSisters || 0,
+                      unmarriedSisters: user.family?.unmarriedSisters || 0,
+                      familyType: user.family?.familyType || 'nuclear',
+                      familyStatus: user.family?.familyStatus || 'middle-class',
+                      familyValues: user.family?.familyValues || 'moderate',
+                    },
                     horoscopeDetails: {
                       rashi: user.horoscopeDetails?.rashi || '',
                       nakshatra: user.horoscopeDetails?.nakshatra || '',
@@ -1163,9 +1403,9 @@ export default function MyProfilePage() {
         <ProfileShareModal
           isOpen={showShareModal}
           onClose={() => setShowShareModal(false)}
-          profileId={user._id}
+          profileId={user.gahoiId ? String(user.gahoiId) : user._id}
           profileName={user.name}
-          profileUrl={`/profiles/${user._id}`}
+          profileUrl={getProfileUrl(user)}
           user={user}
         />
       )}

@@ -82,9 +82,14 @@ export const updateProfileSchema = z.object({
   // Family Information
   family: z.object({
     fathersName: z.string().optional(),
-    fathersOccupation: z.string().optional(),
+    fathersOccupation: z.string().optional(), // Keep for backward compatibility
+    fathersOccupationType: z.enum(['job', 'private', 'govt', 'business']).optional(),
+    fathersOccupationDesc: z.string().optional(),
+    fathersContactNumber: z.string().optional(),
     mothersName: z.string().optional(),
-    mothersOccupation: z.string().optional(),
+    mothersOccupation: z.string().optional(), // Keep for backward compatibility
+    mothersOccupationType: z.enum(['job', 'private', 'govt', 'business']).optional(),
+    mothersOccupationDesc: z.string().optional(),
     numberOfBrothers: z.number().min(0).optional(),
     numberOfSisters: z.number().min(0).optional(),
     familyType: z.enum(['joint', 'nuclear']).optional(),

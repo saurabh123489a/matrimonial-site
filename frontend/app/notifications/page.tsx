@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { notificationApi } from '@/lib/api';
 import { auth } from '@/lib/auth';
+import { getProfileUrl } from '@/lib/profileUtils';
 
 export default function NotificationsPage() {
   const router = useRouter();
@@ -146,7 +147,7 @@ export default function NotificationsPage() {
                       </p>
                       {notification.relatedUserId && (
                         <Link
-                          href={`/profiles/${notification.relatedUserId._id || notification.relatedUserId}`}
+                          href={getProfileUrl(notification.relatedUserId._id ? { _id: notification.relatedUserId._id, gahoiId: notification.relatedUserId.gahoiId } : { _id: String(notification.relatedUserId), gahoiId: undefined })}
                           className="text-pink-600 hover:text-pink-700 text-sm mt-2 inline-block"
                         >
                           View Profile →

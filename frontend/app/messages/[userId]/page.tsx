@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { messageApi, userApi, User } from '@/lib/api';
 import { auth } from '@/lib/auth';
 import { useTranslation } from '@/hooks/useTranslation';
+import { getProfileUrl } from '@/lib/profileUtils';
 
 interface Message {
   _id: string;
@@ -221,7 +222,7 @@ export default function ChatPage() {
               </p>
             </div>
             <Link
-              href={`/profiles/${userId}`}
+              href={otherUser ? getProfileUrl(otherUser) : `/profiles/${userId}`}
               className="px-4 py-2 text-sm bg-pink-50 text-pink-600 rounded-md hover:bg-pink-100"
             >
               {t('messages.viewProfile')}

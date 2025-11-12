@@ -216,8 +216,7 @@ export default function Navbar() {
   const authenticatedLinks = isAuthenticated ? [
     { href: '/notifications', label: t('common.notifications') },
     { href: '/profile-views', label: t('common.profileViews') },
-    { href: '/settings/language', label: 'Language Settings' },
-    { href: '/settings/privacy', label: 'Privacy Settings' },
+    { href: '/settings', label: t('settings.title') || 'Settings' },
   ] : [];
 
   // Admin links (only for admins)
@@ -529,6 +528,7 @@ export default function Navbar() {
                                  link.href === '/about' ? '📧' :
                                  link.href === '/notifications' ? '🔔' :
                                  link.href === '/profile-views' ? '👁️' :
+                                 link.href === '/settings' ? '⚙️' :
                                  link.href === '/settings/language' ? '🌐' :
                                  link.href === '/settings/privacy' ? '🔒' :
                                  link.href === '/admin' ? '⚙️' :

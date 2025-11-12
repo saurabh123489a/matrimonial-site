@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import html2canvas from 'html2canvas';
 import { trackShare } from '@/lib/analytics';
+import { getProfileUrl } from '@/lib/profileUtils';
 
 interface ProfileShareCardProps {
   user: {
@@ -75,7 +76,8 @@ export default function ProfileShareCard({ user, onClose }: ProfileShareCardProp
         // Fallback: Download card and open WhatsApp with message
         trackShare('whatsapp_card', user._id);
         downloadCard();
-        const message = `Check out ${user.name}'s profile on ekGahoi!\n\nDownload the profile card image and share it on WhatsApp.\n\n${window.location.origin}/profiles/${user._id}`;
+        const profileUrl = getProfileUrl({ _id: user._id, gahoiId: user.gahoiId });
+        const message = `Check out ${user.name}'s profile on ekGahoi!\n\nDownload the profile card image and share it on WhatsApp.\n\n${window.location.origin}${profileUrl}`;
         setTimeout(() => {
           window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
         }, 500);

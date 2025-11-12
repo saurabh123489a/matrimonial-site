@@ -13,11 +13,24 @@ export const userRepository = {
   },
 
   /**
-   * Find user by ID
+   * Find user by ID or Gahoi ID
    * Ensures photos are sorted with primary photo first
+   * If userId is numeric (Gahoi ID), searches by gahoiId field
    */
   findById: async (userId) => {
-    const user = await User.findById(userId).select('-passwordHash');
+    let user;
+    
+    // Check if userId is a Gahoi ID (numeric string starting with 1000)
+    const isGahoiId = /^\d{5}$/.test(userId) && parseInt(userId) >= 10000;
+    
+    if (isGahoiId) {
+      // Search by Gahoi ID
+      user = await User.findOne({ gahoiId: parseInt(userId) }).select('-passwordHash');
+    } else {
+      // Search by MongoDB _id
+      user = await User.findById(userId).select('-passwordHash');
+    }
+    
     if (user && user.photos && user.photos.length > 0) {
       // Sort photos: primary first, then by order
       user.photos.sort((a, b) => {

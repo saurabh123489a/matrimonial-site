@@ -4,10 +4,14 @@ import mongoose from 'mongoose';
 const familySchema = new mongoose.Schema(
   {
     fathersName: String,
-    fathersOccupation: String,
+    fathersOccupation: String, // Keep for backward compatibility
+    fathersOccupationType: { type: String, enum: ['job', 'private', 'govt', 'business'], default: null },
+    fathersOccupationDesc: String, // Description field that appears when type is selected
     fathersContactNumber: String,
     mothersName: String,
-    mothersOccupation: String,
+    mothersOccupation: String, // Keep for backward compatibility
+    mothersOccupationType: { type: String, enum: ['job', 'private', 'govt', 'business'], default: null },
+    mothersOccupationDesc: String, // Description field that appears when type is selected
     numberOfBrothers: { type: Number, default: 0 },
     numberOfSisters: { type: Number, default: 0 },
     marriedBrothers: { type: Number, default: 0 },

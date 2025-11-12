@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { User } from '@/lib/api';
 import LazyImage from './LazyImage';
+import { getProfileUrl } from '@/lib/profileUtils';
 
 interface ProfileCardProps {
   user: User;
@@ -89,7 +90,7 @@ export default function ProfileCard({ user }: ProfileCardProps) {
         {/* Action Buttons */}
         <div className="flex gap-2">
           <Link
-            href={`/profiles/${user._id}`}
+            href={getProfileUrl(user)}
             className="flex-1 text-center px-3 sm:px-4 py-2 sm:py-2.5 bg-gradient-to-r from-pink-600 to-red-600 text-white font-semibold rounded-md hover:from-pink-700 hover:to-red-700 transition-all text-xs sm:text-sm shadow-sm"
           >
             View Profile

@@ -7,6 +7,7 @@ import { auth } from '@/lib/auth';
 import Link from 'next/link';
 import SkeletonLoader from '@/components/SkeletonLoader';
 import EmptyState from '@/components/EmptyState';
+import { getProfileUrl } from '@/lib/profileUtils';
 
 type TabType = 'received' | 'sent';
 type InterestStatus = 'pending' | 'accepted' | 'rejected';
@@ -214,6 +215,7 @@ export default function InterestsPage() {
             {filteredInterests.map((interest: any) => {
               const user = activeTab === 'received' ? interest.fromUser : interest.toUser;
               const userId = activeTab === 'received' ? (interest.fromUser?._id || interest.fromUserId) : (interest.toUser?._id || interest.toUserId);
+              const profileUrl = user ? getProfileUrl({ _id: userId, gahoiId: user.gahoiId }) : `/profiles/${userId}`;
 
               return (
                 <div
@@ -223,7 +225,7 @@ export default function InterestsPage() {
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <Link
-                        href={`/profiles/${userId}`}
+                        href={profileUrl}
                         className="block"
                       >
                         <h3 className="text-lg font-medium text-gray-900 dark:text-pink-300 mb-2">

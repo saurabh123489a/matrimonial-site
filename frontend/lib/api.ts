@@ -124,10 +124,14 @@ export interface User {
   mobileCountryCode?: number;
   family?: {
     fathersName?: string;
-    fathersOccupation?: string;
+    fathersOccupation?: string; // Keep for backward compatibility
+    fathersOccupationType?: 'job' | 'private' | 'govt' | 'business';
+    fathersOccupationDesc?: string;
     fathersContactNumber?: string;
     mothersName?: string;
-    mothersOccupation?: string;
+    mothersOccupation?: string; // Keep for backward compatibility
+    mothersOccupationType?: 'job' | 'private' | 'govt' | 'business';
+    mothersOccupationDesc?: string;
     numberOfBrothers?: number;
     numberOfSisters?: number;
     marriedBrothers?: number;
@@ -204,10 +208,14 @@ export interface UpdateUserDto {
   };
   family?: {
     fathersName?: string;
-    fathersOccupation?: string;
+    fathersOccupation?: string; // Keep for backward compatibility
+    fathersOccupationType?: 'job' | 'private' | 'govt' | 'business';
+    fathersOccupationDesc?: string;
     fathersContactNumber?: string;
     mothersName?: string;
-    mothersOccupation?: string;
+    mothersOccupation?: string; // Keep for backward compatibility
+    mothersOccupationType?: 'job' | 'private' | 'govt' | 'business';
+    mothersOccupationDesc?: string;
     numberOfBrothers?: number;
     numberOfSisters?: number;
     marriedBrothers?: number;
@@ -358,8 +366,13 @@ export const metaDataApi = {
     const response = await api.get('/meta/education');
     return response.data;
   },
-  getOccupation: async (): Promise<ApiResponse<Array<{ value: string; label: string }>>> => {
-    const response = await api.get('/meta/occupation');
+  getOccupation: async (gender?: string): Promise<ApiResponse<Array<{ value: string; label: string }>>> => {
+    const params = gender ? `?gender=${encodeURIComponent(gender)}` : '';
+    const response = await api.get(`/meta/occupation${params}`);
+    return response.data;
+  },
+  getProfession: async (occupation: string): Promise<ApiResponse<Array<{ value: string; label: string }>>> => {
+    const response = await api.get(`/meta/profession?occupation=${encodeURIComponent(occupation)}`);
     return response.data;
   },
   getReligion: async (): Promise<ApiResponse<Array<{ value: string; label: string }>>> => {
