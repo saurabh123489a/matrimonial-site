@@ -24,6 +24,9 @@ export default function Navbar() {
   const [mounted, setMounted] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [notifications, setNotifications] = useState<any[]>([]);
+  const [loadingNotifications, setLoadingNotifications] = useState(false);
 
   // Check authentication on client side only
   useEffect(() => {
@@ -34,7 +37,9 @@ export default function Navbar() {
     if (authenticated) {
       loadUnreadCount();
       checkAdminStatus();
-      const interval = setInterval(loadUnreadCount, 30000); // Refresh every 30 seconds
+      const interval = setInterval(() => {
+        loadUnreadCount();
+      }, 30000); // Refresh every 30 seconds
       return () => clearInterval(interval);
     }
   }, []);
@@ -55,16 +60,17 @@ export default function Navbar() {
   // Close side menu when pressing Escape key and prevent body scroll
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && (showUserMenu || showAuthModal)) {
+      if (event.key === 'Escape') {
         if (showUserMenu) setShowUserMenu(false);
         if (showAuthModal) {
           setShowAuthModal(false);
           router.push('/');
         }
+        if (showNotifications) setShowNotifications(false);
       }
     };
 
-    if (showUserMenu || showAuthModal) {
+    if (showUserMenu || showAuthModal || showNotifications) {
       document.addEventListener('keydown', handleEscape);
       // Prevent body scroll when menu/modal is open
       document.body.style.overflow = 'hidden';
@@ -78,7 +84,7 @@ export default function Navbar() {
         document.body.style.width = '';
       };
     }
-  }, [showUserMenu, showAuthModal, router]);
+  }, [showUserMenu, showAuthModal, showNotifications, router]);
 
   const checkAdminStatus = async () => {
     try {
@@ -99,6 +105,50 @@ export default function Navbar() {
       }
     } catch (error) {
       // Silently fail
+    }
+  };
+
+  const loadRecentNotifications = async () => {
+    setLoadingNotifications(true);
+    try {
+      const response = await notificationApi.getAll({ limit: 5, isRead: false });
+      if (response.status) {
+        setNotifications(response.data || []);
+      }
+    } catch (error) {
+      console.error('Failed to load notifications:', error);
+    } finally {
+      setLoadingNotifications(false);
+    }
+  };
+
+  const handleNotificationClick = () => {
+    const newState = !showNotifications;
+    setShowNotifications(newState);
+    if (newState) {
+      loadRecentNotifications();
+    }
+  };
+
+  const handleMarkAsRead = async (id: string) => {
+    try {
+      await notificationApi.markAsRead(id);
+      loadUnreadCount();
+      loadRecentNotifications();
+    } catch (error) {
+      console.error('Failed to mark as read:', error);
+    }
+  };
+
+  const getNotificationIcon = (type: string) => {
+    switch (type) {
+      case 'shortlist': return '⭐';
+      case 'profile_view': return '👁️';
+      case 'interest_received': return '💝';
+      case 'interest_accepted': return '✅';
+      case 'message_received': return '💬';
+      case 'admin': return '📢';
+      default: return '🔔';
     }
   };
 
@@ -240,20 +290,107 @@ export default function Navbar() {
               
               {mounted && isAuthenticated && (
                 <>
-                  <Link
-                    href="/notifications"
-                    className="relative min-w-[44px] min-h-[44px] p-2 text-gray-700 dark:text-pink-100 hover:text-pink-600 dark:hover:text-pink-300 active:bg-gray-200 dark:active:bg-slate-600 transition-all duration-200 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 touch-manipulation flex items-center justify-center"
-                    title={t('common.notifications')}
-                  >
-                    <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                    </svg>
-                    {unreadCount > 0 && (
-                      <span className="absolute top-0.5 right-0.5 sm:top-1 sm:right-1 inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] sm:text-xs font-bold text-white bg-red-600 rounded-full">
-                        {unreadCount > 9 ? '9+' : unreadCount}
-                      </span>
+                  <div className="relative">
+                    <button
+                      onClick={handleNotificationClick}
+                      className="relative min-w-[44px] min-h-[44px] p-2 text-gray-700 dark:text-pink-100 hover:text-pink-600 dark:hover:text-pink-300 active:bg-gray-200 dark:active:bg-slate-600 transition-all duration-200 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 touch-manipulation flex items-center justify-center"
+                      title={t('common.notifications')}
+                    >
+                      <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                      </svg>
+                      {unreadCount > 0 && (
+                        <span className="absolute top-0.5 right-0.5 sm:top-1 sm:right-1 inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] sm:text-xs font-bold text-white bg-red-600 rounded-full">
+                          {unreadCount > 9 ? '9+' : unreadCount}
+                        </span>
+                      )}
+                    </button>
+                    
+                    {/* Notification Dropdown */}
+                    {showNotifications && (
+                      <>
+                        <div 
+                          className="fixed inset-0 bg-black bg-opacity-20 dark:bg-opacity-30 backdrop-blur-[1px] z-40 transition-opacity duration-300 ease-in-out animate-fade-in"
+                          onClick={() => setShowNotifications(false)}
+                          aria-hidden="true"
+                        />
+                        <div className="absolute right-0 top-full mt-2 w-80 sm:w-96 max-w-[90vw] bg-white dark:bg-[#181b23] shadow-2xl rounded-lg border border-gray-200 dark:border-[#303341] z-50 max-h-[70vh] overflow-hidden flex flex-col animate-slide-down">
+                          <div className="sticky top-0 bg-white dark:bg-[#181b23] border-b border-gray-200 dark:border-[#303341] px-4 py-3 flex items-center justify-between z-10">
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-pink-100">
+                              {t('common.notifications') || 'Notifications'}
+                            </h3>
+                            <button
+                              onClick={() => setShowNotifications(false)}
+                              className="p-1 text-gray-500 dark:text-pink-300 hover:text-gray-700 dark:hover:text-pink-100 hover:bg-gray-100 dark:hover:bg-[#1f212a] rounded transition-colors"
+                              aria-label="Close notifications"
+                            >
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                              </svg>
+                            </button>
+                          </div>
+                          
+                          <div className="overflow-y-auto flex-1">
+                            {loadingNotifications ? (
+                              <div className="p-8 text-center">
+                                <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-pink-600 border-t-transparent"></div>
+                                <p className="mt-4 text-sm text-gray-600 dark:text-pink-200">Loading notifications...</p>
+                              </div>
+                            ) : notifications.length === 0 ? (
+                              <div className="p-8 text-center">
+                                <div className="text-4xl mb-3">🔔</div>
+                                <p className="text-sm text-gray-600 dark:text-pink-200">No new notifications</p>
+                              </div>
+                            ) : (
+                              <div className="divide-y divide-gray-200 dark:divide-[#303341]">
+                                {notifications.map((notification) => (
+                                  <div
+                                    key={notification._id}
+                                    className={`p-4 hover:bg-gray-50 dark:hover:bg-[#1f212a] transition-colors cursor-pointer ${
+                                      !notification.isRead ? 'bg-pink-50/50 dark:bg-pink-900/10' : ''
+                                    }`}
+                                    onClick={() => {
+                                      if (!notification.isRead) {
+                                        handleMarkAsRead(notification._id);
+                                      }
+                                    }}
+                                  >
+                                    <div className="flex items-start gap-3">
+                                      <span className="text-2xl flex-shrink-0">{getNotificationIcon(notification.type)}</span>
+                                      <div className="flex-1 min-w-0">
+                                        <h4 className="font-semibold text-gray-900 dark:text-pink-100 text-sm mb-1">
+                                          {notification.title}
+                                        </h4>
+                                        <p className="text-gray-600 dark:text-pink-200 text-xs mb-2 line-clamp-2">
+                                          {notification.message}
+                                        </p>
+                                        <p className="text-xs text-gray-400 dark:text-pink-300">
+                                          {new Date(notification.createdAt).toLocaleString()}
+                                        </p>
+                                      </div>
+                                      {!notification.isRead && (
+                                        <span className="w-2 h-2 bg-pink-600 rounded-full flex-shrink-0 mt-1"></span>
+                                      )}
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                          
+                          <div className="sticky bottom-0 bg-white dark:bg-[#181b23] border-t border-gray-200 dark:border-[#303341] px-4 py-3">
+                            <Link
+                              href="/notifications"
+                              onClick={() => setShowNotifications(false)}
+                              className="block w-full text-center px-4 py-2 text-sm font-medium text-pink-600 dark:text-pink-300 hover:text-pink-700 dark:hover:text-pink-200 hover:bg-pink-50 dark:hover:bg-pink-900/10 rounded-md transition-colors"
+                            >
+                              View More →
+                            </Link>
+                          </div>
+                        </div>
+                      </>
                     )}
-                  </Link>
+                  </div>
                   
                   {/* User Profile Icon */}
                   <button

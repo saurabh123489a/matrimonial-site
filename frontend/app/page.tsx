@@ -60,80 +60,80 @@ export default function Home() {
         </div>
       )}
 
-      {/* Hero Banner Section - With Indian Wedding Ceremony Images (Mandap, Reception, Mehndi, Haldi) */}
+      {/* Hero Banner Section - With Indian Couple Wedding Images */}
       <div className="relative overflow-hidden text-white">
-        {/* Animated Sliding Background Images - Indian Wedding Ceremonies */}
+        {/* Animated Sliding Background Images - Indian Couples */}
         <div className="absolute inset-0">
-          {/* Mandap (Wedding Ceremony) - Sliding Left - Landscape Indian Traditional */}
-          <div 
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{
-              backgroundImage: 'url(https://images.unsplash.com/photo-1606800057522-569310b3cbf8?w=1920&h=1080&fit=crop&q=90)',
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              animation: 'slideHorizontal 20s linear infinite',
-            }}
-          />
-          {/* Reception - Sliding Right - Landscape Indian Wedding Reception */}
+          {/* Indian Couple 1 - Traditional Wedding Ceremony */}
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
               backgroundImage: 'url(https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&h=1080&fit=crop&q=90)',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
+              animation: 'slideHorizontal 20s linear infinite',
+            }}
+          />
+          {/* Indian Couple 2 - Mandap Ceremony */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: 'url(https://images.unsplash.com/photo-1606800057522-569310b3cbf8?w=1920&h=1080&fit=crop&q=90)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
               animation: 'slideHorizontalReverse 20s linear infinite',
               animationDelay: '5s',
             }}
           />
-          {/* Mehndi (Henna Ceremony) - Sliding Left - Landscape Bridal Mehndi */}
+          {/* Indian Couple 3 - Wedding Reception */}
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: 'url(https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1920&h=1080&fit=crop&q=90)',
+              backgroundImage: 'url(https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&h=1080&fit=crop&q=90)',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               animation: 'slideHorizontal 25s linear infinite',
               animationDelay: '10s',
             }}
           />
-          {/* Haldi (Turmeric Ceremony) - Sliding Right - Landscape Haldi Ceremony */}
+          {/* Indian Couple 4 - Traditional Pose */}
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: 'url(https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=1920&h=1080&fit=crop&q=90)',
+              backgroundImage: 'url(https://images.unsplash.com/photo-1606800057522-569310b3cbf8?w=1920&h=1080&fit=crop&q=90)',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               animation: 'slideHorizontalReverse 22s linear infinite',
               animationDelay: '15s',
             }}
           />
-          {/* Bridal Photography 1 - Landscape Red & Gold Lehenga (Lying Down) */}
+          {/* Indian Couple 5 - Red & Gold Traditional Attire */}
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: 'url(/images/bridal-lehenga-1.jpg), url(https://images.unsplash.com/photo-1606800057522-569310b3cbf8?w=1920&h=1080&fit=crop&q=90)',
+              backgroundImage: 'url(/images/bridal-lehenga-1.jpg), url(https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&h=1080&fit=crop&q=90)',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               animation: 'slideHorizontal 28s linear infinite',
               animationDelay: '18s',
             }}
           />
-          {/* Bridal Photography 2 - Overhead Shot with Rotated View */}
+          {/* Indian Couple 6 - Wedding Portrait */}
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: 'url(/images/bridal-lehenga-2.jpg), url(https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&h=1080&fit=crop&q=90)',
+              backgroundImage: 'url(/images/bridal-lehenga-2.jpg), url(https://images.unsplash.com/photo-1606800057522-569310b3cbf8?w=1920&h=1080&fit=crop&q=90)',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               animation: 'slideHorizontalReverse 30s linear infinite',
               animationDelay: '22s',
             }}
           />
-          {/* Bridal Photography 3 - Close-up Overhead with Eyes Closed */}
+          {/* Indian Couple 7 - Traditional Couple Photo */}
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: 'url(/images/bridal-lehenga-3.jpg), url(https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1920&h=1080&fit=crop&q=90)',
+              backgroundImage: 'url(/images/bridal-lehenga-3.jpg), url(https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&h=1080&fit=crop&q=90)',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               animation: 'slideHorizontal 32s linear infinite',
@@ -315,11 +315,11 @@ export default function Home() {
         </div>
       </div>
 
-      {/* CTA Section - With Indian Wedding Ceremony Images */}
+      {/* CTA Section - With Indian Couple Images */}
       <div className="relative overflow-hidden text-white">
-        {/* Sliding Indian Wedding Ceremony Images - Bridal Photography Style */}
+        {/* Sliding Indian Couple Images */}
         <div className="absolute inset-0">
-          {/* Mandap - Landscape Indian Wedding Ceremony */}
+          {/* Indian Couple 1 - Traditional Wedding Ceremony */}
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
@@ -329,7 +329,7 @@ export default function Home() {
               animation: 'slideHorizontal 25s linear infinite',
             }}
           />
-          {/* Reception - Landscape Wedding Reception */}
+          {/* Indian Couple 2 - Wedding Reception */}
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
@@ -340,55 +340,55 @@ export default function Home() {
               animationDelay: '8s',
             }}
           />
-          {/* Mehndi - Landscape Henna Ceremony */}
+          {/* Indian Couple 3 - Traditional Pose */}
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: 'url(https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1920&h=1080&fit=crop&q=90)',
+              backgroundImage: 'url(https://images.unsplash.com/photo-1606800057522-569310b3cbf8?w=1920&h=1080&fit=crop&q=90)',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               animation: 'slideHorizontal 28s linear infinite',
               animationDelay: '16s',
             }}
           />
-          {/* Haldi - Landscape Turmeric Ceremony */}
+          {/* Indian Couple 4 - Red & Gold Traditional Attire */}
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: 'url(https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=1920&h=1080&fit=crop&q=90)',
+              backgroundImage: 'url(/images/bridal-lehenga-1.jpg), url(https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&h=1080&fit=crop&q=90)',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               animation: 'slideHorizontalReverse 30s linear infinite',
               animationDelay: '12s',
             }}
           />
-          {/* Bridal Photography 1 - Landscape Red & Gold Lehenga */}
+          {/* Indian Couple 5 - Wedding Portrait */}
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: 'url(/images/bridal-lehenga-1.jpg), url(https://images.unsplash.com/photo-1606800057522-569310b3cbf8?w=1920&h=1080&fit=crop&q=90)',
+              backgroundImage: 'url(/images/bridal-lehenga-2.jpg), url(https://images.unsplash.com/photo-1606800057522-569310b3cbf8?w=1920&h=1080&fit=crop&q=90)',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               animation: 'slideHorizontal 32s linear infinite',
               animationDelay: '20s',
             }}
           />
-          {/* Bridal Photography 2 - Overhead Shot */}
+          {/* Indian Couple 6 - Traditional Couple Photo */}
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: 'url(/images/bridal-lehenga-2.jpg), url(https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&h=1080&fit=crop&q=90)',
+              backgroundImage: 'url(/images/bridal-lehenga-3.jpg), url(https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&h=1080&fit=crop&q=90)',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               animation: 'slideHorizontalReverse 34s linear infinite',
               animationDelay: '24s',
             }}
           />
-          {/* Bridal Photography 3 - Close-up Overhead */}
+          {/* Indian Couple 7 - Mandap Ceremony */}
           <div 
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: 'url(/images/bridal-lehenga-3.jpg), url(https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1920&h=1080&fit=crop&q=90)',
+              backgroundImage: 'url(https://images.unsplash.com/photo-1606800057522-569310b3cbf8?w=1920&h=1080&fit=crop&q=90)',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               animation: 'slideHorizontal 36s linear infinite',

@@ -33,6 +33,8 @@ export default function MyProfilePage() {
   const [loadingEducation, setLoadingEducation] = useState(false);
   const [loadingOccupation, setLoadingOccupation] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
+  const [editingHoroscope, setEditingHoroscope] = useState(false);
+  const [savingHoroscope, setSavingHoroscope] = useState(false);
 
   useEffect(() => {
     // Only run on client side
@@ -127,8 +129,10 @@ export default function MyProfilePage() {
     try {
       const response = await userApi.updateMe(formData);
       if (response.status) {
-        setUser(response.data);
+        // Reload profile to ensure all data is synced, including horoscope details
+        await loadProfile();
         setEditing(false);
+        setEditingHoroscope(false);
         setFieldErrors({});
         showSuccess(t('profile.profileUpdated'));
       }
@@ -168,6 +172,33 @@ export default function MyProfilePage() {
       }
     } finally {
       setSaving(false);
+    }
+  };
+
+  // Quick save for horoscope details only
+  const handleSaveHoroscope = async () => {
+    setSavingHoroscope(true);
+    setError('');
+
+    try {
+      const response = await userApi.updateMe({
+        horoscopeDetails: formData.horoscopeDetails,
+      });
+      if (response.status) {
+        // Reload profile to ensure horoscope details are synced
+        await loadProfile();
+        setEditingHoroscope(false);
+        showSuccess(t('profile.horoscopeUpdated') || 'Horoscope details updated successfully');
+      } else {
+        setError(response.message || 'Failed to update horoscope details');
+        showError(response.message || 'Failed to update horoscope details');
+      }
+    } catch (err: any) {
+      const errorMsg = err.response?.data?.message || 'Failed to update horoscope details';
+      setError(errorMsg);
+      showError(errorMsg);
+    } finally {
+      setSavingHoroscope(false);
     }
   };
 
@@ -798,13 +829,34 @@ export default function MyProfilePage() {
 
             {/* Horoscope Details Section */}
             <div className="md:col-span-2 border-t border-gray-200 dark:border-pink-800 pt-6 mt-4">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-pink-300 mb-4">🔮 {t('profile.horoscopeDetails') || 'Horoscope Details'}</h3>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-pink-300">🔮 {t('profile.horoscopeDetails') || 'Horoscope Details'}</h3>
+                {!editing && !editingHoroscope && (
+                  <button
+                    onClick={() => {
+                      setEditingHoroscope(true);
+                      // Sync formData with current user data when starting to edit
+                      setFormData({
+                        ...formData,
+                        horoscopeDetails: {
+                          rashi: user?.horoscopeDetails?.rashi || '',
+                          nakshatra: user?.horoscopeDetails?.nakshatra || '',
+                          starSign: user?.horoscopeDetails?.starSign || '',
+                        },
+                      });
+                    }}
+                    className="px-3 py-1.5 text-sm font-medium text-pink-600 dark:text-pink-300 hover:text-pink-700 dark:hover:text-pink-200 border border-pink-300 dark:border-pink-700 rounded-md hover:bg-pink-50 dark:hover:bg-pink-900/10 transition-colors"
+                  >
+                    ✏️ {t('common.edit') || 'Edit'}
+                  </button>
+                )}
+              </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
                     {t('profile.rashi') || 'Rashi (Moon Sign)'}
                   </label>
-                  {editing ? (
+                  {(editing || editingHoroscope) ? (
                     <select
                       value={formData.horoscopeDetails?.rashi || ''}
                       onChange={(e) => setFormData({
@@ -841,7 +893,7 @@ export default function MyProfilePage() {
                   <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
                     {t('profile.nakshatra') || 'Nakshatra'}
                   </label>
-                  {editing ? (
+                  {(editing || editingHoroscope) ? (
                     <select
                       value={formData.horoscopeDetails?.nakshatra || ''}
                       onChange={(e) => setFormData({
@@ -893,7 +945,7 @@ export default function MyProfilePage() {
                   <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
                     {t('profile.starSign') || 'Star Sign'}
                   </label>
-                  {editing ? (
+                  {(editing || editingHoroscope) ? (
                     <input
                       type="text"
                       value={formData.horoscopeDetails?.starSign || ''}
@@ -914,6 +966,37 @@ export default function MyProfilePage() {
                   )}
                 </div>
               </div>
+              
+              {/* Horoscope Quick Save/Cancel Buttons */}
+              {editingHoroscope && !editing && (
+                <div className="mt-4 flex gap-3">
+                  <button
+                    onClick={handleSaveHoroscope}
+                    disabled={savingHoroscope}
+                    className="px-4 py-2 bg-pink-600 text-white rounded-md hover:bg-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+                  >
+                    {savingHoroscope ? t('profile.saving') || 'Saving...' : t('common.save') || 'Save'}
+                  </button>
+                  <button
+                    onClick={() => {
+                      setEditingHoroscope(false);
+                      // Reset formData to current user data
+                      setFormData({
+                        ...formData,
+                        horoscopeDetails: {
+                          rashi: user?.horoscopeDetails?.rashi || '',
+                          nakshatra: user?.horoscopeDetails?.nakshatra || '',
+                          starSign: user?.horoscopeDetails?.starSign || '',
+                        },
+                      });
+                    }}
+                    disabled={savingHoroscope}
+                    className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+                  >
+                    {t('common.cancel') || 'Cancel'}
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
@@ -929,6 +1012,7 @@ export default function MyProfilePage() {
               <button
                 onClick={() => {
                   setEditing(false);
+                  setEditingHoroscope(false);
                   setFormData({
                     name: user.name || '',
                     email: user.email || '',
