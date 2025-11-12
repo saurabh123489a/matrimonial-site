@@ -103,7 +103,6 @@ export default function MyProfilePage() {
             nakshatra: response.data.horoscopeDetails?.nakshatra || '',
             starSign: response.data.horoscopeDetails?.starSign || '',
             timeOfBirth: response.data.horoscopeDetails?.timeOfBirth || '',
-            placeOfBirth: response.data.horoscopeDetails?.placeOfBirth || '',
           },
         });
       } else {
@@ -835,7 +834,7 @@ export default function MyProfilePage() {
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-pink-300">📅 Birth Details (For Auto Horoscope Calculation)</h3>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
                     Date of Birth
@@ -846,10 +845,6 @@ export default function MyProfilePage() {
                       value={typeof formData.dateOfBirth === 'string' ? formData.dateOfBirth : (formData.dateOfBirth instanceof Date ? formData.dateOfBirth.toISOString().split('T')[0] : '')}
                       onChange={(e) => {
                         setFormData({ ...formData, dateOfBirth: e.target.value });
-                        // Trigger auto-calculation when DOB is changed
-                        if (e.target.value && formData.horoscopeDetails?.timeOfBirth && formData.horoscopeDetails?.placeOfBirth) {
-                          // Auto-calculation will happen on save
-                        }
                       }}
                       max={new Date().toISOString().split('T')[0]}
                       className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
@@ -889,36 +884,18 @@ export default function MyProfilePage() {
                     </p>
                   )}
                 </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
-                    Place of Birth (City)
-                  </label>
-                  {editing ? (
-                    <input
-                      type="text"
-                      value={formData.horoscopeDetails?.placeOfBirth || ''}
-                      onChange={(e) => setFormData({
-                        ...formData,
-                        horoscopeDetails: {
-                          ...formData.horoscopeDetails,
-                          placeOfBirth: sanitizeFormInput(e.target.value, 'text'),
-                        },
-                      })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
-                      placeholder="Enter city name (e.g., Mumbai, Delhi)"
-                    />
-                  ) : (
-                    <p className="text-gray-900 dark:text-pink-100">
-                      {user.horoscopeDetails?.placeOfBirth || t('profile.notProvided')}
-                    </p>
-                  )}
-                </div>
               </div>
-              {editing && formData.dateOfBirth && formData.horoscopeDetails?.timeOfBirth && formData.horoscopeDetails?.placeOfBirth && (
+              {editing && formData.dateOfBirth && formData.horoscopeDetails?.timeOfBirth && (formData.city || formData.state || formData.country) && (
                 <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md">
                   <p className="text-sm text-blue-800 dark:text-blue-200">
-                    💡 Horoscope (Rashi & Nakshatra) will be automatically calculated when you save your profile.
+                    💡 Horoscope (Rashi & Nakshatra) will be automatically calculated using your profile location ({formData.city || formData.state || formData.country || 'India'}) when you save your profile.
+                  </p>
+                </div>
+              )}
+              {editing && formData.dateOfBirth && formData.horoscopeDetails?.timeOfBirth && !formData.city && !formData.state && !formData.country && (
+                <div className="mb-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-md">
+                  <p className="text-sm text-yellow-800 dark:text-yellow-200">
+                    ⚠️ Please add your City, State, or Country in the Location section above for accurate horoscope calculation.
                   </p>
                 </div>
               )}
@@ -1131,7 +1108,6 @@ export default function MyProfilePage() {
                       nakshatra: user.horoscopeDetails?.nakshatra || '',
                       starSign: user.horoscopeDetails?.starSign || '',
                       timeOfBirth: user.horoscopeDetails?.timeOfBirth || '',
-                      placeOfBirth: user.horoscopeDetails?.placeOfBirth || '',
                     },
                   });
                 }}

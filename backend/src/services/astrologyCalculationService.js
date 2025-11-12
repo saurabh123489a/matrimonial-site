@@ -155,12 +155,13 @@ async function calculateUsingProkeralaAPI(dateOfBirth, timeOfBirth, placeOfBirth
     // Prokerala API uses OAuth2 - get access token first
     try {
       // Step 1: Get OAuth2 access token
+      const tokenParams = new URLSearchParams();
+      tokenParams.append('grant_type', 'client_credentials');
+      tokenParams.append('client_id', clientId);
+      tokenParams.append('client_secret', clientSecret);
+      
       const tokenResponse = await axios.post('https://api.prokerala.com/token', 
-        new URLSearchParams({
-          grant_type: 'client_credentials',
-          client_id: clientId,
-          client_secret: clientSecret,
-        }),
+        tokenParams.toString(),
         {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',

@@ -184,21 +184,22 @@ export const userService = {
       updateData.age = age;
     }
 
-    // Auto-calculate horoscope if DOB, time, and place are provided
+    // Auto-calculate horoscope if DOB, time, and location are provided
+    const mergedUserData = { ...existing?.toObject(), ...updateData };
     const shouldCalculateHoroscope = 
-      updateData.dateOfBirth || 
-      updateData.horoscopeDetails?.timeOfBirth || 
-      updateData.horoscopeDetails?.placeOfBirth ||
-      (existing && (existing.dateOfBirth || existing.horoscopeDetails?.timeOfBirth || existing.horoscopeDetails?.placeOfBirth));
+      (updateData.dateOfBirth || existing?.dateOfBirth) && 
+      (updateData.horoscopeDetails?.timeOfBirth || existing?.horoscopeDetails?.timeOfBirth) &&
+      (mergedUserData.city || mergedUserData.state || mergedUserData.country);
     
     if (shouldCalculateHoroscope) {
       const { astrologyCalculationService } = await import('./astrologyCalculationService.js');
       
       const dob = updateData.dateOfBirth || existing?.dateOfBirth;
       const timeOfBirth = updateData.horoscopeDetails?.timeOfBirth || existing?.horoscopeDetails?.timeOfBirth;
-      const placeOfBirth = updateData.horoscopeDetails?.placeOfBirth || existing?.horoscopeDetails?.placeOfBirth;
+      // Use profile location (city, state, country) for horoscope calculation
+      const placeOfBirth = mergedUserData.city || mergedUserData.state || mergedUserData.country || 'India';
       
-      if (dob) {
+      if (dob && timeOfBirth) {
         try {
           const horoscopeResult = await astrologyCalculationService.calculateHoroscope(
             dob,
@@ -215,7 +216,6 @@ export const userService = {
               nakshatra: horoscopeResult.data.nakshatra || updateData.horoscopeDetails?.nakshatra || existing?.horoscopeDetails?.nakshatra,
               manglikStatus: horoscopeResult.data.manglikStatus || updateData.horoscopeDetails?.manglikStatus || existing?.horoscopeDetails?.manglikStatus,
               timeOfBirth: timeOfBirth || updateData.horoscopeDetails?.timeOfBirth || existing?.horoscopeDetails?.timeOfBirth,
-              placeOfBirth: placeOfBirth || updateData.horoscopeDetails?.placeOfBirth || existing?.horoscopeDetails?.placeOfBirth,
             };
           }
         } catch (error) {
