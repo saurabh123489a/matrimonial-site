@@ -9,6 +9,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import LanguageSwitcher from './LanguageSwitcher';
 import ThemeToggle from './ThemeToggle';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { useRouter } from 'next/navigation';
 
 export default function Navbar() {
@@ -16,6 +17,7 @@ export default function Navbar() {
   const router = useRouter();
   const { t } = useTranslation();
   const { resolvedTheme, toggleTheme } = useTheme();
+  const { language, setLanguage } = useLanguage();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -49,17 +51,22 @@ export default function Navbar() {
     }
   }, [mounted, pathname]);
 
-  // Close user menu when clicking outside
+  // Close side menu when pressing Escape key
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (showUserMenu && !(event.target as Element).closest('.user-menu-container')) {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && showUserMenu) {
         setShowUserMenu(false);
       }
     };
 
     if (showUserMenu) {
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => document.removeEventListener('mousedown', handleClickOutside);
+      document.addEventListener('keydown', handleEscape);
+      // Prevent body scroll when menu is open
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.removeEventListener('keydown', handleEscape);
+        document.body.style.overflow = '';
+      };
     }
   }, [showUserMenu]);
 
@@ -181,6 +188,9 @@ export default function Navbar() {
             </Link>
             
             <div className="flex items-center space-x-3 sm:space-x-4">
+              {/* Language Switcher - Always visible */}
+              {mounted && <LanguageSwitcher />}
+              
               {mounted && isAuthenticated && (
                 <>
                   <Link
@@ -196,35 +206,57 @@ export default function Navbar() {
                     )}
                   </Link>
                   
-                  {/* User Menu Dropdown */}
-                  <div className="relative user-menu-container">
-                    <button
-                      onClick={() => setShowUserMenu(!showUserMenu)}
-                      className="relative p-2 text-gray-700 dark:text-pink-100 hover:text-pink-600 dark:hover:text-pink-300 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700"
-                      title="User Menu"
-                    >
-                      <span className="text-xl">👤</span>
-                    </button>
-                    
-                    {/* Dropdown Menu */}
-                    {showUserMenu && (
-                      <>
-                        <div 
-                          className="fixed inset-0 z-40"
-                          onClick={() => setShowUserMenu(false)}
-                        />
-                        <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-[#181b23] rounded-lg shadow-xl border border-gray-200 dark:border-[#303341] z-50 overflow-hidden animate-scale-in">
+                  {/* User Menu Button */}
+                  <button
+                    onClick={() => setShowUserMenu(!showUserMenu)}
+                    className="relative p-2 text-gray-700 dark:text-pink-100 hover:text-pink-600 dark:hover:text-pink-300 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700"
+                    title="User Menu"
+                  >
+                    <span className="text-xl">👤</span>
+                  </button>
+                  
+                  {/* Side Menu Drawer */}
+                  {showUserMenu && (
+                    <>
+                      {/* Backdrop */}
+                      <div 
+                        className="fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity"
+                        onClick={() => setShowUserMenu(false)}
+                      />
+                      
+                      {/* Side Drawer */}
+                      <div className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-white dark:bg-[#181b23] shadow-2xl z-50 transform transition-transform duration-300 ease-in-out ${
+                        showUserMenu ? 'translate-x-0' : 'translate-x-full'
+                      } overflow-y-auto`}>
+                        {/* Header */}
+                        <div className="sticky top-0 bg-white dark:bg-[#181b23] border-b border-gray-200 dark:border-[#303341] px-4 py-4 flex items-center justify-between z-10">
+                          <h2 className="text-lg font-semibold text-gray-900 dark:text-pink-100">
+                            {t('common.menu') || 'Menu'}
+                          </h2>
+                          <button
+                            onClick={() => setShowUserMenu(false)}
+                            className="p-2 text-gray-500 dark:text-pink-300 hover:text-gray-700 dark:hover:text-pink-100 hover:bg-gray-100 dark:hover:bg-[#1f212a] rounded-lg transition-colors"
+                            aria-label="Close menu"
+                          >
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                          </button>
+                        </div>
+                        
+                        {/* Menu Content */}
+                        <div className="px-4 py-4 space-y-1">
                           {/* Profile Link */}
                           <Link
                             href="/profile"
                             onClick={() => setShowUserMenu(false)}
-                            className={`flex items-center gap-3 px-4 py-3 text-sm font-medium transition-colors ${
+                            className={`flex items-center gap-3 px-4 py-3 text-base font-medium transition-colors rounded-lg ${
                               pathname === '/profile'
                                 ? 'bg-pink-50 dark:bg-pink-900/10 text-pink-600 dark:text-pink-200'
                                 : 'text-gray-700 dark:text-pink-100 hover:bg-gray-50 dark:hover:bg-[#1f212a]'
                             }`}
                           >
-                            <span className="text-lg">👤</span>
+                            <span className="text-xl">👤</span>
                             <span>{t('common.profile') || 'Profile'}</span>
                           </Link>
                           
@@ -232,9 +264,8 @@ export default function Navbar() {
                           <button
                             onClick={() => {
                               toggleTheme();
-                              setShowUserMenu(false);
                             }}
-                            className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 dark:text-pink-100 hover:bg-gray-50 dark:hover:bg-[#1f212a] transition-colors border-t border-gray-200 dark:border-[#303341]"
+                            className="w-full flex items-center gap-3 px-4 py-3 text-base font-medium text-gray-700 dark:text-pink-100 hover:bg-gray-50 dark:hover:bg-[#1f212a] transition-colors rounded-lg"
                           >
                             {resolvedTheme === 'dark' ? (
                               <>
@@ -253,19 +284,54 @@ export default function Navbar() {
                             )}
                           </button>
                           
+                          {/* Language Switcher in Side Menu */}
+                          <div className="px-4 py-3 border-t border-gray-200 dark:border-[#303341] mt-2">
+                            <div className="flex items-center gap-3 mb-2">
+                              <span className="text-lg">🌐</span>
+                              <span className="text-sm font-medium text-gray-700 dark:text-pink-100">
+                                {t('common.language') || 'Language'}
+                              </span>
+                            </div>
+                            <div className="flex gap-2">
+                              <button
+                                onClick={() => setLanguage('en')}
+                                className={`flex-1 px-3 py-2 text-sm rounded-md transition-colors ${
+                                  language === 'en'
+                                    ? 'bg-pink-600 text-white'
+                                    : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                                }`}
+                              >
+                                English
+                              </button>
+                              <button
+                                onClick={() => setLanguage('hi')}
+                                className={`flex-1 px-3 py-2 text-sm rounded-md transition-colors ${
+                                  language === 'hi'
+                                    ? 'bg-pink-600 text-white'
+                                    : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                                }`}
+                              >
+                                हिंदी
+                              </button>
+                            </div>
+                          </div>
+                          
+                          {/* Divider */}
+                          <div className="border-t border-gray-200 dark:border-[#303341] my-2"></div>
+                          
                           {/* Additional Links */}
                           {additionalLinks.map((link) => (
                             <Link
                               key={link.href}
                               href={link.href}
                               onClick={() => setShowUserMenu(false)}
-                              className={`flex items-center gap-3 px-4 py-3 text-sm font-medium transition-colors border-t border-gray-200 dark:border-[#303341] ${
+                              className={`flex items-center gap-3 px-4 py-3 text-base font-medium transition-colors rounded-lg ${
                                 pathname === link.href
                                   ? 'bg-pink-50 dark:bg-pink-900/10 text-pink-600 dark:text-pink-200'
                                   : 'text-gray-700 dark:text-pink-100 hover:bg-gray-50 dark:hover:bg-[#1f212a]'
                               }`}
                             >
-                              <span className="text-lg">
+                              <span className="text-xl">
                                 {link.href === '/donation' ? '💝' : 
                                  link.href === '/about' ? '📧' :
                                  link.href === '/notifications' ? '🔔' :
@@ -280,6 +346,9 @@ export default function Navbar() {
                             </Link>
                           ))}
                           
+                          {/* Divider before logout */}
+                          <div className="border-t border-gray-200 dark:border-[#303341] my-2"></div>
+                          
                           {/* Logout */}
                           <button
                             onClick={() => {
@@ -287,7 +356,7 @@ export default function Navbar() {
                               setShowUserMenu(false);
                               router.push('/login');
                             }}
-                            className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-red-600 dark:text-pink-200 hover:bg-red-50 dark:hover:bg-pink-900/10 transition-colors border-t border-gray-200 dark:border-[#303341]"
+                            className="w-full flex items-center gap-3 px-4 py-3 text-base font-medium text-red-600 dark:text-pink-200 hover:bg-red-50 dark:hover:bg-pink-900/10 transition-colors rounded-lg"
                           >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -295,30 +364,45 @@ export default function Navbar() {
                             <span>{t('common.logout')}</span>
                           </button>
                         </div>
-                      </>
-                    )}
-                  </div>
-                  
-                  <LanguageSwitcher />
+                      </div>
+                    </>
+                  )}
                 </>
               )}
               {mounted && !isAuthenticated && (
-                <div className="hidden sm:flex items-center space-x-3">
-                  <Link
-                    href="/login"
-                    className="px-4 py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-pink-600 dark:hover:text-pink-400 transition-colors"
-                  >
-                    {t('common.login')}
-                  </Link>
-                  <Link
-                    href="/register"
-                    className="px-4 py-2 text-base font-medium text-white bg-black dark:bg-white dark:text-black hover:bg-gray-900 dark:hover:bg-gray-100 transition-colors rounded"
-                  >
-                    {t('common.signUp')}
-                  </Link>
-                  <LanguageSwitcher />
-                  <ThemeToggle />
-                </div>
+                <>
+                  {/* Mobile: Show login/signup buttons */}
+                  <div className="flex sm:hidden items-center space-x-2">
+                    <Link
+                      href="/login"
+                      className="px-3 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-pink-600 dark:hover:text-pink-400 transition-colors"
+                    >
+                      {t('common.login')}
+                    </Link>
+                    <Link
+                      href="/register"
+                      className="px-3 py-1.5 text-sm font-medium text-white bg-black dark:bg-white dark:text-black hover:bg-gray-900 dark:hover:bg-gray-100 transition-colors rounded"
+                    >
+                      {t('common.signUp')}
+                    </Link>
+                  </div>
+                  {/* Desktop: Show login/signup buttons */}
+                  <div className="hidden sm:flex items-center space-x-3">
+                    <Link
+                      href="/login"
+                      className="px-4 py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-pink-600 dark:hover:text-pink-400 transition-colors"
+                    >
+                      {t('common.login')}
+                    </Link>
+                    <Link
+                      href="/register"
+                      className="px-4 py-2 text-base font-medium text-white bg-black dark:bg-white dark:text-black hover:bg-gray-900 dark:hover:bg-gray-100 transition-colors rounded"
+                    >
+                      {t('common.signUp')}
+                    </Link>
+                    <ThemeToggle />
+                  </div>
+                </>
               )}
             </div>
           </div>

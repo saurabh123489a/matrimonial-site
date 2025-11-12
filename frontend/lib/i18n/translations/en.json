@@ -498,6 +498,70 @@
       "transparency": "We maintain complete transparency in all donations received.",
       "usage": "100% of donations are used for platform development and maintenance."
     }
+  },
+  "errors": {
+    "networkError": "Unable to connect to server. Please check your internet connection.",
+    "badRequest": "Invalid request. Please check your input.",
+    "unauthorized": "Please login to continue.",
+    "forbidden": "You do not have permission to perform this action.",
+    "notFound": "The requested resource was not found.",
+    "conflict": "This resource already exists.",
+    "validationError": "Please check your input and try again.",
+    "tooManyRequests": "Too many requests. Please try again later.",
+    "serverError": "Server error. Please try again later.",
+    "serviceUnavailable": "Service temporarily unavailable. Please try again later.",
+    "unknownError": "An unexpected error occurred. Please try again.",
+    "alreadyExists": "This resource already exists."
+  },
+  "events": {
+    "title": "Community Events",
+    "upcoming": "Upcoming Events",
+    "past": "Past Events",
+    "createEvent": "Create Event",
+    "eventTitle": "Event Title",
+    "description": "Description",
+    "eventDate": "Event Date",
+    "eventTime": "Event Time",
+    "location": "Location",
+    "category": "Category",
+    "maxAttendees": "Max Attendees",
+    "isPublic": "Public Event",
+    "rsvp": "RSVP",
+    "going": "Going",
+    "maybe": "Maybe",
+    "notGoing": "Not Going",
+    "rsvpStatus": "RSVP Status",
+    "attendees": "Attendees",
+    "noEvents": "No events found",
+    "create": "Create Event",
+    "edit": "Edit Event",
+    "delete": "Delete Event",
+    "rsvpSuccess": "RSVP submitted successfully",
+    "rsvpCancelled": "RSVP cancelled"
+  },
+  "polls": {
+    "title": "Community Polls",
+    "activePolls": "Active Polls",
+    "createPoll": "Create Poll",
+    "pollTitle": "Poll Title",
+    "options": "Options",
+    "addOption": "Add Option",
+    "vote": "Vote",
+    "results": "Results",
+    "totalVotes": "Total Votes",
+    "hasVoted": "You have already voted",
+    "noPolls": "No polls found",
+    "voteSuccess": "Vote submitted successfully"
+  },
+  "badges": {
+    "title": "Badges",
+    "userBadges": "User Badges",
+    "noBadges": "No badges earned yet",
+    "earned": "Earned",
+    "activeMentor": "Active Mentor",
+    "verifiedFamily": "Verified Family",
+    "communityHelper": "Community Helper",
+    "activeParticipant": "Active Participant"
   }
 }
 

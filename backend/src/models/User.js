@@ -70,11 +70,6 @@ const userSchema = new mongoose.Schema(
     whatsappNumber: { type: String, trim: true }, // Separate WhatsApp number
     passwordHash: { type: String, required: false }, // Optional for OTP-based auth
     
-    // Google OAuth
-    googleId: { type: String, unique: true, sparse: true, index: true },
-    googleEmail: { type: String, lowercase: true, trim: true },
-    googlePicture: { type: String }, // Profile picture URL from Google
-    
     // Gahoi ID - 5 digit number starting with 1000 (even = male, odd = female)
     gahoiId: { 
       type: Number, 
