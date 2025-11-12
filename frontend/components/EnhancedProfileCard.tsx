@@ -40,15 +40,29 @@ export default function EnhancedProfileCard({ user, showActions = true }: Enhanc
 
     setLoadingMatch(true);
     setMatchError('');
+    setHoroscopeMatch(null);
     setShowHoroscopeModal(true);
 
     try {
       const response = await horoscopeApi.getMatch(user._id);
-      if (response.status) {
+      if (response.status && response.data) {
         setHoroscopeMatch(response.data);
+        // Clear any previous errors
+        setMatchError('');
+      } else {
+        // API returned error status
+        const errorMessage = response.message || t('horoscope.failed');
+        setMatchError(errorMessage);
+        console.error('Horoscope API error:', response);
       }
     } catch (err: any) {
-      setMatchError(err.response?.data?.message || t('horoscope.failed'));
+      console.error('Horoscope match error:', err);
+      const errorMessage = err.response?.data?.message || err.message || t('horoscope.failed');
+      setMatchError(errorMessage);
+      // If it's a network error, provide more helpful message
+      if (err.code === 'ERR_NETWORK' || err.message?.includes('Network Error')) {
+        setMatchError('Network error. Please check your connection and try again.');
+      }
     } finally {
       setLoadingMatch(false);
     }
@@ -233,28 +247,55 @@ export default function EnhancedProfileCard({ user, showActions = true }: Enhanc
                   <p className="mt-4 text-sm sm:text-base text-gray-600">{t('horoscope.calculating')}</p>
                 </div>
               ) : matchError ? (
-                <div className="bg-red-50 border border-red-200 text-red-800 px-3 sm:px-4 py-2 sm:py-3 rounded-md text-sm sm:text-base">
-                  {matchError}
+                <div className="bg-red-50 border-2 border-red-300 text-red-800 px-4 sm:px-6 py-4 sm:py-5 rounded-lg text-sm sm:text-base">
+                  <div className="flex items-start gap-3">
+                    <span className="text-xl">⚠️</span>
+                    <div>
+                      <h3 className="font-bold mb-1">Error</h3>
+                      <p>{matchError}</p>
+                      {matchError.includes('insufficient') && (
+                        <p className="mt-2 text-sm text-red-700">
+                          Please ensure both you and {user.name} have horoscope details (Rashi or Nakshatra) in your profiles.
+                        </p>
+                      )}
+                    </div>
+                  </div>
                 </div>
               ) : horoscopeMatch ? (
                 <div className="space-y-4 sm:space-y-6">
-                  {/* Overall Score */}
-                  <div className="text-center bg-gradient-to-r from-purple-50 to-pink-50 p-4 sm:p-6 rounded-lg border-2 border-purple-200">
-                    <div className="text-4xl sm:text-5xl font-bold text-purple-600 mb-2">
-                      {horoscopeMatch.totalScore}/{horoscopeMatch.maxScore}
+                  {/* Insufficient Data Warning */}
+                  {horoscopeMatch.status === 'insufficient_data' ? (
+                    <div className="bg-yellow-50 border-2 border-yellow-300 text-yellow-800 px-4 sm:px-6 py-4 sm:py-5 rounded-lg">
+                      <div className="flex items-start gap-3">
+                        <span className="text-xl">ℹ️</span>
+                        <div>
+                          <h3 className="font-bold mb-1">Insufficient Horoscope Data</h3>
+                          <p>{horoscopeMatch.message || t('horoscope.insufficientInfo')}</p>
+                          <p className="mt-2 text-sm text-yellow-700">
+                            Both you and {user.name} need to have horoscope details (Rashi or Nakshatra) in your profiles to calculate matching.
+                          </p>
+                        </div>
+                      </div>
                     </div>
-                    <div className="text-xl sm:text-2xl font-semibold text-gray-800 mb-1">
-                      {horoscopeMatch.percentage}% Match
-                    </div>
-                    <div className={`text-base sm:text-lg font-medium ${
-                      horoscopeMatch.status === 'excellent' ? 'text-green-600' :
-                      horoscopeMatch.status === 'good' ? 'text-blue-600' :
-                      horoscopeMatch.status === 'moderate' ? 'text-yellow-600' :
-                      'text-orange-600'
-                    }`}>
-                      {t(`horoscope.status.${horoscopeMatch.status}`)}
-                    </div>
-                  </div>
+                  ) : (
+                    <>
+                      {/* Overall Score */}
+                      <div className="text-center bg-gradient-to-r from-purple-50 to-pink-50 p-4 sm:p-6 rounded-lg border-2 border-purple-200">
+                        <div className="text-4xl sm:text-5xl font-bold text-purple-600 mb-2">
+                          {horoscopeMatch.totalScore}/{horoscopeMatch.maxScore}
+                        </div>
+                        <div className="text-xl sm:text-2xl font-semibold text-gray-800 mb-1">
+                          {horoscopeMatch.percentage}% Match
+                        </div>
+                        <div className={`text-base sm:text-lg font-medium ${
+                          horoscopeMatch.status === 'excellent' ? 'text-green-600' :
+                          horoscopeMatch.status === 'good' ? 'text-blue-600' :
+                          horoscopeMatch.status === 'moderate' ? 'text-yellow-600' :
+                          'text-orange-600'
+                        }`}>
+                          {t(`horoscope.status.${horoscopeMatch.status}`)}
+                        </div>
+                      </div>
 
                   {/* Doshas Warning */}
                   {horoscopeMatch.doshas && horoscopeMatch.doshas.length > 0 && (
@@ -268,11 +309,12 @@ export default function EnhancedProfileCard({ user, showActions = true }: Enhanc
                     </div>
                   )}
 
-                  {/* Detailed Breakdown */}
-                  <div>
-                    <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">{t('horoscope.breakdown.title')}</h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                      {horoscopeMatch.details.map((detail, idx) => (
+                  {/* Detailed Breakdown - Only show if we have details */}
+                  {horoscopeMatch.details && horoscopeMatch.details.length > 0 && (
+                    <div>
+                      <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">{t('horoscope.breakdown.title')}</h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                        {horoscopeMatch.details.map((detail, idx) => (
                         <div
                           key={idx}
                           className={`p-4 rounded-lg border-2 ${
@@ -297,31 +339,36 @@ export default function EnhancedProfileCard({ user, showActions = true }: Enhanc
                           </div>
                           <p className="text-sm text-gray-700">{detail.detail}</p>
                         </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  )}
 
                   {/* Horoscope Info */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 pt-4 border-t border-gray-200">
-                    <div>
-                      <h4 className="text-sm sm:text-base font-semibold text-gray-900 mb-2">{t('horoscope.info.yourHoroscope')}</h4>
-                      {horoscopeMatch.horoscope1.rashi && (
-                        <p className="text-sm text-gray-700">{t('horoscope.info.rashi')}: <span className="font-medium">{horoscopeMatch.horoscope1.rashi}</span></p>
-                      )}
-                      {horoscopeMatch.horoscope1.nakshatra && (
-                        <p className="text-sm text-gray-700">{t('horoscope.info.nakshatra')}: <span className="font-medium">{horoscopeMatch.horoscope1.nakshatra}</span></p>
-                      )}
+                  {horoscopeMatch.horoscope1 && horoscopeMatch.horoscope2 && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 pt-4 border-t border-gray-200">
+                      <div>
+                        <h4 className="text-sm sm:text-base font-semibold text-gray-900 mb-2">{t('horoscope.info.yourHoroscope')}</h4>
+                        {horoscopeMatch.horoscope1.rashi && (
+                          <p className="text-sm text-gray-700">{t('horoscope.info.rashi')}: <span className="font-medium">{horoscopeMatch.horoscope1.rashi}</span></p>
+                        )}
+                        {horoscopeMatch.horoscope1.nakshatra && (
+                          <p className="text-sm text-gray-700">{t('horoscope.info.nakshatra')}: <span className="font-medium">{horoscopeMatch.horoscope1.nakshatra}</span></p>
+                        )}
+                      </div>
+                      <div>
+                        <h4 className="text-sm sm:text-base font-semibold text-gray-900 mb-2">{t('horoscope.info.theirHoroscope', { name: user.name })}</h4>
+                        {horoscopeMatch.horoscope2.rashi && (
+                          <p className="text-sm text-gray-700">{t('horoscope.info.rashi')}: <span className="font-medium">{horoscopeMatch.horoscope2.rashi}</span></p>
+                        )}
+                        {horoscopeMatch.horoscope2.nakshatra && (
+                          <p className="text-sm text-gray-700">{t('horoscope.info.nakshatra')}: <span className="font-medium">{horoscopeMatch.horoscope2.nakshatra}</span></p>
+                        )}
+                      </div>
                     </div>
-                    <div>
-                      <h4 className="text-sm sm:text-base font-semibold text-gray-900 mb-2">{t('horoscope.info.theirHoroscope', { name: user.name })}</h4>
-                      {horoscopeMatch.horoscope2.rashi && (
-                        <p className="text-sm text-gray-700">{t('horoscope.info.rashi')}: <span className="font-medium">{horoscopeMatch.horoscope2.rashi}</span></p>
-                      )}
-                      {horoscopeMatch.horoscope2.nakshatra && (
-                        <p className="text-sm text-gray-700">{t('horoscope.info.nakshatra')}: <span className="font-medium">{horoscopeMatch.horoscope2.nakshatra}</span></p>
-                      )}
-                    </div>
-                  </div>
+                  )}
+                    </>
+                  )}
                 </div>
               ) : (
                 <div className="text-center py-8 text-gray-600">
