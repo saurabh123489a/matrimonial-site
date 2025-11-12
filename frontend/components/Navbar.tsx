@@ -23,6 +23,7 @@ export default function Navbar() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
 
   // Check authentication on client side only
   useEffect(() => {
@@ -202,16 +203,28 @@ export default function Navbar() {
             
             {/* Right: Icons */}
             <div className="flex items-center space-x-2 sm:space-x-3">
-              {/* Search Icon */}
-              <Link
-                href="/profiles"
-                className="p-2 text-gray-700 dark:text-pink-100 hover:text-pink-600 dark:hover:text-pink-300 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700"
-                title="Search"
-              >
-                <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </Link>
+              {/* Search Icon - Show auth modal if not authenticated */}
+              {mounted && !isAuthenticated ? (
+                <button
+                  onClick={() => setShowAuthModal(true)}
+                  className="p-2 text-gray-700 dark:text-pink-100 hover:text-pink-600 dark:hover:text-pink-300 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700"
+                  title="Search"
+                >
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </button>
+              ) : (
+                <Link
+                  href="/profiles"
+                  className="p-2 text-gray-700 dark:text-pink-100 hover:text-pink-600 dark:hover:text-pink-300 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700"
+                  title="Search"
+                >
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </Link>
+              )}
               
               {/* Language Switcher - Always visible */}
               {mounted && <LanguageSwitcher />}
@@ -401,25 +414,161 @@ export default function Navbar() {
               )}
               {mounted && !isAuthenticated && (
                 <>
-                  {/* Theme Toggle */}
-                  <ThemeToggle />
-                  
-                  {/* User Profile Icon (for login/signup) */}
+                  {/* Login Button */}
                   <Link
                     href="/login"
-                    className="p-2 text-gray-700 dark:text-pink-100 hover:text-pink-600 dark:hover:text-pink-300 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700"
+                    className="px-4 py-2 text-sm font-medium text-white bg-pink-600 hover:bg-pink-700 rounded-lg transition-colors"
                     title="Login"
                   >
-                    <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
+                    {t('auth.login') || 'Login'}
                   </Link>
+                  
+                  {/* Side Menu Drawer for Non-Authenticated Users */}
+                  {showUserMenu && (
+                    <>
+                      {/* Backdrop - Dims and blurs the background */}
+                      <div 
+                        className="fixed inset-0 bg-black bg-opacity-20 dark:bg-opacity-30 backdrop-blur-[1px] z-40 transition-opacity"
+                        onClick={() => setShowUserMenu(false)}
+                        aria-hidden="true"
+                      />
+                      
+                      {/* Side Drawer */}
+                      <div className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-white dark:bg-[#181b23] shadow-2xl z-50 transform transition-transform duration-300 ease-in-out ${
+                        showUserMenu ? 'translate-x-0' : 'translate-x-full'
+                      } overflow-y-auto`}>
+                        {/* Header */}
+                        <div className="sticky top-0 bg-white dark:bg-[#181b23] border-b border-gray-200 dark:border-[#303341] px-4 py-4 flex items-center justify-between z-10">
+                          <h2 className="text-lg font-semibold text-gray-900 dark:text-pink-100">
+                            {t('common.menu') || 'Menu'}
+                          </h2>
+                          <button
+                            onClick={() => setShowUserMenu(false)}
+                            className="p-2 text-gray-500 dark:text-pink-300 hover:text-gray-700 dark:hover:text-pink-100 hover:bg-gray-100 dark:hover:bg-[#1f212a] rounded-lg transition-colors"
+                            aria-label="Close menu"
+                          >
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                          </button>
+                        </div>
+                        
+                        {/* Menu Content */}
+                        <div className="px-4 py-4 space-y-1">
+                          {/* Contact Us */}
+                          <Link
+                            href="/about"
+                            onClick={() => setShowUserMenu(false)}
+                            className={`flex items-center gap-3 px-4 py-3 text-base font-medium transition-colors rounded-lg ${
+                              pathname === '/about'
+                                ? 'bg-pink-50 dark:bg-pink-900/10 text-pink-600 dark:text-pink-200'
+                                : 'text-gray-700 dark:text-pink-100 hover:bg-gray-50 dark:hover:bg-[#1f212a]'
+                            }`}
+                          >
+                            <span className="text-xl">📧</span>
+                            <span>{t('common.contact') || 'Contact Us'}</span>
+                          </Link>
+                          
+                          {/* Login */}
+                          <Link
+                            href="/login"
+                            onClick={() => setShowUserMenu(false)}
+                            className={`flex items-center gap-3 px-4 py-3 text-base font-medium transition-colors rounded-lg ${
+                              pathname === '/login'
+                                ? 'bg-pink-50 dark:bg-pink-900/10 text-pink-600 dark:text-pink-200'
+                                : 'text-gray-700 dark:text-pink-100 hover:bg-gray-50 dark:hover:bg-[#1f212a]'
+                            }`}
+                          >
+                            <span className="text-xl">🔐</span>
+                            <span>{t('auth.login') || 'Login'}</span>
+                          </Link>
+                          
+                          {/* Sign Up */}
+                          <Link
+                            href="/register"
+                            onClick={() => setShowUserMenu(false)}
+                            className={`flex items-center gap-3 px-4 py-3 text-base font-medium transition-colors rounded-lg ${
+                              pathname === '/register'
+                                ? 'bg-pink-50 dark:bg-pink-900/10 text-pink-600 dark:text-pink-200'
+                                : 'text-gray-700 dark:text-pink-100 hover:bg-gray-50 dark:hover:bg-[#1f212a]'
+                            }`}
+                          >
+                            <span className="text-xl">✨</span>
+                            <span>{t('auth.signUp') || 'Sign Up'}</span>
+                          </Link>
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </>
               )}
             </div>
           </div>
         </div>
       </nav>
+
+      {/* Auth Modal for Non-Authenticated Users */}
+      {mounted && showAuthModal && !isAuthenticated && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="bg-black bg-opacity-50 absolute inset-0" onClick={() => {
+            setShowAuthModal(false);
+            router.push('/');
+          }}></div>
+          <div className="bg-white dark:bg-[#181b23] rounded-lg shadow-2xl max-w-md w-full relative z-10 animate-scale-in">
+            <div className="p-8">
+              {/* Close Button */}
+              <button
+                onClick={() => {
+                  setShowAuthModal(false);
+                  router.push('/');
+                }}
+                className="absolute top-4 right-4 text-gray-400 dark:text-pink-300 hover:text-gray-600 dark:hover:text-pink-100 text-2xl font-bold"
+                aria-label="Close"
+              >
+                ×
+              </button>
+
+              {/* Modal Content */}
+              <div className="text-center mb-6">
+                <div className="text-6xl mb-4">🔒</div>
+                <h2 className="text-3xl font-bold text-gray-900 dark:text-pink-100 mb-2">
+                  Login Required
+                </h2>
+                <p className="text-gray-600 dark:text-pink-200 mb-6">
+                  Please login or sign up to search profiles, send interests, and connect with matches.
+                </p>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="space-y-3">
+                <Link
+                  href="/login"
+                  onClick={() => setShowAuthModal(false)}
+                  className="block w-full px-6 py-3 bg-gradient-to-r from-pink-600 to-red-600 text-white font-semibold rounded-md hover:from-pink-700 hover:to-red-700 transition-all shadow-lg text-center"
+                >
+                  {t('auth.login') || 'Login'}
+                </Link>
+                <Link
+                  href="/register"
+                  onClick={() => setShowAuthModal(false)}
+                  className="block w-full px-6 py-3 bg-white dark:bg-[#1f212a] border-2 border-pink-600 text-pink-600 dark:text-pink-300 font-semibold rounded-md hover:bg-pink-50 dark:hover:bg-pink-900/10 transition-all shadow-md text-center"
+                >
+                  {t('auth.signUp') || 'Sign Up'}
+                </Link>
+                <button
+                  onClick={() => {
+                    setShowAuthModal(false);
+                    router.push('/');
+                  }}
+                  className="block w-full px-6 py-2 text-gray-600 dark:text-pink-300 hover:text-gray-800 dark:hover:text-pink-100 font-medium text-sm"
+                >
+                  Continue Browsing
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Bottom Navigation Bar - Only show when authenticated - Mobile & Web */}
       {mounted && isAuthenticated ? (
