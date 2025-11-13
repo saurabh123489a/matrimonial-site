@@ -16,7 +16,7 @@ export default function LoginPage() {
   const [success, setSuccess] = useState('');
   const [phone, setPhone] = useState('');
   const [otp, setOtp] = useState('');
-  const [sentOTP, setSentOTP] = useState<string | null>(null); // For development mode
+  const [sentOTP, setSentOTP] = useState<string | null>(null); 
 
   const handleSendOTP = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,7 +30,7 @@ export default function LoginPage() {
         setSuccess(t('auth.otpSent'));
         setStep('otp');
         
-        // In development mode, show OTP in the response
+        
         if (response.data.otp) {
           setSentOTP(response.data.otp);
         }

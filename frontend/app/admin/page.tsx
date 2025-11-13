@@ -65,7 +65,7 @@ export default function AdminDashboardPage() {
       }
     } catch (error) {
       console.error('Error loading stats:', error);
-      // Set placeholder stats on error
+      
       setStats({
         totalUsers: 0,
         activeUsers: 0,

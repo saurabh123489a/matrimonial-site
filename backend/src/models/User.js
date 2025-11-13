@@ -220,5 +220,12 @@ userSchema.index({ city: 1, state: 1 });
 userSchema.index({ maritalStatus: 1 });
 userSchema.index({ education: 1 });
 userSchema.index({ occupation: 1 });
+// Composite indexes for common search patterns
+userSchema.index({ isActive: 1, gender: 1, age: 1 });
+userSchema.index({ isActive: 1, gender: 1, city: 1 });
+userSchema.index({ isActive: 1, isProfileComplete: 1, gender: 1 });
+userSchema.index({ isActive: 1, gender: 1, state: 1 });
+userSchema.index({ isActive: 1, gender: 1, education: 1 });
+userSchema.index({ isActive: 1, gender: 1, occupation: 1 });
 
 export default mongoose.model('User', userSchema);

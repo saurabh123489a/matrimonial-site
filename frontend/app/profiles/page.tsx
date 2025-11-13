@@ -31,7 +31,7 @@ function ProfilesContent() {
   const [occupationOptions, setOccupationOptions] = useState<Array<{ value: string; label: string }>>([]);
   const [loadingOccupation, setLoadingOccupation] = useState(false);
 
-  // Load occupation options
+  
   const loadOccupationOptions = useCallback(async (gender?: string) => {
     setLoadingOccupation(true);
     try {
@@ -46,28 +46,28 @@ function ProfilesContent() {
     }
   }, []);
 
-  // Check authentication on mount (client-side only)
+  
   useEffect(() => {
     setMounted(true);
     const authenticated = auth.isAuthenticated();
     setIsAuthenticated(authenticated);
     
-    // Set a timeout to ensure currentUserLoaded is set even if API calls hang
+    
     const timeoutId = setTimeout(() => {
       if (!currentUserLoaded) {
         console.warn('Timeout: Setting currentUserLoaded to true after timeout');
         setCurrentUserLoaded(true);
         loadOccupationOptions();
       }
-    }, 5000); // 5 second timeout
+    }, 5000); 
     
-    // Load current user for gender-based filtering
+    
     if (authenticated) {
       userApi.getMe().then(response => {
         clearTimeout(timeoutId);
         if (response.status) {
           setCurrentUser(response.data);
-          // Load occupation options with user's gender to prioritize "House Wife" for females
+          
           loadOccupationOptions(response.data.gender);
         } else {
           loadOccupationOptions();
@@ -76,22 +76,22 @@ function ProfilesContent() {
       }).catch((error) => {
         clearTimeout(timeoutId);
         console.error('Failed to load current user:', error);
-        // If getMe fails, still mark as loaded so profiles can load without gender filtering
+        
         loadOccupationOptions();
         setCurrentUserLoaded(true);
       });
     } else {
       clearTimeout(timeoutId);
-      // If not authenticated, mark as loaded immediately and load occupation options
+      
       loadOccupationOptions();
       setCurrentUserLoaded(true);
     }
     
-    // Show modal if not authenticated (after a brief delay for better UX)
+    
     if (!authenticated) {
       const timer = setTimeout(() => {
         setShowAuthModal(true);
-      }, 500); // Small delay to let page render
+      }, 500); 
       return () => {
         clearTimeout(timer);
         clearTimeout(timeoutId);
@@ -103,11 +103,11 @@ function ProfilesContent() {
     };
   }, [loadOccupationOptions]);
   
-  // Gahoi ID search - local state for immediate UI updates
+  
   const [gahoiIdInput, setGahoiIdInput] = useState(searchParams.get('gahoiId') || '');
   const [gahoiId, setGahoiId] = useState(searchParams.get('gahoiId') || '');
   
-  // Gahoi Sathi style comprehensive filters - local state for immediate UI updates
+  
   const [filters, setFilters] = useState({
     gender: searchParams.get('gender') || '',
     minAge: searchParams.get('minAge') || '',
@@ -121,20 +121,20 @@ function ProfilesContent() {
     maxHeight: searchParams.get('maxHeight') || '',
   });
   
-  // Debounced search filters - these trigger the actual API call
+  
   const [searchFilters, setSearchFilters] = useState(filters);
   
-  // Initialize searchFilters when filters change from URL params
+  
   useEffect(() => {
     setSearchFilters(filters);
-  }, []); // Only on mount
+  }, []); 
   const [page, setPage] = useState(1);
   const [pagination, setPagination] = useState({ total: 0, pages: 0 });
   const [showFilters, setShowFilters] = useState(false);
-  const [displayLimit, setDisplayLimit] = useState(10); // Show only 10 initially
+  const [displayLimit, setDisplayLimit] = useState(10); 
   const [loadingMore, setLoadingMore] = useState(false);
 
-  // Pull-to-refresh hook
+  
   const { isRefreshing, isPulling, pullDistance } = usePullToRefresh({
     onRefresh: async () => {
       await loadProfiles();
@@ -142,11 +142,11 @@ function ProfilesContent() {
     enabled: true,
   });
 
-  // Infinite scroll handler
+  
   const handleLoadMore = useCallback(() => {
     if (displayLimit < users.length && !loadingMore) {
       setLoadingMore(true);
-      // Simulate loading delay for better UX
+      
       setTimeout(() => {
         setDisplayLimit(prev => Math.min(prev + 10, users.length));
         setLoadingMore(false);
@@ -154,19 +154,19 @@ function ProfilesContent() {
     }
   }, [displayLimit, users.length, loadingMore]);
 
-  // Infinite scroll hook
+  
   const loadMoreRef = useInfiniteScroll({
     hasMore: displayLimit < users.length,
     loading: loadingMore,
     onLoadMore: handleLoadMore,
   });
 
-  // Use ref to track if component is mounted and prevent race conditions
+  
   const isMountedRef = useRef(true);
   const loadingRef = useRef(false);
 
   const loadProfiles = async () => {
-    // Prevent multiple simultaneous calls
+    
     if (loadingRef.current) {
       return;
     }
@@ -175,7 +175,7 @@ function ProfilesContent() {
     setLoading(true);
     setError('');
     
-    // Set a timeout to prevent infinite loading
+    
     let timeoutId: NodeJS.Timeout | null = null;
     timeoutId = setTimeout(() => {
       if (loadingRef.current && isMountedRef.current) {
@@ -184,13 +184,13 @@ function ProfilesContent() {
         setLoading(false);
         loadingRef.current = false;
       }
-    }, 10000); // 10 second timeout
+    }, 10000); 
     
     try {
-      // If Gahoi ID is provided, search by ID via search API
+      
       if (gahoiId && gahoiId.trim()) {
         const id = gahoiId.trim();
-        // Validate: must be exactly 5 digits starting with 1000
+        
         if (!/^100[0-9]{2}$/.test(id)) {
           setError('Gahoi ID must be a 5-digit number starting with 1000 (e.g., 10000-10099)');
           setLoading(false);
@@ -198,7 +198,7 @@ function ProfilesContent() {
         }
         
         try {
-          // Use search API with gahoiId parameter (backend handles the ID lookup)
+          
           const searchResponse = await userApi.search({ gahoiId: id, page, limit: 16 });
           if (searchResponse.status && searchResponse.data) {
             setUsers(searchResponse.data);
@@ -220,23 +220,23 @@ function ProfilesContent() {
         return;
       }
 
-      // Otherwise, use searchFilters (debounced for text inputs)
-      const filterParams: any = { page: 1, limit: 50 }; // Max limit allowed by API, but display only 10 initially
+      
+      const filterParams: any = { page: 1, limit: 50 }; 
       Object.entries(searchFilters).forEach(([key, value]) => {
         if (value && value !== '') {
           if (key === 'minAge' || key === 'maxAge') {
             filterParams[key] = parseInt(value);
           } else if (key === 'minHeight' || key === 'maxHeight') {
-            filterParams[key] = parseFloat(value); // Height is in inches, can have decimals
+            filterParams[key] = parseFloat(value); 
           } else {
             filterParams[key] = value;
           }
         }
       });
 
-      // Auto-filter by opposite gender if user is authenticated and no gender filter is set
+      
       if (isAuthenticated && currentUser && !filterParams.gender) {
-        // Females see males, Males see females
+        
         if (currentUser.gender === 'female') {
           filterParams.gender = 'male';
         } else if (currentUser.gender === 'male') {
@@ -247,13 +247,17 @@ function ProfilesContent() {
       console.log('Loading profiles with filters:', filterParams);
       const response = await userApi.search(filterParams);
       console.log('API Response:', response);
+      console.log('Response status:', response.status);
+      console.log('Response data type:', Array.isArray(response.data) ? 'array' : typeof response.data);
+      console.log('Response data length:', Array.isArray(response.data) ? response.data.length : 'not an array');
       
       if (response.status) {
-        const allUsers = response.data || [];
+        const allUsers = Array.isArray(response.data) ? response.data : [];
         console.log('Profiles loaded:', allUsers.length);
+        console.log('First user sample:', allUsers.length > 0 ? { _id: allUsers[0]?._id, name: allUsers[0]?.name, gahoiId: allUsers[0]?.gahoiId } : 'no users');
         console.log('Setting users state with', allUsers.length, 'profiles');
         
-        // Update state in a batch to ensure React re-renders
+        
         if (isMountedRef.current) {
           setUsers(allUsers);
           if (response.pagination) {
@@ -261,25 +265,25 @@ function ProfilesContent() {
           } else {
             setPagination({ total: allUsers.length, pages: 1 });
           }
-          // Reset display limit when new search is performed
+          
           setDisplayLimit(10);
           setLoading(false);
           
-          // If no users found, set appropriate message
+          
           if (allUsers.length === 0) {
             setError('No profiles found matching your criteria. Try adjusting your filters.');
           } else {
-            // Clear error if we have results
+            
             setError('');
           }
           
-          // Track search
+          
           trackSearch(filterParams);
           
           console.log('State updated - users:', allUsers.length, 'loading:', false);
         }
       } else {
-        // API returned error status
+        
         console.error('API returned error:', response.message);
         if (isMountedRef.current) {
           setError(response.message || 'Failed to load profiles');
@@ -303,30 +307,30 @@ function ProfilesContent() {
     }
   };
 
-  // Track searchFilters as string for dependency tracking
+  
   const searchFiltersKey = useMemo(() => JSON.stringify(searchFilters), [searchFilters]);
   
-  // Load profiles when filters, gahoiId, or currentUser changes
+  
   useEffect(() => {
-    // Wait for currentUser to finish loading (success or failure) before loading profiles
+    
     if (currentUserLoaded) {
       console.log('useEffect triggered - loading profiles. currentUserLoaded:', currentUserLoaded);
       loadProfiles();
     }
     
-    // Cleanup on unmount
+    
     return () => {
       isMountedRef.current = false;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [page, gahoiId, searchFiltersKey, currentUser, currentUserLoaded]);
   
-  // Debug: Log state changes
+  
   useEffect(() => {
     console.log('Users state changed:', users.length, 'Loading:', loading, 'DisplayLimit:', displayLimit);
   }, [users, loading, displayLimit]);
 
-  // Debounced function to update search filters (triggers API call)
+  
   const debouncedUpdateSearchFilters = useMemo(
     () => debounce((newFilters: typeof filters) => {
       setSearchFilters(newFilters);
@@ -335,7 +339,7 @@ function ProfilesContent() {
     []
   );
 
-  // Debounced Gahoi ID search
+  
   const debouncedGahoiIdSearch = useMemo(
     () => debounce((id: string) => {
       setGahoiId(id);
@@ -344,27 +348,27 @@ function ProfilesContent() {
     []
   );
 
-  // Handle filter changes
+  
   const handleFilterChange = (key: string, value: string, isTextInput: boolean = false) => {
-    // Update local state immediately for UI responsiveness
+    
     const newFilters = { ...filters, [key]: value };
     setFilters(newFilters);
     
     if (isTextInput) {
-      // For text inputs, debounce the search trigger
+      
       debouncedUpdateSearchFilters(newFilters);
     } else {
-      // For selects and number inputs, update search filters immediately
+      
       setSearchFilters(newFilters);
       setPage(1);
     }
   };
 
   const handleSearch = () => {
-    // Sync searchFilters with current filters when search button is clicked
+    
     setSearchFilters(filters);
     setPage(1);
-    // loadProfiles will be triggered by useEffect when searchFilters changes
+    
   };
 
   const clearFilters = () => {
@@ -387,7 +391,7 @@ function ProfilesContent() {
     setPage(1);
   };
 
-  // Handle profile card click for non-authenticated users
+  
   const handleProfileClick = (e: React.MouseEvent) => {
     if (!isAuthenticated) {
       e.preventDefault();
@@ -396,7 +400,7 @@ function ProfilesContent() {
     }
   };
 
-  // Update authentication status when user logs in (listen to storage changes)
+  
   useEffect(() => {
     const handleStorageChange = () => {
       const authenticated = auth.isAuthenticated();
@@ -406,10 +410,10 @@ function ProfilesContent() {
       }
     };
 
-    // Listen for storage changes (when user logs in)
+    
     window.addEventListener('storage', handleStorageChange);
     
-    // Also check periodically in case user logged in another tab
+    
     const interval = setInterval(() => {
       const authenticated = auth.isAuthenticated();
       if (authenticated !== isAuthenticated) {
@@ -518,11 +522,11 @@ function ProfilesContent() {
                       value={gahoiIdInput}
                       onChange={(e) => {
                         const value = e.target.value;
-                        // Only allow 5-digit numbers starting with 1000
+                        
                         if (value === '' || /^1000[0-9]$/.test(value) || /^100[0-9]{2}$/.test(value)) {
-                          // Update UI immediately for responsiveness
+                          
                           setGahoiIdInput(value);
-                          // Debounce the actual search
+                          
                           debouncedGahoiIdSearch(value);
                         }
                       }}
@@ -765,7 +769,7 @@ function ProfilesContent() {
                           key={user._id} 
                           className="relative"
                           onClick={(e) => {
-                            // Prevent card from being clickable - only buttons should navigate
+                            
                             e.stopPropagation();
                             if (!isAuthenticated && mounted) {
                               setShowAuthModal(true);

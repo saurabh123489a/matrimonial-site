@@ -45,7 +45,7 @@ export default function DonationPage() {
     
     setSubmitting(true);
 
-    // Simulate payment processing
+    
     setTimeout(() => {
       setSubmitting(false);
       setShowThankYou(true);

@@ -9,6 +9,7 @@ import { auth } from '@/lib/auth';
 import ProfileBadges from './ProfileBadges';
 import LazyImage from './LazyImage';
 import { getProfileUrl } from '@/lib/profileUtils';
+import { sortPhotos } from '@/lib/utils/photoUtils';
 
 interface EnhancedProfileCardProps {
   user: User;
@@ -25,11 +26,7 @@ export default function EnhancedProfileCard({ user, showActions = true }: Enhanc
   
   // Always show first photo (which should be primary after sorting)
   // Sort photos to ensure primary is first
-  const sortedPhotos = user.photos?.sort((a, b) => {
-    if (a.isPrimary) return -1;
-    if (b.isPrimary) return 1;
-    return (a.order || 0) - (b.order || 0);
-  }) || [];
+  const sortedPhotos = user.photos ? sortPhotos(user.photos) : [];
   const primaryPhoto = sortedPhotos[0];
   const photoCount = sortedPhotos.length;
 
@@ -132,26 +129,29 @@ export default function EnhancedProfileCard({ user, showActions = true }: Enhanc
           </div>
         </div>
 
-        {/* Key Details Grid */}
+        {/* Key Details Grid - Minimal Data Display */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 mb-3 sm:mb-4">
-          {user.education && (
+          {/* Gender */}
+          {user.gender && (
             <div className="flex items-start gap-2">
-              <span className="text-pink-600 text-lg">🎓</span>
+              <span className="text-pink-600 text-lg">{user.gender === 'male' ? '👨' : user.gender === 'female' ? '👩' : '👤'}</span>
               <div className="flex-1 min-w-0">
-                <p className="text-xs text-gray-500 uppercase font-semibold">Education</p>
-                <p className="text-sm text-gray-800 font-medium truncate">{user.education}</p>
+                <p className="text-xs text-gray-500 uppercase font-semibold">Gender</p>
+                <p className="text-sm text-gray-800 font-medium capitalize">{user.gender}</p>
               </div>
             </div>
           )}
-          {user.occupation && (
+          {/* Age */}
+          {user.age && (
             <div className="flex items-start gap-2">
-              <span className="text-pink-600 text-lg">💼</span>
+              <span className="text-pink-600 text-lg">🎂</span>
               <div className="flex-1 min-w-0">
-                <p className="text-xs text-gray-500 uppercase font-semibold">Occupation</p>
-                <p className="text-sm text-gray-800 font-medium truncate">{user.occupation}</p>
+                <p className="text-xs text-gray-500 uppercase font-semibold">Age</p>
+                <p className="text-sm text-gray-800 font-medium">{user.age} Years</p>
               </div>
             </div>
           )}
+          {/* Height */}
           {user.height && (
             <div className="flex items-start gap-2">
               <span className="text-pink-600 text-lg">📏</span>
@@ -161,9 +161,19 @@ export default function EnhancedProfileCard({ user, showActions = true }: Enhanc
               </div>
             </div>
           )}
+          {/* Occupation */}
+          {user.occupation && (
+            <div className="flex items-start gap-2">
+              <span className="text-pink-600 text-lg">💼</span>
+              <div className="flex-1 min-w-0">
+                <p className="text-xs text-gray-500 uppercase font-semibold">Occupation</p>
+                <p className="text-sm text-gray-800 font-medium truncate">{user.occupation}</p>
+              </div>
+            </div>
+          )}
         </div>
 
-        {/* Bio Preview */}
+        {/* Bio Preview - Only show if available (not in minimal data) */}
         {user.bio && (
           <p className="text-sm text-gray-600 mb-4 line-clamp-2 leading-relaxed border-t border-gray-100 pt-3">
             {user.bio}
@@ -199,7 +209,8 @@ export default function EnhancedProfileCard({ user, showActions = true }: Enhanc
             <button className="px-3 sm:px-4 py-2 sm:py-2.5 bg-gray-50 text-gray-600 font-bold rounded-lg hover:bg-gray-100 transition-all text-base sm:text-lg border border-gray-200">
               ⭐
             </button>
-            {(user.horoscopeDetails?.rashi || user.horoscopeDetails?.nakshatra) && (
+            {/* Horoscope button - Only show if horoscope data is available (not in minimal data) */}
+            {user.horoscopeDetails && (user.horoscopeDetails?.rashi || user.horoscopeDetails?.nakshatra) && (
               <button
                 onClick={handleHoroscopeMatch}
                 className="px-3 sm:px-4 py-2 sm:py-2.5 bg-purple-50 text-purple-600 font-bold rounded-lg hover:bg-purple-100 transition-all text-base sm:text-lg border border-purple-200"

@@ -11,8 +11,8 @@ export async function GET(
   try {
     const { id } = await params;
     
-    // Fetch user data from your API
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5050/api';
+    
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
     const userResponse = await fetch(`${apiUrl}/users/${id}`, {
       headers: {
         'Content-Type': 'application/json',
@@ -174,7 +174,7 @@ export async function GET(
   } catch (error) {
     console.error('Error generating OG image:', error);
     
-    // Return a default image
+    
     return new ImageResponse(
       (
         <div

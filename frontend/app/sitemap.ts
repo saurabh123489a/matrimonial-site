@@ -1,11 +1,11 @@
 import { MetadataRoute } from 'next';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ekgahoi.vercel.app';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ekgahoi.com';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = siteUrl;
   
-  // Static pages
+  
   const staticPages = [
     {
       url: baseUrl,
@@ -57,8 +57,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  // Note: Dynamic profile pages would be added here if we had access to the database
-  // For now, we'll include the profiles listing page which is indexed
+  
+  
   
   return staticPages;
 }

@@ -1,19 +1,19 @@
 import { Metadata } from 'next';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ekgahoi.vercel.app';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https:
 const siteName = 'ekGahoi';
 
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
-  // In a real implementation, you would fetch the user data here
-  // For now, we'll use default values
+  
+  
   const profileId = params.id;
   
-  // TODO: Fetch user data from API
-  // const user = await getUserById(profileId);
+  
+  
   
   const title = `Profile | ${siteName}`;
   const description = `View profile on ${siteName} - Your trusted matrimonial platform`;
-  const image = `${siteUrl}/api/og/profile/${profileId}`; // API route for dynamic OG images
+  const image = `${siteUrl}/api/og/profile/${profileId}`; 
   
   return {
     title,

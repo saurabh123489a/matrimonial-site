@@ -64,7 +64,7 @@ export default function QuestionDetailPage() {
       if (response.status) {
         setAnswerContent('');
         loadAnswers();
-        loadQuestion(); // Reload to update answer count
+        loadQuestion(); 
       }
     } catch (err: any) {
       alert(err.response?.data?.message || 'Failed to submit answer');

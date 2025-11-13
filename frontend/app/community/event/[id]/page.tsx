@@ -41,7 +41,7 @@ export default function EventDetailPage() {
       const response = await eventApi.getById(eventId);
       if (response.status && response.data) {
         setEvent(response.data);
-        // Check if user has RSVP'd (comes from backend in userRSVP)
+        
         const eventData = response.data as any;
         if (eventData.userRSVP) {
           setRsvpStatus(eventData.userRSVP.status);
@@ -73,7 +73,7 @@ export default function EventDetailPage() {
       if (response.status) {
         setRsvpStatus(status);
         showSuccess(t('events.rsvpSuccess') || 'RSVP submitted successfully');
-        // Reload event to get updated attendee count
+        
         loadEvent();
       } else {
         setError(response.message || 'Failed to submit RSVP');
@@ -124,7 +124,7 @@ export default function EventDetailPage() {
   };
 
   const formatTime = (timeString: string) => {
-    // Time is in HH:MM format
+    
     const [hours, minutes] = timeString.split(':');
     const hour = parseInt(hours);
     const ampm = hour >= 12 ? 'PM' : 'AM';

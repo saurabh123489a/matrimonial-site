@@ -35,7 +35,7 @@ export default function MessagesPage() {
       return;
     }
 
-    // Get current user ID from token
+    
     const token = auth.getToken();
     if (token) {
       try {
@@ -47,7 +47,7 @@ export default function MessagesPage() {
     }
 
     loadConversations();
-    // Refresh conversations every 30 seconds
+    
     const interval = setInterval(loadConversations, 30000);
     return () => clearInterval(interval);
   }, [router]);
@@ -170,7 +170,7 @@ export default function MessagesPage() {
                         conv.unreadCount > 0 ? 'font-semibold text-gray-900' : 'text-gray-600'
                       }`} dir="auto" lang={language}>
                         {(() => {
-                          // Check if last message was sent by current user
+                          
                           const senderId = typeof conv.lastMessage.senderId === 'string' 
                             ? conv.lastMessage.senderId 
                             : (conv.lastMessage.senderId as any)?._id;

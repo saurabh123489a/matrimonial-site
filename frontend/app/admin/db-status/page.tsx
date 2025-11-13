@@ -40,7 +40,7 @@ export default function DatabaseStatusPage() {
     
     const interval = setInterval(() => {
       loadDbStatus();
-    }, 5000); // Refresh every 5 seconds
+    }, 5000); 
 
     return () => clearInterval(interval);
   }, [autoRefresh, isAdmin]);

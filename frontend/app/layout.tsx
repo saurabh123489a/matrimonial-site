@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ekgahoi.vercel.app';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ekgahoi.com';
 const siteName = 'ekGahoi';
 const defaultDescription = 'Your trusted matrimonial platform - Find your perfect match in the Gahoi community. Marriage matching, profile search, and community connections.';
 const defaultImage = `${siteUrl}/og-image.jpg`;

@@ -1,6 +1,7 @@
 import { userRepository } from '../repositories/userRepository.js';
 import { processPhoto } from '../utils/imageProcessor.js';
 import { storageService } from '../services/storage/storageService.js';
+import { sortPhotos } from '../utils/photoUtils.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs/promises';
@@ -75,11 +76,7 @@ export const uploadPhotos = async (req, res, next) => {
     const updatedPhotos = [...existingPhotos, ...processedPhotos];
     
     // Sort photos: primary first, then by order
-    updatedPhotos.sort((a, b) => {
-      if (a.isPrimary) return -1;
-      if (b.isPrimary) return 1;
-      return (a.order || 0) - (b.order || 0);
-    });
+    sortPhotos(updatedPhotos);
 
     // Update user
     const updatedUser = await userRepository.updateById(userId, {
@@ -139,11 +136,7 @@ export const deletePhoto = async (req, res, next) => {
     });
     
     // Sort: primary photo first, then by order
-    updatedPhotos.sort((a, b) => {
-      if (a.isPrimary) return -1;
-      if (b.isPrimary) return 1;
-      return (a.order || 0) - (b.order || 0);
-    });
+    sortPhotos(updatedPhotos);
 
     // Delete file from storage (local or blob)
     if (photoToDelete?.url) {
@@ -201,11 +194,7 @@ export const setPrimaryPhoto = async (req, res, next) => {
     }));
     
     // Sort photos: primary first, then by order
-    updatedPhotos.sort((a, b) => {
-      if (a.isPrimary) return -1;
-      if (b.isPrimary) return 1;
-      return (a.order || 0) - (b.order || 0);
-    });
+    sortPhotos(updatedPhotos);
 
     // Update user
     const updatedUser = await userRepository.updateById(userId, {

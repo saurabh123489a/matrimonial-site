@@ -45,7 +45,7 @@ export default function AdminReportsPage() {
       return;
     }
 
-    // Check if user is admin
+    
     const checkAdmin = async () => {
       try {
         const response = await userApi.getMe();

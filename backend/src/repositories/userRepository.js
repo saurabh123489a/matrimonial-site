@@ -1,4 +1,5 @@
 import User from '../models/User.js';
+import { sortPhotos } from '../utils/photoUtils.js';
 
 /**
  * User Repository - Data access layer for user operations
@@ -16,6 +17,8 @@ export const userRepository = {
    * Find user by ID or Gahoi ID
    * Ensures photos are sorted with primary photo first
    * If userId is numeric (Gahoi ID), searches by gahoiId field
+   * @param {string} userId - User ID (MongoDB _id) or Gahoi ID (5-digit number starting with 10000)
+   * @returns {Promise<Object|null>} User object or null if not found
    */
   findById: async (userId) => {
     let user;
@@ -33,17 +36,15 @@ export const userRepository = {
     
     if (user && user.photos && user.photos.length > 0) {
       // Sort photos: primary first, then by order
-      user.photos.sort((a, b) => {
-        if (a.isPrimary) return -1;
-        if (b.isPrimary) return 1;
-        return (a.order || 0) - (b.order || 0);
-      });
+      sortPhotos(user.photos);
     }
     return user;
   },
 
   /**
    * Find user by email or phone (for login/registration)
+   * @param {string} identifier - Email address or phone number
+   * @returns {Promise<Object|null>} User object or null if not found
    */
   findByEmailOrPhone: async (identifier) => {
     return await User.findOne({
@@ -81,11 +82,7 @@ export const userRepository = {
     
     // Sort photos: primary first, then by order
     if (user && user.photos && user.photos.length > 0) {
-      user.photos.sort((a, b) => {
-        if (a.isPrimary) return -1;
-        if (b.isPrimary) return 1;
-        return (a.order || 0) - (b.order || 0);
-      });
+      sortPhotos(user.photos);
     }
     
     return user;
@@ -106,6 +103,13 @@ export const userRepository = {
    * Search users with filters and pagination
    * Ensures photos are sorted with primary photo first
    * Hides phone numbers for female users
+   * @param {Object} filters - MongoDB query filters
+   * @param {Object} [options] - Query options
+   * @param {number} [options.skip=0] - Number of documents to skip
+   * @param {number} [options.limit=20] - Maximum number of documents to return
+   * @param {string} [options.sortBy='createdAt'] - Field to sort by
+   * @param {number} [options.sortOrder=-1] - Sort order (1 for ascending, -1 for descending)
+   * @returns {Promise<Array>} Array of user objects
    */
   search: async (filters, options = {}) => {
     const {
@@ -126,11 +130,7 @@ export const userRepository = {
     // Hide phone numbers for female users
     users.forEach(user => {
       if (user.photos && user.photos.length > 0) {
-        user.photos.sort((a, b) => {
-          if (a.isPrimary) return -1;
-          if (b.isPrimary) return 1;
-          return (a.order || 0) - (b.order || 0);
-        });
+        sortPhotos(user.photos);
       }
       // Hide phone number for female users
       if (user.gender === 'female') {

@@ -47,7 +47,7 @@ export default function ChatPage() {
         loadConversation()
       ]);
       
-      // Get current user ID
+      
       userApi.getMe().then(res => {
         if (isMounted && res.status && res.data) {
           setCurrentUserId(res.data._id);
@@ -57,10 +57,10 @@ export default function ChatPage() {
 
     loadData();
 
-    // Auto-refresh messages every 5 seconds
+    
     const interval = setInterval(() => {
       if (isMounted) {
-        loadConversation(false); // Silent refresh
+        loadConversation(false); 
       }
     }, 5000);
 
@@ -94,11 +94,11 @@ export default function ChatPage() {
       if (showLoading) setLoading(true);
       const response = await messageApi.getConversation(userId, { limit: 50 });
       if (response.status) {
-        // Reverse to show oldest first (easier for chat UI)
+        
         const reversedMessages = [...(response.data || [])].reverse();
         setMessages(reversedMessages);
         
-        // Mark conversation as read
+        
         if (response.data && response.data.length > 0) {
           await messageApi.markAsRead(userId).catch(() => {});
         }
@@ -123,7 +123,7 @@ export default function ChatPage() {
       const response = await messageApi.send(userId, newMessage.trim());
       if (response.status) {
         setNewMessage('');
-        // Reload conversation to show new message
+        
         await loadConversation(false);
       }
     } catch (err: any) {
@@ -254,9 +254,9 @@ export default function ChatPage() {
                   formatDate(messages[index - 1].createdAt) !== formatDate(message.createdAt);
                 const showTime = index === messages.length - 1 ||
                   formatTime(messages[index + 1].createdAt) !== formatTime(message.createdAt) ||
-                  Math.abs(new Date(messages[index + 1].createdAt).getTime() - new Date(message.createdAt).getTime()) > 300000; // 5 minutes
+                  Math.abs(new Date(messages[index + 1].createdAt).getTime() - new Date(message.createdAt).getTime()) > 300000; 
 
-                // Get sender info for display
+                
                 const senderInfo = typeof message.senderId === 'object' && message.senderId
                   ? message.senderId
                   : { _id: message.senderId, name: 'Unknown', photos: [] };

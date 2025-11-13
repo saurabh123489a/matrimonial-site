@@ -43,6 +43,10 @@ const messageSchema = new mongoose.Schema(
 messageSchema.index({ conversationId: 1, createdAt: -1 });
 // Index for unread messages
 messageSchema.index({ receiverId: 1, isRead: 1, createdAt: -1 });
+// Composite index for finding messages between two users (optimizes $or queries)
+messageSchema.index({ senderId: 1, receiverId: 1, createdAt: -1 });
+// Index for sender queries
+messageSchema.index({ senderId: 1, createdAt: -1 });
 
 export default mongoose.model('Message', messageSchema);
 

@@ -15,7 +15,7 @@ export default function PrivacySettingsPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [settings, setSettings] = useState({
-    profileVisibility: 'public', // public, members-only, private
+    profileVisibility: 'public', 
     showOnlineStatus: true,
     showLastSeen: true,
     allowProfileViews: true,
@@ -38,8 +38,8 @@ export default function PrivacySettingsPage() {
       setLoading(true);
       const response = await userApi.getMe();
       if (response.status && response.data) {
-        // Load privacy settings from user profile
-        const userData = response.data as any; // Type assertion for privacy settings
+        
+        const userData = response.data as any; 
         setSettings({
           profileVisibility: userData.profileVisibility || 'public',
           showOnlineStatus: userData.showOnlineStatus !== false,
@@ -61,7 +61,7 @@ export default function PrivacySettingsPage() {
   const handleSave = async () => {
     try {
       setSaving(true);
-      // Cast to any since privacy settings are not in UpdateUserDto type
+      
       const response = await userApi.updateMe(settings as any);
       if (response.status) {
         showSuccess('Privacy settings updated successfully');

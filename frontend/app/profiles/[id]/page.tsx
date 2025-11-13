@@ -12,6 +12,7 @@ import ProfileShareModal from '@/components/ProfileShareModal';
 import StructuredData from '@/components/StructuredData';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { trackProfileView, trackInterestSent } from '@/lib/analytics';
+import { sortPhotos } from '@/lib/utils/photoUtils';
 
 export default function ProfileDetailPage() {
   const params = useParams();
@@ -49,12 +50,12 @@ export default function ProfileDetailPage() {
           userApi.getMe().catch(() => ({ status: false, data: null }))
         ]);
         
-        // Only update state if component is still mounted
+        
         if (!isMounted) return;
         
         if (profileResponse.status) {
           setUser(profileResponse.data);
-          // Track profile view
+          
           trackProfileView(id, profileResponse.data.name);
         }
         
@@ -79,7 +80,7 @@ export default function ProfileDetailPage() {
       loadProfile();
     }
 
-    // Cleanup function
+    
     return () => {
       isMounted = false;
       abortController.abort();
@@ -119,8 +120,8 @@ export default function ProfileDetailPage() {
   };
 
   const handleBlock = async (userId: string) => {
-    // TODO: Implement block API call when backend is ready
-    // For now, we'll use a local storage approach
+    
+    
     const blockedUsers = JSON.parse(localStorage.getItem('blockedUsers') || '[]');
     if (!blockedUsers.includes(userId)) {
       blockedUsers.push(userId);
@@ -176,16 +177,12 @@ export default function ProfileDetailPage() {
     );
   }
 
-  // Sort photos to ensure primary is first
-  const photos = (user.photos || []).sort((a, b) => {
-    if (a.isPrimary) return -1;
-    if (b.isPrimary) return 1;
-    return (a.order || 0) - (b.order || 0);
-  });
+  
+  const photos = sortPhotos(user.photos || []);
   const selectedPhoto = photos[selectedPhotoIndex] || photos[0];
 
-  // Structured data for profile page
-  const siteUrl = typeof window !== 'undefined' ? window.location.origin : 'https://ekgahoi.vercel.app';
+  
+  const siteUrl = typeof window !== 'undefined' ? window.location.origin : 'https://ekgahoi.com';
   const profileStructuredData = {
     '@context': 'https://schema.org',
     '@type': 'Person',

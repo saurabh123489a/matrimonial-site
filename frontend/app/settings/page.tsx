@@ -7,6 +7,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { useLanguage, Language } from '@/contexts/LanguageContext';
 import Link from 'next/link';
 import { useTheme } from '@/contexts/ThemeContext';
+import ThemeSelector from '@/components/ThemeSelector';
 
 export default function SettingsPage() {
   const router = useRouter();
@@ -126,12 +127,22 @@ export default function SettingsPage() {
                 </p>
                 <button
                   onClick={toggleTheme}
-                  className="w-full px-4 py-2.5 text-sm font-medium bg-pink-600 text-white rounded-md hover:bg-pink-700 transition-colors shadow-md"
+                  className="w-full px-4 py-2.5 text-sm font-medium bg-pink-600 text-white rounded-md hover:bg-pink-700 transition-colors shadow-md mb-4"
                 >
                   {resolvedTheme === 'dark' 
                     ? (t('settings.switchToLight') || 'Switch to Light Mode') 
                     : (t('settings.switchToDark') || 'Switch to Dark Mode')}
                 </button>
+                
+                {/* Color Theme Selector */}
+                {resolvedTheme === 'dark' && (
+                  <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                    <h4 className="text-sm font-semibold text-gray-900 dark:text-pink-200 mb-3">
+                      Color Theme
+                    </h4>
+                    <ThemeSelector />
+                  </div>
+                )}
               </div>
             </div>
           </div>

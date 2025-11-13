@@ -40,7 +40,7 @@ export default function MyProfilePage() {
   const [savingHoroscope, setSavingHoroscope] = useState(false);
 
   useEffect(() => {
-    // Only run on client side
+    
     setMounted(true);
     
     if (!auth.isAuthenticated()) {
@@ -50,15 +50,15 @@ export default function MyProfilePage() {
 
     loadProfile();
     loadEducationOptions();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, []);
 
-  // Load occupation options when user data is available (to get gender)
+  
   useEffect(() => {
     if (user?.gender) {
       loadOccupationOptions();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [user?.gender]);
 
   const loadEducationOptions = async () => {
@@ -78,7 +78,7 @@ export default function MyProfilePage() {
   const loadOccupationOptions = async () => {
     setLoadingOccupation(true);
     try {
-      // Pass gender parameter to prioritize "House Wife" for females
+      
       const gender = user?.gender || '';
       const response = await metaDataApi.getOccupation(gender);
       if (response.status && response.data) {
@@ -160,7 +160,7 @@ export default function MyProfilePage() {
     try {
       const response = await userApi.updateMe(formData);
       if (response.status) {
-        // Reload profile to ensure all data is synced, including horoscope details
+        
         await loadProfile();
         setEditing(false);
         setEditingHoroscope(false);
@@ -173,12 +173,12 @@ export default function MyProfilePage() {
       setError(errorMsg);
       showError(errorMsg);
 
-      // Parse validation errors from backend
+      
       if (errorData?.errors || errorData?.validationErrors) {
         const validationErrors: Record<string, string> = {};
         const errors = errorData.errors || errorData.validationErrors || {};
         
-        // Handle Zod validation errors (array format)
+        
         if (Array.isArray(errors)) {
           errors.forEach((error: any) => {
             if (error.path && error.message) {
@@ -186,7 +186,7 @@ export default function MyProfilePage() {
             }
           });
         } else if (typeof errors === 'object') {
-          // Handle object format errors
+          
           Object.keys(errors).forEach((key) => {
             const errorValue = errors[key];
             if (typeof errorValue === 'string') {
@@ -206,7 +206,7 @@ export default function MyProfilePage() {
     }
   };
 
-  // Quick save for horoscope details only
+  
   const handleSaveHoroscope = async () => {
     setSavingHoroscope(true);
     setError('');
@@ -216,7 +216,7 @@ export default function MyProfilePage() {
         horoscopeDetails: formData.horoscopeDetails,
       });
       if (response.status) {
-        // Reload profile to ensure horoscope details are synced
+        
         await loadProfile();
         setEditingHoroscope(false);
         showSuccess(t('profile.horoscopeUpdated') || 'Horoscope details updated successfully');
@@ -236,7 +236,7 @@ export default function MyProfilePage() {
   const handlePhotoUpload = async (files: File[]) => {
     if (!files || files.length === 0) return;
 
-    // Check max photos limit (3)
+    
     const currentPhotoCount = user?.photos?.length || 0;
     if (currentPhotoCount + files.length > 3) {
       const errorMsg = t('profile.maxPhotos') + `. ${t('profile.youHave')} ${currentPhotoCount} ${t('profile.photos')}.`;
@@ -258,7 +258,7 @@ export default function MyProfilePage() {
       const errorMsg = err.response?.data?.message || 'Failed to upload photos';
       setError(errorMsg);
       showError(errorMsg);
-      throw err; // Re-throw to let PhotoUpload component handle it
+      throw err; 
     } finally {
       setUploadingPhotos(false);
     }
@@ -902,7 +902,7 @@ export default function MyProfilePage() {
                         family: {
                           ...formData.family,
                           fathersOccupationType: e.target.value as 'job' | 'private' | 'govt' | 'business' | undefined,
-                          fathersOccupationDesc: e.target.value ? formData.family?.fathersOccupationDesc : '', // Clear desc if type is cleared
+                          fathersOccupationDesc: e.target.value ? formData.family?.fathersOccupationDesc : '', 
                         },
                       })}
                       className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
@@ -1005,7 +1005,7 @@ export default function MyProfilePage() {
                         family: {
                           ...formData.family,
                           mothersOccupationType: e.target.value as 'job' | 'private' | 'govt' | 'business' | undefined,
-                          mothersOccupationDesc: e.target.value ? formData.family?.mothersOccupationDesc : '', // Clear desc if type is cleared
+                          mothersOccupationDesc: e.target.value ? formData.family?.mothersOccupationDesc : '', 
                         },
                       })}
                       className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
@@ -1092,7 +1092,7 @@ export default function MyProfilePage() {
                       step="1"
                       value={formData.horoscopeDetails?.timeOfBirth ? formData.horoscopeDetails.timeOfBirth.substring(0, 5) : ''}
                       onChange={(e) => {
-                        const timeValue = e.target.value ? e.target.value + ':00' : ''; // Add seconds
+                        const timeValue = e.target.value ? e.target.value + ':00' : ''; 
                         setFormData({
                           ...formData,
                           horoscopeDetails: {
@@ -1142,7 +1142,7 @@ export default function MyProfilePage() {
                   <button
                     onClick={() => {
                       setEditingHoroscope(true);
-                      // Sync formData with current user data when starting to edit
+                      
                       setFormData({
                         ...formData,
                         horoscopeDetails: {
@@ -1295,7 +1295,7 @@ export default function MyProfilePage() {
                   <button
                     onClick={() => {
                       setEditingHoroscope(false);
-                      // Reset formData to current user data
+                      
                       setFormData({
                         ...formData,
                         horoscopeDetails: {

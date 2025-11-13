@@ -26,6 +26,8 @@ const interestSchema = new mongoose.Schema(
 
 // Prevent duplicate interests (one user can only send one interest to another)
 interestSchema.index({ fromUser: 1, toUser: 1 }, { unique: true });
+// Composite index for checking interest status between users
+interestSchema.index({ fromUser: 1, toUser: 1, status: 1 });
 
 export default mongoose.model('Interest', interestSchema);
 

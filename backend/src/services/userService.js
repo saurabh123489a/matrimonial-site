@@ -9,7 +9,11 @@ import User from '../models/User.js';
 export const userService = {
   /**
    * Get next available Gahoi ID for a gender
+   * Gahoi IDs are 5-digit numbers starting from 10000
    * Even numbers = Male, Odd numbers = Female
+   * @param {string} gender - User gender ('male', 'female', or 'other')
+   * @returns {Promise<number>} Next available Gahoi ID
+   * @throws {Error} If gender is invalid
    */
   async getNextGahoiId(gender) {
     const baseId = 10000;
@@ -62,6 +66,17 @@ export const userService = {
 
   /**
    * Create a new user profile
+   * Validates user data, hashes password, calculates age, assigns Gahoi ID
+   * @param {Object} userData - User profile data
+   * @param {string} userData.name - User's name (required)
+   * @param {string} userData.gender - User's gender (required)
+   * @param {string} [userData.email] - User's email (optional)
+   * @param {string} [userData.phone] - User's phone number (optional)
+   * @param {string} [userData.password] - User's password (will be hashed)
+   * @param {Date} [userData.dateOfBirth] - User's date of birth
+   * @returns {Promise<Object>} Created user object
+   * @throws {Error} If user already exists (status 409)
+   * @throws {Error} If validation fails
    */
   async createUser(userData) {
     // Check if user already exists

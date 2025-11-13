@@ -1,13 +1,7 @@
 import Message from '../models/Message.js';
 import mongoose from 'mongoose';
-
-/**
- * Generate conversation ID from two user IDs (sorted to ensure consistency)
- */
-function generateConversationId(userId1, userId2) {
-  const ids = [String(userId1), String(userId2)].sort();
-  return `${ids[0]}_${ids[1]}`;
-}
+import { generateConversationId } from '../utils/conversationUtils.js';
+import { sortPhotos } from '../utils/photoUtils.js';
 
 export const messageRepository = {
   async create(data) {
@@ -20,6 +14,18 @@ export const messageRepository = {
     });
   },
 
+  /**
+   * Get conversation between two users
+   * Returns messages sorted by creation date (newest first)
+   * @param {string|ObjectId} userId1 - First user ID
+   * @param {string|ObjectId} userId2 - Second user ID
+   * @param {Object} [options] - Query options
+   * @param {number} [options.skip=0] - Number of messages to skip
+   * @param {number} [options.limit=50] - Maximum number of messages to return
+   * @param {string} [options.sortBy='createdAt'] - Field to sort by
+   * @param {number} [options.sortOrder=-1] - Sort order
+   * @returns {Promise<Array>} Array of message objects with populated sender/receiver
+   */
   async getConversation(userId1, userId2, options = {}) {
     const { skip = 0, limit = 50, sortBy = 'createdAt', sortOrder = -1 } = options;
     const conversationId = generateConversationId(userId1, userId2);
@@ -49,18 +55,10 @@ export const messageRepository = {
 
         // Sort photos if available
         if (msg.senderId.photos) {
-          msg.senderId.photos.sort((a, b) => {
-            if (a.isPrimary) return -1;
-            if (b.isPrimary) return 1;
-            return (a.order || 0) - (b.order || 0);
-          });
+          sortPhotos(msg.senderId.photos);
         }
         if (msg.receiverId.photos) {
-          msg.receiverId.photos.sort((a, b) => {
-            if (a.isPrimary) return -1;
-            if (b.isPrimary) return 1;
-            return (a.order || 0) - (b.order || 0);
-          });
+          sortPhotos(msg.receiverId.photos);
         }
 
         return msg;
@@ -70,6 +68,15 @@ export const messageRepository = {
     return populatedMessages;
   },
 
+  /**
+   * Get all conversations for a user
+   * Returns list of conversations with last message and unread count
+   * @param {string|ObjectId} userId - User ID
+   * @param {Object} [options] - Query options
+   * @param {number} [options.skip=0] - Number of conversations to skip
+   * @param {number} [options.limit=20] - Maximum number of conversations to return
+   * @returns {Promise<Array>} Array of conversation objects with last message and unread count
+   */
   async getConversations(userId, options = {}) {
     const { skip = 0, limit = 20 } = options;
 
@@ -243,18 +250,10 @@ export const messageRepository = {
 
         // Sort photos if available
         if (msg.senderId.photos) {
-          msg.senderId.photos.sort((a, b) => {
-            if (a.isPrimary) return -1;
-            if (b.isPrimary) return 1;
-            return (a.order || 0) - (b.order || 0);
-          });
+          sortPhotos(msg.senderId.photos);
         }
         if (msg.receiverId.photos) {
-          msg.receiverId.photos.sort((a, b) => {
-            if (a.isPrimary) return -1;
-            if (b.isPrimary) return 1;
-            return (a.order || 0) - (b.order || 0);
-          });
+          sortPhotos(msg.receiverId.photos);
         }
 
         return msg;

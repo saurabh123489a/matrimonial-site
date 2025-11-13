@@ -1,4 +1,5 @@
 import { userService } from '../services/userService.js';
+import { sanitizeUsersForPublic, getMinimalUsersData } from '../utils/sanitizeUserData.js';
 import { profileViewService } from '../services/profileViewService.js';
 
 /**
@@ -165,10 +166,13 @@ export const getAllUsers = async (req, res, next) => {
         );
         
         if (result.users && result.users.length > 0) {
+          // Return only minimal data for search results
+          const minimalUsers = getMinimalUsersData(result.users);
+          
           return res.json({
             status: true,
             message: 'User retrieved successfully',
-            data: result.users,
+            data: minimalUsers,
             pagination: {
               total: 1,
               pages: 1,
@@ -227,10 +231,14 @@ export const getAllUsers = async (req, res, next) => {
 
     const result = await userService.getAllUsers(filters, options);
     
+    // Return only minimal data for search results to prevent scraping
+    // Only includes: _id, gahoiId, name, age, gender, height, occupation, city, state, country, photos
+    const minimalUsers = getMinimalUsersData(result.users);
+    
     res.json({
       status: true,
       message: 'Users retrieved successfully',
-      data: result.users,
+      data: minimalUsers,
       pagination: result.pagination
     });
   } catch (error) {

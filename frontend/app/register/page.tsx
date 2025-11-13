@@ -27,7 +27,7 @@ export default function RegisterPage() {
     communityPosition: '' as string | null,
   });
 
-  // Client-side validation
+  
   const validateField = (name: string, value: any): string | null => {
     switch (name) {
       case 'name':
@@ -81,7 +81,7 @@ export default function RegisterPage() {
   const handleChange = (fieldName: string, value: any) => {
     setFormData({ ...formData, [fieldName]: value });
     
-    // Clear error when user starts typing
+    
     if (fieldErrors[fieldName]) {
       const newErrors = { ...fieldErrors };
       delete newErrors[fieldName];
@@ -92,14 +92,14 @@ export default function RegisterPage() {
   const validateForm = (): boolean => {
     const errors: Record<string, string> = {};
     
-    // Validate required fields
+    
     const nameError = validateField('name', formData.name);
     if (nameError) errors.name = nameError;
     
     const passwordError = validateField('password', formData.password);
     if (passwordError) errors.password = passwordError;
     
-    // Validate optional fields if provided
+    
     if (formData.email) {
       const emailError = validateField('email', formData.email);
       if (emailError) errors.email = emailError;
@@ -115,7 +115,7 @@ export default function RegisterPage() {
       if (ageError) errors.age = ageError;
     }
     
-    // Check if at least email or phone is provided
+    
     if (!formData.email && !formData.phone) {
       errors.email = t('auth.emailOrPhoneRequired') || 'Either email or phone number is required';
       errors.phone = t('auth.emailOrPhoneRequired') || 'Either email or phone number is required';
@@ -130,13 +130,13 @@ export default function RegisterPage() {
     setError('');
     setFieldErrors({});
     
-    // Mark all fields as touched
+    
     const allFields = ['name', 'email', 'phone', 'password', 'age'];
     const touched: Record<string, boolean> = {};
     allFields.forEach(field => touched[field] = true);
     setTouchedFields(touched);
     
-    // Client-side validation
+    
     if (!validateForm()) {
       setError(t('auth.validationErrors') || 'Please fix the errors below');
       return;
@@ -150,14 +150,14 @@ export default function RegisterPage() {
         age: formData.age ? parseInt(formData.age) : undefined,
       };
       
-      // Remove empty fields by setting to undefined
+      
       if (!data.email || !data.email.trim()) data.email = undefined;
       if (!data.phone || !data.phone.trim()) data.phone = undefined;
 
       const response = await userApi.create(data);
       
       if (response.status && response.data) {
-        // Store token if provided (for future auth endpoints)
+        
         if ((response.data as any).token) {
           auth.setToken((response.data as any).token);
         }
@@ -168,12 +168,12 @@ export default function RegisterPage() {
       const errorMsg = getErrorMessage(err, t);
       setError(errorMsg);
       
-      // Parse validation errors from backend
+      
       if (errorData?.errors || errorData?.validationErrors) {
         const validationErrors: Record<string, string> = {};
         const errors = errorData.errors || errorData.validationErrors || {};
         
-        // Handle Zod validation errors (array format)
+        
         if (Array.isArray(errors)) {
           errors.forEach((error: any) => {
             if (error.path && error.message) {
@@ -182,7 +182,7 @@ export default function RegisterPage() {
             }
           });
         } else if (typeof errors === 'object') {
-          // Handle object format errors
+          
           Object.keys(errors).forEach((key) => {
             const errorValue = errors[key];
             if (typeof errorValue === 'string') {

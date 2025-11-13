@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ekgahoi.vercel.app';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https:
 const siteName = 'ekGahoi';
 
 export const homeMetadata: Metadata = {
