@@ -387,31 +387,89 @@ export default function MyProfilePage() {
       {/* Header - Mobile First Design */}
       <div className="bg-white dark:bg-[#181b23] border-b border-gray-200 dark:border-[#303341] sticky top-0 z-30">
         <div className="flex items-center justify-between px-4 py-3">
-                <button
-            onClick={() => router.back()}
+          <button
+            onClick={() => {
+              if (editing) {
+                setEditing(false);
+                setFormData({
+                  name: user?.name || '',
+                  email: user?.email || '',
+                  phone: user?.phone || '',
+                  city: user?.city || '',
+                  state: user?.state || '',
+                  country: user?.country || '',
+                  education: user?.education || '',
+                  occupation: user?.occupation || '',
+                  bio: user?.bio || '',
+                  height: user?.height || undefined,
+                  diet: (user?.diet as 'vegetarian' | 'non-vegetarian' | 'vegan' | 'jain' | undefined) || undefined,
+                  hobbies: user?.hobbies || [],
+                  preferences: {
+                    minAge: user?.preferences?.minAge || undefined,
+                    maxAge: user?.preferences?.maxAge || undefined,
+                    minHeight: user?.preferences?.minHeight || undefined,
+                    maxHeight: user?.preferences?.maxHeight || undefined,
+                  },
+                  dateOfBirth: user?.dateOfBirth ? new Date(user.dateOfBirth).toISOString().split('T')[0] : '',
+                  family: {
+                    fathersName: user?.family?.fathersName || '',
+                    fathersOccupationType: user?.family?.fathersOccupationType || undefined,
+                    fathersOccupationDesc: user?.family?.fathersOccupationDesc || '',
+                    fathersContactNumber: user?.family?.fathersContactNumber || '',
+                    mothersName: user?.family?.mothersName || '',
+                    mothersOccupationType: user?.family?.mothersOccupationType || undefined,
+                    mothersOccupationDesc: user?.family?.mothersOccupationDesc || '',
+                    numberOfBrothers: user?.family?.numberOfBrothers || 0,
+                    numberOfSisters: user?.family?.numberOfSisters || 0,
+                    marriedBrothers: user?.family?.marriedBrothers || 0,
+                    unmarriedBrothers: user?.family?.unmarriedBrothers || 0,
+                    marriedSisters: user?.family?.marriedSisters || 0,
+                    unmarriedSisters: user?.family?.unmarriedSisters || 0,
+                    familyType: user?.family?.familyType || 'nuclear',
+                    familyStatus: user?.family?.familyStatus || 'middle-class',
+                    familyValues: user?.family?.familyValues || 'moderate',
+                  },
+                  horoscopeDetails: {
+                    rashi: user?.horoscopeDetails?.rashi || '',
+                    nakshatra: user?.horoscopeDetails?.nakshatra || '',
+                    starSign: user?.horoscopeDetails?.starSign || '',
+                    timeOfBirth: user?.horoscopeDetails?.timeOfBirth || '',
+                  },
+                });
+              } else {
+                router.back();
+              }
+            }}
             className="p-2 -ml-2 text-gray-700 dark:text-pink-100 hover:bg-gray-100 dark:hover:bg-[#1f212a] rounded-lg transition-colors"
-                >
+          >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
-                </button>
+          </button>
           <h1 className="text-lg font-semibold text-gray-900 dark:text-pink-100">
             {editing ? 'Edit Profile' : t('profile.myProfile')}
           </h1>
-                  <button
-            onClick={() => {
-              if (!editing) {
-                setEditing(true);
-              } else {
-                setShowShareModal(true);
-              }
-            }}
-            className="p-2 -mr-2 text-gray-700 dark:text-pink-100 hover:bg-gray-100 dark:hover:bg-[#1f212a] rounded-lg transition-colors"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-            </svg>
-                  </button>
+          <div className="flex items-center gap-1">
+            {editing ? (
+              <button
+                onClick={() => setShowShareModal(true)}
+                className="p-2 -mr-2 text-gray-700 dark:text-pink-100 hover:bg-gray-100 dark:hover:bg-[#1f212a] rounded-lg transition-colors"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                </svg>
+              </button>
+            ) : (
+              <button
+                onClick={() => setEditing(true)}
+                className="p-2 -mr-2 text-gray-700 dark:text-pink-100 hover:bg-gray-100 dark:hover:bg-[#1f212a] rounded-lg transition-colors"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                </svg>
+              </button>
+            )}
+          </div>
         </div>
       </div>
 

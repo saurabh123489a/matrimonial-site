@@ -11,7 +11,9 @@ import CompactProfileCard from '@/components/CompactProfileCard';
 import LocationSelect from '@/components/LocationSelect';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import EmptyState from '@/components/EmptyState';
+import ProfileShareModal from '@/components/ProfileShareModal';
 import { sanitizeFormInput } from '@/hooks/useSanitizedInput';
+import { getProfileUrl } from '@/lib/profileUtils';
 
 interface SearchFilters {
   gender?: string;
@@ -43,6 +45,7 @@ function SearchProfilesPageContent() {
   const [viewMode, setViewMode] = useState<'compact' | 'detailed'>('compact');
   const [sortBy, setSortBy] = useState<'newest' | 'age' | 'name'>('newest');
   const [showSortMenu, setShowSortMenu] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
   const sortMenuRef = useRef<HTMLDivElement>(null);
   
   // Filter states
@@ -347,17 +350,55 @@ function SearchProfilesPageContent() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
-          <h1 className="text-lg font-semibold text-gray-900 dark:text-pink-100">
-            Discover
-          </h1>
-          <button
-            onClick={() => router.push('/notifications')}
-            className="p-2 -mr-2 text-gray-700 dark:text-pink-100 hover:bg-gray-100 dark:hover:bg-[#1f212a] rounded-lg transition-colors relative"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-            </svg>
-          </button>
+          <div className="flex-1 flex items-center justify-center gap-2">
+            <h1 className="text-lg font-semibold text-gray-900 dark:text-pink-100">
+              Discover
+            </h1>
+            {/* Profile Status Capsule */}
+            {currentUser && (
+              <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${
+                currentUser.isActive !== false
+                  ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
+                  : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-400'
+              }`}>
+                {currentUser.isActive !== false ? 'Active' : 'Inactive'}
+              </span>
+            )}
+          </div>
+          <div className="flex items-center gap-1">
+            {/* Edit Button */}
+            <button
+              onClick={() => router.push('/profile')}
+              className="p-2 text-gray-700 dark:text-pink-100 hover:bg-gray-100 dark:hover:bg-[#1f212a] rounded-lg transition-colors"
+              title="Edit Profile"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </svg>
+            </button>
+            {/* Share Button */}
+            {currentUser && (
+              <button
+                onClick={() => setShowShareModal(true)}
+                className="p-2 text-gray-700 dark:text-pink-100 hover:bg-gray-100 dark:hover:bg-[#1f212a] rounded-lg transition-colors"
+                title="Share Profile"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                </svg>
+              </button>
+            )}
+            {/* Notifications Button */}
+            <button
+              onClick={() => router.push('/notifications')}
+              className="p-2 text-gray-700 dark:text-pink-100 hover:bg-gray-100 dark:hover:bg-[#1f212a] rounded-lg transition-colors relative"
+              title="Notifications"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -744,6 +785,18 @@ function SearchProfilesPageContent() {
           </button>
         )}
       </div>
+
+      {/* Profile Share Modal */}
+      {currentUser && (
+        <ProfileShareModal
+          isOpen={showShareModal}
+          onClose={() => setShowShareModal(false)}
+          profileId={currentUser.gahoiId ? String(currentUser.gahoiId) : currentUser._id}
+          profileName={currentUser.name}
+          profileUrl={getProfileUrl(currentUser)}
+          user={currentUser}
+        />
+      )}
     </div>
   );
 }
