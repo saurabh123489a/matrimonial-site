@@ -165,16 +165,6 @@ export default function Navbar() {
       tourId: 'profile' 
     },
     { 
-      href: '/profiles', 
-      label: 'Search', 
-      icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-        </svg>
-      ), 
-      tourId: 'search' 
-    },
-    { 
       href: '/messages', 
       label: 'Message', 
       icon: (
@@ -268,7 +258,7 @@ export default function Navbar() {
             {/* Right: Icons */}
             <div className="flex items-center space-x-1 sm:space-x-2 md:space-x-3 flex-shrink-0">
               {/* Search Icon - Show auth modal if not authenticated */}
-              {mounted && !isAuthenticated ? (
+              {mounted && !isAuthenticated && (
                 <button
                   onClick={() => setShowAuthModal(true)}
                   className="min-w-[44px] min-h-[44px] p-2 text-gray-700 dark:text-pink-100 hover:text-pink-600 dark:hover:text-pink-300 active:bg-gray-200 dark:active:bg-slate-600 transition-all duration-200 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 touch-manipulation flex items-center justify-center"
@@ -278,16 +268,6 @@ export default function Navbar() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                 </button>
-              ) : (
-                <Link
-                  href="/profiles"
-                  className="min-w-[44px] min-h-[44px] p-2 text-gray-700 dark:text-pink-100 hover:text-pink-600 dark:hover:text-pink-300 active:bg-gray-200 dark:active:bg-slate-600 transition-all duration-200 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 touch-manipulation flex items-center justify-center"
-                  title="Search"
-                >
-                  <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                </Link>
               )}
               
               {/* Language Switcher - Always visible */}

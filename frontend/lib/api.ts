@@ -83,6 +83,8 @@ export interface User {
   preferences?: {
     minAge?: number;
     maxAge?: number;
+    minHeight?: number;
+    maxHeight?: number;
     gender?: string;
     location?: string;
   };
@@ -191,9 +193,14 @@ export interface UpdateUserDto {
   profileCreatedBy?: 'self' | 'family' | 'relative' | 'friend';
   bio?: string;
   photos?: Array<{ url: string; isPrimary?: boolean; order?: number }>;
+  height?: number;
+  diet?: 'vegetarian' | 'non-vegetarian' | 'vegan' | 'jain';
+  hobbies?: string[];
   preferences?: {
     minAge?: number;
     maxAge?: number;
+    minHeight?: number;
+    maxHeight?: number;
     gender?: string;
     location?: string;
   };

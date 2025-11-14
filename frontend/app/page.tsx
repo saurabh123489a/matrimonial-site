@@ -3,19 +3,10 @@
 import Link from 'next/link';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import StructuredData from '@/components/StructuredData';
 import SEOStructuredData from '@/components/SEOStructuredData';
 
 export default function Home() {
   const { t } = useTranslation();
-  const router = useRouter();
-  const [quickSearch, setQuickSearch] = useState({
-    gender: '',
-    ageFrom: '',
-    ageTo: '',
-    city: '',
-  });
   const [mounted, setMounted] = useState(false);
   const [showWelcomeMessage, setShowWelcomeMessage] = useState(true);
 
@@ -24,15 +15,6 @@ export default function Home() {
     
   }, []);
 
-  const handleQuickSearch = () => {
-    const params = new URLSearchParams();
-    if (quickSearch.gender) params.append('gender', quickSearch.gender);
-    if (quickSearch.ageFrom) params.append('minAge', quickSearch.ageFrom);
-    if (quickSearch.ageTo) params.append('maxAge', quickSearch.ageTo);
-    if (quickSearch.city) params.append('city', quickSearch.city);
-    
-    router.push(`/profiles?${params.toString()}`);
-  };
 
   return (
     <div className="min-h-screen bg-white dark:bg-[#0f1117] transition-colors">
@@ -161,80 +143,11 @@ export default function Home() {
               >
                 Get Started
               </Link>
-              <Link
-                href="/profiles"
-                className="inline-flex items-center justify-center px-8 py-4 border-2 border-white text-white font-medium hover:bg-white hover:text-pink-600 transition-colors text-sm uppercase tracking-wider shadow-lg backdrop-blur-sm"
-              >
-                Browse Profiles
-              </Link>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Quick Search Section - Clean & Minimal */}
-      <div className="bg-gray-50 dark:bg-[#0f1117] border-b border-gray-200 dark:border-[#262932] transition-colors">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl sm:text-3xl font-light text-gray-900 dark:text-pink-300 mb-2">Find Your Perfect Match</h2>
-            <p className="text-gray-600 dark:text-pink-200 text-sm">Search from thousands of verified profiles</p>
-          </div>
-          
-          <div className="max-w-4xl mx-auto bg-white dark:bg-[#181b23] p-6 sm:p-8 shadow-sm transition-colors">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div>
-                <label className="block text-xs font-medium text-gray-700 dark:text-pink-200 mb-2 uppercase tracking-wider">Looking For</label>
-                <select
-                  value={quickSearch.gender}
-                  onChange={(e) => setQuickSearch({...quickSearch, gender: e.target.value})}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-[#303341] text-gray-900 dark:text-pink-50 focus:outline-none focus:border-pink-500 dark:focus:border-pink-400 focus:ring-1 focus:ring-pink-500 dark:focus:ring-pink-400 transition-colors text-sm bg-white dark:bg-[#181b23]"
-                >
-                  <option value="">Select</option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-gray-700 dark:text-pink-200 mb-2 uppercase tracking-wider">Age Range</label>
-                <div className="flex gap-2">
-                  <input
-                    type="number"
-                    placeholder="From"
-                    value={quickSearch.ageFrom}
-                    onChange={(e) => setQuickSearch({...quickSearch, ageFrom: e.target.value})}
-                    className="w-1/2 px-4 py-3 border border-gray-300 dark:border-[#303341] text-gray-900 dark:text-pink-50 bg-white dark:bg-[#181b23] focus:outline-none focus:border-pink-500 dark:focus:border-pink-400 focus:ring-1 focus:ring-pink-500 dark:focus:ring-pink-400 transition-colors text-sm"
-                  />
-                  <input
-                    type="number"
-                    placeholder="To"
-                    value={quickSearch.ageTo}
-                    onChange={(e) => setQuickSearch({...quickSearch, ageTo: e.target.value})}
-                    className="w-1/2 px-4 py-3 border border-gray-300 dark:border-[#303341] text-gray-900 dark:text-pink-50 bg-white dark:bg-[#181b23] focus:outline-none focus:border-pink-500 dark:focus:border-pink-400 focus:ring-1 focus:ring-pink-500 dark:focus:ring-pink-400 transition-colors text-sm"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-gray-700 dark:text-pink-200 mb-2 uppercase tracking-wider">City</label>
-                <input
-                  type="text"
-                  placeholder="Enter city"
-                  value={quickSearch.city}
-                  onChange={(e) => setQuickSearch({...quickSearch, city: e.target.value})}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-[#303341] text-gray-900 dark:text-pink-50 bg-white dark:bg-[#181b23] focus:outline-none focus:border-pink-500 dark:focus:border-pink-400 focus:ring-1 focus:ring-pink-500 dark:focus:ring-pink-400 transition-colors text-sm"
-                />
-              </div>
-              <div className="flex items-end">
-                <button
-                  onClick={handleQuickSearch}
-                  className="w-full px-6 py-3 bg-gradient-to-r from-pink-600 to-red-600 text-white font-medium hover:from-pink-700 hover:to-red-700 transition-colors text-sm uppercase tracking-wider"
-                >
-                  Search
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
       {/* Features Section - Clean Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24 animate-fade-in">
@@ -414,12 +327,6 @@ export default function Home() {
               className="inline-flex items-center justify-center px-8 py-4 bg-white text-pink-600 font-medium hover:bg-gray-100 transition-colors text-sm uppercase tracking-wider shadow-lg"
             >
               Create Free Account
-            </Link>
-            <Link
-              href="/profiles"
-              className="inline-flex items-center justify-center px-8 py-4 border-2 border-white text-white font-medium hover:bg-white hover:text-pink-600 transition-colors text-sm uppercase tracking-wider shadow-lg backdrop-blur-sm"
-            >
-              Browse Profiles
             </Link>
           </div>
         </div>

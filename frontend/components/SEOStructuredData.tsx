@@ -6,17 +6,10 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ekgahoi.vercel.app'
 const siteName = 'ekGahoi';
 
 interface SEOStructuredDataProps {
-  type?: 'home' | 'profile' | 'profiles' | 'about';
-  profileData?: {
-    name?: string;
-    age?: number;
-    location?: string;
-    image?: string;
-    gahoiId?: number;
-  };
+  type?: 'home' | 'about';
 }
 
-export default function SEOStructuredData({ type = 'home', profileData }: SEOStructuredDataProps) {
+export default function SEOStructuredData({ type = 'home' }: SEOStructuredDataProps) {
   useEffect(() => {
     let structuredData: any = {};
 
@@ -46,14 +39,6 @@ export default function SEOStructuredData({ type = 'home', profileData }: SEOStr
       '@type': 'WebSite',
       name: siteName,
       url: siteUrl,
-      potentialAction: {
-        '@type': 'SearchAction',
-        target: {
-          '@type': 'EntryPoint',
-          urlTemplate: `${siteUrl}/profiles?search={search_term_string}`,
-        },
-        'query-input': 'required name=search_term_string',
-      },
     };
 
     // Breadcrumb Schema
@@ -70,42 +55,7 @@ export default function SEOStructuredData({ type = 'home', profileData }: SEOStr
       ],
     };
 
-    // Profile Schema (if viewing a profile)
-    if (type === 'profile' && profileData) {
-      structuredData = {
-        '@context': 'https://schema.org',
-        '@type': 'Person',
-        name: profileData.name,
-        age: profileData.age,
-        address: {
-          '@type': 'PostalAddress',
-          addressLocality: profileData.location,
-        },
-        image: profileData.image,
-        url: `${siteUrl}/profiles/${profileData.gahoiId || profileData.name}`,
-      };
-
-      // Add breadcrumb
-      breadcrumbSchema.itemListElement.push({
-        '@type': 'ListItem',
-        position: 2,
-        name: 'Profiles',
-        item: `${siteUrl}/profiles`,
-      });
-      breadcrumbSchema.itemListElement.push({
-        '@type': 'ListItem',
-        position: 3,
-        name: profileData.name || 'Profile',
-        item: `${siteUrl}/profiles/${profileData.gahoiId || profileData.name}`,
-      });
-    } else if (type === 'profiles') {
-      breadcrumbSchema.itemListElement.push({
-        '@type': 'ListItem',
-        position: 2,
-        name: 'Browse Profiles',
-        item: `${siteUrl}/profiles`,
-      });
-    } else if (type === 'about') {
+    if (type === 'about') {
       breadcrumbSchema.itemListElement.push({
         '@type': 'ListItem',
         position: 2,
@@ -141,15 +91,7 @@ export default function SEOStructuredData({ type = 'home', profileData }: SEOStr
             name: 'Is ekGahoi free to use?',
             acceptedAnswer: {
               '@type': 'Answer',
-              text: 'Yes, ekGahoi offers free registration and profile creation. You can browse profiles, send interests, and connect with potential matches at no cost.',
-            },
-          },
-          {
-            '@type': 'Question',
-            name: 'How do I search for profiles?',
-            acceptedAnswer: {
-              '@type': 'Answer',
-              text: 'You can search for profiles using various filters including age, location, education, occupation, and more. You can also search by Gahoi ID if you know the specific profile ID.',
+              text: 'Yes, ekGahoi offers free registration and profile creation. You can send interests and connect with potential matches at no cost.',
             },
           },
         ],
@@ -165,11 +107,6 @@ export default function SEOStructuredData({ type = 'home', profileData }: SEOStr
       injectSchema(organizationSchema);
       injectSchema(websiteSchema);
       injectSchema(breadcrumbSchema);
-      
-      // Inject profile schema if available
-      if (type === 'profile' && profileData) {
-        injectSchema(structuredData);
-      }
     }
 
     return () => {
@@ -178,13 +115,12 @@ export default function SEOStructuredData({ type = 'home', profileData }: SEOStr
       scripts.forEach(script => {
         const data = JSON.parse(script.textContent || '{}');
         if (data['@type'] === 'Organization' || data['@type'] === 'WebSite' || 
-            data['@type'] === 'BreadcrumbList' || data['@type'] === 'FAQPage' ||
-            data['@type'] === 'Person') {
+            data['@type'] === 'BreadcrumbList' || data['@type'] === 'FAQPage') {
           script.remove();
         }
       });
     };
-  }, [type, profileData]);
+  }, [type]);
 
   return null;
 }

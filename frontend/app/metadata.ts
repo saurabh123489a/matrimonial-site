@@ -54,19 +54,6 @@ export const homeMetadata: Metadata = {
   },
 };
 
-export const profilesMetadata: Metadata = {
-  title: `Browse Profiles - ${siteName}`,
-  description: 'Browse verified matrimonial profiles in the Gahoi community. Search by age, location, education, occupation, and more. Find your perfect match today.',
-  openGraph: {
-    title: `Browse Profiles - ${siteName}`,
-    description: 'Browse verified matrimonial profiles in the Gahoi community. Search by age, location, education, occupation, and more.',
-    url: `${siteUrl}/profiles`,
-    type: 'website',
-  },
-  alternates: {
-    canonical: `${siteUrl}/profiles`,
-  },
-};
 
 export const loginMetadata: Metadata = {
   title: `Login - ${siteName}`,

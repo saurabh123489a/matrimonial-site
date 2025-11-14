@@ -2,100 +2,73 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { userApi, interestApi, shortlistApi, reportApi, User } from '@/lib/api';
+import { userApi, interestApi, shortlistApi, User } from '@/lib/api';
 import { auth } from '@/lib/auth';
 import { useTranslation } from '@/hooks/useTranslation';
-import Link from 'next/link';
-import BlockReportModal from '@/components/BlockReportModal';
-import ProfileBadges from '@/components/ProfileBadges';
-import ProfileShareModal from '@/components/ProfileShareModal';
-import StructuredData from '@/components/StructuredData';
+import { useNotifications } from '@/contexts/NotificationContext';
+import LazyImage from '@/components/LazyImage';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import { trackProfileView, trackInterestSent } from '@/lib/analytics';
-import { sortPhotos } from '@/lib/utils/photoUtils';
+import ProfileCompletenessMeter from '@/components/ProfileCompletenessMeter';
 
-export default function ProfileDetailPage() {
+export default function ProfileViewPage() {
   const params = useParams();
   const router = useRouter();
   const { t } = useTranslation();
+  const { showSuccess, showError } = useNotifications();
   const id = params.id as string;
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [isShortlisted, setIsShortlisted] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
-  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(0);
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [showBlockReportModal, setShowBlockReportModal] = useState(false);
-  const [showShareModal, setShowShareModal] = useState(false);
-  const [reportReason, setReportReason] = useState<string>('inappropriate-content');
-  const [reportDescription, setReportDescription] = useState('');
-  const [reportLoading, setReportLoading] = useState(false);
+  const [expandedSections, setExpandedSections] = useState({
+    aboutMe: true,
+    lifestyle: false,
+    partnerPreferences: false,
+  });
 
   useEffect(() => {
     if (!auth.isAuthenticated()) {
       router.push('/login');
       return;
     }
+    loadProfile();
+  }, [id]);
 
-    let isMounted = true;
-    const abortController = new AbortController();
-
-    const loadProfile = async () => {
-      try {
-        setLoading(true);
-        const [profileResponse, shortlistResponse, myProfileResponse] = await Promise.all([
-          userApi.getById(id),
-          shortlistApi.check(id).catch(() => ({ status: true, data: { isShortlisted: false } })),
-          userApi.getMe().catch(() => ({ status: false, data: null }))
-        ]);
-        
-        
-        if (!isMounted) return;
-        
-        if (profileResponse.status) {
-          setUser(profileResponse.data);
-          
-          trackProfileView(id, profileResponse.data.name);
-        }
-        
-        if (shortlistResponse.status) {
-          setIsShortlisted(shortlistResponse.data.isShortlisted);
-        }
-
-        if (myProfileResponse.status && myProfileResponse.data) {
-          setCurrentUser(myProfileResponse.data);
-        }
-      } catch (err: any) {
-        if (!isMounted) return;
-        setError(err.response?.data?.message || 'Failed to load profile');
-      } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
+  const loadProfile = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const response = await userApi.getById(id);
+      if (response.status && response.data) {
+        setUser(response.data);
+      } else {
+        setError(response.message || 'Profile not found');
       }
-    };
-
-    if (id) {
-      loadProfile();
+    } catch (err: any) {
+      console.error('Profile load error:', err);
+      if (err.response?.status === 401 || err.response?.status === 403) {
+        auth.logout();
+        router.push('/login');
+      } else {
+        const errorMsg = err.response?.data?.message || err.message || 'Failed to load profile';
+        setError(errorMsg);
+        showError(errorMsg);
+      }
+    } finally {
+      setLoading(false);
     }
-
-    
-    return () => {
-      isMounted = false;
-      abortController.abort();
-    };
-  }, [id, router]);
+  };
 
   const handleSendInterest = async () => {
     if (!user) return;
     setActionLoading(true);
     try {
-      await interestApi.send(id);
-      trackInterestSent(id);
-      alert(t('interests.interestSent'));
+      const response = await interestApi.send(user._id);
+      if (response.status) {
+        showSuccess('Interest sent successfully!');
+      }
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Failed to send interest');
+      showError(err.response?.data?.message || 'Failed to send interest');
     } finally {
       setActionLoading(false);
     }
@@ -105,321 +78,324 @@ export default function ProfileDetailPage() {
     if (!user) return;
     setActionLoading(true);
     try {
-      if (isShortlisted) {
-        await shortlistApi.remove(id);
-        setIsShortlisted(false);
-      } else {
-        await shortlistApi.add(id);
-        setIsShortlisted(true);
+      const checkResponse = await shortlistApi.check(user._id);
+      const isShortlisted = checkResponse.status && checkResponse.data?.isShortlisted;
+      
+      const response = isShortlisted 
+        ? await shortlistApi.remove(user._id)
+        : await shortlistApi.add(user._id);
+      
+      if (response.status) {
+        showSuccess(isShortlisted ? 'Removed from shortlist' : 'Added to shortlist');
       }
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Operation failed');
+      showError(err.response?.data?.message || 'Failed to update shortlist');
     } finally {
       setActionLoading(false);
     }
   };
 
-  const handleBlock = async (userId: string) => {
-    
-    
-    const blockedUsers = JSON.parse(localStorage.getItem('blockedUsers') || '[]');
-    if (!blockedUsers.includes(userId)) {
-      blockedUsers.push(userId);
-      localStorage.setItem('blockedUsers', JSON.stringify(blockedUsers));
-      alert('User blocked successfully');
-      router.push('/profiles');
-    }
-  };
-
-  const handleReport = async (userId: string, reason: string) => {
-    if (!user) return;
-    setReportLoading(true);
-    try {
-      const response = await reportApi.reportProfile({
-        reportedUserId: userId,
-        reason: reportReason as any,
-        description: reason || undefined,
-      });
-      if (response.status) {
-        alert('Profile reported successfully. Admin will review it.');
-        setShowBlockReportModal(false);
-        setReportDescription('');
-      }
-    } catch (err: any) {
-      alert(err.response?.data?.message || 'Failed to report profile');
-    } finally {
-      setReportLoading(false);
-    }
-  };
-
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-black flex items-center justify-center">
-        <div className="text-center">
-          <LoadingSpinner size="lg" showWelcomeMessage={true} />
-        </div>
+      <div className="min-h-screen bg-gray-50 dark:bg-[#0f1117] flex items-center justify-center">
+        <LoadingSpinner />
       </div>
     );
   }
 
   if (error || !user) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-[#0f1117] flex items-center justify-center px-4">
         <div className="text-center">
-          <div className="bg-red-50 border-l-4 border-red-400 text-red-800 px-4 py-3 rounded mb-4 max-w-md">
+          <div className="bg-red-50 dark:bg-red-900/20 border border-red-400 dark:border-red-600 text-red-800 dark:text-red-200 px-4 py-3 rounded mb-4 max-w-md">
             {error || 'Profile not found'}
           </div>
-          <Link href="/profiles" className="text-pink-600 hover:text-pink-700 font-medium">
-            ← {t('common.browseProfiles')}
-          </Link>
+          <button
+            onClick={() => router.back()}
+            className="text-pink-600 dark:text-pink-400 hover:text-pink-700 dark:hover:text-pink-300 font-medium"
+          >
+            ← Go Back
+          </button>
         </div>
       </div>
     );
   }
 
-  
-  const photos = sortPhotos(user.photos || []);
-  const selectedPhoto = photos[selectedPhotoIndex] || photos[0];
-
-  
-  const siteUrl = typeof window !== 'undefined' ? window.location.origin : 'https://ekgahoi.com';
-  const profileStructuredData = {
-    '@context': 'https://schema.org',
-    '@type': 'Person',
-    name: user.name,
-    ...(user.age && { age: user.age }),
-    ...(user.city && { address: { '@type': 'PostalAddress', addressLocality: user.city, addressRegion: user.state } }),
-    ...(user.bio && { description: user.bio }),
-    url: `${siteUrl}/profiles/${id}`,
-    ...(user.photos?.[0] && {
-      image: user.photos.find((p: any) => p.isPrimary)?.url || user.photos[0].url,
-    }),
-  };
+  const commonHobbies = ['Reading', 'Traveling', 'Dancing', 'Yoga', 'Cooking', 'Music', 'Sports', 'Photography', 'Art', 'Writing', 'Gaming', 'Movies'];
+  const dietaryOptions = ['vegetarian', 'non-vegetarian', 'vegan', 'jain'];
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <StructuredData data={profileStructuredData} />
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Back Button */}
-        <Link href="/profiles" className="inline-flex items-center text-pink-600 hover:text-pink-700 mb-6 font-medium">
-          <span>←</span> {t('common.browseProfiles')}
-        </Link>
+    <div className="min-h-screen bg-gray-50 dark:bg-[#0f1117] pb-24 transition-colors">
+      {/* Header - Mobile First Design */}
+      <div className="bg-white dark:bg-[#181b23] border-b border-gray-200 dark:border-[#303341] sticky top-0 z-30">
+        <div className="flex items-center justify-between px-4 py-3">
+          <button
+            onClick={() => router.back()}
+            className="p-2 -ml-2 text-gray-700 dark:text-pink-100 hover:bg-gray-100 dark:hover:bg-[#1f212a] rounded-lg transition-colors"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <h1 className="text-lg font-semibold text-gray-900 dark:text-pink-100">
+            Profile
+          </h1>
+          <button
+            onClick={() => router.push(`/messages/${user._id}`)}
+            className="p-2 -mr-2 text-gray-700 dark:text-pink-100 hover:bg-gray-100 dark:hover:bg-[#1f212a] rounded-lg transition-colors"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+          </button>
+        </div>
+      </div>
 
-        {/* Main Profile Section */}
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 p-8">
-            {/* Left Column - Photos */}
-            <div className="lg:col-span-1">
-              <div className="sticky top-4">
-                {/* Main Photo */}
-                <div className="relative bg-gray-100 rounded-lg overflow-hidden mb-4" style={{ aspectRatio: '4/5' }}>
-                  {selectedPhoto ? (
-                    <img
-                      src={selectedPhoto.url}
-                      alt={user.name}
-                      className="w-full h-full object-cover"
-                      loading="eager"
-                      decoding="async"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-8xl text-gray-300">
-                      👤
-                    </div>
-                  )}
-                  <div className="absolute top-3 right-3 z-10">
-                    <ProfileBadges user={user} showOnlineStatus={true} showLastSeen={true} />
-                  </div>
-                </div>
-
-                {/* Photo Thumbnails */}
-                {photos.length > 1 && (
-                  <div className="grid grid-cols-3 gap-2">
-                    {photos.map((photo, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setSelectedPhotoIndex(index)}
-                        className={`relative aspect-square rounded-lg overflow-hidden border-2 ${
-                          selectedPhotoIndex === index ? 'border-pink-600' : 'border-gray-200'
-                        }`}
-                      >
-                        <img
-                          src={photo.url}
-                          alt={`Photo ${index + 1}`}
-                          className="w-full h-full object-cover"
-                          loading="lazy"
-                          decoding="async"
-                        />
-                      </button>
-                    ))}
-                  </div>
-                )}
-
-                       {/* Action Buttons */}
-                       <div className="mt-6 space-y-3">
-                         <Link
-                           href={`/messages/${id}`}
-                           className="block w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-md hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg text-center"
-                         >
-                           💬 Send Message
-                         </Link>
-                         <button
-                           onClick={handleSendInterest}
-                           disabled={actionLoading}
-                           className="w-full px-6 py-3 bg-gradient-to-r from-pink-600 to-red-600 text-white font-semibold rounded-md hover:from-pink-700 hover:to-red-700 transition-all shadow-lg disabled:opacity-50"
-                         >
-                           {actionLoading ? t('common.loading') : '💝 ' + t('interests.sendInterest')}
-                         </button>
-                         <button
-                           onClick={handleShortlist}
-                           disabled={actionLoading}
-                           className={`w-full px-6 py-3 font-semibold rounded-md transition-all shadow-md disabled:opacity-50 ${
-                             isShortlisted
-                               ? 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                               : 'bg-white border-2 border-pink-600 text-pink-600 hover:bg-pink-50'
-                           }`}
-                         >
-                           {isShortlisted ? '✓ ' + t('shortlist.shortlisted') : '⭐ ' + t('shortlist.addToShortlist')}
-                         </button>
-                  {/* Share Profile Button */}
-                  <button
-                    onClick={() => setShowShareModal(true)}
-                    className="w-full px-6 py-3 bg-gradient-to-r from-pink-600 to-red-600 text-white font-semibold rounded-md hover:from-pink-700 hover:to-red-700 transition-all shadow-lg"
-                  >
-                    📤 Share Profile
-                  </button>
-                  {/* Block/Report Button */}
-                  <button
-                    onClick={() => setShowBlockReportModal(true)}
-                    className="w-full px-6 py-3 bg-gray-50 dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 transition-all shadow-md"
-                  >
-                    ⚙️ Block / Report
-                  </button>
-                </div>
+      <div className="px-4 py-6 space-y-6">
+        {/* Profile Photos Section */}
+        <div className="flex gap-4 mb-6">
+          {/* Main Profile Photo */}
+          <div className="relative flex-shrink-0">
+            {user.photos?.[0] ? (
+              <div className="relative w-32 h-40 rounded-xl overflow-hidden">
+                <LazyImage
+                  src={user.photos[0].url}
+                  alt={user.name}
+                  className="w-full h-full object-cover"
+                  placeholder="👤"
+                />
               </div>
-            </div>
+            ) : (
+              <div className="w-32 h-40 rounded-xl bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                <span className="text-4xl">👤</span>
+              </div>
+            )}
+          </div>
 
-            {/* Right Column - Details */}
-            <div className="lg:col-span-2 space-y-6">
-              {/* Header */}
-              <div className="border-b border-gray-200 pb-6">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <h1 className="text-3xl font-bold text-gray-900 mb-2">{user.name}</h1>
-                    <div className="flex items-center gap-4 text-gray-600">
-                      {user.age && <span className="font-medium">{user.age} Years</span>}
-                      {user.gender && <span className="capitalize">• {user.gender}</span>}
-                      {(user.city || user.state) && (
-                        <span className="flex items-center">
-                          📍 {user.city}{user.state && `, ${user.state}`}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </div>
+          {/* Additional Photos */}
+          <div className="flex-1 flex flex-col gap-2">
+            {user.photos && user.photos.length > 1 && user.photos.slice(1, 3).map((photo, index) => (
+              <div key={index} className="relative w-full h-19 rounded-lg overflow-hidden">
+                <LazyImage
+                  src={photo.url}
+                  alt={`Photo ${index + 2}`}
+                  className="w-full h-full object-cover"
+                  placeholder="📷"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Profile Completion */}
+        <div className="bg-white dark:bg-[#181b23] rounded-lg p-4 mb-6">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-medium text-gray-700 dark:text-pink-200">Profile Completion</span>
+            <span className="text-sm font-semibold text-pink-600 dark:text-pink-400">
+              {user.isProfileComplete ? '100%' : '80%'}
+            </span>
+          </div>
+          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+            <div 
+              className="bg-pink-600 h-2 rounded-full transition-all duration-300"
+              style={{ width: user.isProfileComplete ? '100%' : '80%' }}
+            />
+          </div>
+        </div>
+
+        {/* About Me Section - Collapsible */}
+        <div className="bg-white dark:bg-[#181b23] rounded-lg overflow-hidden">
+          <button
+            onClick={() => setExpandedSections({ ...expandedSections, aboutMe: !expandedSections.aboutMe })}
+            className="w-full flex items-center justify-between p-4 text-left"
+          >
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-pink-100">About Me</h2>
+            <svg 
+              className={`w-5 h-5 text-gray-500 dark:text-gray-400 transition-transform ${expandedSections.aboutMe ? 'rotate-180' : ''}`}
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          
+          {expandedSections.aboutMe && (
+            <div className="px-4 pb-4 space-y-4">
+              {/* Full Name */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Full Name</label>
+                <p className="text-gray-900 dark:text-pink-100">{user.name}</p>
               </div>
 
-              {/* Personal Details */}
-              <div className="grid grid-cols-2 gap-6">
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-500 uppercase mb-2">{t('profile.education')}</h3>
-                  <p className="text-gray-900 font-medium">{user.education || 'Not specified'}</p>
-                </div>
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-500 uppercase mb-2">{t('profile.occupation')}</h3>
-                  <p className="text-gray-900 font-medium">{user.occupation || 'Not specified'}</p>
-                </div>
-                {user.motherTongue && (
-                  <div>
-                    <h3 className="text-sm font-semibold text-gray-500 uppercase mb-2">Mother Tongue</h3>
-                    <p className="text-gray-900 font-medium">{user.motherTongue}</p>
-                  </div>
-                )}
-                {user.annualIncome && (
-                  <div>
-                    <h3 className="text-sm font-semibold text-gray-500 uppercase mb-2">Annual Income</h3>
-                    <p className="text-gray-900 font-medium">₹{user.annualIncome.toLocaleString()}</p>
-                  </div>
-                )}
-                {user.height && (
-                  <div>
-                    <h3 className="text-sm font-semibold text-gray-500 uppercase mb-2">Height</h3>
-                    <p className="text-gray-900 font-medium">{user.height}" ({Math.round(user.height * 2.54)} cm)</p>
-                  </div>
-                )}
-                {user.diet && (
-                  <div>
-                    <h3 className="text-sm font-semibold text-gray-500 uppercase mb-2">Diet</h3>
-                    <p className="text-gray-900 font-medium capitalize">{user.diet}</p>
-                  </div>
-                )}
+              {/* Age */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Age</label>
+                <p className="text-gray-900 dark:text-pink-100">{user.age || 'Not provided'}</p>
               </div>
 
-              {/* Location */}
-              {(user.city || user.state || user.country) && (
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-500 uppercase mb-2">Location</h3>
-                  <p className="text-gray-900 font-medium">
-                    {[user.city, user.state, user.country].filter(Boolean).join(', ')}
-                  </p>
-                </div>
-              )}
+              {/* Height */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Height</label>
+                <p className="text-gray-900 dark:text-pink-100">
+                  {user.height ? `${Math.floor(user.height / 12)}'${user.height % 12}"` : 'Not provided'}
+                </p>
+              </div>
 
               {/* Bio */}
-              {user.bio && (
-                <div className="border-t border-gray-200 pt-6">
-                  <h3 className="text-sm font-semibold text-gray-500 uppercase mb-3">About</h3>
-                  <p className="text-gray-700 leading-relaxed whitespace-pre-line">{user.bio}</p>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Bio</label>
+                <p className="text-gray-900 dark:text-pink-100">{user.bio || 'No bio provided'}</p>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Lifestyle & Interests Section - Collapsible */}
+        <div className="bg-white dark:bg-[#181b23] rounded-lg overflow-hidden">
+          <button
+            onClick={() => setExpandedSections({ ...expandedSections, lifestyle: !expandedSections.lifestyle })}
+            className="w-full flex items-center justify-between p-4 text-left"
+          >
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-pink-100">Lifestyle & Interests</h2>
+            <svg 
+              className={`w-5 h-5 text-gray-500 dark:text-gray-400 transition-transform ${expandedSections.lifestyle ? 'rotate-180' : ''}`}
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          
+          {expandedSections.lifestyle && (
+            <div className="px-4 pb-4 space-y-6">
+              {/* Dietary Preferences */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-3">Dietary Preferences</label>
+                <div className="flex flex-wrap gap-2">
+                  {dietaryOptions.map((option) => {
+                    const isSelected = user.diet === option;
+                    return (
+                      <span
+                        key={option}
+                        className={`px-4 py-2 rounded-full text-sm font-medium ${
+                          isSelected
+                            ? 'bg-pink-600 text-white'
+                            : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                        }`}
+                      >
+                        {option === 'non-vegetarian' ? 'Non-Veg' : option.charAt(0).toUpperCase() + option.slice(1)}
+                      </span>
+                    );
+                  })}
                 </div>
-              )}
+              </div>
 
-              {/* Block/Report Modal */}
-              <BlockReportModal
-                userId={id}
-                userName={user.name}
-                isOpen={showBlockReportModal}
-                onClose={() => setShowBlockReportModal(false)}
-                onBlock={handleBlock}
-                onReport={handleReport}
-              />
+              {/* Hobbies & Interests */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-3">Hobbies & Interests</label>
+                <div className="flex flex-wrap gap-2">
+                  {(user.hobbies || []).map((hobby) => (
+                    <span
+                      key={hobby}
+                      className="px-4 py-2 rounded-full text-sm font-medium bg-pink-600 text-white"
+                    >
+                      {hobby}
+                    </span>
+                  ))}
+                  {(!user.hobbies || user.hobbies.length === 0) && (
+                    <span className="text-gray-500 dark:text-gray-400 text-sm">No hobbies listed</span>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
 
-              {/* Profile Share Modal */}
-              {user && (
-                <ProfileShareModal
-                  isOpen={showShareModal}
-                  onClose={() => setShowShareModal(false)}
-                  profileId={id}
-                  profileName={user.name}
-                  profileUrl={`/profiles/${id}`}
-                  user={user}
-                />
-              )}
-              
-              {/* Lifestyle */}
-              {(user.smoking !== undefined || user.drinking !== undefined) && (
-                <div className="border-t border-gray-200 pt-6">
-                  <h3 className="text-sm font-semibold text-gray-500 uppercase mb-3">Lifestyle</h3>
-                  <div className="flex gap-4">
-                    {user.smoking !== undefined && (
-                      <span className={`px-4 py-2 rounded-full text-sm font-medium ${
-                        user.smoking ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'
-                      }`}>
-                        {user.smoking ? '🚭 Smoking' : '✓ Non-Smoker'}
-                      </span>
-                    )}
-                    {user.drinking !== undefined && (
-                      <span className={`px-4 py-2 rounded-full text-sm font-medium ${
-                        user.drinking ? 'bg-orange-100 text-orange-700' : 'bg-blue-100 text-blue-700'
-                      }`}>
-                        {user.drinking ? '🍷 Drinks' : '✓ Non-Drinker'}
-                      </span>
-                    )}
+        {/* Partner Preferences Section - Collapsible */}
+        <div className="bg-white dark:bg-[#181b23] rounded-lg overflow-hidden">
+          <button
+            onClick={() => setExpandedSections({ ...expandedSections, partnerPreferences: !expandedSections.partnerPreferences })}
+            className="w-full flex items-center justify-between p-4 text-left"
+          >
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-pink-100">Partner Preferences</h2>
+            <svg 
+              className={`w-5 h-5 text-gray-500 dark:text-gray-400 transition-transform ${expandedSections.partnerPreferences ? 'rotate-180' : ''}`}
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          
+          {expandedSections.partnerPreferences && (
+            <div className="px-4 pb-4 space-y-6">
+              {/* Age Range */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-3">
+                  Age Range
+                  <span className="ml-2 text-pink-600 dark:text-pink-400 font-semibold">
+                    {user.preferences?.minAge || 28} - {user.preferences?.maxAge || 34}
+                  </span>
+                </label>
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 h-2 bg-gray-200 dark:bg-gray-700 rounded-full relative">
+                    <div 
+                      className="absolute h-2 bg-pink-600 rounded-full"
+                      style={{ 
+                        left: `${((user.preferences?.minAge || 28) - 18) / (100 - 18) * 100}%`,
+                        width: `${((user.preferences?.maxAge || 34) - (user.preferences?.minAge || 28)) / (100 - 18) * 100}%`
+                      }}
+                    />
                   </div>
                 </div>
-              )}
+              </div>
+
+              {/* Height Range */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-3">
+                  Height Range
+                  <span className="ml-2 text-pink-600 dark:text-pink-400 font-semibold">
+                    {user.preferences?.minHeight ? `${Math.floor(user.preferences.minHeight / 12)}'${user.preferences.minHeight % 12}"` : "5'8\""} - {user.preferences?.maxHeight ? `${Math.floor(user.preferences.maxHeight / 12)}'${user.preferences.maxHeight % 12}"` : "6'2\""}
+                  </span>
+                </label>
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 h-2 bg-gray-200 dark:bg-gray-700 rounded-full relative">
+                    <div 
+                      className="absolute h-2 bg-pink-600 rounded-full"
+                      style={{ 
+                        left: `${((user.preferences?.minHeight || 68) - 48) / (84 - 48) * 100}%`,
+                        width: `${((user.preferences?.maxHeight || 74) - (user.preferences?.minHeight || 68)) / (84 - 48) * 100}%`
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
+          )}
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex gap-3 pt-4">
+          <button
+            onClick={handleSendInterest}
+            disabled={actionLoading}
+            className="flex-1 py-3 bg-pink-600 text-white font-semibold rounded-lg hover:bg-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-lg"
+          >
+            {actionLoading ? 'Sending...' : '💝 Send Interest'}
+          </button>
+          <button
+            onClick={handleShortlist}
+            disabled={actionLoading}
+            className="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-semibold rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            ⭐
+          </button>
         </div>
       </div>
     </div>
   );
 }
+

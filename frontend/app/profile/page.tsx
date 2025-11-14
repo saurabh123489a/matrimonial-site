@@ -38,6 +38,11 @@ export default function MyProfilePage() {
   const [showShareModal, setShowShareModal] = useState(false);
   const [editingHoroscope, setEditingHoroscope] = useState(false);
   const [savingHoroscope, setSavingHoroscope] = useState(false);
+  const [expandedSections, setExpandedSections] = useState({
+    aboutMe: true,
+    lifestyle: false,
+    partnerPreferences: false,
+  });
 
   useEffect(() => {
     
@@ -108,6 +113,15 @@ export default function MyProfilePage() {
           education: response.data.education || '',
           occupation: response.data.occupation || '',
           bio: response.data.bio || '',
+          height: response.data.height || undefined,
+          diet: (response.data.diet as 'vegetarian' | 'non-vegetarian' | 'vegan' | 'jain' | undefined) || undefined,
+          hobbies: response.data.hobbies || [],
+          preferences: {
+            minAge: response.data.preferences?.minAge || undefined,
+            maxAge: response.data.preferences?.maxAge || undefined,
+            minHeight: response.data.preferences?.minHeight || undefined,
+            maxHeight: response.data.preferences?.maxHeight || undefined,
+          },
           dateOfBirth: response.data.dateOfBirth ? new Date(response.data.dateOfBirth).toISOString().split('T')[0] : '',
           family: {
             fathersName: response.data.family?.fathersName || '',
@@ -352,1050 +366,559 @@ export default function MyProfilePage() {
     );
   }
 
+  const commonHobbies = ['Reading', 'Traveling', 'Dancing', 'Yoga', 'Cooking', 'Music', 'Sports', 'Photography', 'Art', 'Writing', 'Gaming', 'Movies'];
+  const dietaryOptions = ['vegetarian', 'non-vegetarian', 'vegan', 'jain'];
+
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-0 pb-8">
-      <div className="bg-white dark:bg-black rounded-lg shadow-lg overflow-hidden transition-colors">
-        <div className="bg-gradient-to-r from-pink-500 to-red-500 p-6 text-white">
-          <div className="flex justify-between items-center">
-            <h1 className="text-3xl font-bold">{t('profile.myProfile')}</h1>
-            <div className="flex items-center gap-3">
-              {/* One-click Activate button at top - only show if inactive */}
-              {!user.isActive && (
+    <div className="min-h-screen bg-gray-50 dark:bg-[#0f1117] pb-24 transition-colors">
+      {/* Header - Mobile First Design */}
+      <div className="bg-white dark:bg-[#181b23] border-b border-gray-200 dark:border-[#303341] sticky top-0 z-30">
+        <div className="flex items-center justify-between px-4 py-3">
                 <button
-                  onClick={handleToggleActive}
-                  disabled={togglingActive}
-                  className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50 font-medium transition-colors"
+            onClick={() => router.back()}
+            className="p-2 -ml-2 text-gray-700 dark:text-pink-100 hover:bg-gray-100 dark:hover:bg-[#1f212a] rounded-lg transition-colors"
                 >
-                  {togglingActive ? t('common.loading') : t('profile.activateProfile')}
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
                 </button>
-              )}
-              {!editing && (
-                <>
+          <h1 className="text-lg font-semibold text-gray-900 dark:text-pink-100">
+            {editing ? 'Edit Profile' : t('profile.myProfile')}
+          </h1>
                   <button
-                    onClick={() => setShowShareModal(true)}
-                    className="px-4 py-2 bg-white text-pink-600 rounded-md hover:bg-gray-100 font-medium transition-colors"
-                    title="Share Profile"
-                  >
-                    📤 Share
+            onClick={() => {
+              if (!editing) {
+                setEditing(true);
+              } else {
+                setShowShareModal(true);
+              }
+            }}
+            className="p-2 -mr-2 text-gray-700 dark:text-pink-100 hover:bg-gray-100 dark:hover:bg-[#1f212a] rounded-lg transition-colors"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+            </svg>
                   </button>
+        </div>
+      </div>
+
+      <div className="px-4 py-6 space-y-6">
+        {/* Profile Photos Section - Matching Image Design */}
+        <div className="flex gap-4 mb-6">
+          {/* Main Profile Photo */}
+          <div className="relative flex-shrink-0">
+            {user.photos?.[0] ? (
+              <div className="relative w-32 h-40 rounded-xl overflow-hidden">
+                <LazyImage
+                  src={user.photos[0].url}
+                  alt={user.name}
+                  className="w-full h-full object-cover"
+                  placeholder="👤"
+                />
+                {editing && (
                   <button
-                    onClick={() => setEditing(true)}
-                    className="px-4 py-2 bg-white text-pink-600 rounded-md hover:bg-gray-100"
+                    onClick={() => {
+                      const input = document.createElement('input');
+                      input.type = 'file';
+                      input.accept = 'image/*';
+                      input.multiple = false;
+                      input.onchange = async (e) => {
+                        const files = Array.from((e.target as HTMLInputElement).files || []);
+                        if (files.length > 0) {
+                          await handlePhotoUpload(files);
+                        }
+                      };
+                      input.click();
+                    }}
+                    className="absolute bottom-2 right-2 w-8 h-8 bg-pink-600 rounded-full flex items-center justify-center text-white shadow-lg hover:bg-pink-700 transition-colors"
                   >
-                    {t('profile.editProfile')}
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
                   </button>
-                </>
               )}
             </div>
+            ) : (
+              <div className="w-32 h-40 rounded-xl bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                <span className="text-4xl">👤</span>
           </div>
+            )}
         </div>
 
-        <div className="p-6 md:p-8 dark:bg-gray-800 dark:text-gray-100 transition-colors">
-
-          {/* Profile Badges */}
-          <div className="mb-6">
-            <ProfileBadges user={user} showOnlineStatus={true} showLastSeen={true} />
-          </div>
-
-          {/* Profile Completeness Meter */}
-          <div className="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
-            <ProfileCompletenessMeter user={user} />
-          </div>
-
-          {/* Profile Status Display */}
-          <div className="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="font-semibold text-gray-900 dark:text-pink-200">{t('profile.profileStatus')}</p>
-                <p className="text-sm text-gray-600 dark:text-pink-300" dir="auto">
-                  {user.isActive 
-                    ? t('profile.activeStatusDesc')
-                    : t('profile.inactiveStatusDesc')}
-                </p>
-              </div>
-              <div className={`px-3 py-1 rounded-full text-sm font-medium ${
-                user.isActive 
-                  ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300' 
-                  : 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-300'
-              }`}>
-                {user.isActive ? t('profile.active') : t('profile.inactive')}
-              </div>
-            </div>
-          </div>
-
-          {/* Photos Section */}
-          <div className="mb-6 bg-white dark:bg-black p-6 rounded-lg shadow-md">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-pink-300 mb-4">
-              {t('profile.photos')} ({t('profile.maxPhotos')})
-            </h3>
-            
-            {/* Existing Photos Grid */}
-            {(user.photos || []).length > 0 && (
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-                {(user.photos || []).map((photo, index) => (
-                  <div key={index} className="relative group">
+          {/* Additional Photos */}
+          <div className="flex-1 flex flex-col gap-2">
+            {user.photos && user.photos.length > 1 && user.photos.slice(1, 3).map((photo, index) => (
+              <div key={index} className="relative w-full h-19 rounded-lg overflow-hidden">
                     <LazyImage
                       src={photo.url}
-                      alt={`Photo ${index + 1}`}
-                      className="w-full aspect-square object-cover rounded-lg border-2 border-gray-200 dark:border-pink-800"
+                  alt={`Photo ${index + 2}`}
+                  className="w-full h-full object-cover"
                       placeholder="📷"
                     />
-                    {photo.isPrimary && (
-                      <div className="absolute top-2 left-2 bg-gradient-to-r from-pink-600 to-red-600 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-lg">
-                        ⭐ {t('profile.primaryPhoto')}
                       </div>
-                    )}
-                    <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all rounded-lg flex items-center justify-center">
-                      <div className="opacity-0 group-hover:opacity-100 transition-all flex gap-2">
-                        {!photo.isPrimary && (
+            ))}
+            {editing && (user.photos?.length || 0) < 3 && (
                           <button
-                            onClick={() => handleSetPrimaryPhoto(index)}
-                            className="bg-pink-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-pink-700 transition-colors shadow-lg"
-                            title="Set as primary photo"
-                          >
-                            ⭐ Primary
+                onClick={() => {
+                  const input = document.createElement('input');
+                  input.type = 'file';
+                  input.accept = 'image/*';
+                  input.multiple = true;
+                  input.onchange = async (e) => {
+                    const files = Array.from((e.target as HTMLInputElement).files || []);
+                    if (files.length > 0) {
+                      await handlePhotoUpload(files);
+                    }
+                  };
+                  input.click();
+                }}
+                className="w-full h-19 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 flex flex-col items-center justify-center text-gray-500 dark:text-gray-400 hover:border-pink-500 dark:hover:border-pink-500 transition-colors"
+              >
+                <svg className="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+                <span className="text-xs">Add Photo</span>
                           </button>
                         )}
-                        <button
-                          onClick={() => handleDeletePhoto(index)}
-                          className="bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-700 transition-colors shadow-lg"
-                          title="Delete photo"
-                        >
-                          🗑️ Delete
-                        </button>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            )}
 
-            {/* Photo Upload Component with Drag & Drop */}
-            <PhotoUpload
-              onUpload={handlePhotoUpload}
-              maxPhotos={3}
-              currentPhotoCount={user.photos?.length || 0}
-              uploading={uploadingPhotos}
-              disabled={editing}
+        {/* Profile Completion */}
+        <div className="bg-white dark:bg-[#181b23] rounded-lg p-4 mb-6">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-medium text-gray-700 dark:text-pink-200">Profile Completion</span>
+            <span className="text-sm font-semibold text-pink-600 dark:text-pink-400">
+              {user.isProfileComplete ? '100%' : '80%'}
+            </span>
+          </div>
+          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+            <div 
+              className="bg-pink-600 h-2 rounded-full transition-all duration-300"
+              style={{ width: user.isProfileComplete ? '100%' : '80%' }}
             />
           </div>
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* About Me Section - Collapsible */}
+        <div className="bg-white dark:bg-[#181b23] rounded-lg overflow-hidden">
+          <button
+            onClick={() => setExpandedSections({ ...expandedSections, aboutMe: !expandedSections.aboutMe })}
+            className="w-full flex items-center justify-between p-4 text-left"
+          >
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-pink-100">About Me</h2>
+            <svg 
+              className={`w-5 h-5 text-gray-500 dark:text-gray-400 transition-transform ${expandedSections.aboutMe ? 'rotate-180' : ''}`}
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          
+          {expandedSections.aboutMe && (
+            <div className="px-4 pb-4 space-y-4">
+              {/* Full Name */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">{t('profile.name')}</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Full Name</label>
               {editing ? (
                 <input
                   type="text"
                   value={formData.name || ''}
                   onChange={(e) => setFormData({ ...formData, name: sanitizeFormInput(e.target.value, 'text') })}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-pink-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
                 />
               ) : (
                 <p className="text-gray-900 dark:text-pink-100">{user.name}</p>
               )}
             </div>
 
+              {/* Age */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">{t('profile.email')}</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Age</label>
               {editing ? (
-                <>
                   <input
-                    type="email"
-                    value={formData.email || ''}
-                    onChange={(e) => {
-                      setFormData({ ...formData, email: e.target.value });
-                      if (fieldErrors.email) {
-                        setFieldErrors({ ...fieldErrors, email: '' });
+                    type="number"
+                    value={user.age || ''}
+                    readOnly
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-pink-100 rounded-lg bg-gray-50 dark:bg-gray-800"
+                  />
+                ) : (
+                  <p className="text-gray-900 dark:text-pink-100">{user.age || 'Not provided'}</p>
+              )}
+            </div>
+
+              {/* Height */}
+            <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Height</label>
+              {editing ? (
+                <input
+                    type="text"
+                    value={formData.height ? `${Math.floor(formData.height / 12)}'${formData.height % 12}"` : ''}
+                  onChange={(e) => {
+                      const value = e.target.value;
+                      const match = value.match(/(\d+)'(\d+)"/);
+                      if (match) {
+                        const feet = parseInt(match[1]);
+                        const inches = parseInt(match[2]);
+                        setFormData({ ...formData, height: feet * 12 + inches });
+                      } else if (value === '') {
+                        setFormData({ ...formData, height: undefined });
                       }
                     }}
-                    className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400 dark:bg-gray-900 dark:text-pink-100 ${
-                      fieldErrors.email ? 'border-red-500 dark:border-red-600' : 'border-gray-300 dark:border-pink-800'
-                    }`}
-                  />
-                  {fieldErrors.email && (
-                    <p className="text-red-500 dark:text-red-400 text-xs mt-1">{fieldErrors.email}</p>
-                  )}
-                </>
-              ) : (
-                <p className="text-gray-900 dark:text-pink-100">{user.email || t('profile.notProvided')}</p>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">{t('profile.phone')}</label>
-              {editing ? (
-                <input
-                  type="tel"
-                  value={formData.phone || ''}
-                  onChange={(e) => setFormData({ ...formData, phone: sanitizeFormInput(e.target.value, 'phone') })}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
-                />
-              ) : (
-                <p className="text-gray-900 dark:text-pink-100">{user.phone || t('profile.notProvided')}</p>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">{t('profile.age')}</label>
-              <p className="text-gray-900 dark:text-pink-100">{user.age || t('profile.notProvided')}</p>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Date of Birth</label>
-              {editing ? (
-                <input
-                  type="date"
-                  value={typeof formData.dateOfBirth === 'string' ? formData.dateOfBirth : (formData.dateOfBirth instanceof Date ? formData.dateOfBirth.toISOString().split('T')[0] : '')}
-                  onChange={(e) => {
-                    setFormData({ ...formData, dateOfBirth: e.target.value });
-                  }}
-                  max={new Date().toISOString().split('T')[0]}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
+                    placeholder="5'6&quot;"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-pink-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
                 />
               ) : (
                 <p className="text-gray-900 dark:text-pink-100">
-                  {user.dateOfBirth ? new Date(user.dateOfBirth).toLocaleDateString() : t('profile.notProvided')}
+                    {user.height ? `${Math.floor(user.height / 12)}'${user.height % 12}"` : 'Not provided'}
                 </p>
               )}
             </div>
 
+              {/* Bio */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Blood Group</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Bio</label>
               {editing ? (
-                <select
-                  value={formData.bloodGroup || ''}
-                  onChange={(e) => setFormData({ ...formData, bloodGroup: e.target.value || null })}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
-                >
-                  <option value="">Select Blood Group</option>
-                  <option value="A+">A+</option>
-                  <option value="A-">A-</option>
-                  <option value="B+">B+</option>
-                  <option value="B-">B-</option>
-                  <option value="AB+">AB+</option>
-                  <option value="AB-">AB-</option>
-                  <option value="O+">O+</option>
-                  <option value="O-">O-</option>
-                </select>
-              ) : (
-                <p className="text-gray-900 dark:text-pink-100">{user.bloodGroup || t('profile.notProvided')}</p>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Disability</label>
-              {editing ? (
-                <select
-                  value={formData.disability || 'no'}
-                  onChange={(e) => setFormData({ ...formData, disability: e.target.value as 'no' | 'yes' | 'not-specified' })}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
-                >
-                  <option value="no">No</option>
-                  <option value="yes">Yes</option>
-                  <option value="not-specified">Not Specified</option>
-                </select>
-              ) : (
-                <p className="text-gray-900 dark:text-pink-100 capitalize">{user.disability === 'no' ? 'No' : user.disability === 'yes' ? 'Yes' : 'Not Specified'}</p>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Profile Created By</label>
-              {editing ? (
-                <select
-                  value={formData.profileCreatedBy || 'self'}
-                  onChange={(e) => setFormData({ ...formData, profileCreatedBy: e.target.value as 'self' | 'family' | 'relative' | 'friend' })}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
-                >
-                  <option value="self">Self</option>
-                  <option value="family">Family</option>
-                  <option value="relative">Relative</option>
-                  <option value="friend">Friend</option>
-                </select>
-              ) : (
-                <p className="text-gray-900 dark:text-pink-100 capitalize">{user.profileCreatedBy || 'Self'}</p>
-              )}
-            </div>
-
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">{t('profile.location')}</label>
-              {editing ? (
-                <LocationSelect
-                  selectedCountry={formData.country || user?.country || ''}
-                  selectedState={formData.state || user?.state || ''}
-                  selectedCity={formData.city || user?.city || ''}
-                  onCountryChange={handleCountryChange}
-                  onStateChange={handleStateChange}
-                  onCityChange={handleCityChange}
-                />
-              ) : (
-                <div className="space-y-1 text-gray-900 dark:text-pink-100">
-                  {user.country && <p><span className="font-medium dark:text-pink-200">{t('profile.country')}:</span> {user.country}</p>}
-                  {user.state && <p><span className="font-medium dark:text-pink-200">{t('profile.state')}:</span> {user.state}</p>}
-                  {user.city && <p><span className="font-medium dark:text-pink-200">{t('profile.city')}:</span> {user.city}</p>}
-                  {user.town && <p><span className="font-medium dark:text-pink-200">Town:</span> {user.town}</p>}
-                  {!user.country && !user.state && !user.city && <p>{t('profile.notProvided')}</p>}
-                </div>
-              )}
-            </div>
-
-            {editing && (
-              <>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Town/Village</label>
-                  <input
-                    type="text"
-                    value={formData.town || ''}
-                    onChange={(e) => setFormData({ ...formData, town: sanitizeFormInput(e.target.value, 'text') })}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
-                    placeholder="Enter town or village name"
-                  />
-                </div>
-
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Present Address</label>
                   <textarea
-                    value={formData.presentAddress || ''}
-                    onChange={(e) => setFormData({ ...formData, presentAddress: sanitizeFormInput(e.target.value, 'textarea') })}
-                    rows={2}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
-                    placeholder="Enter present address"
-                  />
+                    value={formData.bio || ''}
+                    onChange={(e) => setFormData({ ...formData, bio: sanitizeFormInput(e.target.value, 'textarea') })}
+                    rows={4}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-pink-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                    placeholder="A software engineer with a passion for travel and classical dance. Looking for a partner who values family, honesty, and a good sense of humor."
+                />
+              ) : (
+                  <p className="text-gray-900 dark:text-pink-100">{user.bio || 'No bio provided'}</p>
+              )}
+            </div>
                 </div>
-
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Permanent Address</label>
-                  <textarea
-                    value={formData.permanentAddress || ''}
-                    onChange={(e) => setFormData({ ...formData, permanentAddress: sanitizeFormInput(e.target.value, 'textarea') })}
-                    rows={2}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
-                    placeholder="Enter permanent address"
-                  />
-                </div>
-              </>
-            )}
-
-            {!editing && (
-              <>
-                {user.presentAddress && (
-                  <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Present Address</label>
-                    <p className="text-gray-900 dark:text-pink-100">{user.presentAddress}</p>
+          )}
                   </div>
-                )}
-                {user.permanentAddress && (
-                  <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Permanent Address</label>
-                    <p className="text-gray-900 dark:text-pink-100">{user.permanentAddress}</p>
-                  </div>
-                )}
-              </>
-            )}
 
+        {/* Lifestyle & Interests Section - Collapsible */}
+        <div className="bg-white dark:bg-[#181b23] rounded-lg overflow-hidden">
+          <button
+            onClick={() => setExpandedSections({ ...expandedSections, lifestyle: !expandedSections.lifestyle })}
+            className="w-full flex items-center justify-between p-4 text-left"
+          >
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-pink-100">Lifestyle & Interests</h2>
+            <svg 
+              className={`w-5 h-5 text-gray-500 dark:text-gray-400 transition-transform ${expandedSections.lifestyle ? 'rotate-180' : ''}`}
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          
+          {expandedSections.lifestyle && (
+            <div className="px-4 pb-4 space-y-6">
+              {/* Dietary Preferences */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">WhatsApp Number</label>
-              {editing ? (
-                <input
-                  type="tel"
-                  value={formData.whatsappNumber || ''}
-                  onChange={(e) => setFormData({ ...formData, whatsappNumber: sanitizeFormInput(e.target.value, 'phone') })}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
-                  placeholder="Enter WhatsApp number"
-                />
-              ) : (
-                <p className="text-gray-900 dark:text-pink-100">{user.whatsappNumber || t('profile.notProvided')}</p>
+                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-3">Dietary Preferences</label>
+                <div className="flex flex-wrap gap-2">
+                  {dietaryOptions.map((option) => {
+                    const isSelected = formData.diet === option;
+                    return (
+                      <button
+                        key={option}
+                        type="button"
+                        onClick={() => editing && setFormData({ ...formData, diet: option as any })}
+                        disabled={!editing}
+                        className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                          isSelected
+                            ? 'bg-pink-600 text-white'
+                            : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                        } ${!editing ? 'cursor-default' : 'cursor-pointer hover:bg-pink-100 dark:hover:bg-pink-900/20'}`}
+                      >
+                        {option === 'non-vegetarian' ? 'Non-Veg' : option.charAt(0).toUpperCase() + option.slice(1)}
+                      </button>
+                    );
+                  })}
+            </div>
+                {!editing && user.diet && (
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    <span className="px-4 py-2 rounded-full text-sm font-medium bg-pink-600 text-white">
+                      {user.diet === 'non-vegetarian' ? 'Non-Veg' : user.diet.charAt(0).toUpperCase() + user.diet.slice(1)}
+                    </span>
+            </div>
               )}
             </div>
 
+              {/* Hobbies & Interests */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
-                {t('profile.education')}
-                {loadingEducation && (
-                  <span className="ml-2 text-xs text-gray-500 dark:text-pink-400">(Loading...)</span>
-                )}
-              </label>
-              {editing ? (
-                <select
-                  value={formData.education || ''}
-                  onChange={(e) => setFormData({ ...formData, education: e.target.value })}
-                  disabled={loadingEducation}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400 disabled:opacity-50"
-                >
-                  <option value="">Select Education</option>
-                  {educationOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              ) : (
-                <p className="text-gray-900 dark:text-pink-100">
-                  {user.education 
-                    ? educationOptions.find(opt => opt.value === user.education)?.label || user.education
-                    : t('profile.notProvided')}
-                </p>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Educational Detail</label>
-              {editing ? (
-                <select
-                  value={formData.educationalDetail || ''}
-                  onChange={(e) => setFormData({ ...formData, educationalDetail: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
-                >
-                  <option value="">Select</option>
-                  <option value="Graduate">Graduate</option>
-                  <option value="Post Graduate">Post Graduate</option>
-                  <option value="Doctorate">Doctorate</option>
-                  <option value="Diploma">Diploma</option>
-                  <option value="Professional">Professional</option>
-                </select>
-              ) : (
-                <p className="text-gray-900 dark:text-pink-100">{user.educationalDetail || t('profile.notProvided')}</p>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
-                {t('profile.occupation')}
-                {loadingOccupation && (
-                  <span className="ml-2 text-xs text-gray-500 dark:text-pink-400">(Loading...)</span>
-                )}
-              </label>
-              {editing ? (
-                <select
-                  value={formData.occupation || ''}
-                  onChange={(e) => setFormData({ ...formData, occupation: e.target.value })}
-                  disabled={loadingOccupation}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400 disabled:opacity-50"
-                >
-                  <option value="">Select Occupation</option>
-                  {occupationOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              ) : (
-                <p className="text-gray-900 dark:text-pink-100">
-                  {user.occupation 
-                    ? occupationOptions.find(opt => opt.value === user.occupation)?.label || user.occupation
-                    : t('profile.notProvided')}
-                </p>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Profession</label>
-              {editing ? (
-                <input
-                  type="text"
-                  value={formData.profession || ''}
-                  onChange={(e) => setFormData({ ...formData, profession: sanitizeFormInput(e.target.value, 'text') })}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
-                  placeholder="e.g., Computer Software Professional"
-                />
-              ) : (
-                <p className="text-gray-900 dark:text-pink-100">{user.profession || t('profile.notProvided')}</p>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Employer/Company</label>
-              {editing ? (
-                <input
-                  type="text"
-                  value={formData.employer || ''}
-                  onChange={(e) => setFormData({ ...formData, employer: sanitizeFormInput(e.target.value, 'text') })}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
-                  placeholder="Company name"
-                />
-              ) : (
-                <p className="text-gray-900 dark:text-pink-100">{user.employer || t('profile.notProvided')}</p>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Occupation Detail</label>
-              {editing ? (
-                <input
-                  type="text"
-                  value={formData.occupationDetail || ''}
-                  onChange={(e) => setFormData({ ...formData, occupationDetail: sanitizeFormInput(e.target.value, 'text') })}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
-                  placeholder="Detailed occupation information"
-                />
-              ) : (
-                <p className="text-gray-900 dark:text-pink-100">{user.occupationDetail || t('profile.notProvided')}</p>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Annual Income</label>
-              {editing ? (
-                <input
-                  type="text"
-                  value={formData.annualIncome || ''}
-                  onChange={(e) => setFormData({ ...formData, annualIncome: sanitizeFormInput(e.target.value, 'text') })}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
-                  placeholder="e.g., 25-30 lakh"
-                />
-              ) : (
-                <p className="text-gray-900 dark:text-pink-100">{user.annualIncome || t('profile.notProvided')}</p>
-              )}
-            </div>
-
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">{t('profile.bio')}</label>
-              {editing ? (
-                <textarea
-                  value={formData.bio || ''}
-                  onChange={(e) => setFormData({ ...formData, bio: sanitizeFormInput(e.target.value, 'textarea') })}
-                  rows={4}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
-                  dir="auto"
-                />
-              ) : (
-                <p className="text-gray-900 dark:text-pink-100" dir="auto">{user.bio || t('profile.noBio')}</p>
-              )}
-            </div>
-
-            {/* Family Information Section */}
-            <div className="md:col-span-2 border-t border-gray-200 dark:border-pink-800 pt-6 mt-4">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-pink-300">👨‍👩‍👧‍👦 Family Information</h3>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Father's Name */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Father's Name</label>
-                  {editing ? (
-                    <input
-                      type="text"
-                      value={formData.family?.fathersName || ''}
-                      onChange={(e) => setFormData({
-                        ...formData,
-                        family: {
-                          ...formData.family,
-                          fathersName: sanitizeFormInput(e.target.value, 'text'),
-                        },
-                      })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
-                      placeholder="Enter father's name"
-                    />
-                  ) : (
-                    <p className="text-gray-900 dark:text-pink-100">{user.family?.fathersName || t('profile.notProvided')}</p>
-                  )}
-                </div>
-
-                {/* Father's Occupation Type */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Father's Occupation Type</label>
-                  {editing ? (
-                    <select
-                      value={formData.family?.fathersOccupationType || ''}
-                      onChange={(e) => setFormData({
-                        ...formData,
-                        family: {
-                          ...formData.family,
-                          fathersOccupationType: e.target.value as 'job' | 'private' | 'govt' | 'business' | undefined,
-                          fathersOccupationDesc: e.target.value ? formData.family?.fathersOccupationDesc : '', 
-                        },
-                      })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
+                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-3">Hobbies & Interests</label>
+                <div className="flex flex-wrap gap-2">
+                  {commonHobbies.map((hobby) => {
+                    const isSelected = (formData.hobbies || []).includes(hobby);
+                    return (
+                      <button
+                        key={hobby}
+                        type="button"
+                        onClick={() => {
+                          if (editing) {
+                            const currentHobbies = formData.hobbies || [];
+                            if (isSelected) {
+                              setFormData({ ...formData, hobbies: currentHobbies.filter(h => h !== hobby) });
+                            } else {
+                              setFormData({ ...formData, hobbies: [...currentHobbies, hobby] });
+                            }
+                          }
+                        }}
+                        disabled={!editing}
+                        className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                          isSelected
+                            ? 'bg-pink-600 text-white'
+                            : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                        } ${!editing ? 'cursor-default' : 'cursor-pointer hover:bg-pink-100 dark:hover:bg-pink-900/20'}`}
+                      >
+                        {hobby}
+                      </button>
+                    );
+                  })}
+                  {editing && (
+                    <button
+                      type="button"
+                      className="px-4 py-2 rounded-full text-sm font-medium border-2 border-dashed border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 hover:border-pink-500 dark:hover:border-pink-500 transition-colors"
                     >
-                      <option value="">Select Type</option>
-                      <option value="job">Job</option>
-                      <option value="private">Private</option>
-                      <option value="govt">Government</option>
-                      <option value="business">Business</option>
-                    </select>
-                  ) : (
-                    <p className="text-gray-900 dark:text-pink-100">
-                      {user.family?.fathersOccupationType 
-                        ? user.family.fathersOccupationType.charAt(0).toUpperCase() + user.family.fathersOccupationType.slice(1)
-                        : t('profile.notProvided')}
-                    </p>
-                  )}
-                </div>
-
-                {/* Father's Occupation Description - Show only when type is selected */}
-                {editing && formData.family?.fathersOccupationType && (
-                  <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Father's Occupation Description</label>
-                    <input
-                      type="text"
-                      value={formData.family?.fathersOccupationDesc || ''}
-                      onChange={(e) => setFormData({
-                        ...formData,
-                        family: {
-                          ...formData.family,
-                          fathersOccupationDesc: sanitizeFormInput(e.target.value, 'text'),
-                        },
-                      })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
-                      placeholder={`Enter ${formData.family.fathersOccupationType} details`}
-                    />
-                  </div>
-                )}
-
-                {/* Display Father's Occupation Description when not editing */}
-                {!editing && user.family?.fathersOccupationDesc && (
-                  <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Father's Occupation Description</label>
-                    <p className="text-gray-900 dark:text-pink-100">{user.family.fathersOccupationDesc}</p>
-                  </div>
-                )}
-
-                {/* Father's Contact Number */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Father's Contact Number</label>
-                  {editing ? (
-                    <input
-                      type="tel"
-                      value={formData.family?.fathersContactNumber || ''}
-                      onChange={(e) => setFormData({
-                        ...formData,
-                        family: {
-                          ...formData.family,
-                          fathersContactNumber: sanitizeFormInput(e.target.value, 'phone'),
-                        },
-                      })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
-                      placeholder="Enter contact number"
-                    />
-                  ) : (
-                    <p className="text-gray-900 dark:text-pink-100">{user.family?.fathersContactNumber || t('profile.notProvided')}</p>
-                  )}
-                </div>
-
-                {/* Mother's Name */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Mother's Name</label>
-                  {editing ? (
-                    <input
-                      type="text"
-                      value={formData.family?.mothersName || ''}
-                      onChange={(e) => setFormData({
-                        ...formData,
-                        family: {
-                          ...formData.family,
-                          mothersName: sanitizeFormInput(e.target.value, 'text'),
-                        },
-                      })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
-                      placeholder="Enter mother's name"
-                    />
-                  ) : (
-                    <p className="text-gray-900 dark:text-pink-100">{user.family?.mothersName || t('profile.notProvided')}</p>
-                  )}
-                </div>
-
-                {/* Mother's Occupation Type */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Mother's Occupation Type</label>
-                  {editing ? (
-                    <select
-                      value={formData.family?.mothersOccupationType || ''}
-                      onChange={(e) => setFormData({
-                        ...formData,
-                        family: {
-                          ...formData.family,
-                          mothersOccupationType: e.target.value as 'job' | 'private' | 'govt' | 'business' | undefined,
-                          mothersOccupationDesc: e.target.value ? formData.family?.mothersOccupationDesc : '', 
-                        },
-                      })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
-                    >
-                      <option value="">Select Type</option>
-                      <option value="job">Job</option>
-                      <option value="private">Private</option>
-                      <option value="govt">Government</option>
-                      <option value="business">Business</option>
-                    </select>
-                  ) : (
-                    <p className="text-gray-900 dark:text-pink-100">
-                      {user.family?.mothersOccupationType 
-                        ? user.family.mothersOccupationType.charAt(0).toUpperCase() + user.family.mothersOccupationType.slice(1)
-                        : t('profile.notProvided')}
-                    </p>
-                  )}
-                </div>
-
-                {/* Mother's Occupation Description - Show only when type is selected */}
-                {editing && formData.family?.mothersOccupationType && (
-                  <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Mother's Occupation Description</label>
-                    <input
-                      type="text"
-                      value={formData.family?.mothersOccupationDesc || ''}
-                      onChange={(e) => setFormData({
-                        ...formData,
-                        family: {
-                          ...formData.family,
-                          mothersOccupationDesc: sanitizeFormInput(e.target.value, 'text'),
-                        },
-                      })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
-                      placeholder={`Enter ${formData.family.mothersOccupationType} details`}
-                    />
-                  </div>
-                )}
-
-                {/* Display Mother's Occupation Description when not editing */}
-                {!editing && user.family?.mothersOccupationDesc && (
-                  <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Mother's Occupation Description</label>
-                    <p className="text-gray-900 dark:text-pink-100">{user.family.mothersOccupationDesc}</p>
-                  </div>
-                )}
+                      + Add
+                    </button>
+              )}
+            </div>
+                {!editing && (
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {(user.hobbies || []).map((hobby) => (
+                      <span
+                        key={hobby}
+                        className="px-4 py-2 rounded-full text-sm font-medium bg-pink-600 text-white"
+                      >
+                        {hobby}
+                      </span>
+                    ))}
+                    {(!user.hobbies || user.hobbies.length === 0) && (
+                      <span className="text-gray-500 dark:text-gray-400 text-sm">No hobbies listed</span>
+              )}
+            </div>
+              )}
+            </div>
               </div>
+                  )}
+                </div>
+
+        {/* Partner Preferences Section - Collapsible */}
+        <div className="bg-white dark:bg-[#181b23] rounded-lg overflow-hidden">
+          <button
+            onClick={() => setExpandedSections({ ...expandedSections, partnerPreferences: !expandedSections.partnerPreferences })}
+            className="w-full flex items-center justify-between p-4 text-left"
+          >
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-pink-100">Partner Preferences</h2>
+            <svg 
+              className={`w-5 h-5 text-gray-500 dark:text-gray-400 transition-transform ${expandedSections.partnerPreferences ? 'rotate-180' : ''}`}
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          
+          {expandedSections.partnerPreferences && (
+            <div className="px-4 pb-4 space-y-6">
+              {/* Age Range */}
+                <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-3">
+                  Age Range
+                  <span className="ml-2 text-pink-600 dark:text-pink-400 font-semibold">
+                    {formData.preferences?.minAge || user.preferences?.minAge || 28} - {formData.preferences?.maxAge || user.preferences?.maxAge || 34}
+                  </span>
+                </label>
+                  {editing ? (
+                  <div className="space-y-2">
+                    <div className="flex gap-4">
+                      <div className="flex-1">
+                        <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">Min Age</label>
+                    <input
+                          type="number"
+                          min="18"
+                          max="100"
+                          value={formData.preferences?.minAge || user.preferences?.minAge || 28}
+                      onChange={(e) => setFormData({
+                        ...formData,
+                            preferences: {
+                              ...formData.preferences,
+                              minAge: parseInt(e.target.value) || undefined,
+                        },
+                      })}
+                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-pink-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                    />
+                </div>
+                      <div className="flex-1">
+                        <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">Max Age</label>
+                    <input
+                          type="number"
+                          min="18"
+                          max="100"
+                          value={formData.preferences?.maxAge || user.preferences?.maxAge || 34}
+                      onChange={(e) => setFormData({
+                        ...formData,
+                            preferences: {
+                              ...formData.preferences,
+                              maxAge: parseInt(e.target.value) || undefined,
+                        },
+                      })}
+                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-pink-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                    />
+                </div>
+                </div>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <div className="flex-1 h-2 bg-gray-200 dark:bg-gray-700 rounded-full relative">
+                      <div 
+                        className="absolute h-2 bg-pink-600 rounded-full"
+                        style={{ 
+                          left: `${((user.preferences?.minAge || 28) - 18) / (100 - 18) * 100}%`,
+                          width: `${((user.preferences?.maxAge || 34) - (user.preferences?.minAge || 28)) / (100 - 18) * 100}%`
+                        }}
+                    />
+                  </div>
+                    <span className="text-pink-600 dark:text-pink-400 font-semibold text-sm whitespace-nowrap">
+                      {user.preferences?.minAge || 28} - {user.preferences?.maxAge || 34}
+                    </span>
+                  </div>
+                )}
             </div>
 
-            {/* Birth Details Section - For Auto Horoscope Calculation */}
-            <div className="md:col-span-2 border-t border-gray-200 dark:border-pink-800 pt-6 mt-4">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-pink-300">📅 Birth Details (For Auto Horoscope Calculation)</h3>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              {/* Height Range */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
-                    Date of Birth
+                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-3">
+                  Height Range
+                  <span className="ml-2 text-pink-600 dark:text-pink-400 font-semibold">
+                    {(() => {
+                      const minH = formData.preferences?.minHeight || user.preferences?.minHeight || 68;
+                      const maxH = formData.preferences?.maxHeight || user.preferences?.maxHeight || 74;
+                      const minFeet = Math.floor(minH / 12);
+                      const minInches = minH % 12;
+                      const maxFeet = Math.floor(maxH / 12);
+                      const maxInches = maxH % 12;
+                      return minFeet + "'" + minInches + '" - ' + maxFeet + "'" + maxInches + '"';
+                    })()}
+                  </span>
                   </label>
                   {editing ? (
+                  <div className="space-y-2">
+                    <div className="flex gap-4">
+                      <div className="flex-1">
+                        <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">Min Height</label>
                     <input
-                      type="date"
-                      value={typeof formData.dateOfBirth === 'string' ? formData.dateOfBirth : (formData.dateOfBirth instanceof Date ? formData.dateOfBirth.toISOString().split('T')[0] : '')}
+                          type="text"
+                          value={(() => {
+                            if (formData.preferences?.minHeight) {
+                              const feet = Math.floor(formData.preferences.minHeight / 12);
+                              const inches = formData.preferences.minHeight % 12;
+                              return feet + "'" + inches + '"';
+                            }
+                            if (user.preferences?.minHeight) {
+                              const feet = Math.floor(user.preferences.minHeight / 12);
+                              const inches = user.preferences.minHeight % 12;
+                              return feet + "'" + inches + '"';
+                            }
+                            return "5'8\"";
+                          })()}
                       onChange={(e) => {
-                        setFormData({ ...formData, dateOfBirth: e.target.value });
-                      }}
-                      max={new Date().toISOString().split('T')[0]}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
-                    />
-                  ) : (
-                    <p className="text-gray-900 dark:text-pink-100">
-                      {user.dateOfBirth ? new Date(user.dateOfBirth).toLocaleDateString() : t('profile.notProvided')}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
-                    Time of Birth (HH:MM:SS)
-                  </label>
-                  {editing ? (
-                    <input
-                      type="time"
-                      step="1"
-                      value={formData.horoscopeDetails?.timeOfBirth ? formData.horoscopeDetails.timeOfBirth.substring(0, 5) : ''}
-                      onChange={(e) => {
-                        const timeValue = e.target.value ? e.target.value + ':00' : ''; 
+                            const value = e.target.value;
+                            const match = value.match(/(\d+)'(\d+)"/);
+                            if (match) {
+                              const feet = parseInt(match[1]);
+                              const inches = parseInt(match[2]);
                         setFormData({
                           ...formData,
-                          horoscopeDetails: {
-                            ...formData.horoscopeDetails,
-                            timeOfBirth: timeValue,
+                                preferences: {
+                                  ...formData.preferences,
+                                  minHeight: feet * 12 + inches,
                           },
                         });
+                            }
                       }}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
-                      placeholder="HH:MM:SS"
+                          placeholder="5'8&quot;"
+                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-pink-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
                     />
-                  ) : (
-                    <p className="text-gray-900 dark:text-pink-100">
-                      {user.horoscopeDetails?.timeOfBirth || t('profile.notProvided')}
-                    </p>
-                  )}
                 </div>
-              </div>
-              {editing && formData.dateOfBirth && formData.horoscopeDetails?.timeOfBirth && (formData.city || formData.state || formData.country) && (
-                <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md">
-                  <p className="text-sm text-blue-800 dark:text-blue-200">
-                    💡 Horoscope (Rashi & Nakshatra) will be automatically calculated using your profile location ({formData.city || formData.state || formData.country || 'India'}) when you save your profile.
-                  </p>
-                </div>
-              )}
-              {editing && formData.dateOfBirth && formData.horoscopeDetails?.timeOfBirth && !formData.city && !formData.state && !formData.country && (
-                <div className="mb-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-md">
-                  <p className="text-sm text-yellow-800 dark:text-yellow-200">
-                    ⚠️ Please add your City, State, or Country in the Location section above for accurate horoscope calculation.
-                  </p>
-                </div>
-              )}
-            </div>
-
-            {/* Horoscope Details Section */}
-            <div className="md:col-span-2 border-t border-gray-200 dark:border-pink-800 pt-6 mt-4">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-pink-300">
-                  🔮 {t('profile.horoscopeDetails') || 'Horoscope Details'}
-                  {user.horoscopeDetails?.rashi && user.horoscopeDetails?.nakshatra && (
-                    <span className="text-sm font-normal text-green-600 dark:text-green-400 ml-2">
-                      (Auto-calculated - You can manually edit below)
-                    </span>
-                  )}
-                </h3>
-                {!editing && !editingHoroscope && (
-                  <button
-                    onClick={() => {
-                      setEditingHoroscope(true);
-                      
-                      setFormData({
-                        ...formData,
-                        horoscopeDetails: {
-                          rashi: user?.horoscopeDetails?.rashi || '',
-                          nakshatra: user?.horoscopeDetails?.nakshatra || '',
-                          starSign: user?.horoscopeDetails?.starSign || '',
-                          timeOfBirth: user?.horoscopeDetails?.timeOfBirth || '',
-                        },
-                      });
-                    }}
-                    className="px-3 py-1.5 text-sm font-medium text-pink-600 dark:text-pink-300 hover:text-pink-700 dark:hover:text-pink-200 border border-pink-300 dark:border-pink-700 rounded-md hover:bg-pink-50 dark:hover:bg-pink-900/10 transition-colors"
-                  >
-                    ✏️ {t('common.edit') || 'Edit'}
-                  </button>
-                )}
-              </div>
-              {editing && formData.dateOfBirth && formData.horoscopeDetails?.timeOfBirth && (formData.city || formData.state || formData.country) && (
-                <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md">
-                  <p className="text-sm text-blue-800 dark:text-blue-200">
-                    💡 Horoscope will be auto-calculated on save, but you can manually select/edit Rashi and Nakshatra below if needed.
-                  </p>
-                </div>
-              )}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
-                    {t('profile.rashi') || 'Rashi (Moon Sign)'} <span className="text-xs text-gray-500 dark:text-gray-400">(Manual Selection)</span>
-                  </label>
-                  {(editing || editingHoroscope) ? (
-                    <select
-                      value={formData.horoscopeDetails?.rashi || ''}
-                      onChange={(e) => setFormData({
-                        ...formData,
-                        horoscopeDetails: {
-                          ...formData.horoscopeDetails,
-                          rashi: e.target.value,
-                        },
-                      })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
-                    >
-                      <option value="">Select Rashi (or leave empty for auto-calculation)</option>
-                      <option value="Aries">Aries (Mesha)</option>
-                      <option value="Taurus">Taurus (Vrishabha)</option>
-                      <option value="Gemini">Gemini (Mithuna)</option>
-                      <option value="Cancer">Cancer (Karka)</option>
-                      <option value="Leo">Leo (Simha)</option>
-                      <option value="Virgo">Virgo (Kanya)</option>
-                      <option value="Libra">Libra (Tula)</option>
-                      <option value="Scorpio">Scorpio (Vrishchika)</option>
-                      <option value="Sagittarius">Sagittarius (Dhanu)</option>
-                      <option value="Capricorn">Capricorn (Makara)</option>
-                      <option value="Aquarius">Aquarius (Kumbha)</option>
-                      <option value="Pisces">Pisces (Meena)</option>
-                    </select>
-                  ) : (
-                    <p className="text-gray-900 dark:text-pink-100">
-                      {user.horoscopeDetails?.rashi || t('profile.notProvided')}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
-                    {t('profile.nakshatra') || 'Nakshatra'} <span className="text-xs text-gray-500 dark:text-gray-400">(Manual Selection)</span>
-                  </label>
-                  {(editing || editingHoroscope) ? (
-                    <select
-                      value={formData.horoscopeDetails?.nakshatra || ''}
-                      onChange={(e) => setFormData({
-                        ...formData,
-                        horoscopeDetails: {
-                          ...formData.horoscopeDetails,
-                          nakshatra: e.target.value,
-                        },
-                      })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
-                    >
-                      <option value="">Select Nakshatra (or leave empty for auto-calculation)</option>
-                      <option value="Ashwini">Ashwini</option>
-                      <option value="Bharani">Bharani</option>
-                      <option value="Krittika">Krittika</option>
-                      <option value="Rohini">Rohini</option>
-                      <option value="Mrigashira">Mrigashira</option>
-                      <option value="Ardra">Ardra</option>
-                      <option value="Punarvasu">Punarvasu</option>
-                      <option value="Pushya">Pushya</option>
-                      <option value="Ashlesha">Ashlesha</option>
-                      <option value="Magha">Magha</option>
-                      <option value="Purva Phalguni">Purva Phalguni</option>
-                      <option value="Uttara Phalguni">Uttara Phalguni</option>
-                      <option value="Hasta">Hasta</option>
-                      <option value="Chitra">Chitra</option>
-                      <option value="Swati">Swati</option>
-                      <option value="Vishakha">Vishakha</option>
-                      <option value="Anuradha">Anuradha</option>
-                      <option value="Jyeshtha">Jyeshtha</option>
-                      <option value="Mula">Mula</option>
-                      <option value="Purva Ashadha">Purva Ashadha</option>
-                      <option value="Uttara Ashadha">Uttara Ashadha</option>
-                      <option value="Shravana">Shravana</option>
-                      <option value="Dhanishta">Dhanishta</option>
-                      <option value="Shatabhisha">Shatabhisha</option>
-                      <option value="Purva Bhadrapada">Purva Bhadrapada</option>
-                      <option value="Uttara Bhadrapada">Uttara Bhadrapada</option>
-                      <option value="Revati">Revati</option>
-                    </select>
-                  ) : (
-                    <p className="text-gray-900 dark:text-pink-100">
-                      {user.horoscopeDetails?.nakshatra || t('profile.notProvided')}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
-                    {t('profile.starSign') || 'Star Sign'}
-                  </label>
-                  {(editing || editingHoroscope) ? (
+                      <div className="flex-1">
+                        <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">Max Height</label>
                     <input
-                      type="text"
-                      value={formData.horoscopeDetails?.starSign || ''}
-                      onChange={(e) => setFormData({
-                        ...formData,
-                        horoscopeDetails: {
-                          ...formData.horoscopeDetails,
-                          starSign: e.target.value,
-                        },
-                      })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400"
-                      placeholder="Optional"
+                          type="text"
+                          value={(() => {
+                            if (formData.preferences?.maxHeight) {
+                              const feet = Math.floor(formData.preferences.maxHeight / 12);
+                              const inches = formData.preferences.maxHeight % 12;
+                              return feet + "'" + inches + '"';
+                            }
+                            if (user.preferences?.maxHeight) {
+                              const feet = Math.floor(user.preferences.maxHeight / 12);
+                              const inches = user.preferences.maxHeight % 12;
+                              return feet + "'" + inches + '"';
+                            }
+                            return "6'2\"";
+                          })()}
+                      onChange={(e) => {
+                            const value = e.target.value;
+                            const match = value.match(/(\d+)'(\d+)"/);
+                            if (match) {
+                              const feet = parseInt(match[1]);
+                              const inches = parseInt(match[2]);
+                        setFormData({
+                          ...formData,
+                                preferences: {
+                                  ...formData.preferences,
+                                  maxHeight: feet * 12 + inches,
+                          },
+                        });
+                            }
+                      }}
+                          placeholder="6'2&quot;"
+                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-pink-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
                     />
-                  ) : (
-                    <p className="text-gray-900 dark:text-pink-100">
-                      {user.horoscopeDetails?.starSign || t('profile.notProvided')}
-                    </p>
+                </div>
+              </div>
+                </div>
+                ) : (
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 h-2 bg-gray-200 dark:bg-gray-700 rounded-full relative">
+                    <div 
+                      className="absolute h-2 bg-pink-600 rounded-full"
+                      style={{ 
+                        left: String(((user.preferences?.minHeight || 68) - 48) / (84 - 48) * 100) + '%',
+                        width: String(((user.preferences?.maxHeight || 74) - (user.preferences?.minHeight || 68)) / (84 - 48) * 100) + '%'
+                      }}
+                    />
+                </div>
+                    <span className="text-pink-600 dark:text-pink-400 font-semibold text-sm whitespace-nowrap">
+                      {user.preferences?.minHeight 
+                        ? (Math.floor(user.preferences.minHeight / 12) + "'" + (user.preferences.minHeight % 12) + '"')
+                        : "5'8\""} - {user.preferences?.maxHeight 
+                          ? (Math.floor(user.preferences.maxHeight / 12) + "'" + (user.preferences.maxHeight % 12) + '"')
+                          : "6'2\""}
+                    </span>
+                </div>
                   )}
                 </div>
+                </div>
+              )}
               </div>
               
-              {/* Horoscope Quick Save/Cancel Buttons */}
-              {editingHoroscope && !editing && (
-                <div className="mt-4 flex gap-3">
-                  <button
-                    onClick={handleSaveHoroscope}
-                    disabled={savingHoroscope}
-                    className="px-4 py-2 bg-pink-600 text-white rounded-md hover:bg-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
-                  >
-                    {savingHoroscope ? t('profile.saving') || 'Saving...' : t('common.save') || 'Save'}
-                  </button>
-                  <button
-                    onClick={() => {
-                      setEditingHoroscope(false);
-                      
-                      setFormData({
-                        ...formData,
-                        horoscopeDetails: {
-                          rashi: user?.horoscopeDetails?.rashi || '',
-                          nakshatra: user?.horoscopeDetails?.nakshatra || '',
-                          starSign: user?.horoscopeDetails?.starSign || '',
-                          timeOfBirth: user?.horoscopeDetails?.timeOfBirth || '',
-                        },
-                      });
-                    }}
-                    disabled={savingHoroscope}
-                    className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
-                  >
-                    {t('common.cancel') || 'Cancel'}
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-
+        {/* Save Changes Button - Only show when editing */}
           {editing && (
-            <div className="mt-6 flex gap-4">
               <button
                 onClick={handleSave}
                 disabled={saving}
-                className="px-6 py-2 bg-pink-600 text-white rounded-md hover:bg-pink-700 disabled:opacity-50"
+            className="w-full py-4 bg-pink-600 text-white font-semibold rounded-lg hover:bg-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-lg"
               >
-                {saving ? t('profile.saving') : t('common.save')}
+            {saving ? 'Saving...' : 'Save Changes'}
               </button>
-              <button
-                onClick={() => {
-                  setEditing(false);
-                  setEditingHoroscope(false);
-                  setFormData({
-                    name: user.name || '',
-                    email: user.email || '',
-                    phone: user.phone || '',
-                    city: user.city || '',
-                    state: user.state || '',
-                    country: user.country || '',
-                    education: user.education || '',
-                    occupation: user.occupation || '',
-                    bio: user.bio || '',
-                    dateOfBirth: user.dateOfBirth ? new Date(user.dateOfBirth).toISOString().split('T')[0] : '',
-                    family: {
-                      fathersName: user.family?.fathersName || '',
-                      fathersOccupationType: user.family?.fathersOccupationType || undefined,
-                      fathersOccupationDesc: user.family?.fathersOccupationDesc || '',
-                      fathersContactNumber: user.family?.fathersContactNumber || '',
-                      mothersName: user.family?.mothersName || '',
-                      mothersOccupationType: user.family?.mothersOccupationType || undefined,
-                      mothersOccupationDesc: user.family?.mothersOccupationDesc || '',
-                      numberOfBrothers: user.family?.numberOfBrothers || 0,
-                      numberOfSisters: user.family?.numberOfSisters || 0,
-                      marriedBrothers: user.family?.marriedBrothers || 0,
-                      unmarriedBrothers: user.family?.unmarriedBrothers || 0,
-                      marriedSisters: user.family?.marriedSisters || 0,
-                      unmarriedSisters: user.family?.unmarriedSisters || 0,
-                      familyType: user.family?.familyType || 'nuclear',
-                      familyStatus: user.family?.familyStatus || 'middle-class',
-                      familyValues: user.family?.familyValues || 'moderate',
-                    },
-                    horoscopeDetails: {
-                      rashi: user.horoscopeDetails?.rashi || '',
-                      nakshatra: user.horoscopeDetails?.nakshatra || '',
-                      starSign: user.horoscopeDetails?.starSign || '',
-                      timeOfBirth: user.horoscopeDetails?.timeOfBirth || '',
-                    },
-                  });
-                }}
-                className="px-6 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50"
-              >
-                {t('common.cancel')}
-              </button>
-            </div>
-          )}
+        )}
 
-          {!editing && (
-            <div className="mt-6">
-              <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-md p-4">
-                <p className="text-sm text-yellow-800 dark:text-yellow-300" dir="auto">
-                  <strong>{t('profile.profileStatus')}:</strong> {user.isProfileComplete ? t('profile.complete') : t('profile.incomplete')}
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* Deactivate Button at Bottom - Only show if active */}
-          {!editing && user.isActive && (
-            <div className="mt-8 pt-6 border-t border-gray-200 dark:border-pink-800">
-              <button
-                onClick={handleToggleActive}
-                disabled={togglingActive}
-                className="w-full px-6 py-3 bg-red-600 dark:bg-red-700 text-white rounded-md hover:bg-red-700 dark:hover:bg-red-800 disabled:opacity-50 font-semibold transition-colors"
-              >
-                {togglingActive ? t('common.loading') : t('profile.deactivateProfile')}
-              </button>
-            </div>
-          )}
-        </div>
       </div>
       
       {/* Profile Share Modal */}
@@ -1412,4 +935,3 @@ export default function MyProfilePage() {
     </div>
   );
 }
-
