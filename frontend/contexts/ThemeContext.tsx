@@ -27,12 +27,23 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     if (typeof window !== 'undefined') {
       const savedTheme = localStorage.getItem('theme') as Theme | null;
       const savedColorTheme = localStorage.getItem('colorTheme') as ColorTheme | null;
+      
+      // Initialize theme from localStorage
       if (savedTheme) {
         setThemeState(savedTheme);
       }
       if (savedColorTheme) {
         setColorThemeState(savedColorTheme);
       }
+      
+      // Initialize resolvedTheme based on saved theme or system preference
+      const getSystemTheme = (): 'light' | 'dark' => {
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      };
+      
+      const themeToUse = savedTheme || 'system';
+      const resolved = themeToUse === 'system' ? getSystemTheme() : themeToUse;
+      setResolvedTheme(resolved);
     }
   }, []);
 

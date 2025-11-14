@@ -104,6 +104,40 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Theme initialization script - runs before React hydrates */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  const theme = localStorage.getItem('theme') || 'system';
+                  const colorTheme = localStorage.getItem('colorTheme') || 'pink';
+                  
+                  const getSystemTheme = () => {
+                    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                  };
+                  
+                  const resolvedTheme = theme === 'system' ? getSystemTheme() : theme;
+                  
+                  const root = document.documentElement;
+                  
+                  // Remove all dark theme classes
+                  root.classList.remove('dark', 'dark-pink', 'dark-blue', 'dark-green', 'dark-purple', 'dark-amber', 'dark-red', 'dark-teal', 'dark-indigo', 'dark-cyan', 'dark-rose', 'dark-violet', 'dark-emerald', 'dark-lime', 'dark-fuchsia', 'dark-sky', 'dark-orange', 'dark-yellow', 'dark-slate', 'dark-stone');
+                  
+                  // Apply dark theme if needed
+                  if (resolvedTheme === 'dark') {
+                    root.classList.add('dark');
+                    if (colorTheme !== 'pink') {
+                      root.classList.add('dark-' + colorTheme);
+                    }
+                  }
+                } catch (e) {
+                  console.error('Error initializing theme:', e);
+                }
+              })();
+            `,
+          }}
+        />
         {/* Google Analytics */}
         {process.env.NEXT_PUBLIC_GA_ID && (
           <>
