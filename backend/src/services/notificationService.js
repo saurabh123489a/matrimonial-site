@@ -1,5 +1,6 @@
 import { notificationRepository } from '../repositories/notificationRepository.js';
 import { userRepository } from '../repositories/userRepository.js';
+import { pushNotificationService } from './pushNotificationService.js';
 
 export const notificationService = {
   /**
@@ -41,7 +42,17 @@ export const notificationService = {
    * Create notification (used by other services)
    */
   async createNotification(data) {
-    return await notificationRepository.create(data);
+    const notification = await notificationRepository.create(data);
+    
+    // Send push notification if user has subscriptions
+    try {
+      await pushNotificationService.sendNotificationPush(data.userId, notification);
+    } catch (error) {
+      // Don't fail notification creation if push fails
+      console.error('Failed to send push notification:', error);
+    }
+    
+    return notification;
   },
 
   /**

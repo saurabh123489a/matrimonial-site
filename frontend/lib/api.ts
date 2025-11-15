@@ -673,6 +673,26 @@ export const notificationApi = {
   },
 };
 
+// Push Notifications API
+export const pushApi = {
+  getVapidKey: async (): Promise<ApiResponse<{ publicKey: string }>> => {
+    const response = await api.get('/push/vapid-key');
+    return response.data;
+  },
+  subscribe: async (subscription: any, userAgent?: string, device?: string): Promise<ApiResponse<any>> => {
+    const response = await api.post('/push/subscribe', { subscription, userAgent, device });
+    return response.data;
+  },
+  unsubscribe: async (endpoint: string): Promise<ApiResponse<null>> => {
+    const response = await api.post('/push/unsubscribe', { endpoint });
+    return response.data;
+  },
+  getSubscriptions: async (): Promise<ApiResponse<any[]>> => {
+    const response = await api.get('/push/subscriptions');
+    return response.data;
+  },
+};
+
 // Photo API
 export const photoApi = {
   upload: async (files: File[]): Promise<ApiResponse<User>> => {

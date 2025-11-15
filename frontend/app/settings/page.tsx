@@ -8,6 +8,7 @@ import { useLanguage, Language } from '@/contexts/LanguageContext';
 import Link from 'next/link';
 import { useTheme } from '@/contexts/ThemeContext';
 import ThemeSelector from '@/components/ThemeSelector';
+import PushNotificationButton from '@/components/PushNotificationButton';
 
 export default function SettingsPage() {
   const router = useRouter();
@@ -167,6 +168,16 @@ export default function SettingsPage() {
               </div>
             </div>
           </Link>
+
+          {/* Push Notifications */}
+          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 sm:p-6 hover:shadow-lg transition-shadow">
+            <div className="flex items-start gap-3 sm:gap-4">
+              <div className="text-3xl sm:text-4xl flex-shrink-0">🔔</div>
+              <div className="flex-1 min-w-0">
+                <PushNotificationButton />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

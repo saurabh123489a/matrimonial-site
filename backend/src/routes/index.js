@@ -18,6 +18,7 @@ import healthRoutes from './healthRoutes.js';
 import eventRoutes from './eventRoutes.js';
 import pollRoutes from './pollRoutes.js';
 import badgeRoutes from './badgeRoutes.js';
+import pushRoutes from './pushRoutes.js';
 
 const router = express.Router();
 
@@ -63,6 +64,8 @@ router.use('/events', eventRoutes);
 router.use('/polls', pollRoutes);
 // Badge routes (user achievements)
 router.use('/badges', badgeRoutes);
+// Push notification routes
+router.use('/push', pushRoutes);
 
 export default router;
 
