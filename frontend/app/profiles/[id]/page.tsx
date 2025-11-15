@@ -6,6 +6,7 @@ import { userApi, interestApi, shortlistApi, User } from '@/lib/api';
 import { auth } from '@/lib/auth';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useNotifications } from '@/contexts/NotificationContext';
+import { useProfileAction } from '@/contexts/ProfileActionContext';
 import LazyImage from '@/components/LazyImage';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import ProfileCompletenessMeter from '@/components/ProfileCompletenessMeter';
@@ -15,6 +16,7 @@ export default function ProfileViewPage() {
   const router = useRouter();
   const { t } = useTranslation();
   const { showSuccess, showError } = useNotifications();
+  const { setSelectedProfile, clearSelectedProfile } = useProfileAction();
   const id = params.id as string;
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -35,6 +37,11 @@ export default function ProfileViewPage() {
       return;
     }
     loadProfile();
+    
+    // Cleanup: clear selected profile when component unmounts
+    return () => {
+      clearSelectedProfile();
+    };
   }, [id]);
 
   const loadProfile = async () => {
@@ -43,9 +50,18 @@ export default function ProfileViewPage() {
     try {
       const response = await userApi.getById(id);
       if (response.status && response.data) {
-        setUser(response.data);
+        const profileData = response.data;
+        setUser(profileData);
+        // Set selected profile for bottom action bar
+        const primaryPhoto = profileData.photos?.find(p => p.isPrimary) || profileData.photos?.[0];
+        setSelectedProfile({
+          userId: profileData._id,
+          userName: profileData.name,
+          userPhoto: primaryPhoto?.url,
+        });
       } else {
         setError(response.message || 'Profile not found');
+        clearSelectedProfile();
       }
     } catch (err: any) {
       console.error('Profile load error:', err);

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { User, interestApi, shortlistApi } from '@/lib/api';
 import { auth } from '@/lib/auth';
 import { useNotifications } from '@/contexts/NotificationContext';
+import { useProfileAction } from '@/contexts/ProfileActionContext';
 import LazyImage from './LazyImage';
 import { getProfileUrl } from '@/lib/profileUtils';
 import QuickMessageModal from './QuickMessageModal';
@@ -15,6 +16,7 @@ interface DetailedProfileTileProps {
 
 export default function DetailedProfileTile({ user }: DetailedProfileTileProps) {
   const { showSuccess, showError } = useNotifications();
+  const { setSelectedProfile } = useProfileAction();
   const [actionLoading, setActionLoading] = useState(false);
   const [isShortlisted, setIsShortlisted] = useState(false);
   const [hasInterest, setHasInterest] = useState(false);
@@ -171,9 +173,18 @@ export default function DetailedProfileTile({ user }: DetailedProfileTileProps) 
     return 'Gahoi';
   };
 
+  const handleCardClick = () => {
+    // Set selected profile when card is clicked
+    setSelectedProfile({
+      userId: user._id,
+      userName: user.name,
+      userPhoto: primaryPhoto?.url,
+    });
+  };
+
   return (
     <div className="bg-white dark:bg-[#181b23] rounded-xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 relative">
-      <Link href={getProfileUrl(user)} className="block">
+      <Link href={getProfileUrl(user)} className="block" onClick={handleCardClick}>
         {/* Photo Section with Overlays */}
         <div className="relative h-72 sm:h-80 md:h-96 bg-gradient-to-br from-pink-50 to-purple-50 dark:from-gray-800 dark:to-gray-900">
           {primaryPhoto ? (

@@ -5,9 +5,11 @@ import Navbar from "@/components/Navbar";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { NotificationProvider } from "@/contexts/NotificationContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import { ProfileActionProvider } from "@/contexts/ProfileActionContext";
 import WelcomeTour from "@/components/WelcomeTour";
 import ProfileSetupWizard from "@/components/ProfileSetupWizard";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import BottomActionBar from "@/components/BottomActionBar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -166,14 +168,17 @@ export default function RootLayout({
         <ThemeProvider>
           <LanguageProvider>
             <NotificationProvider>
-              <GoogleAnalytics />
-              <Navbar />
-              <main className="min-h-screen bg-gray-50 dark:bg-black transition-colors pb-20 sm:pb-16">
-                {children}
-              </main>
-              {/* Temporarily disabled to debug black page issue */}
-              {/* <WelcomeTour /> */}
-              {/* <ProfileSetupWizard /> */}
+              <ProfileActionProvider>
+                <GoogleAnalytics />
+                <Navbar />
+                <main className="min-h-screen bg-gray-50 dark:bg-black transition-colors pb-32 sm:pb-28">
+                  {children}
+                </main>
+                <BottomActionBar />
+                {/* Temporarily disabled to debug black page issue */}
+                {/* <WelcomeTour /> */}
+                {/* <ProfileSetupWizard /> */}
+              </ProfileActionProvider>
             </NotificationProvider>
           </LanguageProvider>
         </ThemeProvider>
