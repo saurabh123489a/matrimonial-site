@@ -8,6 +8,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { useNotifications } from '@/contexts/NotificationContext';
 import ProfileCard from '@/components/ProfileCard';
 import CompactProfileCard from '@/components/CompactProfileCard';
+import TileProfileCard from '@/components/TileProfileCard';
 import LocationSelect from '@/components/LocationSelect';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import EmptyState from '@/components/EmptyState';
@@ -42,7 +43,7 @@ function SearchProfilesPageContent() {
   const [error, setError] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [viewMode, setViewMode] = useState<'compact' | 'detailed'>('compact');
+  const [viewMode, setViewMode] = useState<'compact' | 'detailed' | 'tiles'>('tiles');
   const [sortBy, setSortBy] = useState<'newest' | 'age' | 'name'>('newest');
   const [showSortMenu, setShowSortMenu] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
@@ -465,14 +466,21 @@ function SearchProfilesPageContent() {
             )}
           </div>
           <button
-            onClick={() => setViewMode(viewMode === 'compact' ? 'detailed' : 'compact')}
+            onClick={() => {
+              if (viewMode === 'compact') setViewMode('detailed');
+              else if (viewMode === 'detailed') setViewMode('tiles');
+              else setViewMode('compact');
+            }}
             className={`flex-1 px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
-              viewMode === 'compact'
+              viewMode === 'tiles'
+                ? 'bg-pink-600 text-white dark:bg-pink-600'
+                : viewMode === 'detailed'
                 ? 'bg-gray-100 dark:bg-[#1f212a] text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-[#252730]'
-                : 'bg-pink-600 text-white dark:bg-pink-600'
+                : 'bg-gray-100 dark:bg-[#1f212a] text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-[#252730]'
             }`}
+            title={viewMode === 'tiles' ? 'Tiles View' : viewMode === 'detailed' ? 'Detailed View' : 'Compact View'}
           >
-            View
+            {viewMode === 'tiles' ? 'Tiles' : viewMode === 'detailed' ? 'Detailed' : 'Compact'}
           </button>
         </div>
       </div>
@@ -708,12 +716,16 @@ function SearchProfilesPageContent() {
         {!loading && users.length > 0 && (
           <>
             <div className={`grid gap-3 ${
-              viewMode === 'compact' 
+              viewMode === 'tiles'
+                ? 'grid-cols-1 lg:grid-cols-4'
+                : viewMode === 'compact' 
                 ? 'grid-cols-2' 
                 : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6'
             }`}>
               {sortedUsers.map((user) => (
-                viewMode === 'compact' ? (
+                viewMode === 'tiles' ? (
+                  <TileProfileCard key={user._id} user={user} />
+                ) : viewMode === 'compact' ? (
                   <CompactProfileCard key={user._id} user={user} showOnlineStatus={true} />
                 ) : (
                   <ProfileCard key={user._id} user={user} />
