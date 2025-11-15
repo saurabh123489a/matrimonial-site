@@ -22,7 +22,10 @@ export default function ProfileViewPage() {
   const [actionLoading, setActionLoading] = useState(false);
   const [expandedSections, setExpandedSections] = useState({
     aboutMe: true,
+    education: false,
+    location: false,
     lifestyle: false,
+    family: false,
     partnerPreferences: false,
   });
 
@@ -222,6 +225,14 @@ export default function ProfileViewPage() {
           
           {expandedSections.aboutMe && (
             <div className="px-4 pb-4 space-y-4">
+              {/* Gahoi ID */}
+              {user.gahoiId && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Gahoi ID</label>
+                  <p className="text-gray-900 dark:text-pink-100 font-semibold text-pink-600 dark:text-pink-400">{user.gahoiId}</p>
+                </div>
+              )}
+
               {/* Full Name */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Full Name</label>
@@ -234,6 +245,22 @@ export default function ProfileViewPage() {
                 <p className="text-gray-900 dark:text-pink-100">{user.age || 'Not provided'}</p>
               </div>
 
+              {/* Gender */}
+              {user.gender && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Gender</label>
+                  <p className="text-gray-900 dark:text-pink-100 capitalize">{user.gender}</p>
+                </div>
+              )}
+
+              {/* Marital Status */}
+              {user.maritalStatus && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Marital Status</label>
+                  <p className="text-gray-900 dark:text-pink-100">{user.maritalStatus}</p>
+                </div>
+              )}
+
               {/* Height */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Height</label>
@@ -245,8 +272,148 @@ export default function ProfileViewPage() {
               {/* Bio */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Bio</label>
-                <p className="text-gray-900 dark:text-pink-100">{user.bio || 'No bio provided'}</p>
+                <p className="text-gray-900 dark:text-pink-100 whitespace-pre-wrap">{user.bio || 'No bio provided'}</p>
               </div>
+            </div>
+          )}
+        </div>
+
+        {/* Education & Career Section - Collapsible */}
+        <div className="bg-white dark:bg-[#181b23] rounded-lg overflow-hidden">
+          <button
+            onClick={() => setExpandedSections({ ...expandedSections, education: !expandedSections.education })}
+            className="w-full flex items-center justify-between p-4 text-left"
+          >
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-pink-100">Education & Career</h2>
+            <svg 
+              className={`w-5 h-5 text-gray-500 dark:text-gray-400 transition-transform ${expandedSections.education ? 'rotate-180' : ''}`}
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          
+          {expandedSections.education && (
+            <div className="px-4 pb-4 space-y-4">
+              {/* Education */}
+              {user.education && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Education</label>
+                  <p className="text-gray-900 dark:text-pink-100">{user.education}</p>
+                </div>
+              )}
+
+              {/* Educational Detail */}
+              {user.educationalDetail && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Educational Details</label>
+                  <p className="text-gray-900 dark:text-pink-100">{user.educationalDetail}</p>
+                </div>
+              )}
+
+              {/* Occupation */}
+              {user.occupation && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Occupation</label>
+                  <p className="text-gray-900 dark:text-pink-100">{user.occupation}</p>
+                </div>
+              )}
+
+              {/* Profession */}
+              {user.profession && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Profession</label>
+                  <p className="text-gray-900 dark:text-pink-100">{user.profession}</p>
+                </div>
+              )}
+
+              {/* Employer */}
+              {user.employer && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Employer</label>
+                  <p className="text-gray-900 dark:text-pink-100">{user.employer}</p>
+                </div>
+              )}
+
+              {/* Annual Income */}
+              {user.annualIncome && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Annual Income</label>
+                  <p className="text-gray-900 dark:text-pink-100">{user.annualIncome}</p>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Location Section - Collapsible */}
+        <div className="bg-white dark:bg-[#181b23] rounded-lg overflow-hidden">
+          <button
+            onClick={() => setExpandedSections({ ...expandedSections, location: !expandedSections.location })}
+            className="w-full flex items-center justify-between p-4 text-left"
+          >
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-pink-100">Location</h2>
+            <svg 
+              className={`w-5 h-5 text-gray-500 dark:text-gray-400 transition-transform ${expandedSections.location ? 'rotate-180' : ''}`}
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          
+          {expandedSections.location && (
+            <div className="px-4 pb-4 space-y-4">
+              {/* City */}
+              {user.city && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">City</label>
+                  <p className="text-gray-900 dark:text-pink-100">{user.city}</p>
+                </div>
+              )}
+
+              {/* State */}
+              {user.state && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">State</label>
+                  <p className="text-gray-900 dark:text-pink-100">{user.state}</p>
+                </div>
+              )}
+
+              {/* Country */}
+              {user.country && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Country</label>
+                  <p className="text-gray-900 dark:text-pink-100">{user.country}</p>
+                </div>
+              )}
+
+              {/* Town */}
+              {user.town && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Town</label>
+                  <p className="text-gray-900 dark:text-pink-100">{user.town}</p>
+                </div>
+              )}
+
+              {/* Present Address */}
+              {user.presentAddress && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Present Address</label>
+                  <p className="text-gray-900 dark:text-pink-100 whitespace-pre-wrap">{user.presentAddress}</p>
+                </div>
+              )}
+
+              {/* Permanent Address */}
+              {user.permanentAddress && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Permanent Address</label>
+                  <p className="text-gray-900 dark:text-pink-100 whitespace-pre-wrap">{user.permanentAddress}</p>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -312,6 +479,54 @@ export default function ProfileViewPage() {
             </div>
           )}
         </div>
+
+        {/* Family Section - Collapsible */}
+        {(user.family?.fathersName || user.family?.mothersName || user.family?.fathersContactNumber) && (
+          <div className="bg-white dark:bg-[#181b23] rounded-lg overflow-hidden">
+            <button
+              onClick={() => setExpandedSections({ ...expandedSections, family: !expandedSections.family })}
+              className="w-full flex items-center justify-between p-4 text-left"
+            >
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-pink-100">Family Details</h2>
+              <svg 
+                className={`w-5 h-5 text-gray-500 dark:text-gray-400 transition-transform ${expandedSections.family ? 'rotate-180' : ''}`}
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            
+            {expandedSections.family && (
+              <div className="px-4 pb-4 space-y-4">
+                {/* Father's Name */}
+                {user.family?.fathersName && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Father's Name</label>
+                    <p className="text-gray-900 dark:text-pink-100">{user.family.fathersName}</p>
+                  </div>
+                )}
+
+                {/* Mother's Name */}
+                {user.family?.mothersName && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Mother's Name</label>
+                    <p className="text-gray-900 dark:text-pink-100">{user.family.mothersName}</p>
+                  </div>
+                )}
+
+                {/* Father's Contact */}
+                {user.family?.fathersContactNumber && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Father's Contact</label>
+                    <p className="text-gray-900 dark:text-pink-100">{user.family.fathersContactNumber}</p>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Partner Preferences Section - Collapsible */}
         <div className="bg-white dark:bg-[#181b23] rounded-lg overflow-hidden">
