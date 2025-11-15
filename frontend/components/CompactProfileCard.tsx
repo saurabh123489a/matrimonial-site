@@ -88,15 +88,16 @@ export default function CompactProfileCard({ user, showOnlineStatus = false }: C
 
       {/* Action Buttons - Outside Link */}
       {isAuthenticated && (
-        <div className="p-3 pt-2 border-t border-gray-200 dark:border-gray-700">
+        <div className="p-2 sm:p-3 pt-2 border-t border-gray-200 dark:border-gray-700">
           <button
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
               setShowMessageModal(true);
             }}
-            className="w-full px-3 py-1.5 bg-blue-600 text-white text-xs font-semibold rounded-md hover:bg-blue-700 transition-all"
+            className="w-full px-3 py-2 sm:py-1.5 bg-blue-600 text-white text-xs sm:text-xs font-semibold rounded-md hover:bg-blue-700 active:bg-blue-800 transition-all touch-manipulation min-h-[44px]"
             title="Send Message"
+            aria-label="Send Message"
           >
             💬 Message
           </button>

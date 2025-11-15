@@ -182,8 +182,9 @@ export default function ProfileCard({ user }: ProfileCardProps) {
                   e.stopPropagation();
                   setShowMessageModal(true);
                 }}
-                className="px-3 sm:px-4 py-2 sm:py-2.5 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition-all text-xs sm:text-sm shadow-sm"
+                className="px-3 sm:px-4 py-2 sm:py-2.5 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 active:bg-blue-800 transition-all text-xs sm:text-sm shadow-sm touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center"
                 title="Send Message"
+                aria-label="Send Message"
               >
                 💬
               </button>

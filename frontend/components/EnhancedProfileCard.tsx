@@ -204,9 +204,10 @@ export default function EnhancedProfileCard({ user, showActions = true }: Enhanc
                   e.stopPropagation();
                   setShowMessageModal(true);
                 }}
-                className="flex-1 text-center px-2 sm:px-3 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-all text-xs sm:text-sm min-w-[80px] sm:min-w-[100px]"
+                className="flex-1 text-center px-2 sm:px-3 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 active:bg-blue-800 transition-all text-xs sm:text-sm min-w-[80px] sm:min-w-[100px] touch-manipulation min-h-[44px]"
+                aria-label="Send Message"
               >
-                💬 Message
+                💬 <span className="hidden sm:inline">Message</span>
               </button>
             )}
             <button className="px-3 sm:px-4 py-2 sm:py-2.5 bg-pink-50 text-pink-600 font-bold rounded-lg hover:bg-pink-100 transition-all text-base sm:text-lg border border-pink-200">

@@ -65,70 +65,77 @@ export default function QuickMessageModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-[#111111] rounded-2xl shadow-xl max-w-md w-full animate-scale-in">
-        <div className="p-6">
+    <div 
+      className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-2 sm:p-4"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          onClose();
+        }
+      }}
+    >
+      <div className="bg-white dark:bg-[#111111] rounded-xl sm:rounded-2xl shadow-xl max-w-md w-full max-h-[90vh] sm:max-h-[85vh] flex flex-col animate-scale-in">
+        <div className="p-4 sm:p-6 flex-1 flex flex-col min-h-0">
           {/* Header */}
-          <div className="flex items-center gap-4 mb-4">
+          <div className="flex items-center gap-3 sm:gap-4 mb-4 flex-shrink-0">
             {userPhoto && (
               <img
                 src={userPhoto}
                 alt={userName}
-                className="w-12 h-12 rounded-full object-cover border-2 border-pink-200"
+                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover border-2 border-pink-200 flex-shrink-0"
               />
             )}
-            <div className="flex-1">
-              <h3 className="text-xl font-bold text-gray-900 dark:text-pink-300">
-                Send Message to {userName}
+            <div className="flex-1 min-w-0">
+              <h3 className="text-base sm:text-xl font-bold text-gray-900 dark:text-pink-300 truncate">
+                Send Message to <span className="hidden sm:inline">{userName}</span><span className="sm:hidden">{userName.length > 15 ? userName.substring(0, 15) + '...' : userName}</span>
               </h3>
             </div>
             <button
               onClick={onClose}
-              className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+              className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors flex-shrink-0 p-1 touch-manipulation"
               disabled={sending}
+              aria-label="Close"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
           </div>
 
           {/* Message Input */}
-          <div className="mb-4">
+          <div className="mb-4 flex-1 flex flex-col min-h-0">
             <textarea
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Type your message here..."
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent dark:bg-gray-800 dark:text-white resize-none"
-              rows={6}
+              className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent dark:bg-gray-800 dark:text-white resize-none flex-1 min-h-[120px] sm:min-h-[150px]"
               maxLength={5000}
               disabled={sending}
               autoFocus
             />
-            <div className="flex justify-between items-center mt-2">
-              <p className="text-xs text-gray-500 dark:text-gray-400">
+            <div className="flex justify-between items-center mt-2 flex-shrink-0">
+              <p className="text-xs text-gray-500 dark:text-gray-400 hidden sm:block">
                 Press Cmd/Ctrl + Enter to send
               </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
+              <p className="text-xs text-gray-500 dark:text-gray-400 sm:ml-auto">
                 {message.length}/5000
               </p>
             </div>
           </div>
 
           {/* Actions */}
-          <div className="flex gap-3">
+          <div className="flex gap-2 sm:gap-3 flex-shrink-0">
             <button
               onClick={onClose}
               disabled={sending}
-              className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 px-3 sm:px-4 py-2.5 sm:py-2 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 active:bg-gray-100 dark:active:bg-gray-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation text-sm sm:text-base"
             >
               Cancel
             </button>
             <button
               onClick={handleSend}
               disabled={!message.trim() || sending}
-              className="flex-1 px-4 py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="flex-1 px-3 sm:px-4 py-2.5 sm:py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-700 active:bg-pink-800 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 touch-manipulation text-sm sm:text-base"
             >
               {sending ? (
                 <>
@@ -136,12 +143,14 @@ export default function QuickMessageModal({
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  Sending...
+                  <span className="hidden sm:inline">Sending...</span>
+                  <span className="sm:hidden">Sending</span>
                 </>
               ) : (
                 <>
                   <span>💬</span>
-                  Send Message
+                  <span className="hidden sm:inline">Send Message</span>
+                  <span className="sm:hidden">Send</span>
                 </>
               )}
             </button>
