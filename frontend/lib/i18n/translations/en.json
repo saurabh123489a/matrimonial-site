@@ -198,6 +198,11 @@
     "failedToSend": "Failed to send message",
     "failedToLoad": "Failed to load conversation",
     "userNotFound": "User not found",
+    "typing": "{name} is typing...",
+    "readJustNow": "Read just now",
+    "readMinutesAgo": "Read {mins} minute{plural} ago",
+    "readHoursAgo": "Read {hours} hour{plural} ago",
+    "readDaysAgo": "Read {days} day{plural} ago",
     "goBack": "Go back to messages",
     "messageLength": "{length}/5000"
   },

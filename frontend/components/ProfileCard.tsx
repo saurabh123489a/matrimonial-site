@@ -92,19 +92,24 @@ export default function ProfileCard({ user }: ProfileCardProps) {
   };
   
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden profile-card border border-gray-200">
+    <div className="bg-white rounded-2xl shadow-lg overflow-hidden profile-card border border-gray-200 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 ease-out group">
       {/* Photo Section */}
-      <div className="relative h-56 sm:h-72 bg-gradient-to-br from-pink-100 to-red-100">
+      <div className="relative h-64 sm:h-80 bg-gradient-to-br from-pink-100 to-red-100 overflow-hidden">
         {primaryPhoto ? (
           <>
             <LazyImage
               src={primaryPhoto.url}
               alt={user.name}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
               placeholder="👤"
             />
-            <div className="absolute top-2 right-2 bg-pink-600 text-white text-xs px-2 py-1 rounded-full font-semibold z-10">
-              {user.isProfileComplete ? '✓ Verified' : 'New'}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className={`absolute top-3 right-3 backdrop-blur-sm text-xs px-3 py-1.5 rounded-full font-bold shadow-lg z-10 transition-all duration-300 ${
+              user.isProfileComplete 
+                ? 'bg-green-500/90 text-white' 
+                : 'bg-blue-500/90 text-white'
+            }`}>
+              {user.isProfileComplete ? '✓ Verified' : '✨ New'}
             </div>
           </>
         ) : (
@@ -112,47 +117,61 @@ export default function ProfileCard({ user }: ProfileCardProps) {
             👤
           </div>
         )}
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-3">
-          {user.photos && user.photos.length > 1 && (
-            <span className="text-white text-xs font-medium">
-              📷 {user.photos.length} Photos
-            </span>
-          )}
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent p-4">
+          <div className="flex items-center justify-between">
+            {user.photos && user.photos.length > 1 && (
+              <span className="text-white text-xs font-semibold flex items-center gap-1">
+                <span>📷</span>
+                <span>{user.photos.length} Photos</span>
+              </span>
+            )}
+            {user.age && (
+              <span className="text-white text-sm font-bold bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full">
+                {user.age} Years
+              </span>
+            )}
+          </div>
         </div>
       </div>
 
       {/* Info Section */}
-      <div className="p-4 sm:p-5">
-        {/* Name and Age */}
-        <div className="flex items-start justify-between mb-3">
-          <div>
-            <h3 className="text-xl font-bold text-gray-900 mb-1">{user.name}</h3>
-            {user.age && (
-              <p className="text-gray-600 text-sm">
-                {user.age} Years {user.gender === 'male' ? '• Male' : user.gender === 'female' ? '• Female' : ''}
-              </p>
+      <div className="p-5 sm:p-6">
+        {/* Name and Gender */}
+        <div className="mb-5">
+          <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 line-clamp-1 group-hover:text-pink-600 transition-colors duration-300">{user.name}</h3>
+          <div className="flex items-center gap-3">
+            {user.gender && (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-gray-50 rounded-full text-gray-700 text-sm font-medium capitalize">
+                {user.gender === 'male' ? '👨' : user.gender === 'female' ? '👩' : '👤'}
+                <span>{user.gender}</span>
+              </span>
+            )}
+            {user.gahoiId && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-pink-50 text-pink-700 rounded-full text-xs font-semibold">
+                ID: {user.gahoiId}
+              </span>
             )}
           </div>
         </div>
 
-        {/* Key Details */}
-        <div className="space-y-2 mb-4 text-sm">
+        {/* Key Details Grid - Improved Layout */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
           {user.education && (
-            <div className="flex items-center text-gray-700">
-              <span className="text-pink-600 mr-2">🎓</span>
-              <span className="truncate">{user.education}</span>
+            <div className="flex items-center gap-2.5 text-sm bg-gradient-to-r from-gray-50 to-gray-50/50 rounded-xl px-3.5 py-2.5 hover:from-pink-50 hover:to-pink-50/50 transition-all duration-300 border border-gray-100 hover:border-pink-200">
+              <span className="text-pink-600 text-lg flex-shrink-0">🎓</span>
+              <span className="text-gray-700 truncate font-medium" title={user.education}>{user.education}</span>
             </div>
           )}
           {user.occupation && (
-            <div className="flex items-center text-gray-700">
-              <span className="text-pink-600 mr-2">💼</span>
-              <span className="truncate">{user.occupation}</span>
+            <div className="flex items-center gap-2.5 text-sm bg-gradient-to-r from-gray-50 to-gray-50/50 rounded-xl px-3.5 py-2.5 hover:from-pink-50 hover:to-pink-50/50 transition-all duration-300 border border-gray-100 hover:border-pink-200">
+              <span className="text-pink-600 text-lg flex-shrink-0">💼</span>
+              <span className="text-gray-700 truncate font-medium" title={user.occupation}>{user.occupation}</span>
             </div>
           )}
           {(user.city || user.state) && (
-            <div className="flex items-center text-gray-700">
-              <span className="text-pink-600 mr-2">📍</span>
-              <span className="truncate">
+            <div className={`flex items-center gap-2.5 text-sm bg-gradient-to-r from-gray-50 to-gray-50/50 rounded-xl px-3.5 py-2.5 hover:from-pink-50 hover:to-pink-50/50 transition-all duration-300 border border-gray-100 hover:border-pink-200 ${user.education && user.occupation ? 'sm:col-span-2' : ''}`}>
+              <span className="text-pink-600 text-lg flex-shrink-0">📍</span>
+              <span className="text-gray-700 truncate font-medium" title={`${user.city || ''}${user.state ? `, ${user.state}` : ''}${user.country ? `, ${user.country}` : ''}`}>
                 {user.city}{user.state && `, ${user.state}`}{user.country && `, ${user.country}`}
               </span>
             </div>
@@ -161,17 +180,20 @@ export default function ProfileCard({ user }: ProfileCardProps) {
 
         {/* Bio Preview */}
         {user.bio && (
-          <p className="text-sm text-gray-600 mb-4 line-clamp-2 leading-relaxed">
-            {user.bio}
-          </p>
+          <div className="mb-5 border-t border-gray-100 pt-4">
+            <p className="text-sm text-gray-600 line-clamp-2 leading-relaxed">
+              {user.bio}
+            </p>
+          </div>
         )}
 
-        {/* Action Buttons */}
-        <div className="flex flex-col gap-2">
-          <div className="flex gap-2">
+        {/* Action Buttons - Improved Layout */}
+        <div className="space-y-3 pt-2">
+          {/* Primary Actions Row */}
+          <div className="flex gap-2.5">
             <Link
               href={getProfileUrl(user)}
-              className="flex-1 text-center px-3 sm:px-4 py-2 sm:py-2.5 bg-gradient-to-r from-pink-600 to-red-600 text-white font-semibold rounded-md hover:from-pink-700 hover:to-red-700 transition-all text-xs sm:text-sm shadow-sm"
+              className="flex-1 text-center px-4 py-3 bg-gradient-to-r from-pink-600 via-pink-500 to-red-600 text-white font-bold rounded-xl hover:from-pink-700 hover:via-pink-600 hover:to-red-700 transition-all text-sm shadow-lg hover:shadow-xl transform hover:-translate-y-1 active:translate-y-0 duration-300"
             >
               View Profile
             </Link>
@@ -182,7 +204,7 @@ export default function ProfileCard({ user }: ProfileCardProps) {
                   e.stopPropagation();
                   setShowMessageModal(true);
                 }}
-                className="px-3 sm:px-4 py-2 sm:py-2.5 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 active:bg-blue-800 transition-all text-xs sm:text-sm shadow-sm touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center"
+                className="px-4 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 active:bg-blue-800 transition-all text-sm shadow-lg hover:shadow-xl transform hover:-translate-y-1 active:translate-y-0 duration-300 touch-manipulation min-w-[56px] flex items-center justify-center"
                 title="Send Message"
                 aria-label="Send Message"
               >
@@ -190,22 +212,31 @@ export default function ProfileCard({ user }: ProfileCardProps) {
               </button>
             )}
           </div>
-          <div className="flex gap-2">
+          {/* Secondary Actions Row */}
+          <div className="flex gap-2.5">
             <button
               onClick={handleSendInterest}
               disabled={actionLoading || !isAuthenticated}
-              className="flex-1 px-3 sm:px-4 py-2 sm:py-2.5 bg-pink-50 text-pink-600 font-semibold rounded-md hover:bg-pink-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-xs sm:text-sm border border-pink-200"
+              className="flex-1 px-4 py-3 bg-gradient-to-r from-pink-50 to-pink-100 text-pink-700 font-bold rounded-xl hover:from-pink-100 hover:to-pink-200 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-sm border-2 border-pink-200 hover:border-pink-300 active:scale-[0.98] duration-200 shadow-sm hover:shadow-md"
               title={isAuthenticated ? 'Send Interest' : 'Login to send interest'}
             >
-              {actionLoading ? '...' : '💝 Send Interest'}
+              {actionLoading ? (
+                <span className="inline-block animate-spin text-lg">⏳</span>
+              ) : (
+                <span className="flex items-center justify-center gap-2">
+                  <span className="text-lg">💝</span>
+                  <span className="hidden sm:inline">Send Interest</span>
+                  <span className="sm:hidden">Interest</span>
+                </span>
+              )}
             </button>
             <button
               onClick={handleShortlist}
               disabled={actionLoading || !isAuthenticated}
-              className={`px-3 sm:px-4 py-2 sm:py-2.5 font-semibold rounded-md disabled:opacity-50 disabled:cursor-not-allowed transition-all text-xs sm:text-sm ${
+              className={`px-4 py-3 font-bold rounded-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all text-xl border-2 active:scale-[0.98] duration-200 shadow-sm hover:shadow-md ${
                 isShortlisted
-                  ? 'bg-yellow-500 text-white hover:bg-yellow-600'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-gradient-to-r from-yellow-400 to-yellow-500 text-white border-yellow-500 hover:from-yellow-500 hover:to-yellow-600'
+                  : 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100 hover:border-gray-300'
               }`}
               title={isAuthenticated ? (isShortlisted ? 'Remove from shortlist' : 'Add to shortlist') : 'Login to shortlist'}
             >

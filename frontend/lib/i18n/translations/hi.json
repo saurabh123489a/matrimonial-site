@@ -196,6 +196,11 @@
     "failedToSend": "संदेश भेजने में विफल",
     "failedToLoad": "बातचीत लोड करने में विफल",
     "userNotFound": "उपयोगकर्ता नहीं मिला",
+    "typing": "{name} टाइप कर रहे हैं...",
+    "readJustNow": "अभी-अभी पढ़ा",
+    "readMinutesAgo": "{mins} मिनट पहले पढ़ा",
+    "readHoursAgo": "{hours} घंटे पहले पढ़ा",
+    "readDaysAgo": "{days} दिन पहले पढ़ा",
     "goBack": "संदेश पर वापस जाएं",
     "messageLength": "{length}/5000"
   },

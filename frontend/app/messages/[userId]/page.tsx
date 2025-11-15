@@ -1,12 +1,14 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { messageApi, userApi, User } from '@/lib/api';
 import { auth } from '@/lib/auth';
 import { useTranslation } from '@/hooks/useTranslation';
 import { getProfileUrl } from '@/lib/profileUtils';
+import ReadReceipt from '@/components/ReadReceipt';
+import TypingIndicator from '@/components/TypingIndicator';
 
 interface Message {
   _id: string;
@@ -32,6 +34,8 @@ export default function ChatPage() {
   const [error, setError] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [isTyping, setIsTyping] = useState(false);
+  const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (!auth.isAuthenticated()) {
@@ -112,9 +116,50 @@ export default function ChatPage() {
     }
   };
 
+  // Handle typing detection with debouncing
+  const handleInputChange = useCallback((value: string) => {
+    setNewMessage(value);
+    
+    // Show typing indicator when user types
+    if (value.trim().length > 0) {
+      setIsTyping(true);
+      
+      // Clear existing timeout
+      if (typingTimeoutRef.current) {
+        clearTimeout(typingTimeoutRef.current);
+      }
+      
+      // Hide typing indicator after 2 seconds of inactivity
+      typingTimeoutRef.current = setTimeout(() => {
+        setIsTyping(false);
+      }, 2000);
+    } else {
+      // Hide immediately if input is cleared
+      setIsTyping(false);
+      if (typingTimeoutRef.current) {
+        clearTimeout(typingTimeoutRef.current);
+      }
+    }
+  }, []);
+
+  // Cleanup typing timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (typingTimeoutRef.current) {
+        clearTimeout(typingTimeoutRef.current);
+      }
+    };
+  }, []);
+
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newMessage.trim() || sending) return;
+
+    // Hide typing indicator when sending
+    setIsTyping(false);
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
 
     setSending(true);
     setError('');
@@ -291,12 +336,17 @@ export default function ChatPage() {
                           </p>
                         </div>
                         {showTime && (
-                          <span className="text-xs text-gray-500 mt-1 px-2" dir="ltr">
-                            {formatTime(message.createdAt)}
-                            {myMessage && message.isRead && (
-                              <span className="ml-1">✓✓</span>
+                          <div className="flex items-center gap-1 text-xs text-gray-500 mt-1 px-2" dir="ltr">
+                            <span>{formatTime(message.createdAt)}</span>
+                            {myMessage && (
+                              <ReadReceipt
+                                isRead={message.isRead}
+                                readAt={message.readAt}
+                                sentAt={message.createdAt}
+                                isMyMessage={true}
+                              />
                             )}
-                          </span>
+                          </div>
                         )}
                       </div>
                     </div>
@@ -304,6 +354,16 @@ export default function ChatPage() {
                 );
               })}
               <div ref={messagesEndRef} />
+            </div>
+          )}
+
+          {/* Typing Indicator */}
+          {isTyping && currentUserId && (
+            <div className="flex justify-start mt-2">
+              <TypingIndicator
+                userName={t('messages.you') || 'You'}
+                isVisible={isTyping}
+              />
             </div>
           )}
         </div>
@@ -316,7 +376,7 @@ export default function ChatPage() {
             <input
               type="text"
               value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
+              onChange={(e) => handleInputChange(e.target.value)}
               placeholder={t('messages.typeMessage')}
               className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
               maxLength={5000}

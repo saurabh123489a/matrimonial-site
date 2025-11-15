@@ -183,16 +183,16 @@ export default function DetailedProfileTile({ user }: DetailedProfileTileProps) 
   };
 
   return (
-    <div className="bg-white dark:bg-[#181b23] rounded-xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 relative">
+    <div className="bg-white dark:bg-[#181b23] rounded-2xl overflow-hidden shadow-xl border border-gray-200 dark:border-gray-700 relative hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 ease-out group">
       <Link href={getProfileUrl(user)} className="block" onClick={handleCardClick}>
         {/* Photo Section with Overlays */}
-        <div className="relative h-72 sm:h-80 md:h-96 bg-gradient-to-br from-pink-50 to-purple-50 dark:from-gray-800 dark:to-gray-900">
+        <div className="relative h-72 sm:h-80 md:h-96 bg-gradient-to-br from-pink-50 to-purple-50 dark:from-gray-800 dark:to-gray-900 overflow-hidden">
           {primaryPhoto ? (
             <>
               <LazyImage
                 src={primaryPhoto.url}
                 alt={user.name}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
                 placeholder="👤"
               />
               {/* Gradient overlay for text readability */}
@@ -207,29 +207,29 @@ export default function DetailedProfileTile({ user }: DetailedProfileTileProps) 
           {/* Top Badges */}
           <div className="absolute top-3 left-3 right-3 flex items-start justify-between z-10">
             {isActiveToday() && (
-              <span className="bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full">
-                Active Today
+              <span className="bg-green-500/95 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg border border-green-400/50">
+                ✨ Active Today
               </span>
             )}
             <div className="flex gap-2">
               {photoCount > 0 && (
-                <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-gray-700 dark:text-gray-200 text-xs font-medium px-2 py-1 rounded flex items-center gap-1">
+                <div className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm text-gray-700 dark:text-gray-200 text-xs font-bold px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 shadow-lg border border-gray-200/50 dark:border-gray-700/50">
                   <span>📷</span>
                   <span>{photoCount}</span>
                 </div>
               )}
               {isJustJoined() && (
-                <div className="bg-blue-500 text-white text-xs font-semibold px-2 py-1 rounded">
-                  Just Joined
+                <div className="bg-blue-500/95 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow-lg border border-blue-400/50">
+                  🎉 Just Joined
                 </div>
               )}
             </div>
           </div>
 
           {/* Profile Info Overlay */}
-          <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 text-white">
+          <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5 md:p-6 text-white">
             {/* Name and Age */}
-            <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2 drop-shadow-lg">
+            <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 drop-shadow-2xl group-hover:text-pink-200 transition-colors duration-300">
               {user.name}{user.age && `, ${user.age}`}
             </h3>
 
@@ -290,43 +290,43 @@ export default function DetailedProfileTile({ user }: DetailedProfileTileProps) 
 
       {/* Action Buttons */}
       {isAuthenticated && (
-        <div className="p-3 sm:p-4 bg-gray-50 dark:bg-[#1f212a] border-t border-gray-200 dark:border-gray-700">
-          <div className="grid grid-cols-4 gap-2">
+        <div className="p-4 sm:p-5 bg-gray-50 dark:bg-[#1f212a] border-t border-gray-200 dark:border-gray-700">
+          <div className="grid grid-cols-4 gap-2.5">
             {/* Interest */}
             <button
               onClick={handleSendInterest}
               disabled={actionLoading || hasInterest}
-              className="flex flex-col items-center gap-1 px-2 py-2 sm:py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600 transition-colors touch-manipulation disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex flex-col items-center gap-1.5 px-2 py-3 sm:py-3.5 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600 transition-all duration-200 touch-manipulation disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md active:scale-95"
               title={hasInterest ? 'Interest Already Sent' : 'Send Interest'}
             >
               <span className="text-xl sm:text-2xl">✉️</span>
-              <span className="text-xs font-medium text-gray-700 dark:text-gray-300">Interest</span>
+              <span className="text-xs font-bold text-gray-700 dark:text-gray-300">Interest</span>
             </button>
 
             {/* Super Interest */}
             <button
               onClick={handleSuperInterest}
               disabled={actionLoading}
-              className="flex flex-col items-center gap-1 px-2 py-2 sm:py-3 bg-white dark:bg-gray-800 border border-pink-300 dark:border-pink-600 rounded-lg hover:bg-pink-50 dark:hover:bg-pink-900/20 active:bg-pink-100 dark:active:bg-pink-900/30 transition-colors touch-manipulation disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex flex-col items-center gap-1.5 px-2 py-3 sm:py-3.5 bg-gradient-to-br from-pink-50 to-pink-100 dark:from-pink-900/20 dark:to-pink-800/20 border-2 border-pink-300 dark:border-pink-600 rounded-xl hover:from-pink-100 hover:to-pink-200 dark:hover:from-pink-900/30 dark:hover:to-pink-800/30 active:from-pink-200 active:to-pink-300 transition-all duration-200 touch-manipulation disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md active:scale-95"
               title="Send Super Interest"
             >
               <span className="text-xl sm:text-2xl">💕</span>
-              <span className="text-xs font-medium text-gray-700 dark:text-gray-300">Super</span>
+              <span className="text-xs font-bold text-gray-700 dark:text-gray-300">Super</span>
             </button>
 
             {/* Shortlist */}
             <button
               onClick={handleShortlist}
               disabled={actionLoading}
-              className={`flex flex-col items-center gap-1 px-2 py-2 sm:py-3 border rounded-lg transition-colors touch-manipulation disabled:opacity-50 disabled:cursor-not-allowed ${
+              className={`flex flex-col items-center gap-1.5 px-2 py-3 sm:py-3.5 border-2 rounded-xl transition-all duration-200 touch-manipulation disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md active:scale-95 ${
                 isShortlisted
-                  ? 'bg-yellow-500 border-yellow-500 text-white hover:bg-yellow-600 active:bg-yellow-700'
-                  : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600'
+                  ? 'bg-gradient-to-br from-yellow-400 to-yellow-500 border-yellow-500 text-white hover:from-yellow-500 hover:to-yellow-600'
+                  : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
               }`}
               title={isShortlisted ? 'Remove from Shortlist' : 'Add to Shortlist'}
             >
               <span className="text-xl sm:text-2xl">⭐</span>
-              <span className="text-xs font-medium">{isShortlisted ? 'Saved' : 'Save'}</span>
+              <span className={`text-xs font-bold ${isShortlisted ? 'text-white' : 'text-gray-700 dark:text-gray-300'}`}>{isShortlisted ? 'Saved' : 'Save'}</span>
             </button>
 
             {/* Chat */}
@@ -336,11 +336,11 @@ export default function DetailedProfileTile({ user }: DetailedProfileTileProps) 
                 e.stopPropagation();
                 setShowMessageModal(true);
               }}
-              className="flex flex-col items-center gap-1 px-2 py-2 sm:py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 active:bg-blue-800 transition-colors touch-manipulation"
+              className="flex flex-col items-center gap-1.5 px-2 py-3 sm:py-3.5 bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 active:from-blue-800 active:to-blue-900 transition-all duration-200 touch-manipulation shadow-lg hover:shadow-xl active:scale-95"
               title="Send Message"
             >
               <span className="text-xl sm:text-2xl">💬</span>
-              <span className="text-xs font-medium">Chat</span>
+              <span className="text-xs font-bold">Chat</span>
             </button>
           </div>
         </div>
