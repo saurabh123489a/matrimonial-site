@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef, Suspense } from 'react';
+import { useState, useEffect, useCallback, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { userApi, User, Pagination, metaDataApi } from '@/lib/api';
 import { auth } from '@/lib/auth';
@@ -16,6 +16,7 @@ import EmptyState from '@/components/EmptyState';
 import ProfileShareModal from '@/components/ProfileShareModal';
 import { sanitizeFormInput } from '@/hooks/useSanitizedInput';
 import { getProfileUrl } from '@/lib/profileUtils';
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 
 interface SearchFilters {
   gender?: string;
@@ -40,15 +41,14 @@ function SearchProfilesPageContent() {
   
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [pagination, setPagination] = useState<Pagination | null>(null);
   const [error, setError] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [viewMode, setViewMode] = useState<'compact' | 'detailed'>('detailed');
-  const [sortBy, setSortBy] = useState<'newest' | 'age' | 'name'>('newest');
-  const [showSortMenu, setShowSortMenu] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
-  const sortMenuRef = useRef<HTMLDivElement>(null);
+  const [currentPage, setCurrentPage] = useState(1);
   
   // Filter states
   const [filters, setFilters] = useState<SearchFilters>({
@@ -129,30 +129,12 @@ function SearchProfilesPageContent() {
       // Initial search - load profiles automatically when page opens
       // Wait for filters to be set (especially default gender filter)
       const timeoutId = setTimeout(() => {
-        const page = parseInt(searchParams.get('page') || '1');
-        performSearch(page);
+        performSearch(1, false);
       }, 300);
       
       return () => clearTimeout(timeoutId);
     }
   }, [mounted, currentUser]);
-
-  // Close sort menu when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (sortMenuRef.current && !sortMenuRef.current.contains(event.target as Node)) {
-        setShowSortMenu(false);
-      }
-    };
-
-    if (showSortMenu) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [showSortMenu]);
 
   const loadCurrentUser = async () => {
     try {
@@ -195,8 +177,13 @@ function SearchProfilesPageContent() {
     }
   };
 
-  const performSearch = async (page: number = 1) => {
-    setLoading(true);
+  const performSearch = async (page: number = 1, append: boolean = false) => {
+    if (append) {
+      setLoadingMore(true);
+    } else {
+      setLoading(true);
+      setCurrentPage(1);
+    }
     setError('');
 
     try {
@@ -223,25 +210,44 @@ function SearchProfilesPageContent() {
       const response = await userApi.search(searchParams);
       
       if (response.status && response.data) {
-        setUsers(response.data);
+        if (append) {
+          setUsers(prev => [...prev, ...response.data]);
+        } else {
+          setUsers(response.data);
+        }
         setPagination(response.pagination || null);
+        setCurrentPage(page);
         
-        // Update URL with current filters
-        updateURL(searchParams);
+        // Update URL with current filters (only for first page)
+        if (!append) {
+          updateURL(searchParams);
+        }
       } else {
         setError(response.message || 'Failed to search profiles');
-        setUsers([]);
+        if (!append) {
+          setUsers([]);
+        }
       }
     } catch (err: any) {
       console.error('Search error:', err);
       const errorMsg = err.response?.data?.message || err.message || 'Failed to search profiles';
       setError(errorMsg);
-      showError(errorMsg);
-      setUsers([]);
+      if (!append) {
+        showError(errorMsg);
+        setUsers([]);
+      }
     } finally {
       setLoading(false);
+      setLoadingMore(false);
     }
   };
+
+  const loadMore = useCallback(() => {
+    if (pagination && currentPage < pagination.pages && !loading && !loadingMore) {
+      performSearch(currentPage + 1, true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pagination, currentPage, loading, loadingMore]);
 
   const updateURL = (params: any) => {
     const url = new URL(window.location.href);
@@ -262,7 +268,7 @@ function SearchProfilesPageContent() {
   };
 
   const handleSearch = () => {
-    performSearch(1);
+    performSearch(1, false);
   };
 
   const handleClearFilters = () => {
@@ -285,10 +291,12 @@ function SearchProfilesPageContent() {
     window.history.replaceState({}, '', window.location.pathname);
   };
 
-  const handlePageChange = (page: number) => {
-    performSearch(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  // Infinite scroll hook
+  const loadMoreRef = useInfiniteScroll({
+    hasMore: pagination ? currentPage < pagination.pages : false,
+    loading: loadingMore,
+    onLoadMore: loadMore,
+  });
 
   const handleCountryChange = useCallback((country: string) => {
     handleFilterChange('country', country);
@@ -326,86 +334,10 @@ function SearchProfilesPageContent() {
 
   const maritalStatusOptions = ['Never Married', 'Divorced', 'Widowed', 'Awaiting Divorce'];
 
-  // Sort users
-  const sortedUsers = [...users].sort((a, b) => {
-    switch (sortBy) {
-      case 'age':
-        return (a.age || 0) - (b.age || 0);
-      case 'name':
-        return a.name.localeCompare(b.name);
-      case 'newest':
-      default:
-        return new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime();
-    }
-  });
-
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-[#0f1117] pb-24 transition-colors">
-      {/* Header */}
-      <div className="bg-white dark:bg-[#181b23] border-b border-gray-200 dark:border-[#303341] sticky top-0 z-30">
-        <div className="flex items-center justify-between px-4 py-3">
-          <button
-            onClick={() => router.back()}
-            className="p-2 -ml-2 text-gray-700 dark:text-pink-100 hover:bg-gray-100 dark:hover:bg-[#1f212a] rounded-lg transition-colors"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
-          <div className="flex-1 flex items-center justify-center gap-2">
-            <h1 className="text-lg font-semibold text-gray-900 dark:text-pink-100">
-              Discover
-            </h1>
-            {/* Profile Status Capsule */}
-            {currentUser && (
-              <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${
-                currentUser.isActive !== false
-                  ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
-                  : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-400'
-              }`}>
-                {currentUser.isActive !== false ? 'Active' : 'Inactive'}
-              </span>
-            )}
-          </div>
-          <div className="flex items-center gap-1">
-            {/* Edit Button */}
-            <button
-              onClick={() => router.push('/profile')}
-              className="p-2 text-gray-700 dark:text-pink-100 hover:bg-gray-100 dark:hover:bg-[#1f212a] rounded-lg transition-colors"
-              title="Edit Profile"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-              </svg>
-            </button>
-            {/* Share Button */}
-            {currentUser && (
-              <button
-                onClick={() => setShowShareModal(true)}
-                className="p-2 text-gray-700 dark:text-pink-100 hover:bg-gray-100 dark:hover:bg-[#1f212a] rounded-lg transition-colors"
-                title="Share Profile"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-                </svg>
-              </button>
-            )}
-            {/* Notifications Button */}
-            <button
-              onClick={() => router.push('/notifications')}
-              className="p-2 text-gray-700 dark:text-pink-100 hover:bg-gray-100 dark:hover:bg-[#1f212a] rounded-lg transition-colors relative"
-              title="Notifications"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Filter/Sort/View Bar */}
-      <div className="bg-white dark:bg-[#181b23] border-b border-gray-200 dark:border-[#303341] px-4 py-3">
+      {/* Filter/View Bar */}
+      <div className="bg-white dark:bg-[#181b23] border-b border-gray-200 dark:border-[#303341] sticky top-0 z-30 px-4 py-3">
         <div className="flex gap-2">
           <button
             onClick={() => setShowFilters(!showFilters)}
@@ -417,55 +349,6 @@ function SearchProfilesPageContent() {
           >
             Filter
           </button>
-          <div className="relative flex-1" ref={sortMenuRef}>
-            <button
-              onClick={() => setShowSortMenu(!showSortMenu)}
-              className={`w-full px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
-                showSortMenu
-                  ? 'bg-pink-600 text-white dark:bg-pink-600'
-                  : 'bg-gray-100 dark:bg-[#1f212a] text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-[#252730]'
-              }`}
-            >
-              Sort
-            </button>
-            {showSortMenu && (
-              <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-[#181b23] border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-40">
-                <button
-                  onClick={() => {
-                    setSortBy('newest');
-                    setShowSortMenu(false);
-                  }}
-                  className={`w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-[#1f212a] first:rounded-t-lg ${
-                    sortBy === 'newest' ? 'text-pink-600 dark:text-pink-400 font-semibold' : 'text-gray-700 dark:text-gray-300'
-                  }`}
-                >
-                  Newest First
-                </button>
-                <button
-                  onClick={() => {
-                    setSortBy('age');
-                    setShowSortMenu(false);
-                  }}
-                  className={`w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-[#1f212a] ${
-                    sortBy === 'age' ? 'text-pink-600 dark:text-pink-400 font-semibold' : 'text-gray-700 dark:text-gray-300'
-                  }`}
-                >
-                  Age: Low to High
-                </button>
-                <button
-                  onClick={() => {
-                    setSortBy('name');
-                    setShowSortMenu(false);
-                  }}
-                  className={`w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-[#1f212a] last:rounded-b-lg ${
-                    sortBy === 'name' ? 'text-pink-600 dark:text-pink-400 font-semibold' : 'text-gray-700 dark:text-gray-300'
-                  }`}
-                >
-                  Name: A to Z
-                </button>
-              </div>
-            )}
-          </div>
           <button
             onClick={() => setViewMode(viewMode === 'compact' ? 'detailed' : 'compact')}
             className={`flex-1 px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
@@ -715,7 +598,7 @@ function SearchProfilesPageContent() {
                 ? 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4' 
                 : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6'
             }`}>
-              {sortedUsers.map((user) => (
+              {users.map((user) => (
                 viewMode === 'detailed' ? (
                   <DetailedProfileTile key={user._id} user={user} />
                 ) : (
@@ -729,53 +612,17 @@ function SearchProfilesPageContent() {
               ))}
             </div>
 
-            {/* Pagination */}
-            {pagination && pagination.pages > 1 && (
-              <div className="mt-8 flex justify-center items-center gap-2">
-                <button
-                  onClick={() => handlePageChange(pagination.page - 1)}
-                  disabled={pagination.page === 1}
-                  className="px-4 py-2 bg-white dark:bg-[#181b23] border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-pink-100 rounded-lg hover:bg-gray-50 dark:hover:bg-[#1f212a] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                >
-                  Previous
-                </button>
-                
-                <div className="flex gap-1">
-                  {Array.from({ length: Math.min(5, pagination.pages) }, (_, i) => {
-                    let pageNum;
-                    if (pagination.pages <= 5) {
-                      pageNum = i + 1;
-                    } else if (pagination.page <= 3) {
-                      pageNum = i + 1;
-                    } else if (pagination.page >= pagination.pages - 2) {
-                      pageNum = pagination.pages - 4 + i;
-                    } else {
-                      pageNum = pagination.page - 2 + i;
-                    }
-                    
-                    return (
-                      <button
-                        key={pageNum}
-                        onClick={() => handlePageChange(pageNum)}
-                        className={`px-4 py-2 rounded-lg transition-colors ${
-                          pageNum === pagination.page
-                            ? 'bg-pink-600 text-white'
-                            : 'bg-white dark:bg-[#181b23] border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-pink-100 hover:bg-gray-50 dark:hover:bg-[#1f212a]'
-                        }`}
-                      >
-                        {pageNum}
-                      </button>
-                    );
-                  })}
-                </div>
+            {/* Infinite Scroll Trigger */}
+            {pagination && currentPage < pagination.pages && (
+              <div ref={loadMoreRef} className="mt-8 flex justify-center py-4">
+                {loadingMore && <LoadingSpinner />}
+              </div>
+            )}
 
-                <button
-                  onClick={() => handlePageChange(pagination.page + 1)}
-                  disabled={pagination.page === pagination.pages}
-                  className="px-4 py-2 bg-white dark:bg-[#181b23] border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-pink-100 rounded-lg hover:bg-gray-50 dark:hover:bg-[#1f212a] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                >
-                  Next
-                </button>
+            {/* End of Results Message */}
+            {pagination && currentPage >= pagination.pages && users.length > 0 && (
+              <div className="mt-8 text-center py-4 text-gray-500 dark:text-gray-400 text-sm">
+                No more profiles to load
               </div>
             )}
           </>
