@@ -143,66 +143,6 @@ export default function BottomActionBar() {
 
   return (
     <>
-      {/* Floating Bottom Action Bar - Positioned above bottom nav */}
-      <div className="fixed bottom-20 sm:bottom-24 left-0 right-0 z-30 px-2 sm:px-4 pb-2 pointer-events-none">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white dark:bg-[#181b23] rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 p-2 pointer-events-auto">
-            <div className="grid grid-cols-4 gap-2">
-              {/* Interest */}
-              <button
-                onClick={handleSendInterest}
-                disabled={actionLoading || hasInterest}
-                className="flex flex-col items-center gap-1 px-2 py-2 sm:py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600 transition-colors touch-manipulation disabled:opacity-50 disabled:cursor-not-allowed min-h-[60px] sm:min-h-[70px]"
-                title={hasInterest ? 'Interest Already Sent' : 'Send Interest'}
-                aria-label="Send Interest"
-              >
-                <span className="text-xl sm:text-2xl">✉️</span>
-                <span className="text-xs font-medium text-gray-700 dark:text-gray-300">Interest</span>
-              </button>
-
-              {/* Super Interest */}
-              <button
-                onClick={handleSuperInterest}
-                disabled={actionLoading}
-                className="flex flex-col items-center gap-1 px-2 py-2 sm:py-3 bg-white dark:bg-gray-800 border border-pink-300 dark:border-pink-600 rounded-lg hover:bg-pink-50 dark:hover:bg-pink-900/20 active:bg-pink-100 dark:active:bg-pink-900/30 transition-colors touch-manipulation disabled:opacity-50 disabled:cursor-not-allowed min-h-[60px] sm:min-h-[70px]"
-                title="Send Super Interest"
-                aria-label="Send Super Interest"
-              >
-                <span className="text-xl sm:text-2xl">💕</span>
-                <span className="text-xs font-medium text-gray-700 dark:text-gray-300">Super</span>
-              </button>
-
-              {/* Shortlist */}
-              <button
-                onClick={handleShortlist}
-                disabled={actionLoading}
-                className={`flex flex-col items-center gap-1 px-2 py-2 sm:py-3 border rounded-lg transition-colors touch-manipulation disabled:opacity-50 disabled:cursor-not-allowed min-h-[60px] sm:min-h-[70px] ${
-                  isShortlisted
-                    ? 'bg-yellow-500 border-yellow-500 text-white hover:bg-yellow-600 active:bg-yellow-700'
-                    : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600'
-                }`}
-                title={isShortlisted ? 'Remove from Shortlist' : 'Add to Shortlist'}
-                aria-label={isShortlisted ? 'Remove from Shortlist' : 'Add to Shortlist'}
-              >
-                <span className="text-xl sm:text-2xl">⭐</span>
-                <span className="text-xs font-medium">{isShortlisted ? 'Saved' : 'Save'}</span>
-              </button>
-
-              {/* Chat */}
-              <button
-                onClick={handleChat}
-                className="flex flex-col items-center gap-1 px-2 py-2 sm:py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 active:bg-blue-800 transition-colors touch-manipulation min-h-[60px] sm:min-h-[70px]"
-                title="Send Message"
-                aria-label="Send Message"
-              >
-                <span className="text-xl sm:text-2xl">💬</span>
-                <span className="text-xs font-medium">Chat</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Quick Message Modal */}
       {hasSelectedProfile && (
         <QuickMessageModal
