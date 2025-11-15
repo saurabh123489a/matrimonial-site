@@ -8,6 +8,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { useNotifications } from '@/contexts/NotificationContext';
 import ProfileCard from '@/components/ProfileCard';
 import CompactProfileCard from '@/components/CompactProfileCard';
+import LazyProfileCard from '@/components/LazyProfileCard';
 import LocationSelect from '@/components/LocationSelect';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import EmptyState from '@/components/EmptyState';
@@ -714,11 +715,12 @@ function SearchProfilesPageContent() {
                 : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6'
             }`}>
               {sortedUsers.map((user) => (
-                viewMode === 'compact' ? (
-                  <CompactProfileCard key={user._id} user={user} showOnlineStatus={true} />
-                ) : (
-                  <ProfileCard key={user._id} user={user} />
-                )
+                <LazyProfileCard 
+                  key={user._id} 
+                  user={user} 
+                  viewMode={viewMode}
+                  showOnlineStatus={viewMode === 'compact'}
+                />
               ))}
             </div>
 

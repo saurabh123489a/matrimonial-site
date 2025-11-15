@@ -1,9 +1,13 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import html2canvas from 'html2canvas';
 import { trackShare } from '@/lib/analytics';
 import { getProfileUrl } from '@/lib/profileUtils';
+import { interestApi, shortlistApi } from '@/lib/api';
+import { useNotifications } from '@/contexts/NotificationContext';
 
 interface ProfileShareCardProps {
   user: {
@@ -22,11 +26,30 @@ interface ProfileShareCardProps {
 }
 
 export default function ProfileShareCard({ user, onClose }: ProfileShareCardProps) {
+  const router = useRouter();
+  const { showSuccess, showError } = useNotifications();
   const [generating, setGenerating] = useState(false);
   const [cardImageUrl, setCardImageUrl] = useState<string>('');
+  const [actionLoading, setActionLoading] = useState(false);
+  const [isShortlisted, setIsShortlisted] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
   const primaryPhoto = user.photos?.find(p => p.isPrimary) || user.photos?.[0];
+
+  useEffect(() => {
+    checkShortlistStatus();
+  }, [user._id]);
+
+  const checkShortlistStatus = async () => {
+    try {
+      const response = await shortlistApi.check(user._id);
+      if (response.status && response.data) {
+        setIsShortlisted(response.data.isShortlisted || false);
+      }
+    } catch (error) {
+      // Silently fail
+    }
+  };
 
   useEffect(() => {
     generateCardImage();
@@ -135,6 +158,41 @@ export default function ProfileShareCard({ user, onClose }: ProfileShareCardProp
     link.click();
   };
 
+  const handleSendInterest = async () => {
+    setActionLoading(true);
+    try {
+      const response = await interestApi.send(user._id);
+      if (response.status) {
+        showSuccess('Interest sent successfully!');
+      }
+    } catch (err: any) {
+      showError(err.response?.data?.message || 'Failed to send interest');
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  const handleShortlist = async () => {
+    setActionLoading(true);
+    try {
+      const checkResponse = await shortlistApi.check(user._id);
+      const currentlyShortlisted = checkResponse.status && checkResponse.data?.isShortlisted;
+      
+      const response = currentlyShortlisted 
+        ? await shortlistApi.remove(user._id)
+        : await shortlistApi.add(user._id);
+      
+      if (response.status) {
+        setIsShortlisted(!currentlyShortlisted);
+        showSuccess(currentlyShortlisted ? 'Removed from shortlist' : 'Added to shortlist');
+      }
+    } catch (err: any) {
+      showError(err.response?.data?.message || 'Failed to update shortlist');
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
       <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-scale-in">
@@ -154,43 +212,77 @@ export default function ProfileShareCard({ user, onClose }: ProfileShareCardProp
           {/* Hidden card for image generation */}
           <div ref={cardRef} className="hidden">
             <div 
-              className="w-[600px] h-[800px] p-8 text-white relative overflow-hidden"
               style={{ 
-                background: 'linear-gradient(to bottom right, #DB2777, #DC2626, #BE185D)',
-                color: 'white'
+                width: '600px',
+                height: '800px',
+                padding: '32px',
+                color: '#ffffff',
+                position: 'relative',
+                overflow: 'hidden',
+                background: 'linear-gradient(to bottom right, #DB2777, #DC2626, #BE185D)'
               }}
             >
               {/* Background Pattern */}
-              <div className="absolute inset-0" style={{ opacity: 0.1 }}>
-                <div className="absolute top-0 left-0 w-64 h-64 bg-white rounded-full -translate-x-1/2 -translate-y-1/2"></div>
-                <div className="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full translate-x-1/2 translate-y-1/2"></div>
+              <div style={{ position: 'absolute', inset: 0, opacity: 0.1 }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, width: '256px', height: '256px', backgroundColor: '#ffffff', borderRadius: '50%', transform: 'translate(-50%, -50%)' }}></div>
+                <div style={{ position: 'absolute', bottom: 0, right: 0, width: '384px', height: '384px', backgroundColor: '#ffffff', borderRadius: '50%', transform: 'translate(50%, 50%)' }}></div>
               </div>
 
               {/* Content */}
-              <div className="relative z-10 h-full flex flex-col">
+              <div style={{ position: 'relative', zIndex: 10, height: '100%', display: 'flex', flexDirection: 'column' }}>
                 {/* Logo/Header */}
-                <div className="mb-6">
-                  <div className="text-3xl font-bold mb-2">💍 ekGahoi</div>
-                  <div className="text-sm" style={{ opacity: 0.9 }}>Your Trusted Matrimonial Platform</div>
+                <div style={{ marginBottom: '24px' }}>
+                  <div style={{ fontSize: '30px', fontWeight: 'bold', marginBottom: '8px' }}>💍 ekGahoi</div>
+                  <div style={{ fontSize: '14px', opacity: 0.9 }}>Your Trusted Matrimonial Platform</div>
                 </div>
 
                 {/* Profile Photo */}
-                <div className="flex justify-center mb-6">
-                  <div className="relative">
+                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '24px' }}>
+                  <div style={{ position: 'relative' }}>
                     {primaryPhoto?.url ? (
                       <img
                         src={primaryPhoto.url}
                         alt={user.name}
-                        className="w-48 h-48 rounded-full object-cover border-4 border-white shadow-2xl"
+                        style={{
+                          width: '192px',
+                          height: '192px',
+                          borderRadius: '50%',
+                          objectFit: 'cover',
+                          border: '4px solid #ffffff',
+                          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
+                        }}
                         crossOrigin="anonymous"
                       />
                     ) : (
-                      <div className="w-48 h-48 rounded-full bg-white/20 border-4 border-white shadow-2xl flex items-center justify-center text-6xl">
+                      <div style={{
+                        width: '192px',
+                        height: '192px',
+                        borderRadius: '50%',
+                        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                        border: '4px solid #ffffff',
+                        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '60px'
+                      }}>
                         👤
                       </div>
                     )}
                     {user.gahoiId && (
-                      <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-white text-pink-600 px-4 py-1 rounded-full text-sm font-bold shadow-lg">
+                      <div style={{
+                        position: 'absolute',
+                        bottom: '-8px',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        backgroundColor: '#ffffff',
+                        color: '#DB2777',
+                        padding: '4px 16px',
+                        borderRadius: '9999px',
+                        fontSize: '14px',
+                        fontWeight: 'bold',
+                        boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)'
+                      }}>
                         ID: {user.gahoiId}
                       </div>
                     )}
@@ -198,63 +290,73 @@ export default function ProfileShareCard({ user, onClose }: ProfileShareCardProp
                 </div>
 
                 {/* Name */}
-                <div className="text-center mb-4">
-                  <h2 className="text-4xl font-bold mb-2">{user.name}</h2>
+                <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+                  <h2 style={{ fontSize: '36px', fontWeight: 'bold', marginBottom: '8px' }}>{user.name}</h2>
                   {user.age && (
-                    <p className="text-xl" style={{ opacity: 0.9 }}>{user.age} years</p>
+                    <p style={{ fontSize: '20px', opacity: 0.9 }}>{user.age} years</p>
                   )}
                 </div>
 
                 {/* Details */}
                 <div 
-                  className="flex-1 rounded-2xl p-6 space-y-4"
-                  style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
+                  style={{
+                    flex: 1,
+                    borderRadius: '16px',
+                    padding: '24px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '16px',
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)'
+                  }}
                 >
                   {user.city && user.state && (
-                    <div className="flex items-center gap-3">
-                      <span className="text-2xl">📍</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <span style={{ fontSize: '24px' }}>📍</span>
                       <div>
-                        <div className="text-sm" style={{ opacity: 0.8 }}>Location</div>
-                        <div className="text-lg font-semibold">{user.city}, {user.state}</div>
+                        <div style={{ fontSize: '14px', opacity: 0.8 }}>Location</div>
+                        <div style={{ fontSize: '18px', fontWeight: '600' }}>{user.city}, {user.state}</div>
                       </div>
                     </div>
                   )}
 
                   {user.education && (
-                    <div className="flex items-center gap-3">
-                      <span className="text-2xl">🎓</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <span style={{ fontSize: '24px' }}>🎓</span>
                       <div>
-                        <div className="text-sm" style={{ opacity: 0.8 }}>Education</div>
-                        <div className="text-lg font-semibold">{user.education}</div>
+                        <div style={{ fontSize: '14px', opacity: 0.8 }}>Education</div>
+                        <div style={{ fontSize: '18px', fontWeight: '600' }}>{user.education}</div>
                       </div>
                     </div>
                   )}
 
                   {user.occupation && (
-                    <div className="flex items-center gap-3">
-                      <span className="text-2xl">💼</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <span style={{ fontSize: '24px' }}>💼</span>
                       <div>
-                        <div className="text-sm" style={{ opacity: 0.8 }}>Occupation</div>
-                        <div className="text-lg font-semibold">{user.occupation}</div>
+                        <div style={{ fontSize: '14px', opacity: 0.8 }}>Occupation</div>
+                        <div style={{ fontSize: '18px', fontWeight: '600' }}>{user.occupation}</div>
                       </div>
                     </div>
                   )}
 
                   {user.bio && (
                     <div 
-                      className="mt-4 pt-4"
-                      style={{ borderTop: '1px solid rgba(255, 255, 255, 0.2)' }}
+                      style={{
+                        marginTop: '16px',
+                        paddingTop: '16px',
+                        borderTop: '1px solid rgba(255, 255, 255, 0.2)'
+                      }}
                     >
-                      <div className="text-sm mb-2" style={{ opacity: 0.8 }}>About</div>
-                      <div className="text-base leading-relaxed">{user.bio}</div>
+                      <div style={{ fontSize: '14px', marginBottom: '8px', opacity: 0.8 }}>About</div>
+                      <div style={{ fontSize: '16px', lineHeight: '1.625' }}>{user.bio}</div>
                     </div>
                   )}
                 </div>
 
                 {/* Footer */}
-                <div className="mt-6 text-center text-sm" style={{ opacity: 0.8 }}>
+                <div style={{ marginTop: '24px', textAlign: 'center', fontSize: '14px', opacity: 0.8 }}>
                   <div>Visit ekGahoi to connect</div>
-                  <div className="font-semibold">ekgahoi.com</div>
+                  <div style={{ fontWeight: '600' }}>ekgahoi.com</div>
                 </div>
               </div>
             </div>
@@ -279,32 +381,73 @@ export default function ProfileShareCard({ user, onClose }: ProfileShareCardProp
                 />
               </div>
 
-              {/* Share Options */}
+              {/* Action Buttons */}
               <div className="space-y-3">
-                <button
-                  onClick={shareViaWhatsApp}
-                  className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition-colors shadow-lg"
-                >
-                  <span className="text-2xl">💬</span>
-                  <span>Share on WhatsApp</span>
-                </button>
+                <div className="flex gap-2">
+                  <Link
+                    href={getProfileUrl(user)}
+                    onClick={onClose}
+                    className="flex-1 text-center px-4 py-3 bg-gradient-to-r from-pink-600 to-red-600 text-white font-semibold rounded-lg hover:from-pink-700 hover:to-red-700 transition-all shadow-lg"
+                  >
+                    View Profile
+                  </Link>
+                  <Link
+                    href={`/messages/${user._id}`}
+                    onClick={onClose}
+                    className="flex-1 text-center px-4 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-all shadow-lg"
+                  >
+                    💬 Message
+                  </Link>
+                </div>
 
-                <button
-                  onClick={shareViaInstagram}
-                  className="w-full flex items-center justify-center gap-3 px-6 py-4 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity shadow-lg"
-                  style={{ background: 'linear-gradient(to right, #9333EA, #DB2777, #F97316)' }}
-                >
-                  <span className="text-2xl">📷</span>
-                  <span>Share on Instagram</span>
-                </button>
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleSendInterest}
+                    disabled={actionLoading}
+                    className="flex-1 px-4 py-3 bg-pink-600 text-white font-semibold rounded-lg hover:bg-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-lg"
+                  >
+                    {actionLoading ? 'Sending...' : '💝 Send Interest'}
+                  </button>
+                  <button
+                    onClick={handleShortlist}
+                    disabled={actionLoading}
+                    className={`px-6 py-3 font-semibold rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-lg ${
+                      isShortlisted
+                        ? 'bg-yellow-500 text-white hover:bg-yellow-600'
+                        : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                    }`}
+                  >
+                    ⭐
+                  </button>
+                </div>
 
-                <button
-                  onClick={downloadCard}
-                  className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-pink-600 text-white font-semibold rounded-lg hover:bg-pink-700 transition-colors shadow-lg"
-                >
-                  <span className="text-2xl">⬇️</span>
-                  <span>Download Card</span>
-                </button>
+                {/* Share Options */}
+                <div className="pt-3 border-t border-gray-200 dark:border-gray-700 space-y-3">
+                  <button
+                    onClick={shareViaWhatsApp}
+                    className="w-full flex items-center justify-center gap-3 px-6 py-3 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition-colors shadow-lg"
+                  >
+                    <span className="text-2xl">💬</span>
+                    <span>Share on WhatsApp</span>
+                  </button>
+
+                  <button
+                    onClick={shareViaInstagram}
+                    className="w-full flex items-center justify-center gap-3 px-6 py-3 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity shadow-lg"
+                    style={{ background: 'linear-gradient(to right, #9333EA, #DB2777, #F97316)' }}
+                  >
+                    <span className="text-2xl">📷</span>
+                    <span>Share on Instagram</span>
+                  </button>
+
+                  <button
+                    onClick={downloadCard}
+                    className="w-full flex items-center justify-center gap-3 px-6 py-3 bg-pink-600 text-white font-semibold rounded-lg hover:bg-pink-700 transition-colors shadow-lg"
+                  >
+                    <span className="text-2xl">⬇️</span>
+                    <span>Download Card</span>
+                  </button>
+                </div>
               </div>
             </div>
           ) : (

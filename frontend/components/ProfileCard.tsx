@@ -1,9 +1,12 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { User } from '@/lib/api';
+import { User, interestApi, shortlistApi } from '@/lib/api';
+import { auth } from '@/lib/auth';
 import LazyImage from './LazyImage';
 import { getProfileUrl } from '@/lib/profileUtils';
+import { useNotifications } from '@/contexts/NotificationContext';
 
 interface ProfileCardProps {
   user: User;
@@ -11,6 +14,80 @@ interface ProfileCardProps {
 
 export default function ProfileCard({ user }: ProfileCardProps) {
   const primaryPhoto = user.photos?.find(p => p.isPrimary) || user.photos?.[0];
+  const { showSuccess, showError } = useNotifications();
+  const [actionLoading, setActionLoading] = useState(false);
+  const [isShortlisted, setIsShortlisted] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    setIsAuthenticated(auth.isAuthenticated());
+    if (auth.isAuthenticated()) {
+      checkShortlistStatus();
+    }
+  }, []);
+
+  const checkShortlistStatus = async () => {
+    try {
+      const response = await shortlistApi.check(user._id);
+      if (response.status && response.data) {
+        setIsShortlisted(response.data.isShortlisted || false);
+      }
+    } catch (error) {
+      // Silently fail
+    }
+  };
+
+  const handleSendInterest = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (!auth.isAuthenticated()) {
+      showError('Please login to send interest');
+      return;
+    }
+
+    setActionLoading(true);
+    try {
+      const response = await interestApi.send(user._id);
+      if (response.status) {
+        showSuccess('Interest sent successfully!');
+      } else {
+        showError(response.message || 'Failed to send interest');
+      }
+    } catch (err: any) {
+      showError(err.response?.data?.message || 'Failed to send interest');
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  const handleShortlist = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (!auth.isAuthenticated()) {
+      showError('Please login to shortlist profiles');
+      return;
+    }
+
+    setActionLoading(true);
+    try {
+      const response = isShortlisted 
+        ? await shortlistApi.remove(user._id)
+        : await shortlistApi.add(user._id);
+      
+      if (response.status) {
+        setIsShortlisted(!isShortlisted);
+        showSuccess(isShortlisted ? 'Removed from shortlist' : 'Added to shortlist');
+      } else {
+        showError(response.message || 'Failed to update shortlist');
+      }
+    } catch (err: any) {
+      showError(err.response?.data?.message || 'Failed to update shortlist');
+    } finally {
+      setActionLoading(false);
+    }
+  };
   
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden profile-card border border-gray-200">
@@ -88,16 +165,46 @@ export default function ProfileCard({ user }: ProfileCardProps) {
         )}
 
         {/* Action Buttons */}
-        <div className="flex gap-2">
-          <Link
-            href={getProfileUrl(user)}
-            className="flex-1 text-center px-3 sm:px-4 py-2 sm:py-2.5 bg-gradient-to-r from-pink-600 to-red-600 text-white font-semibold rounded-md hover:from-pink-700 hover:to-red-700 transition-all text-xs sm:text-sm shadow-sm"
-          >
-            View Profile
-          </Link>
-          <button className="px-3 sm:px-4 py-2 sm:py-2.5 bg-gray-100 text-gray-700 font-semibold rounded-md hover:bg-gray-200 transition-all text-sm sm:text-base">
-            💝
-          </button>
+        <div className="flex flex-col gap-2">
+          <div className="flex gap-2">
+            <Link
+              href={getProfileUrl(user)}
+              className="flex-1 text-center px-3 sm:px-4 py-2 sm:py-2.5 bg-gradient-to-r from-pink-600 to-red-600 text-white font-semibold rounded-md hover:from-pink-700 hover:to-red-700 transition-all text-xs sm:text-sm shadow-sm"
+            >
+              View Profile
+            </Link>
+            {isAuthenticated && (
+              <Link
+                href={`/messages/${user._id}`}
+                className="px-3 sm:px-4 py-2 sm:py-2.5 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition-all text-xs sm:text-sm shadow-sm"
+                title="Message"
+              >
+                💬
+              </Link>
+            )}
+          </div>
+          <div className="flex gap-2">
+            <button
+              onClick={handleSendInterest}
+              disabled={actionLoading || !isAuthenticated}
+              className="flex-1 px-3 sm:px-4 py-2 sm:py-2.5 bg-pink-50 text-pink-600 font-semibold rounded-md hover:bg-pink-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-xs sm:text-sm border border-pink-200"
+              title={isAuthenticated ? 'Send Interest' : 'Login to send interest'}
+            >
+              {actionLoading ? '...' : '💝 Send Interest'}
+            </button>
+            <button
+              onClick={handleShortlist}
+              disabled={actionLoading || !isAuthenticated}
+              className={`px-3 sm:px-4 py-2 sm:py-2.5 font-semibold rounded-md disabled:opacity-50 disabled:cursor-not-allowed transition-all text-xs sm:text-sm ${
+                isShortlisted
+                  ? 'bg-yellow-500 text-white hover:bg-yellow-600'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+              title={isAuthenticated ? (isShortlisted ? 'Remove from shortlist' : 'Add to shortlist') : 'Login to shortlist'}
+            >
+              ⭐
+            </button>
+          </div>
         </div>
       </div>
     </div>
