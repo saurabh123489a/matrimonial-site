@@ -292,53 +292,35 @@ export const getProfessionOptions = async (req, res, next) => {
 };
 
 /**
- * Get Salary Range Options
+ * Get Salary Range Options (Annual Income)
  * GET /api/meta/salary
- * Returns salary ranges from 50L to 2Cr+ in 25L intervals
- * Format: Less than ₹50L, ₹50L-₹75L, ₹75L-₹1Cr, ..., ₹1.75Cr-₹2Cr, ₹2Cr+
+ * Returns annual income ranges in format like "25-30 lakh", "1-2 Cr", etc.
  */
 export const getSalaryOptions = async (req, res, next) => {
   try {
-    const salaryOptions = [];
-    
-    // Add "Less than ₹50L" option
-    salaryOptions.push({
-      value: 0,
-      label: 'Less than ₹50L',
-      min: 0,
-      max: 4999999,
-    });
-    
-    // Generate salary ranges: 50L-75L, 75L-1Cr, 1Cr-1.25Cr, ..., 1.75Cr-2Cr
-    // Starting from 50L, increment by 25L up to 2Cr
-    const ranges = [
-      { start: 50, end: 75, label: '₹50L - ₹75L' },
-      { start: 75, end: 100, label: '₹75L - ₹1Cr' },
-      { start: 100, end: 125, label: '₹1Cr - ₹1.25Cr' },
-      { start: 125, end: 150, label: '₹1.25Cr - ₹1.5Cr' },
-      { start: 150, end: 175, label: '₹1.5Cr - ₹1.75Cr' },
-      { start: 175, end: 200, label: '₹1.75Cr - ₹2Cr' },
+    const salaryOptions = [
+      { value: '0-1 lakh', label: 'Less than 1 lakh' },
+      { value: '1-2 lakh', label: '1-2 lakh' },
+      { value: '2-3 lakh', label: '2-3 lakh' },
+      { value: '3-4 lakh', label: '3-4 lakh' },
+      { value: '4-5 lakh', label: '4-5 lakh' },
+      { value: '5-7 lakh', label: '5-7 lakh' },
+      { value: '7-10 lakh', label: '7-10 lakh' },
+      { value: '10-15 lakh', label: '10-15 lakh' },
+      { value: '15-20 lakh', label: '15-20 lakh' },
+      { value: '20-25 lakh', label: '20-25 lakh' },
+      { value: '25-30 lakh', label: '25-30 lakh' },
+      { value: '30-40 lakh', label: '30-40 lakh' },
+      { value: '40-50 lakh', label: '40-50 lakh' },
+      { value: '50-75 lakh', label: '50-75 lakh' },
+      { value: '75 lakh-1 Cr', label: '75 lakh - 1 Cr' },
+      { value: '1-1.5 Cr', label: '1-1.5 Cr' },
+      { value: '1.5-2 Cr', label: '1.5-2 Cr' },
+      { value: '2-3 Cr', label: '2-3 Cr' },
+      { value: '3-5 Cr', label: '3-5 Cr' },
+      { value: '5 Cr+', label: '5 Cr and above' },
+      { value: 'Not disclosed', label: 'Not disclosed' },
     ];
-    
-    ranges.forEach((range) => {
-      const minValue = range.start === 100 ? range.start * 1000000 : range.start * 100000; // Convert Cr to actual value
-      const maxValue = range.end === 100 ? range.end * 1000000 : range.end * 100000;
-      
-      salaryOptions.push({
-        value: minValue,
-        label: range.label,
-        min: minValue,
-        max: maxValue - 1, // Up to but not including next range
-      });
-    });
-    
-    // Add "₹2Cr+" option
-    salaryOptions.push({
-      value: 20000000,
-      label: '₹2Cr+',
-      min: 20000000,
-      max: null, // No upper limit
-    });
 
     res.json({
       status: true,

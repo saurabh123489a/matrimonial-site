@@ -68,6 +68,7 @@ const userSchema = new mongoose.Schema(
       trim: true,
       index: false, // Explicitly disable auto-index, we create it manually below
     },
+    mobileCountryCode: { type: Number, default: 91 }, // Country code for mobile (e.g., 91 for India)
     whatsappNumber: { type: String, trim: true }, // Separate WhatsApp number
     passwordHash: { type: String, required: false }, // Optional for OTP-based auth
     
@@ -81,6 +82,8 @@ const userSchema = new mongoose.Schema(
     
     // Basic Info
     name: { type: String, required: true, trim: true },
+    firstName: { type: String, trim: true }, // First name separately
+    lastName: { type: String, trim: true }, // Last name separately
     gender: { 
       type: String, 
       enum: ['male', 'female', 'other'], 
@@ -120,8 +123,11 @@ const userSchema = new mongoose.Schema(
     
     // Location
     city: { type: String },
+    cityId: { type: Number }, // City ID from location database
     state: { type: String },
+    stateId: { type: Number }, // State ID from location database
     country: { type: String, default: 'India' },
+    countryId: { type: Number }, // Country ID from location database
     town: { type: String }, // Town/Village name
     pincode: { type: String },
     presentAddress: { type: String },
@@ -134,7 +140,8 @@ const userSchema = new mongoose.Schema(
     // Horoscope Details (OPTIONAL - not mandatory)
     // Users can skip this section if they don't have horoscope details
     horoscopeDetails: {
-      starSign: String, // Optional
+      starSign: String, // Optional (also known as zodiac)
+      zodiac: String, // Alternative field name for starSign (e.g., "Gemini / मिथुन")
       rashi: String, // Optional
       nakshatra: String, // Optional
       aakna: String, // Optional - Aakna/Gotra from mother's side
@@ -181,7 +188,9 @@ const userSchema = new mongoose.Schema(
     
     // Profile Content
     bio: { type: String, maxlength: 2000 }, // Increased from 1000
+    aboutMyself: { type: String, maxlength: 2000 }, // Alternative field name for bio/compatibility
     photos: [photoSchema],
+    profilePictureName: { type: String }, // Profile picture filename (e.g., "1737699373027.jpg")
     
     // Preferences for matching
     preferences: preferenceSchema,
@@ -205,6 +214,10 @@ const userSchema = new mongoose.Schema(
     isProfileComplete: { type: Boolean, default: false },
     isActive: { type: Boolean, default: true },
     isAdmin: { type: Boolean, default: false }, // Admin flag for admin board access
+    isAgreementAccepted: { type: Boolean, default: false }, // User agreement acceptance
+    lastLoginDatetime: { type: Date }, // Last login timestamp
+    lastAccessDatetime: { type: Date }, // Last access timestamp
+    accountCreationDatetime: { type: Date }, // Account creation timestamp (alternative to createdAt)
   },
   {
     timestamps: true, // Adds createdAt and updatedAt

@@ -32,9 +32,11 @@ export default function MyProfilePage() {
   const [educationOptions, setEducationOptions] = useState<Array<{ value: string; label: string }>>([]);
   const [occupationOptions, setOccupationOptions] = useState<Array<{ value: string; label: string }>>([]);
   const [professionOptions, setProfessionOptions] = useState<Array<{ value: string; label: string }>>([]);
+  const [salaryOptions, setSalaryOptions] = useState<Array<{ value: string; label: string }>>([]);
   const [loadingEducation, setLoadingEducation] = useState(false);
   const [loadingOccupation, setLoadingOccupation] = useState(false);
   const [loadingProfession, setLoadingProfession] = useState(false);
+  const [loadingSalary, setLoadingSalary] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
   const [editingHoroscope, setEditingHoroscope] = useState(false);
   const [savingHoroscope, setSavingHoroscope] = useState(false);
@@ -60,6 +62,7 @@ export default function MyProfilePage() {
 
     loadProfile();
     loadEducationOptions();
+    loadSalaryOptions();
     
   }, []);
 
@@ -98,6 +101,20 @@ export default function MyProfilePage() {
       console.error('Failed to load occupation options:', error);
     } finally {
       setLoadingOccupation(false);
+    }
+  };
+
+  const loadSalaryOptions = async () => {
+    setLoadingSalary(true);
+    try {
+      const response = await metaDataApi.getSalary();
+      if (response.status && response.data) {
+        setSalaryOptions(response.data);
+      }
+    } catch (error) {
+      console.error('Failed to load salary options:', error);
+    } finally {
+      setLoadingSalary(false);
     }
   };
 
@@ -185,7 +202,9 @@ export default function MyProfilePage() {
     setFieldErrors({});
 
     try {
-      const response = await userApi.updateMe(formData);
+      // Exclude name and phone from updates (non-editable fields)
+      const { name, phone, ...updateData } = formData;
+      const response = await userApi.updateMe(updateData);
       if (response.status) {
         
         await loadProfile();
@@ -595,9 +614,9 @@ export default function MyProfilePage() {
               {editing ? (
                 <input
                   type="text"
-                  value={formData.name || ''}
-                  onChange={(e) => setFormData({ ...formData, name: sanitizeFormInput(e.target.value, 'text') })}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-pink-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  value={user.name || ''}
+                  readOnly
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-pink-100 rounded-lg bg-gray-50 dark:bg-gray-800 cursor-not-allowed"
                 />
               ) : (
                 <p className="text-gray-900 dark:text-pink-100">{user.name}</p>
@@ -716,9 +735,9 @@ export default function MyProfilePage() {
                 {editing ? (
                   <input
                     type="tel"
-                    value={formData.phone || ''}
-                    onChange={(e) => setFormData({ ...formData, phone: sanitizeFormInput(e.target.value, 'phone') })}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-pink-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                    value={user.phone || ''}
+                    readOnly
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-pink-100 rounded-lg bg-gray-50 dark:bg-gray-800 cursor-not-allowed"
                   />
                 ) : (
                   <p className="text-gray-900 dark:text-pink-100">{user.phone || 'Not provided'}</p>
@@ -975,13 +994,19 @@ export default function MyProfilePage() {
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Annual Income</label>
                 {editing ? (
-                  <input
-                    type="text"
+                  <select
                     value={formData.annualIncome || ''}
-                    onChange={(e) => setFormData({ ...formData, annualIncome: sanitizeFormInput(e.target.value, 'text') })}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-pink-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
-                    placeholder="e.g., 25-30 lakh"
-                  />
+                    onChange={(e) => setFormData({ ...formData, annualIncome: e.target.value })}
+                    disabled={loadingSalary}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-pink-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 disabled:opacity-50"
+                  >
+                    <option value="">Select Annual Income</option>
+                    {salaryOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
                 ) : (
                   <p className="text-gray-900 dark:text-pink-100">{user.annualIncome || 'Not provided'}</p>
                 )}

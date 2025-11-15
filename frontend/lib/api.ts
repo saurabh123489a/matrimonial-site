@@ -386,7 +386,7 @@ export const metaDataApi = {
     const response = await api.get('/meta/religion');
     return response.data;
   },
-  getSalary: async (): Promise<ApiResponse<Array<{ value: number; label: string; min: number; max: number | null }>>> => {
+  getSalary: async (): Promise<ApiResponse<Array<{ value: string; label: string }>>> => {
     const response = await api.get('/meta/salary');
     return response.data;
   },

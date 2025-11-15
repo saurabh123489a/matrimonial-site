@@ -155,7 +155,7 @@ export default function LocationSelect({
             value={selectedCountry}
             onChange={(e) => onCountryChange(e.target.value)}
             disabled={loadingCountries}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400 disabled:opacity-50"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-pink-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 disabled:opacity-50"
           >
             <option value="">Select Country</option>
             {countries.map((country) => (
@@ -179,7 +179,7 @@ export default function LocationSelect({
             value={selectedState}
             onChange={(e) => onStateChange(e.target.value)}
             disabled={!selectedCountry || loadingStates}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400 disabled:opacity-50"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-pink-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 disabled:opacity-50"
           >
             <option value="">
               {!selectedCountry ? 'Select Country first' : loadingStates ? 'Loading states...' : 'Select State'}
@@ -210,7 +210,7 @@ export default function LocationSelect({
             value={selectedCity}
             onChange={(e) => onCityChange(e.target.value)}
             disabled={!selectedCountry || !selectedState || loadingCities}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-pink-800 dark:bg-gray-900 dark:text-pink-100 rounded-md focus:outline-none focus:ring-pink-500 dark:focus:ring-pink-400 disabled:opacity-50"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-pink-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 disabled:opacity-50"
           >
             <option value="">
               {!selectedState 
