@@ -2,6 +2,7 @@ import Message from '../models/Message.js';
 import mongoose from 'mongoose';
 import { generateConversationId } from '../utils/conversationUtils.js';
 import { sortPhotos } from '../utils/photoUtils.js';
+import User from '../models/User.js';
 
 export const messageRepository = {
   async create(data) {
@@ -39,31 +40,50 @@ export const messageRepository = {
       .limit(limit)
       .lean(); // Use lean() for better performance
 
-    // Sort photos for each user
-    const User = (await import('../models/User.js')).default;
-    const populatedMessages = await Promise.all(
-      messages.map(async (msg) => {
-        // Ensure sender and receiver are populated
-        if (!msg.senderId || typeof msg.senderId === 'string') {
-          const sender = await User.findById(msg.senderId).select('name photos').lean();
-          msg.senderId = sender || { _id: msg.senderId, name: 'Unknown' };
-        }
-        if (!msg.receiverId || typeof msg.receiverId === 'string') {
-          const receiver = await User.findById(msg.receiverId).select('name photos').lean();
-          msg.receiverId = receiver || { _id: msg.receiverId, name: 'Unknown' };
-        }
+    // Collect all unique user IDs that need to be populated
+    const userIds = new Set();
+    messages.forEach(msg => {
+      if (msg.senderId && typeof msg.senderId === 'string') {
+        userIds.add(msg.senderId);
+      }
+      if (msg.receiverId && typeof msg.receiverId === 'string') {
+        userIds.add(msg.receiverId);
+      }
+    });
 
-        // Sort photos if available
-        if (msg.senderId.photos) {
-          sortPhotos(msg.senderId.photos);
-        }
-        if (msg.receiverId.photos) {
-          sortPhotos(msg.receiverId.photos);
-        }
+    // Fetch all users in a single query (fixes N+1 problem)
+    const users = userIds.size > 0
+      ? await User.find({ _id: { $in: Array.from(userIds) } })
+          .select('name photos email phone')
+          .lean()
+      : [];
 
-        return msg;
-      })
-    );
+    // Create a map for quick lookup
+    const userMap = new Map(users.map(user => [String(user._id), user]));
+
+    // Populate messages with user data and sort photos
+    const populatedMessages = messages.map(msg => {
+      // Populate sender if needed
+      if (!msg.senderId || typeof msg.senderId === 'string') {
+        const sender = userMap.get(String(msg.senderId));
+        msg.senderId = sender || { _id: msg.senderId, name: 'Unknown' };
+      }
+      // Populate receiver if needed
+      if (!msg.receiverId || typeof msg.receiverId === 'string') {
+        const receiver = userMap.get(String(msg.receiverId));
+        msg.receiverId = receiver || { _id: msg.receiverId, name: 'Unknown' };
+      }
+
+      // Sort photos if available
+      if (msg.senderId?.photos) {
+        sortPhotos(msg.senderId.photos);
+      }
+      if (msg.receiverId?.photos) {
+        sortPhotos(msg.receiverId.photos);
+      }
+
+      return msg;
+    });
 
     return populatedMessages;
   },
@@ -122,44 +142,64 @@ export const messageRepository = {
       },
     ]);
 
-    // Populate user details for both sender and receiver
-    const User = (await import('../models/User.js')).default;
-    const populated = await Promise.all(
-      conversations.map(async (conv) => {
-        const lastMsg = conv.lastMessage;
-        const senderIdStr = String(lastMsg.senderId);
-        const receiverIdStr = String(lastMsg.receiverId);
-        const currentUserIdStr = String(userId);
+    // Collect all unique user IDs that need to be populated (fixes N+1 problem)
+    const userIds = new Set();
+    conversations.forEach(conv => {
+      const lastMsg = conv.lastMessage;
+      if (lastMsg.senderId) userIds.add(String(lastMsg.senderId));
+      if (lastMsg.receiverId) userIds.add(String(lastMsg.receiverId));
+    });
 
-        // Determine the other user (not the current user)
-        const otherUserId = senderIdStr === currentUserIdStr
-          ? lastMsg.receiverId
-          : lastMsg.senderId;
+    // Fetch all users in a single query
+    const users = userIds.size > 0
+      ? await User.find({ _id: { $in: Array.from(userIds) } })
+          .select('name photos')
+          .lean()
+      : [];
 
-        const otherUser = await User.findById(otherUserId).select('name photos').lean();
+    // Create a map for quick lookup
+    const userMap = new Map(users.map(user => [String(user._id), user]));
 
-        // Skip conversations where other user doesn't exist (deleted accounts)
-        if (!otherUser) {
-          return null;
-        }
+    // Populate conversations with user data
+    const currentUserIdStr = String(userId);
+    const populated = conversations.map(conv => {
+      const lastMsg = conv.lastMessage;
+      const senderIdStr = String(lastMsg.senderId);
+      const receiverIdStr = String(lastMsg.receiverId);
 
-        // Return senderId and receiverId as string IDs (not objects)
-        // The frontend expects string IDs for comparison
-        return {
-          conversationId: conv._id,
-          otherUser,
-          lastMessage: {
-            content: lastMsg.content,
-            senderId: String(lastMsg.senderId), // Always return as string ID
-            receiverId: String(lastMsg.receiverId), // Always return as string ID
-            createdAt: lastMsg.createdAt,
-            isRead: lastMsg.isRead || false,
-            _id: lastMsg._id,
-          },
-          unreadCount: conv.unreadCount,
-        };
-      })
-    );
+      // Determine the other user (not the current user)
+      const otherUserId = senderIdStr === currentUserIdStr
+        ? String(lastMsg.receiverId)
+        : String(lastMsg.senderId);
+
+      const otherUser = userMap.get(otherUserId);
+
+      // Skip conversations where other user doesn't exist (deleted accounts)
+      if (!otherUser) {
+        return null;
+      }
+
+      // Sort photos if available
+      if (otherUser.photos) {
+        sortPhotos(otherUser.photos);
+      }
+
+      // Return senderId and receiverId as string IDs (not objects)
+      // The frontend expects string IDs for comparison
+      return {
+        conversationId: conv._id,
+        otherUser,
+        lastMessage: {
+          content: lastMsg.content,
+          senderId: senderIdStr, // Always return as string ID
+          receiverId: receiverIdStr, // Always return as string ID
+          createdAt: lastMsg.createdAt,
+          isRead: lastMsg.isRead || false,
+          _id: lastMsg._id,
+        },
+        unreadCount: conv.unreadCount,
+      };
+    });
 
     // Filter out null values (conversations with deleted users)
     return populated.filter(conv => conv !== null);
@@ -238,30 +278,50 @@ export const messageRepository = {
       .limit(limit)
       .lean();
 
-    // Ensure proper population and sort photos
-    const User = (await import('../models/User.js')).default;
-    const populatedMessages = await Promise.all(
-      messages.map(async (msg) => {
-        if (!msg.senderId || typeof msg.senderId === 'string') {
-          const sender = await User.findById(msg.senderId).select('name photos email phone').lean();
-          msg.senderId = sender || { _id: msg.senderId, name: 'Unknown' };
-        }
-        if (!msg.receiverId || typeof msg.receiverId === 'string') {
-          const receiver = await User.findById(msg.receiverId).select('name photos email phone').lean();
-          msg.receiverId = receiver || { _id: msg.receiverId, name: 'Unknown' };
-        }
+    // Collect all unique user IDs that need to be populated (fixes N+1 problem)
+    const userIds = new Set();
+    messages.forEach(msg => {
+      if (msg.senderId && typeof msg.senderId === 'string') {
+        userIds.add(msg.senderId);
+      }
+      if (msg.receiverId && typeof msg.receiverId === 'string') {
+        userIds.add(msg.receiverId);
+      }
+    });
 
-        // Sort photos if available
-        if (msg.senderId.photos) {
-          sortPhotos(msg.senderId.photos);
-        }
-        if (msg.receiverId.photos) {
-          sortPhotos(msg.receiverId.photos);
-        }
+    // Fetch all users in a single query
+    const users = userIds.size > 0
+      ? await User.find({ _id: { $in: Array.from(userIds) } })
+          .select('name photos email phone')
+          .lean()
+      : [];
 
-        return msg;
-      })
-    );
+    // Create a map for quick lookup
+    const userMap = new Map(users.map(user => [String(user._id), user]));
+
+    // Populate messages with user data and sort photos
+    const populatedMessages = messages.map(msg => {
+      // Populate sender if needed
+      if (!msg.senderId || typeof msg.senderId === 'string') {
+        const sender = userMap.get(String(msg.senderId));
+        msg.senderId = sender || { _id: msg.senderId, name: 'Unknown' };
+      }
+      // Populate receiver if needed
+      if (!msg.receiverId || typeof msg.receiverId === 'string') {
+        const receiver = userMap.get(String(msg.receiverId));
+        msg.receiverId = receiver || { _id: msg.receiverId, name: 'Unknown' };
+      }
+
+      // Sort photos if available
+      if (msg.senderId?.photos) {
+        sortPhotos(msg.senderId.photos);
+      }
+      if (msg.receiverId?.photos) {
+        sortPhotos(msg.receiverId.photos);
+      }
+
+      return msg;
+    });
 
     return populatedMessages;
   },

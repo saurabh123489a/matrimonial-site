@@ -5,20 +5,13 @@ import { sessionRepository } from '../repositories/sessionRepository.js';
 import { loginLogRepository } from '../repositories/loginLogRepository.js';
 import { getDeviceInfo } from '../utils/deviceInfo.js';
 
-// Default OTP - Currently using fixed OTP for all users
-// TODO: In future, integrate SMS API (Twilio, AWS SNS, etc.) to send actual OTP codes
-const DEFAULT_OTP = '123456';
-
 /**
- * Generate OTP code
- * Currently returns fixed OTP (123456) for all users
- * Future: Will integrate with SMS API to send unique OTP codes
+ * Generate random 6-digit OTP code
+ * @returns {string} 6-digit OTP code
  */
 function generateOTP() {
-  // Currently always return default OTP
-  // In future, when SMS API is integrated, this will generate random OTP:
-  // return Math.floor(100000 + Math.random() * 900000).toString();
-  return DEFAULT_OTP;
+  // Generate random 6-digit OTP (100000 to 999999)
+  return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
 /**
@@ -54,10 +47,9 @@ export const otpService = {
     });
 
     // TODO: In future, send SMS here using a service like Twilio, AWS SNS, etc.
-    // Currently: OTP is always 123456 for testing
     // Future implementation example:
     // await smsService.sendOTP(cleanPhone, code);
-    console.log(`📱 OTP sent to ${cleanPhone}: ${code} (Currently using default: ${code})`);
+    console.log(`📱 OTP sent to ${cleanPhone}: ${code}`);
     
     return {
       success: true,

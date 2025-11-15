@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import mongoose from 'mongoose';
 import { userRepository } from '../repositories/userRepository.js';
 import User from '../models/User.js';
+import { cacheService } from '../utils/cache.js';
 
 /**
  * User Service - Business logic layer for user operations
@@ -127,10 +128,21 @@ export const userService = {
 
   /**
    * Get user profile by ID
+   * Uses caching to improve performance
    * @param {string} userId - User ID to fetch
    * @param {string} requesterId - Optional: ID of user requesting (to allow inactive profile viewing)
    */
   async getUserProfile(userId, requesterId = null) {
+    // Create cache key - include requesterId to handle different views (e.g., phone visibility)
+    const cacheKey = `user:profile:${userId}:${requesterId || 'public'}`;
+    
+    // Try to get from cache first
+    const cached = cacheService.get(cacheKey);
+    if (cached) {
+      return cached;
+    }
+
+    // Fetch from database
     const user = await userRepository.findById(userId);
     
     if (!user) {
@@ -147,13 +159,21 @@ export const userService = {
       throw error;
     }
 
+    // Create a copy to avoid mutating cached data
+    const userProfile = user.toObject ? user.toObject() : { ...user };
+
     // Hide phone number for female users when viewed by others
     // Users can always see their own phone number
-    if (String(userId) !== String(requesterId) && user.gender === 'female') {
-      user.phone = undefined;
+    if (String(userId) !== String(requesterId) && userProfile.gender === 'female') {
+      userProfile.phone = undefined;
     }
 
-    return user;
+    // Cache the result (10 minutes TTL)
+    // Cache for shorter time if viewing own profile (5 minutes) vs others (10 minutes)
+    const ttl = String(userId) === String(requesterId) ? 300 : 600;
+    cacheService.set(cacheKey, userProfile, ttl);
+
+    return userProfile;
   },
 
   /**
@@ -255,6 +275,10 @@ export const userService = {
     updateData.isProfileComplete = checkProfileCompleteness(mergedData);
 
     const updatedUser = await userRepository.updateById(userId, updateData);
+    
+    // Clear cache for this user (all variations)
+    cacheService.clearUserCache(userId);
+    
     return updatedUser;
   },
 
@@ -271,6 +295,10 @@ export const userService = {
     }
 
     await userRepository.deleteById(userId);
+    
+    // Clear cache for this user
+    cacheService.clearUserCache(userId);
+    
     return { message: 'User profile deleted successfully' };
   },
 

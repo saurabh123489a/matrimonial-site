@@ -42,10 +42,35 @@ export const sessionRepository = {
     );
   },
 
+  /**
+   * Logout: Deactivate a specific session and set expiration to now
+   * @param {string} sessionId - Session ID to logout
+   * @param {string} userId - User ID for validation
+   * @returns {Promise<Object>} Updated session
+   */
+  async logout(sessionId, userId) {
+    return await Session.findOneAndUpdate(
+      { _id: sessionId, userId },
+      { 
+        isActive: false, 
+        expiresAt: new Date() // Immediately expire the session
+      },
+      { new: true }
+    );
+  },
+
+  /**
+   * Deactivate all active sessions for a user (used on password change)
+   * @param {string} userId - User ID
+   * @returns {Promise<Object>} Update result
+   */
   async deactivateAllUserSessions(userId) {
     return await Session.updateMany(
       { userId, isActive: true },
-      { isActive: false }
+      { 
+        isActive: false,
+        expiresAt: new Date() // Immediately expire all sessions
+      }
     );
   },
 

@@ -5,10 +5,33 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
+import compression from 'compression';
 import { connectToDatabase } from './config/database.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 import { antiScrapingMiddleware, enforcePaginationLimits, securityHeaders } from './middleware/antiScraping.js';
 import router from './routes/index.js';
+
+// Validate critical environment variables on startup
+function validateEnvironment() {
+  const required = ['JWT_SECRET', 'MONGODB_URI'];
+  const missing = required.filter(key => !process.env[key]);
+  
+  if (missing.length > 0) {
+    console.error('❌ Missing required environment variables:', missing.join(', '));
+    process.exit(1);
+  }
+
+  // Validate JWT_SECRET strength
+  if (process.env.JWT_SECRET && process.env.JWT_SECRET.length < 32) {
+    console.error('❌ JWT_SECRET must be at least 32 characters long for security');
+    process.exit(1);
+  }
+
+  console.log('✅ Environment variables validated');
+}
+
+// Validate environment before starting
+validateEnvironment();
 
 const app = express();
 
@@ -68,6 +91,19 @@ app.use(cors(corsOptions));
 app.use(helmet({
   crossOriginResourcePolicy: { policy: "cross-origin" },
   crossOriginEmbedderPolicy: false,
+}));
+
+// Response compression (should be early in middleware chain)
+app.use(compression({
+  level: 6, // Compression level (0-9, 6 is a good balance)
+  filter: (req, res) => {
+    // Don't compress if client doesn't support it
+    if (req.headers['x-no-compression']) {
+      return false;
+    }
+    // Use compression for all other requests
+    return compression.filter(req, res);
+  },
 }));
 
 // Body parsing middleware

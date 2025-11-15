@@ -2,6 +2,10 @@ import { messageRepository } from '../repositories/messageRepository.js';
 import { notificationRepository } from '../repositories/notificationRepository.js';
 import { profileViewRepository } from '../repositories/profileViewRepository.js';
 import { userRepository } from '../repositories/userRepository.js';
+import { sanitizeMessageContent } from '../utils/sanitize.js';
+import { cacheService } from '../utils/cache.js';
+import { generateConversationId } from '../utils/conversationUtils.js';
+import Message from '../models/Message.js';
 
 export const messageService = {
   /**
@@ -18,11 +22,20 @@ export const messageService = {
       throw error;
     }
 
+    // Sanitize message content to prevent XSS attacks
+    const sanitizedContent = sanitizeMessageContent(content);
+
+    if (!sanitizedContent || sanitizedContent.trim().length === 0) {
+      const error = new Error('Message content cannot be empty');
+      error.status = 400;
+      throw error;
+    }
+
     // Create message
     const message = await messageRepository.create({
       senderId,
       receiverId,
-      content,
+      content: sanitizedContent,
     });
 
     // Mark as messaged in profile views (if exists)
@@ -37,9 +50,14 @@ export const messageService = {
       relatedUserId: senderId,
       relatedId: message._id,
       metadata: {
-        messagePreview: content.substring(0, 100),
+        messagePreview: sanitizedContent.substring(0, 100),
       },
     });
+
+    // Clear conversation cache for both users
+    cacheService.clearConversationCache(senderId, receiverId);
+    cacheService.clearUserConversationsCache(senderId);
+    cacheService.clearUserConversationsCache(receiverId);
 
     // Populate sender/receiver for response
     return await messageRepository.getConversation(senderId, receiverId, {
@@ -51,23 +69,69 @@ export const messageService = {
 
   /**
    * Get conversation between two users
+   * Uses caching to improve performance
    */
   async getConversation(userId1, userId2, options = {}) {
-    return await messageRepository.getConversation(userId1, userId2, options);
+    // Create cache key based on conversation ID and options
+    const conversationId = generateConversationId(userId1, userId2);
+    const { skip = 0, limit = 50, sortBy = 'createdAt', sortOrder = -1 } = options;
+    const cacheKey = `conversation:${conversationId}:skip:${skip}:limit:${limit}:sortBy:${sortBy}:sortOrder:${sortOrder}`;
+    
+    // Try to get from cache first
+    const cached = cacheService.get(cacheKey);
+    if (cached) {
+      return cached;
+    }
+
+    // Fetch from database
+    const messages = await messageRepository.getConversation(userId1, userId2, options);
+    
+    // Cache the result (5 minutes TTL - shorter than user profiles since messages change more frequently)
+    cacheService.set(cacheKey, messages, 300);
+    
+    return messages;
   },
 
   /**
    * Get all conversations for a user
+   * Uses caching to improve performance
    */
   async getConversations(userId, options = {}) {
-    return await messageRepository.getConversations(userId, options);
+    // Create cache key based on user ID and options
+    const { skip = 0, limit = 20 } = options;
+    const cacheKey = `conversations:${userId}:skip:${skip}:limit:${limit}`;
+    
+    // Try to get from cache first
+    const cached = cacheService.get(cacheKey);
+    if (cached) {
+      return cached;
+    }
+
+    // Fetch from database
+    const conversations = await messageRepository.getConversations(userId, options);
+    
+    // Cache the result (5 minutes TTL)
+    cacheService.set(cacheKey, conversations, 300);
+    
+    return conversations;
   },
 
   /**
    * Mark message as read
    */
   async markAsRead(messageId, userId) {
-    return await messageRepository.markAsRead(messageId, userId);
+    const result = await messageRepository.markAsRead(messageId, userId);
+    
+    // Clear conversation cache to refresh unread counts
+    // Note: We need to get the message to find the conversation participants
+    const message = await Message.findById(messageId).lean();
+    if (message) {
+      cacheService.clearConversationCache(message.senderId, message.receiverId);
+      cacheService.clearUserConversationsCache(message.senderId);
+      cacheService.clearUserConversationsCache(message.receiverId);
+    }
+    
+    return result;
   },
 
   /**
@@ -77,7 +141,14 @@ export const messageService = {
     // Use the same conversation ID generation logic as repository
     const ids = [String(userId1), String(userId2)].sort();
     const conversationId = `${ids[0]}_${ids[1]}`;
-    return await messageRepository.markConversationAsRead(conversationId, userId);
+    const result = await messageRepository.markConversationAsRead(conversationId, userId);
+    
+    // Clear conversation cache to refresh unread counts
+    cacheService.clearConversationCache(userId1, userId2);
+    cacheService.clearUserConversationsCache(userId1);
+    cacheService.clearUserConversationsCache(userId2);
+    
+    return result;
   },
 
   /**

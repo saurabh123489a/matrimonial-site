@@ -99,6 +99,44 @@ export const authService = {
 
     return { token, user: safeUser };
   },
+
+  /**
+   * Change user password and invalidate all sessions
+   * @param {string} userId - User ID
+   * @param {string} currentPassword - Current password
+   * @param {string} newPassword - New password
+   * @returns {Promise<Object>} Updated user
+   */
+  async changePassword(userId, currentPassword, newPassword) {
+    const user = await userRepository.findById(userId);
+    if (!user) {
+      const error = new Error('User not found');
+      error.status = 404;
+      throw error;
+    }
+
+    // Verify current password
+    if (user.passwordHash) {
+      const isValidPassword = await bcrypt.compare(currentPassword, user.passwordHash);
+      if (!isValidPassword) {
+        const error = new Error('Current password is incorrect');
+        error.status = 401;
+        throw error;
+      }
+    }
+
+    // Hash new password
+    const saltRounds = 10;
+    const newPasswordHash = await bcrypt.hash(newPassword, saltRounds);
+
+    // Update password
+    await userRepository.update(userId, { passwordHash: newPasswordHash });
+
+    // Invalidate all active sessions for this user
+    await sessionRepository.deactivateAllUserSessions(userId);
+
+    return { message: 'Password changed successfully. All sessions have been invalidated.' };
+  },
 };
 
 function signToken(userId) {
