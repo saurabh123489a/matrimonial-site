@@ -10,6 +10,7 @@ import ProfileBadges from './ProfileBadges';
 import LazyImage from './LazyImage';
 import { getProfileUrl } from '@/lib/profileUtils';
 import { sortPhotos } from '@/lib/utils/photoUtils';
+import QuickMessageModal from './QuickMessageModal';
 
 interface EnhancedProfileCardProps {
   user: User;
@@ -23,6 +24,7 @@ export default function EnhancedProfileCard({ user, showActions = true }: Enhanc
   const [horoscopeMatch, setHoroscopeMatch] = useState<HoroscopeMatch | null>(null);
   const [loadingMatch, setLoadingMatch] = useState(false);
   const [matchError, setMatchError] = useState('');
+  const [showMessageModal, setShowMessageModal] = useState(false);
   
   // Always show first photo (which should be primary after sorting)
   // Sort photos to ensure primary is first
@@ -196,12 +198,16 @@ export default function EnhancedProfileCard({ user, showActions = true }: Enhanc
               View Profile
             </Link>
             {auth.isAuthenticated() && (
-              <Link
-                href={`/messages/${user._id}`}
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setShowMessageModal(true);
+                }}
                 className="flex-1 text-center px-2 sm:px-3 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-all text-xs sm:text-sm min-w-[80px] sm:min-w-[100px]"
               >
                 💬 Message
-              </Link>
+              </button>
             )}
             <button className="px-3 sm:px-4 py-2 sm:py-2.5 bg-pink-50 text-pink-600 font-bold rounded-lg hover:bg-pink-100 transition-all text-base sm:text-lg border border-pink-200">
               💝
@@ -381,6 +387,17 @@ export default function EnhancedProfileCard({ user, showActions = true }: Enhanc
             </div>
           </div>
         </div>
+      )}
+
+      {/* Quick Message Modal */}
+      {auth.isAuthenticated() && (
+        <QuickMessageModal
+          isOpen={showMessageModal}
+          onClose={() => setShowMessageModal(false)}
+          userId={user._id}
+          userName={user.name}
+          userPhoto={primaryPhoto?.url}
+        />
       )}
     </div>
   );

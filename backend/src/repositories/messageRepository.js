@@ -136,30 +136,33 @@ export const messageRepository = {
           ? lastMsg.receiverId
           : lastMsg.senderId;
 
-        const otherUser = await User.findById(otherUserId).select('name photos');
+        const otherUser = await User.findById(otherUserId).select('name photos').lean();
 
-        // Populate sender and receiver for last message
-        const populatedSender = senderIdStr === currentUserIdStr
-          ? null // Don't populate current user
-          : await User.findById(lastMsg.senderId).select('name photos').lean();
-        const populatedReceiver = receiverIdStr === currentUserIdStr
-          ? null // Don't populate current user
-          : await User.findById(lastMsg.receiverId).select('name photos').lean();
+        // Skip conversations where other user doesn't exist (deleted accounts)
+        if (!otherUser) {
+          return null;
+        }
 
+        // Return senderId and receiverId as string IDs (not objects)
+        // The frontend expects string IDs for comparison
         return {
           conversationId: conv._id,
           otherUser,
           lastMessage: {
-            ...lastMsg,
-            senderId: populatedSender || { _id: lastMsg.senderId, name: 'You' },
-            receiverId: populatedReceiver || { _id: lastMsg.receiverId, name: 'You' },
+            content: lastMsg.content,
+            senderId: String(lastMsg.senderId), // Always return as string ID
+            receiverId: String(lastMsg.receiverId), // Always return as string ID
+            createdAt: lastMsg.createdAt,
+            isRead: lastMsg.isRead || false,
+            _id: lastMsg._id,
           },
           unreadCount: conv.unreadCount,
         };
       })
     );
 
-    return populated;
+    // Filter out null values (conversations with deleted users)
+    return populated.filter(conv => conv !== null);
   },
 
   async markAsRead(messageId, userId) {

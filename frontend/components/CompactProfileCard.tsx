@@ -1,9 +1,12 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { User } from '@/lib/api';
+import { auth } from '@/lib/auth';
 import LazyImage from './LazyImage';
 import { getProfileUrl } from '@/lib/profileUtils';
+import QuickMessageModal from './QuickMessageModal';
 
 interface CompactProfileCardProps {
   user: User;
@@ -12,6 +15,8 @@ interface CompactProfileCardProps {
 
 export default function CompactProfileCard({ user, showOnlineStatus = false }: CompactProfileCardProps) {
   const primaryPhoto = user.photos?.find(p => p.isPrimary) || user.photos?.[0];
+  const [showMessageModal, setShowMessageModal] = useState(false);
+  const isAuthenticated = auth.isAuthenticated();
   
   // Generate a random background color for variety (like in the image)
   const bgColors = [
@@ -24,8 +29,8 @@ export default function CompactProfileCard({ user, showOnlineStatus = false }: C
   const bgColor = bgColors[user._id.charCodeAt(0) % bgColors.length];
   
   return (
-    <Link href={getProfileUrl(user)}>
-      <div className="bg-white dark:bg-[#181b23] rounded-xl overflow-hidden shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-all cursor-pointer group">
+    <div className="bg-white dark:bg-[#181b23] rounded-xl overflow-hidden shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-all group relative">
+      <Link href={getProfileUrl(user)} className="block">
         {/* Photo Section */}
         <div className={`relative h-56 ${bgColor} dark:bg-gray-800 overflow-hidden`}>
           {primaryPhoto ? (
@@ -79,8 +84,36 @@ export default function CompactProfileCard({ user, showOnlineStatus = false }: C
             </p>
           )}
         </div>
-      </div>
-    </Link>
+      </Link>
+
+      {/* Action Buttons - Outside Link */}
+      {isAuthenticated && (
+        <div className="p-3 pt-2 border-t border-gray-200 dark:border-gray-700">
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setShowMessageModal(true);
+            }}
+            className="w-full px-3 py-1.5 bg-blue-600 text-white text-xs font-semibold rounded-md hover:bg-blue-700 transition-all"
+            title="Send Message"
+          >
+            💬 Message
+          </button>
+        </div>
+      )}
+
+      {/* Quick Message Modal */}
+      {isAuthenticated && (
+        <QuickMessageModal
+          isOpen={showMessageModal}
+          onClose={() => setShowMessageModal(false)}
+          userId={user._id}
+          userName={user.name}
+          userPhoto={primaryPhoto?.url}
+        />
+      )}
+    </div>
   );
 }
 

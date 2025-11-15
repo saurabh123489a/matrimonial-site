@@ -7,6 +7,7 @@ import { auth } from '@/lib/auth';
 import LazyImage from './LazyImage';
 import { getProfileUrl } from '@/lib/profileUtils';
 import { useNotifications } from '@/contexts/NotificationContext';
+import QuickMessageModal from './QuickMessageModal';
 
 interface ProfileCardProps {
   user: User;
@@ -18,6 +19,7 @@ export default function ProfileCard({ user }: ProfileCardProps) {
   const [actionLoading, setActionLoading] = useState(false);
   const [isShortlisted, setIsShortlisted] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [showMessageModal, setShowMessageModal] = useState(false);
 
   useEffect(() => {
     setIsAuthenticated(auth.isAuthenticated());
@@ -174,13 +176,17 @@ export default function ProfileCard({ user }: ProfileCardProps) {
               View Profile
             </Link>
             {isAuthenticated && (
-              <Link
-                href={`/messages/${user._id}`}
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setShowMessageModal(true);
+                }}
                 className="px-3 sm:px-4 py-2 sm:py-2.5 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition-all text-xs sm:text-sm shadow-sm"
-                title="Message"
+                title="Send Message"
               >
                 💬
-              </Link>
+              </button>
             )}
           </div>
           <div className="flex gap-2">
@@ -207,6 +213,17 @@ export default function ProfileCard({ user }: ProfileCardProps) {
           </div>
         </div>
       </div>
+
+      {/* Quick Message Modal */}
+      {isAuthenticated && (
+        <QuickMessageModal
+          isOpen={showMessageModal}
+          onClose={() => setShowMessageModal(false)}
+          userId={user._id}
+          userName={user.name}
+          userPhoto={primaryPhoto?.url}
+        />
+      )}
     </div>
   );
 }
