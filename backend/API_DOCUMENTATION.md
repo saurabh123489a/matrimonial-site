@@ -189,9 +189,22 @@ Register a new user profile.
   "state": "Maharashtra",
   "country": "India",
   "education": "B.Tech",
-  "occupation": "Software Engineer"
+  "occupation": "Software Engineer",
+  "communityPosition": "community-member"
 }
 ```
+
+**Required Fields:**
+- `name` (string) - Full name (minimum 2 characters)
+- `phone` (string) - Phone number (10 digits, must start with 6-9)
+- `password` (string) - Password (minimum 6 characters, no spaces)
+- `gender` (string) - Gender: "male", "female", or "other"
+- `dateOfBirth` (string) - Date of birth in YYYY-MM-DD format (must be at least 18 years old)
+
+**Optional Fields:**
+- `email` (string) - Email address (valid email format)
+- `age` (number) - Age (auto-calculated from dateOfBirth if not provided)
+- `communityPosition` (string) - Community position: "community-leader", "community-member", "family-head", "elder", "volunteer", or null
 
 **Response:**
 ```json
@@ -347,6 +360,7 @@ Authorization: Bearer <token>
   "occupation": "Senior Software Engineer",
   "city": "Pune",
   "state": "Maharashtra",
+  "horoscopeMatchMandatory": true,
   "family": {
     "fathersName": "Rajesh Sharma",
     "mothersName": "Sunita Sharma"
@@ -355,11 +369,24 @@ Authorization: Bearer <token>
     "rashi": "Cancer",
     "nakshatra": "Pushya",
     "starSign": "Cancer"
+  },
+  "preferences": {
+    "minAge": 25,
+    "maxAge": 35,
+    "minHeight": 60,
+    "maxHeight": 72
   }
 }
 ```
 
-**Note:** `name` and `phone` fields are non-editable and will be ignored if sent.
+**Note:** The following fields are non-editable and will be ignored if sent:
+- `name` - Full name (set during registration)
+- `phone` - Phone number (set during registration)
+- `email` - Email address (set during registration)
+- `whatsappNumber` - WhatsApp number (set during registration)
+
+**New Fields:**
+- `horoscopeMatchMandatory` (boolean) - If true, user requires horoscope compatibility for matches (default: false)
 
 **Response:**
 ```json

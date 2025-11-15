@@ -98,6 +98,7 @@ export interface User {
     placeOfBirth?: string;
   };
   communityPosition?: string | null;
+  horoscopeMatchMandatory?: boolean;
   height?: number;
   weight?: number;
   maritalStatus?: string;

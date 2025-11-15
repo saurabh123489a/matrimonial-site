@@ -1722,7 +1722,7 @@ export default function MyProfilePage() {
                           className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-pink-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
                     />
                 </div>
-              </div>
+                    </div>
                 </div>
                 ) : (
                 <div className="flex items-center gap-2">
@@ -1744,7 +1744,6 @@ export default function MyProfilePage() {
                     </span>
                 </div>
                   )}
-                </div>
                 </div>
 
               {/* Horoscope Match Mandatory */}
@@ -1769,8 +1768,9 @@ export default function MyProfilePage() {
                   </p>
                 )}
               </div>
-              )}
             </div>
+          )}
+        </div>
               
         {/* Save Changes Button - Only show when editing */}
           {editing && (

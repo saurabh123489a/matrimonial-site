@@ -17,12 +17,14 @@ export default function RegisterPage() {
   const [error, setError] = useState('');
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [touchedFields, setTouchedFields] = useState<Record<string, boolean>>({});
+  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
     password: '',
     gender: 'male' as 'male' | 'female' | 'other',
+    dateOfBirth: '',
     age: '',
     communityPosition: '' as string | null,
   });
@@ -31,34 +33,151 @@ export default function RegisterPage() {
   const validateField = (name: string, value: any): string | null => {
     switch (name) {
       case 'name':
-        const nameValidation = validateRequired(value, t('auth.fullName'));
-        if (!nameValidation.isValid) return nameValidation.error || '';
-        if (value.length < 2) return t('auth.nameMinLength') || 'Name must be at least 2 characters';
+        // Check if required
+        if (!value || value.trim() === '') {
+          return 'Full name is required';
+        }
+        const trimmedName = value.trim();
+        // Check minimum length
+        if (trimmedName.length < 2) {
+          return 'Name must be at least 2 characters long';
+        }
+        // Check maximum length
+        if (trimmedName.length > 50) {
+          return 'Name must not exceed 50 characters';
+        }
+        // Check for valid characters (letters, spaces, and common name characters)
+        const nameRegex = /^[a-zA-Z\s.'-]+$/;
+        if (!nameRegex.test(trimmedName)) {
+          return 'Name can only contain letters, spaces, and common punctuation (. \' -)';
+        }
+        // Check for consecutive spaces
+        if (trimmedName.includes('  ')) {
+          return 'Name cannot contain consecutive spaces';
+        }
         break;
+
       case 'email':
         if (value && value.trim()) {
-          const emailValidation = validateEmail(value);
-          if (!emailValidation.isValid) return emailValidation.error || '';
+          const trimmedEmail = value.trim();
+          // Check email format
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(trimmedEmail)) {
+            return 'Please enter a valid email address (e.g., name@example.com)';
+          }
+          // Check email length
+          if (trimmedEmail.length > 100) {
+            return 'Email address is too long (maximum 100 characters)';
+          }
+          // Check for common email issues
+          if (trimmedEmail.startsWith('@') || trimmedEmail.endsWith('@')) {
+            return 'Email address format is invalid';
+          }
+          if (trimmedEmail.includes('..')) {
+            return 'Email address cannot contain consecutive dots';
+          }
         }
         break;
+
       case 'phone':
-        if (value && value.trim()) {
-          const phoneValidation = validatePhone(value);
-          if (!phoneValidation.isValid) return phoneValidation.error || '';
+        if (!value || value.trim() === '') {
+          return 'Phone number is required';
+        }
+        const cleanedPhone = value.replace(/[\s-()]/g, '');
+        // Check if empty after cleaning
+        if (cleanedPhone === '') {
+          return 'Phone number is required';
+        }
+        // Check if it's all digits
+        if (!/^\d+$/.test(cleanedPhone.replace('+91', ''))) {
+          return 'Phone number can only contain digits';
+        }
+        // Check length (should be 10 digits, optionally with +91)
+        const phoneWithoutCountryCode = cleanedPhone.replace(/^\+91/, '');
+        if (phoneWithoutCountryCode.length !== 10) {
+          return 'Phone number must be exactly 10 digits';
+        }
+        // Check if starts with valid Indian mobile prefix (6-9)
+        if (!/^[6-9]/.test(phoneWithoutCountryCode)) {
+          return 'Phone number must start with 6, 7, 8, or 9';
         }
         break;
+
       case 'password':
-        const passwordValidation = validateRequired(value, t('auth.password'));
-        if (!passwordValidation.isValid) return passwordValidation.error || '';
-        const minLengthValidation = validateMinLength(value, 6, t('auth.password'));
-        if (!minLengthValidation.isValid) return minLengthValidation.error || '';
+        if (!value || value.trim() === '') {
+          return 'Password is required';
+        }
+        // Check minimum length
+        if (value.length < 6) {
+          return 'Password must be at least 6 characters long';
+        }
+        // Check maximum length
+        if (value.length > 128) {
+          return 'Password must not exceed 128 characters';
+        }
+        // Check for spaces
+        if (value.includes(' ')) {
+          return 'Password cannot contain spaces';
+        }
         break;
+
+      case 'dateOfBirth':
+        if (!value || value.trim() === '') {
+          return 'Date of birth is required';
+        }
+        const birthDate = new Date(value);
+        const today = new Date();
+        // Check if date is valid
+        if (isNaN(birthDate.getTime())) {
+          return 'Please enter a valid date';
+        }
+        // Check if date is in the future
+        if (birthDate > today) {
+          return 'Date of birth cannot be in the future';
+        }
+        // Check if age is at least 18
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+          age--;
+        }
+        if (age < 18) {
+          return 'You must be at least 18 years old to register';
+        }
+        // Check if age is reasonable (not more than 100)
+        if (age > 100) {
+          return 'Please enter a valid date of birth';
+        }
+        // Check if date is too old (more than 100 years ago)
+        const hundredYearsAgo = new Date();
+        hundredYearsAgo.setFullYear(today.getFullYear() - 100);
+        if (birthDate < hundredYearsAgo) {
+          return 'Date of birth cannot be more than 100 years ago';
+        }
+        break;
+
       case 'age':
         if (value) {
           const ageNum = parseInt(value);
-          if (isNaN(ageNum) || ageNum < 18 || ageNum > 100) {
-            return t('auth.ageRange') || 'Age must be between 18 and 100';
+          if (isNaN(ageNum)) {
+            return 'Age must be a valid number';
           }
+          if (ageNum < 18) {
+            return 'You must be at least 18 years old to register';
+          }
+          if (ageNum > 100) {
+            return 'Please enter a valid age (maximum 100 years)';
+          }
+        }
+        break;
+
+      case 'gender':
+        if (!value || value.trim() === '') {
+          return 'Gender is required';
+        }
+        const validGenders = ['male', 'female', 'other'];
+        if (!validGenders.includes(value)) {
+          return 'Please select a valid gender';
         }
         break;
     }
@@ -78,10 +197,58 @@ export default function RegisterPage() {
     }
   };
 
+  const calculateAge = (dateOfBirth: string): number | null => {
+    if (!dateOfBirth) return null;
+    const today = new Date();
+    const birthDate = new Date(dateOfBirth);
+    
+    // Check if date is valid
+    if (isNaN(birthDate.getTime())) return null;
+    
+    // Check if date is in the future
+    if (birthDate > today) return null;
+    
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    
+    // Return age only if it's valid (18-100)
+    return age >= 18 && age <= 100 ? age : null;
+  };
+
   const handleChange = (fieldName: string, value: any) => {
-    setFormData({ ...formData, [fieldName]: value });
+    const updatedFormData = { ...formData, [fieldName]: value };
     
+    // Auto-calculate age when date of birth changes
+    if (fieldName === 'dateOfBirth' && value) {
+      const calculatedAge = calculateAge(value);
+      if (calculatedAge !== null) {
+        updatedFormData.age = calculatedAge.toString();
+        // Clear age and dateOfBirth errors if age is valid
+        const newErrors = { ...fieldErrors };
+        delete newErrors.age;
+        delete newErrors.dateOfBirth;
+        setFieldErrors(newErrors);
+      } else {
+        // If calculated age is invalid, clear age field and validate DOB
+        updatedFormData.age = '';
+        // Validate DOB to show appropriate error
+        const dobError = validateField('dateOfBirth', value);
+        if (dobError) {
+          setFieldErrors({ ...fieldErrors, dateOfBirth: dobError });
+        } else {
+          const newErrors = { ...fieldErrors };
+          delete newErrors.dateOfBirth;
+          setFieldErrors(newErrors);
+        }
+      }
+    }
     
+    setFormData(updatedFormData);
+    
+    // Clear error for this field when user starts typing
     if (fieldErrors[fieldName]) {
       const newErrors = { ...fieldErrors };
       delete newErrors[fieldName];
@@ -92,33 +259,41 @@ export default function RegisterPage() {
   const validateForm = (): boolean => {
     const errors: Record<string, string> = {};
     
-    
+    // Validate name (required)
     const nameError = validateField('name', formData.name);
     if (nameError) errors.name = nameError;
     
+    // Validate phone (required)
+    const phoneError = validateField('phone', formData.phone);
+    if (phoneError) errors.phone = phoneError;
+    
+    // Validate password (required)
     const passwordError = validateField('password', formData.password);
     if (passwordError) errors.password = passwordError;
     
+    // Validate gender (required)
+    const genderError = validateField('gender', formData.gender);
+    if (genderError) errors.gender = genderError;
     
-    if (formData.email) {
+    // Validate date of birth (required)
+    const dateOfBirthError = validateField('dateOfBirth', formData.dateOfBirth);
+    if (dateOfBirthError) errors.dateOfBirth = dateOfBirthError;
+    
+    // Validate email (optional, but if provided must be valid)
+    if (formData.email && formData.email.trim()) {
       const emailError = validateField('email', formData.email);
       if (emailError) errors.email = emailError;
     }
     
-    if (formData.phone) {
-      const phoneError = validateField('phone', formData.phone);
-      if (phoneError) errors.phone = phoneError;
-    }
-    
+    // Validate age (should be auto-calculated, but validate if present)
     if (formData.age) {
       const ageError = validateField('age', formData.age);
       if (ageError) errors.age = ageError;
     }
     
-    
-    if (!formData.email && !formData.phone) {
-      errors.email = t('auth.emailOrPhoneRequired') || 'Either email or phone number is required';
-      errors.phone = t('auth.emailOrPhoneRequired') || 'Either email or phone number is required';
+    // If date of birth is provided but age is not calculated, show error
+    if (formData.dateOfBirth && !formData.age) {
+      errors.dateOfBirth = errors.dateOfBirth || 'Please select a valid date of birth';
     }
     
     setFieldErrors(errors);
@@ -131,7 +306,7 @@ export default function RegisterPage() {
     setFieldErrors({});
     
     
-    const allFields = ['name', 'email', 'phone', 'password', 'age'];
+    const allFields = ['name', 'email', 'phone', 'password', 'dateOfBirth', 'age'];
     const touched: Record<string, boolean> = {};
     allFields.forEach(field => touched[field] = true);
     setTouchedFields(touched);
@@ -203,202 +378,403 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full">
-        <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 space-y-6">
-          <div className="text-center">
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 via-white to-purple-50 py-8 sm:py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      {/* Decorative background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-2000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-4000"></div>
+      </div>
+
+      <div className="max-w-lg w-full relative z-10">
+        <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl p-8 sm:p-10 space-y-8 border border-white/20">
+          {/* Header */}
+          <div className="text-center space-y-3">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-pink-500 to-purple-600 rounded-2xl shadow-lg mb-2">
+              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+              </svg>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
               {t('auth.createAccountTitle')}
             </h2>
-            <p className="text-sm text-gray-600">
+            <p className="text-gray-600 text-sm">
               {t('auth.signInToAccount').split('Or')[0]}Or{' '}
-              <Link href="/login" className="font-medium text-pink-600 hover:text-pink-500">
+              <Link href="/login" className="font-semibold text-pink-600 hover:text-pink-700 transition-colors">
                 {t('auth.signInToAccount').includes('sign in') ? 'sign in to your account' : 'अपने खाते में साइन इन करें'}
               </Link>
             </p>
           </div>
 
-          <form className="space-y-5" onSubmit={handleSubmit}>
-          {error && (
-            <div className="rounded-lg bg-red-50 p-3 border border-red-200">
-              <p className="text-sm text-red-800">{error}</p>
-            </div>
-          )}
-          <div className="space-y-4">
-            <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1.5">
-                {t('auth.fullName')} <span className="text-red-500">*</span>
-              </label>
-              <input
-                id="name"
-                name="name"
-                type="text"
-                required
-                className={`appearance-none relative block w-full px-4 py-3 border-2 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 sm:text-sm ${
-                  touchedFields.name && fieldErrors.name
-                    ? 'border-red-500 bg-red-50'
-                    : 'border-gray-300'
-                }`}
-                placeholder={t('auth.fullName')}
-                value={formData.name}
-                onChange={(e) => handleChange('name', sanitizeFormInput(e.target.value, 'text'))}
-                onBlur={() => handleBlur('name')}
-              />
-              {touchedFields.name && fieldErrors.name && (
-                <p className="mt-1 text-sm text-red-600">{fieldErrors.name}</p>
-              )}
-            </div>
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1.5">
-                {t('auth.emailOptional')} <span className="text-gray-400 text-xs">({t('auth.emailOrPhoneRequired') || 'Email or Phone required'})</span>
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                className={`appearance-none relative block w-full px-4 py-3 border-2 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 sm:text-sm ${
-                  touchedFields.email && fieldErrors.email
-                    ? 'border-red-500 bg-red-50'
-                    : 'border-gray-300'
-                }`}
-                placeholder={t('auth.emailOptional')}
-                value={formData.email}
-                onChange={(e) => handleChange('email', sanitizeFormInput(e.target.value, 'email'))}
-                onBlur={() => handleBlur('email')}
-              />
-              {touchedFields.email && fieldErrors.email && (
-                <p className="mt-1 text-sm text-red-600">{fieldErrors.email}</p>
-              )}
-            </div>
-            <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1.5">
-                {t('auth.phoneOptional')} <span className="text-gray-400 text-xs">({t('auth.emailOrPhoneRequired') || 'Email or Phone required'})</span>
-              </label>
-              <input
-                id="phone"
-                name="phone"
-                type="tel"
-                className={`appearance-none relative block w-full px-4 py-3 border-2 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 sm:text-sm ${
-                  touchedFields.phone && fieldErrors.phone
-                    ? 'border-red-500 bg-red-50'
-                    : 'border-gray-300'
-                }`}
-                placeholder={t('auth.phoneOptional')}
-                value={formData.phone}
-                onChange={(e) => handleChange('phone', sanitizeFormInput(e.target.value, 'phone'))}
-                onBlur={() => handleBlur('phone')}
-              />
-              {touchedFields.phone && fieldErrors.phone && (
-                <p className="mt-1 text-sm text-red-600">{fieldErrors.phone}</p>
-              )}
-            </div>
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1.5">
-                {t('auth.password')} <span className="text-red-500">*</span>
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                required
-                className={`appearance-none relative block w-full px-4 py-3 border-2 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 sm:text-sm ${
-                  touchedFields.password && fieldErrors.password
-                    ? 'border-red-500 bg-red-50'
-                    : 'border-gray-300'
-                }`}
-                placeholder={t('auth.password')}
-                value={formData.password}
-                onChange={(e) => handleChange('password', e.target.value)}
-                onBlur={() => handleBlur('password')}
-              />
-              {touchedFields.password && fieldErrors.password && (
-                <p className="mt-1 text-sm text-red-600">{fieldErrors.password}</p>
-              )}
-              {!fieldErrors.password && (
-                <p className="mt-1 text-xs text-gray-500">{t('auth.passwordMinLength') || 'Password must be at least 6 characters'}</p>
-              )}
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="gender" className="block text-sm font-medium text-gray-700 mb-1.5">
-                  {t('auth.gender')}
-                </label>
-                <select
-                  id="gender"
-                  name="gender"
-                  required
-                  className="appearance-none relative block w-full px-4 py-3 border-2 border-gray-300 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 sm:text-sm"
-                  value={formData.gender}
-                  onChange={(e) => setFormData({ ...formData, gender: e.target.value as any })}
-                >
-                  <option value="male">{t('auth.male')}</option>
-                  <option value="female">{t('auth.female')}</option>
-                  <option value="other">{t('auth.other')}</option>
-                </select>
+          <form className="space-y-6" onSubmit={handleSubmit}>
+            {error && (
+              <div className="rounded-xl bg-red-50 p-4 border-l-4 border-red-500 shadow-sm animate-fadeIn">
+                <div className="flex items-start">
+                  <svg className="w-5 h-5 text-red-500 mt-0.5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                  </svg>
+                  <p className="text-sm text-red-800 font-medium">{error}</p>
+                </div>
               </div>
+            )}
+
+            <div className="space-y-5">
+              {/* Full Name */}
               <div>
-                <label htmlFor="age" className="block text-sm font-medium text-gray-700 mb-1.5">
-                  {t('auth.age')}
+                <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
+                  {t('auth.fullName')} <span className="text-red-500">*</span>
                 </label>
-                <input
-                  id="age"
-                  name="age"
-                  type="number"
-                  min="18"
-                  max="100"
-                  className={`appearance-none relative block w-full px-4 py-3 border-2 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 sm:text-sm ${
-                    touchedFields.age && fieldErrors.age
-                      ? 'border-red-500 bg-red-50'
-                      : 'border-gray-300'
-                  }`}
-                  placeholder={t('auth.age')}
-                  value={formData.age}
-                  onChange={(e) => handleChange('age', e.target.value)}
-                  onBlur={() => handleBlur('age')}
-                />
-                {touchedFields.age && fieldErrors.age && (
-                  <p className="mt-1 text-sm text-red-600">{fieldErrors.age}</p>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                  </div>
+                  <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    required
+                    className={`block w-full pl-12 pr-4 py-3 border-2 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 sm:text-sm ${
+                      touchedFields.name && fieldErrors.name
+                        ? 'border-red-400 bg-red-50'
+                        : 'border-gray-200 bg-gray-50 focus:bg-white'
+                    }`}
+                    placeholder={t('auth.fullName')}
+                    value={formData.name}
+                    onChange={(e) => handleChange('name', sanitizeFormInput(e.target.value, 'text'))}
+                    onBlur={() => handleBlur('name')}
+                  />
+                </div>
+                {touchedFields.name && fieldErrors.name && (
+                  <p className="mt-2 text-sm text-red-600 flex items-center">
+                    <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                    </svg>
+                    {fieldErrors.name}
+                  </p>
                 )}
               </div>
+
+              {/* Email */}
+              <div>
+                <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+                  {t('auth.emailOptional')} <span className="text-gray-400 text-xs font-normal">({t('auth.emailOrPhoneRequired') || 'Email or Phone required'})</span>
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    className={`block w-full pl-12 pr-4 py-3 border-2 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 sm:text-sm ${
+                      touchedFields.email && fieldErrors.email
+                        ? 'border-red-400 bg-red-50'
+                        : 'border-gray-200 bg-gray-50 focus:bg-white'
+                    }`}
+                    placeholder={t('auth.emailOptional')}
+                    value={formData.email}
+                    onChange={(e) => handleChange('email', sanitizeFormInput(e.target.value, 'email'))}
+                    onBlur={() => handleBlur('email')}
+                  />
+                </div>
+                {touchedFields.email && fieldErrors.email && (
+                  <p className="mt-2 text-sm text-red-600 flex items-center">
+                    <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                    </svg>
+                    {fieldErrors.email}
+                  </p>
+                )}
+              </div>
+
+              {/* Phone */}
+              <div>
+                <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-2">
+                  {t('auth.phone') || 'Phone Number'} <span className="text-red-500">*</span>
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    </svg>
+                  </div>
+                  <input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    required
+                    className={`block w-full pl-12 pr-4 py-3 border-2 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 sm:text-sm ${
+                      touchedFields.phone && fieldErrors.phone
+                        ? 'border-red-400 bg-red-50'
+                        : 'border-gray-200 bg-gray-50 focus:bg-white'
+                    }`}
+                    placeholder={t('auth.phone') || 'Enter phone number'}
+                    value={formData.phone}
+                    onChange={(e) => handleChange('phone', sanitizeFormInput(e.target.value, 'phone'))}
+                    onBlur={() => handleBlur('phone')}
+                  />
+                </div>
+                {touchedFields.phone && fieldErrors.phone && (
+                  <p className="mt-2 text-sm text-red-600 flex items-center">
+                    <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                    </svg>
+                    {fieldErrors.phone}
+                  </p>
+                )}
+              </div>
+
+              {/* Password */}
+              <div>
+                <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-2">
+                  {t('auth.password')} <span className="text-red-500">*</span>
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                  </div>
+                  <input
+                    id="password"
+                    name="password"
+                    type={showPassword ? 'text' : 'password'}
+                    required
+                    className={`block w-full pl-12 pr-12 py-3 border-2 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 sm:text-sm ${
+                      touchedFields.password && fieldErrors.password
+                        ? 'border-red-400 bg-red-50'
+                        : 'border-gray-200 bg-gray-50 focus:bg-white'
+                    }`}
+                    placeholder={t('auth.password')}
+                    value={formData.password}
+                    onChange={(e) => handleChange('password', e.target.value)}
+                    onBlur={() => handleBlur('password')}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+                  >
+                    {showPassword ? (
+                      <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.29 3.29m0 0L3 3m3.29 3.29L3 3" />
+                      </svg>
+                    ) : (
+                      <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      </svg>
+                    )}
+                  </button>
+                </div>
+                {touchedFields.password && fieldErrors.password ? (
+                  <p className="mt-2 text-sm text-red-600 flex items-center">
+                    <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                    </svg>
+                    {fieldErrors.password}
+                  </p>
+                ) : (
+                  <p className="mt-2 text-xs text-gray-500 flex items-center">
+                    <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                    </svg>
+                    {t('auth.passwordMinLength') || 'Password must be at least 6 characters'}
+                  </p>
+                )}
+              </div>
+
+              {/* Gender and Date of Birth */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="gender" className="block text-sm font-semibold text-gray-700 mb-2">
+                    {t('auth.gender')} <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                      <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                      </svg>
+                    </div>
+                    <select
+                      id="gender"
+                      name="gender"
+                      required
+                      className="block w-full pl-12 pr-4 py-3 border-2 border-gray-200 bg-gray-50 text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 sm:text-sm transition-all duration-200 focus:bg-white"
+                      value={formData.gender}
+                      onChange={(e) => setFormData({ ...formData, gender: e.target.value as any })}
+                    >
+                      <option value="male">{t('auth.male')}</option>
+                      <option value="female">{t('auth.female')}</option>
+                      <option value="other">{t('auth.other')}</option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <label htmlFor="dateOfBirth" className="block text-sm font-semibold text-gray-700 mb-2">
+                    Date of Birth <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                      <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                    <input
+                      id="dateOfBirth"
+                      name="dateOfBirth"
+                      type="date"
+                      max={new Date(new Date().setFullYear(new Date().getFullYear() - 18)).toISOString().split('T')[0]}
+                      min={new Date(new Date().setFullYear(new Date().getFullYear() - 100)).toISOString().split('T')[0]}
+                      className={`block w-full pl-12 pr-4 py-3 border-2 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 sm:text-sm ${
+                        touchedFields.dateOfBirth && fieldErrors.dateOfBirth
+                          ? 'border-red-400 bg-red-50'
+                          : 'border-gray-200 bg-gray-50 focus:bg-white'
+                      }`}
+                      value={formData.dateOfBirth}
+                      onChange={(e) => handleChange('dateOfBirth', e.target.value)}
+                      onBlur={() => handleBlur('dateOfBirth')}
+                    />
+                  </div>
+                  {touchedFields.dateOfBirth && fieldErrors.dateOfBirth && (
+                    <p className="mt-2 text-sm text-red-600 flex items-center">
+                      <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                      </svg>
+                      {fieldErrors.dateOfBirth}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {/* Age (Auto-filled, read-only) */}
+              {formData.age && (
+                <div>
+                  <label htmlFor="age" className="block text-sm font-semibold text-gray-700 mb-2">
+                    Age <span className="text-gray-400 text-xs font-normal">(Auto-calculated)</span>
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                      <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <input
+                      id="age"
+                      name="age"
+                      type="number"
+                      readOnly
+                      className="block w-full pl-12 pr-4 py-3 border-2 border-gray-200 bg-gray-100 text-gray-700 rounded-xl sm:text-sm cursor-not-allowed"
+                      value={formData.age}
+                    />
+                  </div>
+                </div>
+              )}
             </div>
-          </div>
 
-          <div className="rounded-lg bg-gray-50 p-4 border-2 border-gray-200">
-            <label htmlFor="communityPosition" className="block text-sm font-medium text-gray-700 mb-2">
-              {t('auth.communityPosition')}
-            </label>
-            <p className="text-xs text-gray-500 mb-3">
-              {t('auth.communityPositionDesc')}
-            </p>
-            <select
-              id="communityPosition"
-              name="communityPosition"
-              className="appearance-none relative block w-full px-4 py-3 border-2 border-gray-300 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 sm:text-sm"
-              value={formData.communityPosition || ''}
-              onChange={(e) => setFormData({ ...formData, communityPosition: e.target.value || null })}
-            >
-              <option value="">{t('auth.noPosition')}</option>
-              <option value="community-leader">{t('auth.communityLeader')}</option>
-              <option value="community-member">{t('auth.communityMember')}</option>
-              <option value="family-head">{t('auth.familyHead')}</option>
-              <option value="elder">{t('auth.elder')}</option>
-              <option value="volunteer">{t('auth.volunteer')}</option>
-            </select>
-          </div>
+            {/* Community Position */}
+            <div className="rounded-xl bg-gradient-to-br from-gray-50 to-gray-100 p-5 border-2 border-gray-200">
+              <label htmlFor="communityPosition" className="block text-sm font-semibold text-gray-700 mb-2">
+                {t('auth.communityPosition')}
+              </label>
+              <p className="text-xs text-gray-600 mb-3">
+                {t('auth.communityPositionDesc')}
+              </p>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                  </svg>
+                </div>
+                <select
+                  id="communityPosition"
+                  name="communityPosition"
+                  className="block w-full pl-12 pr-4 py-3 border-2 border-gray-200 bg-white text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 sm:text-sm transition-all duration-200"
+                  value={formData.communityPosition || ''}
+                  onChange={(e) => setFormData({ ...formData, communityPosition: e.target.value || null })}
+                >
+                  <option value="">{t('auth.noPosition')}</option>
+                  <option value="community-leader">{t('auth.communityLeader')}</option>
+                  <option value="community-member">{t('auth.communityMember')}</option>
+                  <option value="family-head">{t('auth.familyHead')}</option>
+                  <option value="elder">{t('auth.elder')}</option>
+                  <option value="volunteer">{t('auth.volunteer')}</option>
+                </select>
+              </div>
+            </div>
 
-          <div>
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full flex justify-center py-3 px-4 border border-transparent text-sm font-semibold rounded-lg text-white bg-gradient-to-r from-pink-600 to-red-600 hover:from-pink-700 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md"
-            >
-              {loading ? t('auth.creatingAccount') : t('auth.signUp')}
-            </button>
-          </div>
-        </form>
+            {/* Submit Button */}
+            <div>
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full flex justify-center items-center py-4 px-6 border border-transparent text-base font-semibold rounded-xl text-white bg-gradient-to-r from-pink-600 via-pink-500 to-purple-600 hover:from-pink-700 hover:via-pink-600 hover:to-purple-700 focus:outline-none focus:ring-4 focus:ring-pink-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              >
+                {loading ? (
+                  <>
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    {t('auth.creatingAccount')}
+                  </>
+                ) : (
+                  <>
+                    {t('auth.signUp')}
+                    <svg className="ml-2 -mr-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                  </>
+                )}
+              </button>
+            </div>
+          </form>
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes blob {
+          0% {
+            transform: translate(0px, 0px) scale(1);
+          }
+          33% {
+            transform: translate(30px, -50px) scale(1.1);
+          }
+          66% {
+            transform: translate(-20px, 20px) scale(0.9);
+          }
+          100% {
+            transform: translate(0px, 0px) scale(1);
+          }
+        }
+        .animate-blob {
+          animation: blob 7s infinite;
+        }
+        .animation-delay-2000 {
+          animation-delay: 2s;
+        }
+        .animation-delay-4000 {
+          animation-delay: 4s;
+        }
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.3s ease-out;
+        }
+      `}</style>
     </div>
   );
 }
-
