@@ -149,7 +149,7 @@ export default function LocationSelect({
       {showCountry && (
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
-            Country
+            Country <span className="text-red-500">*</span>
           </label>
           <select
             value={selectedCountry}
@@ -170,7 +170,7 @@ export default function LocationSelect({
       {showState && (
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
-            State
+            State <span className="text-red-500">*</span>
             {loadingStates && (
               <span className="ml-2 text-xs text-gray-500 dark:text-pink-400">(Loading...)</span>
             )}
@@ -201,7 +201,7 @@ export default function LocationSelect({
       {showCity && (
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
-            City
+            City <span className="text-red-500">*</span>
             {loadingCities && (
               <span className="ml-2 text-xs text-gray-500 dark:text-pink-400">(Loading...)</span>
             )}

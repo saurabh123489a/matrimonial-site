@@ -234,8 +234,8 @@ function UsersTab() {
     if (!selectedUser) return;
     
     try {
-      // Exclude name and phone from updates (non-editable fields)
-      const { name, phone, ...updateData } = editData;
+      // Exclude name, phone, email, and whatsappNumber from updates (non-editable fields)
+      const { name, phone, email, whatsappNumber, ...updateData } = editData;
       const response = await adminApi.updateUser(selectedUser._id, updateData);
       if (response.status) {
         showSuccess(t('admin.usersTab.updated'));
@@ -509,8 +509,8 @@ function UsersTab() {
                   <input
                     type="email"
                     value={editData.email || ''}
-                    onChange={(e) => setEditData({ ...editData, email: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-pink-500"
+                    readOnly
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-50 cursor-not-allowed"
                   />
                 </div>
 

@@ -153,6 +153,9 @@ export const updateProfileSchema = z.object({
     maritalStatus: z.string().optional(),
   }).optional(),
 
+  // Horoscope matching requirement
+  horoscopeMatchMandatory: z.boolean().optional(),
+
   // Community Position
   communityPosition: z.enum([
     'community-leader',

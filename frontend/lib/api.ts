@@ -238,6 +238,7 @@ export interface UpdateUserDto {
   hasHouse?: 'yes-personal' | 'yes-rented' | 'no' | 'not-specified';
   hasCar?: boolean;
   isActive?: boolean;
+  horoscopeMatchMandatory?: boolean;
 }
 
 // API functions

@@ -195,6 +195,12 @@ const userSchema = new mongoose.Schema(
     // Preferences for matching
     preferences: preferenceSchema,
     
+    // Horoscope matching requirement
+    horoscopeMatchMandatory: { 
+      type: Boolean, 
+      default: false 
+    }, // If true, user requires horoscope compatibility for matches
+    
     // Community Position - allows user to report/flag profiles
     communityPosition: {
       type: String,

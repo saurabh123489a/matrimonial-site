@@ -152,6 +152,7 @@ export default function MyProfilePage() {
             minHeight: response.data.preferences?.minHeight || undefined,
             maxHeight: response.data.preferences?.maxHeight || undefined,
           },
+          horoscopeMatchMandatory: response.data.horoscopeMatchMandatory || false,
           dateOfBirth: response.data.dateOfBirth ? new Date(response.data.dateOfBirth).toISOString().split('T')[0] : '',
           family: {
             fathersName: response.data.family?.fathersName || '',
@@ -202,8 +203,8 @@ export default function MyProfilePage() {
     setFieldErrors({});
 
     try {
-      // Exclude name and phone from updates (non-editable fields)
-      const { name, phone, ...updateData } = formData;
+      // Exclude name, phone, email, and whatsappNumber from updates (non-editable fields)
+      const { name, phone, email, whatsappNumber, ...updateData } = formData;
       const response = await userApi.updateMe(updateData);
       if (response.status) {
         
@@ -429,6 +430,7 @@ export default function MyProfilePage() {
                     minHeight: user?.preferences?.minHeight || undefined,
                     maxHeight: user?.preferences?.maxHeight || undefined,
                   },
+                  horoscopeMatchMandatory: user?.horoscopeMatchMandatory || false,
                   dateOfBirth: user?.dateOfBirth ? new Date(user.dateOfBirth).toISOString().split('T')[0] : '',
                   family: {
                     fathersName: user?.family?.fathersName || '',
@@ -610,7 +612,7 @@ export default function MyProfilePage() {
             <div className="px-4 pb-4 space-y-4">
               {/* Full Name */}
             <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Full Name</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Full Name <span className="text-red-500">*</span></label>
               {editing ? (
                 <input
                   type="text"
@@ -625,7 +627,7 @@ export default function MyProfilePage() {
 
               {/* Age */}
             <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Age</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Age <span className="text-red-500">*</span></label>
               {editing ? (
                   <input
                     type="number"
@@ -710,22 +712,12 @@ export default function MyProfilePage() {
                 {editing ? (
                   <input
                     type="email"
-                    value={formData.email || ''}
-                    onChange={(e) => {
-                      setFormData({ ...formData, email: e.target.value });
-                      if (fieldErrors.email) {
-                        setFieldErrors({ ...fieldErrors, email: '' });
-                      }
-                    }}
-                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:bg-[#1f212a] dark:text-pink-100 ${
-                      fieldErrors.email ? 'border-red-500 dark:border-red-600' : 'border-gray-300 dark:border-gray-600'
-                    }`}
+                    value={user.email || ''}
+                    readOnly
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-pink-100 rounded-lg bg-gray-50 dark:bg-gray-800 cursor-not-allowed"
                   />
                 ) : (
                   <p className="text-gray-900 dark:text-pink-100">{user.email || 'Not provided'}</p>
-                )}
-                {fieldErrors.email && (
-                  <p className="text-red-500 dark:text-red-400 text-xs mt-1">{fieldErrors.email}</p>
                 )}
               </div>
 
@@ -750,10 +742,9 @@ export default function MyProfilePage() {
                 {editing ? (
                   <input
                     type="tel"
-                    value={formData.whatsappNumber || ''}
-                    onChange={(e) => setFormData({ ...formData, whatsappNumber: sanitizeFormInput(e.target.value, 'phone') })}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-pink-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
-                    placeholder="Enter WhatsApp number"
+                    value={user.whatsappNumber || ''}
+                    readOnly
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-pink-100 rounded-lg bg-gray-50 dark:bg-gray-800 cursor-not-allowed"
                   />
                 ) : (
                   <p className="text-gray-900 dark:text-pink-100">{user.whatsappNumber || 'Not provided'}</p>
@@ -878,7 +869,7 @@ export default function MyProfilePage() {
               {/* Education */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
-                  Education
+                  Education <span className="text-red-500">*</span>
                   {loadingEducation && (
                     <span className="ml-2 text-xs text-gray-500 dark:text-pink-400">(Loading...)</span>
                   )}
@@ -930,7 +921,7 @@ export default function MyProfilePage() {
               {/* Occupation */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
-                  Occupation
+                  Occupation <span className="text-red-500">*</span>
                   {loadingOccupation && (
                     <span className="ml-2 text-xs text-gray-500 dark:text-pink-400">(Loading...)</span>
                   )}
@@ -1755,8 +1746,31 @@ export default function MyProfilePage() {
                   )}
                 </div>
                 </div>
-              )}
+
+              {/* Horoscope Match Mandatory */}
+              <div className="pt-4 border-t border-gray-200 dark:border-[#303341]">
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={editing ? (formData.horoscopeMatchMandatory ?? user.horoscopeMatchMandatory ?? false) : (user.horoscopeMatchMandatory ?? false)}
+                    onChange={(e) => setFormData({ ...formData, horoscopeMatchMandatory: e.target.checked })}
+                    disabled={!editing}
+                    className="w-5 h-5 text-pink-600 border-gray-300 rounded focus:ring-pink-500 dark:border-gray-600 dark:bg-[#1f212a] disabled:opacity-50 disabled:cursor-not-allowed"
+                  />
+                  <span className="text-sm font-medium text-gray-700 dark:text-pink-200">
+                    Require Horoscope Match <span className="text-gray-500 dark:text-gray-400 text-xs">(Mandatory for matches)</span>
+                  </span>
+                </label>
+                {!editing && (
+                  <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                    {user.horoscopeMatchMandatory 
+                      ? 'Horoscope compatibility is required for matches' 
+                      : 'Horoscope compatibility is optional for matches'}
+                  </p>
+                )}
               </div>
+              )}
+            </div>
               
         {/* Save Changes Button - Only show when editing */}
           {editing && (
