@@ -125,12 +125,12 @@ function SearchProfilesPageContent() {
 
   useEffect(() => {
     if (mounted && auth.isAuthenticated() && currentUser) {
-      // Initial search with filters (will use default gender if not set)
-      // Use a small delay to ensure filters are set
+      // Initial search - load profiles automatically when page opens
+      // Wait for filters to be set (especially default gender filter)
       const timeoutId = setTimeout(() => {
         const page = parseInt(searchParams.get('page') || '1');
         performSearch(page);
-      }, 100);
+      }, 300);
       
       return () => clearTimeout(timeoutId);
     }
