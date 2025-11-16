@@ -85,7 +85,7 @@ export default function InterestsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white dark:bg-black pb-20">
+      <div className="min-h-screen bg-white dark:bg-[#1A0C11] pb-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="space-y-4">
             <SkeletonLoader type="text" count={5} className="h-24" />
@@ -99,21 +99,21 @@ export default function InterestsPage() {
   const filteredInterests = getFilteredInterests(currentInterests);
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black pb-20 transition-colors">
+    <div className="min-h-screen bg-white dark:bg-[#1A0C11] pb-20 transition-colors">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header with Tabs */}
         <div className="mb-6">
           <div className="flex items-center gap-3 mb-6">
-            <div className="p-2 bg-gradient-to-r from-pink-100 to-red-100 dark:from-pink-900 dark:to-red-900 rounded-lg">
-              <svg className="w-6 h-6 text-pink-600 dark:text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="p-2 bg-gradient-to-r from-pink-100 to-red-100 dark:from-[#241317] dark:to-[#241317] rounded-lg">
+              <svg className="w-6 h-6 text-pink-600 dark:text-[#E04F5F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-light text-gray-900 dark:text-pink-300">Interests</h1>
+            <h1 className="text-2xl sm:text-3xl font-light text-gray-900 dark:text-white">Interests</h1>
           </div>
 
           {/* Tabs */}
-          <div className="flex gap-2 mb-4 border-b border-gray-200 dark:border-pink-700">
+          <div className="flex gap-2 mb-4 border-b border-gray-200 dark:border-[#2F2327]">
             <button
               onClick={() => {
                 setActiveTab('received');
@@ -121,8 +121,8 @@ export default function InterestsPage() {
               }}
               className={`px-6 py-3 font-medium transition-colors relative ${
                 activeTab === 'received'
-                  ? 'text-pink-600 dark:text-pink-400 border-b-2 border-pink-600'
-                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                  ? 'text-pink-600 dark:text-[#E04F5F] border-b-2 border-pink-600 dark:border-[#E04F5F]'
+                  : 'text-gray-500 dark:text-[#A29CA3] hover:text-gray-700 dark:hover:text-[#D5D3D7]'
               }`}
             >
               <div className="flex items-center gap-2">
@@ -139,8 +139,8 @@ export default function InterestsPage() {
               }}
               className={`px-6 py-3 font-medium transition-colors relative ${
                 activeTab === 'sent'
-                  ? 'text-pink-600 dark:text-pink-400 border-b-2 border-pink-600'
-                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                  ? 'text-pink-600 dark:text-[#E04F5F] border-b-2 border-pink-600 dark:border-[#E04F5F]'
+                  : 'text-gray-500 dark:text-[#A29CA3] hover:text-gray-700 dark:hover:text-[#D5D3D7]'
               }`}
             >
               <div className="flex items-center gap-2">
@@ -158,8 +158,8 @@ export default function InterestsPage() {
               onClick={() => setFilterStatus('all')}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                 filterStatus === 'all'
-                  ? 'bg-gradient-to-r from-pink-600 to-red-600 text-white shadow-lg'
-                  : 'bg-gray-100 dark:bg-[#111111] text-gray-700 dark:text-pink-300 hover:bg-gray-200 dark:hover:bg-[#1a1a1a]'
+                  ? 'bg-gradient-to-r from-pink-600 to-red-600 dark:from-[#E04F5F] dark:to-[#C43A4E] text-white shadow-lg'
+                  : 'bg-gray-100 dark:bg-[#241317] text-gray-700 dark:text-[#D5D3D7] hover:bg-gray-200 dark:hover:bg-[#1F1417]'
               }`}
             >
               All ({currentInterests.length})
@@ -220,7 +220,7 @@ export default function InterestsPage() {
               return (
                 <div
                   key={interest._id || interest.id}
-                  className="bg-white dark:bg-[#111111] border border-gray-200 dark:border-pink-700 p-6 hover:shadow-md transition-all rounded-lg"
+                  className="bg-white dark:bg-[#2B0F17] border border-gray-200 dark:border-[#2F2327] p-6 hover:shadow-md transition-all rounded-lg"
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -228,15 +228,15 @@ export default function InterestsPage() {
                         href={profileUrl}
                         className="block"
                       >
-                        <h3 className="text-lg font-medium text-gray-900 dark:text-pink-300 mb-2">
+                        <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
                           {user?.name || 'Unknown User'}
                         </h3>
-                        <p className="text-sm text-gray-600 dark:text-pink-200 mb-4">
+                        <p className="text-sm text-gray-600 dark:text-[#D5D3D7] mb-4">
                           {user?.age && `${user.age} years`}
                           {user?.city && ` • ${user.city}`}
                         </p>
                       </Link>
-                      <p className="text-xs text-gray-500 dark:text-pink-200 mb-4">
+                      <p className="text-xs text-gray-500 dark:text-[#A29CA3] mb-4">
                         {activeTab === 'received' ? 'Received' : 'Sent'} on {new Date(interest.createdAt || interest.sentAt).toLocaleDateString()}
                       </p>
                       
@@ -252,7 +252,7 @@ export default function InterestsPage() {
                         <div className="flex gap-3">
                           <button
                             onClick={() => handleRespond(userId, 'accept')}
-                            className="flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-pink-600 to-red-600 text-white font-medium hover:from-pink-700 hover:to-red-700 transition-all text-sm rounded-lg shadow-md"
+                            className="flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-pink-600 to-red-600 dark:from-[#E04F5F] dark:to-[#C43A4E] text-white font-medium hover:from-pink-700 hover:to-red-700 dark:hover:from-[#C43A4E] dark:hover:to-[#C43A4E] transition-all text-sm rounded-lg shadow-md"
                           >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
@@ -261,7 +261,7 @@ export default function InterestsPage() {
                           </button>
                           <button
                             onClick={() => handleRespond(userId, 'reject')}
-                            className="flex items-center gap-2 px-6 py-2 border-2 border-gray-300 dark:border-pink-700 text-gray-700 dark:text-pink-300 font-medium hover:bg-gray-50 dark:hover:bg-[#1a1a1a] transition-colors text-sm rounded-lg"
+                            className="flex items-center gap-2 px-6 py-2 border-2 border-gray-300 dark:border-[#2F2327] text-gray-700 dark:text-[#D5D3D7] font-medium hover:bg-gray-50 dark:hover:bg-[#241317] transition-colors text-sm rounded-lg"
                           >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
