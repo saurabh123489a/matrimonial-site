@@ -102,10 +102,10 @@ export default function LoginPage() {
               <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent mb-3">
                 Welcome Back!
               </h2>
-              <p className="text-base text-gray-600 mb-1">
+              <p className="text-base text-gray-600 dark:text-gray-300 mb-1">
                 Continue your journey to find your perfect match
               </p>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-500 dark:text-gray-400">
                 {t('auth.or')}{' '}
                 <Link href="/register" className="font-medium text-pink-600 hover:text-pink-500 transition-colors">
                   {t('auth.createAccount')}
@@ -116,10 +116,10 @@ export default function LoginPage() {
 
           {step === 'otp' && (
             <div className="text-center">
-              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-50 mb-2">
                 {t('auth.enterOTP')}
               </h2>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-600 dark:text-gray-300">
                 {t('auth.otpSentTo')}{' '}
                 <span className="font-medium">{phone}</span>
               </p>
@@ -139,7 +139,7 @@ export default function LoginPage() {
               </div>
             )}
             <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1.5">
+              <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1.5">
                 {t('auth.phoneNumber')}
               </label>
               <input
@@ -194,7 +194,7 @@ export default function LoginPage() {
               </div>
             )}
             <div>
-              <label htmlFor="otp" className="block text-sm font-medium text-gray-700 mb-1.5">
+              <label htmlFor="otp" className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1.5">
                 {t('auth.otpCode')}
               </label>
               <input
@@ -212,7 +212,7 @@ export default function LoginPage() {
                   setOtp(value);
                 }}
               />
-              <p className="mt-2 text-xs text-gray-500 text-center">
+              <p className="mt-2 text-xs text-gray-500 dark:text-gray-400 text-center">
                 Enter the 6-digit code sent to your phone
               </p>
             </div>
@@ -238,7 +238,7 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={handleBack}
-                className="w-full flex justify-center py-2.5 px-4 border-2 border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 transition-colors"
+                className="w-full flex justify-center py-2.5 px-4 border-2 border-gray-300 dark:border-gray-600 text-sm font-medium rounded-lg text-gray-700 dark:text-gray-200 bg-white dark:bg-[#181b23] hover:bg-gray-50 dark:hover:bg-[#1f212a] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 transition-colors"
               >
                 {t('auth.changePhoneNumber')}
               </button>

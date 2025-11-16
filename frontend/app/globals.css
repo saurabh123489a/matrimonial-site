@@ -541,11 +541,27 @@ textarea:disabled {
 }
 
 .dark .text-gray-400 {
-  color: #9ca3af; /* Better contrast in dark mode - 4.5:1 on dark bg */
+  color: #d1d5db; /* gray-300 - Better contrast in dark mode - 4.5:1 on dark bg */
 }
 
 .dark .text-gray-500 {
-  color: #a1a1aa; /* Improved contrast for dark mode */
+  color: #e5e7eb; /* gray-200 - Improved contrast for dark mode */
+}
+
+.dark .text-gray-600 {
+  color: #d1d5db; /* gray-300 - Better contrast for dark mode */
+}
+
+.dark .text-gray-700 {
+  color: #e5e7eb; /* gray-200 - Better contrast for dark mode */
+}
+
+.dark .text-gray-800 {
+  color: #f3f4f6; /* gray-100 - Better contrast for dark mode */
+}
+
+.dark .text-gray-900 {
+  color: #ffffff; /* white - Maximum contrast for dark mode */
 }
 
 /* Ensure sufficient contrast for links - WCAG AA compliant */

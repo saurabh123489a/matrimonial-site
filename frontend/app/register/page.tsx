@@ -504,7 +504,7 @@ export default function RegisterPage() {
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent px-2">
               {t('auth.createAccountTitle')}
             </h2>
-            <p className="text-gray-600 text-xs sm:text-sm px-2">
+            <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm px-2">
               {t('auth.signInToAccount').split('Or')[0]}Or{' '}
               <Link href="/login" className="font-semibold text-pink-600 hover:text-pink-700 transition-colors">
                 {t('auth.signInToAccount').includes('sign in') ? 'sign in to your account' : 'अपने खाते में साइन इन करें'}
@@ -527,7 +527,7 @@ export default function RegisterPage() {
             <div className="space-y-4 sm:space-y-5">
               {/* Full Name */}
               <div>
-                <label htmlFor="name" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1.5 sm:mb-2">
+                <label htmlFor="name" className="block text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1.5 sm:mb-2">
                   {t('auth.fullName')} <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
@@ -564,8 +564,8 @@ export default function RegisterPage() {
 
               {/* Email */}
               <div>
-                <label htmlFor="email" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1.5 sm:mb-2">
-                  {t('auth.emailOptional')} <span className="text-gray-400 text-xs font-normal">({t('auth.emailOrPhoneRequired') || 'Email or Phone required'})</span>
+                <label htmlFor="email" className="block text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1.5 sm:mb-2">
+                  {t('auth.emailOptional')} <span className="text-gray-400 dark:text-gray-400 text-xs font-normal">({t('auth.emailOrPhoneRequired') || 'Email or Phone required'})</span>
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 sm:pl-4 flex items-center pointer-events-none">
@@ -600,7 +600,7 @@ export default function RegisterPage() {
 
               {/* Phone */}
               <div>
-                <label htmlFor="phone" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1.5 sm:mb-2">
+                <label htmlFor="phone" className="block text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1.5 sm:mb-2">
                   {t('auth.phone') || 'Phone Number'} <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
@@ -637,7 +637,7 @@ export default function RegisterPage() {
 
               {/* Password */}
               <div>
-                <label htmlFor="password" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1.5 sm:mb-2">
+                <label htmlFor="password" className="block text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1.5 sm:mb-2">
                   {t('auth.password')} <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
@@ -756,10 +756,10 @@ export default function RegisterPage() {
 
             {/* Community Position */}
             <div className="rounded-lg sm:rounded-xl bg-gradient-to-br from-gray-50 to-gray-100 p-4 sm:p-5 border-2 border-gray-200">
-              <label htmlFor="communityPosition" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1.5 sm:mb-2">
+              <label htmlFor="communityPosition" className="block text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1.5 sm:mb-2">
                 {t('auth.communityPosition')}
               </label>
-              <p className="text-xs text-gray-600 mb-2 sm:mb-3 leading-relaxed">
+              <p className="text-xs text-gray-600 dark:text-gray-300 mb-2 sm:mb-3 leading-relaxed">
                 {t('auth.communityPositionDesc')}
               </p>
               <div className="relative">
