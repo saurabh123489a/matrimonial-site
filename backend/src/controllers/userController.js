@@ -195,28 +195,58 @@ export const getAllUsers = async (req, res, next) => {
     }
 
     // Gahoi Sathi style comprehensive filters
-    const filters = {
-      ...(req.query.gender && { gender: req.query.gender }),
-      ...(req.query.minAge && { age: { $gte: parseInt(req.query.minAge) } }),
-      ...(req.query.maxAge && { 
-        age: { 
-          ...(req.query.minAge ? { $gte: parseInt(req.query.minAge) } : {}),
-          $lte: parseInt(req.query.maxAge)
-        }
-      }),
-      ...(req.query.city && { city: new RegExp(req.query.city, 'i') }),
-      ...(req.query.state && { state: new RegExp(req.query.state, 'i') }),
-      ...(req.query.education && { education: new RegExp(req.query.education, 'i') }),
-      ...(req.query.occupation && { occupation: new RegExp(req.query.occupation, 'i') }),
-      ...(req.query.maritalStatus && { maritalStatus: req.query.maritalStatus }),
-      ...(req.query.minHeight && { height: { $gte: parseFloat(req.query.minHeight) } }),
-      ...(req.query.maxHeight && { 
-        height: { 
-          ...(req.query.minHeight ? { $gte: parseFloat(req.query.minHeight) } : {}),
-          $lte: parseFloat(req.query.maxHeight)
-        }
-      }),
-    };
+    const filters = {};
+    
+    // Gender filter
+    if (req.query.gender) {
+      filters.gender = req.query.gender;
+    }
+    
+    // Age filter - handle minAge and maxAge together
+    if (req.query.minAge || req.query.maxAge) {
+      filters.age = {};
+      if (req.query.minAge) {
+        filters.age.$gte = parseInt(req.query.minAge);
+      }
+      if (req.query.maxAge) {
+        filters.age.$lte = parseInt(req.query.maxAge);
+      }
+    }
+    
+    // Location filters
+    if (req.query.country) {
+      filters.country = new RegExp(req.query.country, 'i');
+    }
+    if (req.query.state) {
+      filters.state = new RegExp(req.query.state, 'i');
+    }
+    if (req.query.city) {
+      filters.city = new RegExp(req.query.city, 'i');
+    }
+    
+    // Education and Occupation filters
+    if (req.query.education) {
+      filters.education = new RegExp(req.query.education, 'i');
+    }
+    if (req.query.occupation) {
+      filters.occupation = new RegExp(req.query.occupation, 'i');
+    }
+    
+    // Marital Status filter
+    if (req.query.maritalStatus) {
+      filters.maritalStatus = req.query.maritalStatus;
+    }
+    
+    // Height filter - handle minHeight and maxHeight together
+    if (req.query.minHeight || req.query.maxHeight) {
+      filters.height = {};
+      if (req.query.minHeight) {
+        filters.height.$gte = parseFloat(req.query.minHeight);
+      }
+      if (req.query.maxHeight) {
+        filters.height.$lte = parseFloat(req.query.maxHeight);
+      }
+    }
 
     // Enforce pagination limits (already applied by middleware, but ensure here too)
     const requestedLimit = parseInt(req.query.limit) || 10;
