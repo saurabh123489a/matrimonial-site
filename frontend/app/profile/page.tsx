@@ -818,7 +818,7 @@ export default function MyProfilePage() {
           </div>
 
         {/* About Me Section - Collapsible */}
-        <div className="bg-white">
+        <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, aboutMe: !expandedSections.aboutMe })}
             aria-expanded={expandedSections.aboutMe}
@@ -826,7 +826,7 @@ export default function MyProfilePage() {
             aria-label={`${expandedSections.aboutMe ? 'Collapse' : 'Expand'} About Me section`}
             className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-[#800020]"
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-[#800020]">About Me</h2>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold leading-tight text-[#800020]">About Me</h2>
             <svg 
               className={`w-5 h-5 text-muted transition-transform ${expandedSections.aboutMe ? 'rotate-180' : ''}`}
               fill="none" 
@@ -961,7 +961,7 @@ export default function MyProfilePage() {
                   </div>
 
         {/* Contact Information Section - Collapsible */}
-        <div className="bg-white">
+        <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, contact: !expandedSections.contact })}
             aria-expanded={expandedSections.contact}
@@ -969,7 +969,7 @@ export default function MyProfilePage() {
             aria-label={`${expandedSections.contact ? 'Collapse' : 'Expand'} Contact Information section`}
             className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-[#800020]"
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-[#800020]">Contact Information</h2>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold leading-tight text-[#800020]">Contact Information</h2>
             <svg 
               className={`w-5 h-5 text-muted transition-transform ${expandedSections.contact ? 'rotate-180' : ''}`}
               fill="none" 
@@ -1032,7 +1032,7 @@ export default function MyProfilePage() {
         </div>
 
         {/* Location Section - Collapsible */}
-        <div className="bg-white">
+        <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, location: !expandedSections.location })}
             aria-expanded={expandedSections.location}
@@ -1040,7 +1040,7 @@ export default function MyProfilePage() {
             aria-label={`${expandedSections.location ? 'Collapse' : 'Expand'} Location section`}
             className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-[#800020]"
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-[#800020]">Location</h2>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold leading-tight text-[#800020]">Location</h2>
             <svg 
               className={`w-5 h-5 text-muted transition-transform ${expandedSections.location ? 'rotate-180' : ''}`}
               fill="none" 
@@ -1129,7 +1129,7 @@ export default function MyProfilePage() {
         </div>
 
         {/* Education & Career Section - Collapsible */}
-        <div className="bg-white">
+        <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, education: !expandedSections.education })}
             aria-expanded={expandedSections.education}
@@ -1137,7 +1137,7 @@ export default function MyProfilePage() {
             aria-label={`${expandedSections.education ? 'Collapse' : 'Expand'} Education & Career section`}
             className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-[#800020]"
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-[#800020]">Education & Career</h2>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold leading-tight text-[#800020]">Education & Career</h2>
             <svg 
               className={`w-5 h-5 text-muted transition-transform ${expandedSections.education ? 'rotate-180' : ''}`}
               fill="none" 
@@ -1292,7 +1292,7 @@ export default function MyProfilePage() {
         </div>
 
         {/* Lifestyle & Interests Section - Collapsible */}
-        <div className="bg-white">
+        <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, lifestyle: !expandedSections.lifestyle })}
             aria-expanded={expandedSections.lifestyle}
@@ -1300,7 +1300,7 @@ export default function MyProfilePage() {
             aria-label={`${expandedSections.lifestyle ? 'Collapse' : 'Expand'} Lifestyle & Interests section`}
             className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-[#800020]"
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-[#800020]">Lifestyle & Interests</h2>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold leading-tight text-[#800020]">Lifestyle & Interests</h2>
             <svg 
               className={`w-5 h-5 text-muted transition-transform ${expandedSections.lifestyle ? 'rotate-180' : ''}`}
               fill="none" 
@@ -1407,7 +1407,7 @@ export default function MyProfilePage() {
                 </div>
 
         {/* Family Information Section - Collapsible */}
-        <div className="bg-white">
+        <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, family: !expandedSections.family })}
             aria-expanded={expandedSections.family}
@@ -1415,7 +1415,7 @@ export default function MyProfilePage() {
             aria-label={`${expandedSections.family ? 'Collapse' : 'Expand'} Family Information section`}
             className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-[#800020]"
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-[#800020]">👨‍👩‍👧‍👦 Family Information</h2>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold leading-tight text-[#800020]">👨‍👩‍👧‍👦 Family Information</h2>
             <svg 
               className={`w-5 h-5 text-muted transition-transform ${expandedSections.family ? 'rotate-180' : ''}`}
               fill="none" 
@@ -1668,7 +1668,7 @@ export default function MyProfilePage() {
             aria-label={`${expandedSections.horoscope ? 'Collapse' : 'Expand'} Horoscope Details section`}
             className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-[#800020]"
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-[#800020]">🔮 Horoscope Details</h2>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold leading-tight text-[#800020]">🔮 Horoscope Details</h2>
             <svg 
               className={`w-5 h-5 text-muted transition-transform ${expandedSections.horoscope ? 'rotate-180' : ''}`}
               fill="none" 
@@ -1858,7 +1858,7 @@ export default function MyProfilePage() {
             aria-label={`${expandedSections.partnerPreferences ? 'Collapse' : 'Expand'} Partner Preferences section`}
             className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-[#800020]"
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-[#800020]">Partner Preferences</h2>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold leading-tight text-[#800020]">Partner Preferences</h2>
             <svg 
               className={`w-5 h-5 text-muted transition-transform ${expandedSections.partnerPreferences ? 'rotate-180' : ''}`}
               fill="none" 

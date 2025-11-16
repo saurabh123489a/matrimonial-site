@@ -99,10 +99,10 @@ function ProfileCard({ user }: ProfileCardProps) {
   return (
     <div 
       ref={scrollRef as React.RefObject<HTMLDivElement>}
-      className={`bg-white'scroll-animate-fade-up animate' : 'scroll-animate-fade-up'}`}
+      className={`bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-[var(--border-light)] ${isVisible ? 'scroll-animate-fade-up animate' : 'scroll-animate-fade-up'}`}
     >
       {/* Photo Section */}
-      <div className="relative h-64 sm:h-80 bg-gradient-to-br from-pink-100 to-red-100 overflow-hidden">
+      <div className="relative h-64 sm:h-80 bg-gradient-to-br from-[#f5e6b3] to-[#D4AF37]/20 overflow-hidden">
         <LazyImage
           src={profileImageUrl}
           alt={`${user.name}'s profile photo`}
@@ -141,16 +141,16 @@ function ProfileCard({ user }: ProfileCardProps) {
       <div className="p-5 sm:p-6">
         {/* Name and Gender */}
         <div className="mb-5">
-          <h3 className="text-xl sm:text-2xl font-bold text-primary mb-2 line-clamp-1 group-hover:text-pink-600">{user.name}</h3>
+          <h3 className="text-xl sm:text-2xl font-bold text-primary mb-2 line-clamp-1 group-hover:text-[#800020] transition-colors">{user.name}</h3>
           <div className="flex items-center gap-3">
             {user.gender && (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-gray-50 rounded-full text-gray-700 text-sm font-medium capitalize">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[var(--bg-tertiary)] rounded-full text-secondary text-sm font-medium capitalize border border-[var(--border-light)]">
                 {user.gender === 'male' ? '👨' : user.gender === 'female' ? '👩' : '👤'}
                 <span>{user.gender}</span>
               </span>
             )}
             {user.gahoiId && (
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-pink-50">
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-[#D4AF37]/10 text-[#800020] rounded-full text-xs font-semibold border border-[#D4AF37]/20">
                 ID: {user.gahoiId}
               </span>
             )}
@@ -160,28 +160,28 @@ function ProfileCard({ user }: ProfileCardProps) {
         {/* Key Details Grid - Improved Layout */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
           {user.education && (
-            <div className="flex items-center gap-2.5 text-sm bg-gradient-to-r from-gray-50 to-gray-50/50">
-              <span className="text-pink-600">🎓</span>
+            <div className="flex items-center gap-2.5 text-sm bg-[var(--bg-tertiary)] rounded-lg px-3 py-2 border border-[var(--border-light)]">
+              <span className="text-[#800020] text-base">🎓</span>
               <span className="text-secondary truncate font-medium" title={user.education}>{user.education}</span>
             </div>
           )}
           {user.occupation && (
-            <div className="flex items-center gap-2.5 text-sm bg-gradient-to-r from-gray-50 to-gray-50/50">
-              <span className="text-pink-600">💼</span>
+            <div className="flex items-center gap-2.5 text-sm bg-[var(--bg-tertiary)] rounded-lg px-3 py-2 border border-[var(--border-light)]">
+              <span className="text-[#800020] text-base">💼</span>
               <span className="text-secondary truncate font-medium" title={user.occupation}>{user.occupation}</span>
             </div>
           )}
           {(user.city || user.state) && (
-            <div className={`flex items-center gap-2.5 text-sm bg-gradient-to-r from-gray-50 to-gray-50/50'sm:col-span-2' : ''}`}>
-              <span className="text-pink-600">📍</span>
+            <div className={`flex items-center gap-2.5 text-sm bg-[var(--bg-tertiary)] rounded-lg px-3 py-2 border border-[var(--border-light)] ${(user.city || user.state) && !user.education && !user.occupation ? 'sm:col-span-2' : ''}`}>
+              <span className="text-[#800020] text-base">📍</span>
               <span className="text-secondary truncate font-medium" title={`${user.city || ''}${user.state ? `, ${user.state}` : ''}${user.country ? `, ${user.country}` : ''}`}>
                 {user.city}{user.state && `, ${user.state}`}{user.country && `, ${user.country}`}
               </span>
             </div>
           )}
           {user.diet && (
-            <div className="flex items-center gap-2.5 text-sm bg-gradient-to-r from-gray-50 to-gray-50/50">
-              <span className="text-pink-600">🥗</span>
+            <div className="flex items-center gap-2.5 text-sm bg-[var(--bg-tertiary)] rounded-lg px-3 py-2 border border-[var(--border-light)]">
+              <span className="text-[#800020] text-base">🥗</span>
               <span className="text-secondary truncate font-medium capitalize" title={user.diet}>{user.diet === 'non-vegetarian' ? 'Non-Veg' : user.diet}</span>
             </div>
           )}
@@ -213,7 +213,7 @@ function ProfileCard({ user }: ProfileCardProps) {
           <div className="flex gap-2.5">
             <Link
               href={getProfileUrl(user)}
-              className="flex-1 text-center px-4 py-3 bg-gradient-to-r from-pink-600 via-pink-500 to-red-600"
+              className="flex-1 text-center px-4 py-3 bg-[var(--primary)] text-white font-semibold rounded-lg hover:bg-[var(--primary-hover)] transition-all shadow-md hover:shadow-lg"
             >
               View Profile
             </Link>
@@ -224,7 +224,7 @@ function ProfileCard({ user }: ProfileCardProps) {
                   e.stopPropagation();
                   setShowMessageModal(true);
                 }}
-                className="px-4 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 active:bg-blue-800 btn-secondary btn-scale transition-all text-sm shadow-lg hover:shadow-xl touch-manipulation min-w-[56px] flex items-center justify-center"
+                className="px-4 py-3 bg-[var(--accent)] text-[var(--text-primary)] font-bold rounded-lg hover:bg-[var(--accent-hover)] transition-all text-sm shadow-md hover:shadow-lg touch-manipulation min-w-[56px] flex items-center justify-center"
                 title="Send Message"
                 aria-label="Send Message"
               >
@@ -237,7 +237,7 @@ function ProfileCard({ user }: ProfileCardProps) {
             <button
               onClick={handleSendInterest}
               disabled={actionLoading || !isAuthenticated}
-              className="flex-1 px-4 py-3 bg-gradient-to-r from-pink-50 to-pink-100"
+              className="flex-1 px-4 py-3 bg-[var(--accent-light)] text-[var(--text-primary)] font-semibold rounded-lg hover:bg-[#D4AF37]/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all border border-[var(--accent)]/20"
               title={isAuthenticated ? 'Send Interest' : 'Login to send interest'}
               aria-label={isAuthenticated ? 'Send Interest' : 'Login to send interest'}
             >
@@ -254,10 +254,10 @@ function ProfileCard({ user }: ProfileCardProps) {
             <button
               onClick={handleShortlist}
               disabled={actionLoading || !isAuthenticated}
-              className={`px-4 py-3 font-bold rounded-xl disabled:opacity-50 disabled:cursor-not-allowed btn-scale transition-all text-xl border-2 shadow-sm hover:shadow-md ${
+              className={`px-4 py-3 font-bold rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all text-xl border-2 shadow-sm hover:shadow-md ${
                 isShortlisted
-                  ? 'bg-gradient-to-r from-yellow-400 to-yellow-500 text-white border-yellow-500 hover:from-yellow-500 hover:to-yellow-600'
-                  : 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100 hover:border-gray-300'
+                  ? 'bg-[var(--accent)] text-[var(--text-primary)] border-[var(--accent)] hover:bg-[var(--accent-hover)]'
+                  : 'bg-[var(--bg-tertiary)] text-secondary border-[var(--border)] hover:bg-[var(--bg-hover)] hover:border-[var(--border-dark)]'
               }`}
               title={isAuthenticated ? (isShortlisted ? 'Remove from shortlist' : 'Add to shortlist') : 'Login to shortlist'}
               aria-label={isAuthenticated ? (isShortlisted ? 'Remove from shortlist' : 'Add to shortlist') : 'Login to shortlist'}

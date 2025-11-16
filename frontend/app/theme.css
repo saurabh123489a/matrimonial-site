@@ -69,14 +69,38 @@
   --info-text: #1e40af;
   
   /* ========== SHADOW COLORS ========== */
-  --shadow-sm: rgba(0, 0, 0, 0.05);
-  --shadow-md: rgba(0, 0, 0, 0.1);
-  --shadow-lg: rgba(0, 0, 0, 0.15);
-  --shadow-xl: rgba(0, 0, 0, 0.2);
+  --shadow-sm: 0 1px 2px 0 rgba(128, 0, 32, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(128, 0, 32, 0.1), 0 2px 4px -1px rgba(128, 0, 32, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(128, 0, 32, 0.1), 0 4px 6px -2px rgba(128, 0, 32, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(128, 0, 32, 0.1), 0 10px 10px -5px rgba(128, 0, 32, 0.04);
+  --shadow-2xl: 0 25px 50px -12px rgba(128, 0, 32, 0.25);
+  --shadow-inner: inset 0 2px 4px 0 rgba(128, 0, 32, 0.06);
   
   /* ========== OVERLAY COLORS ========== */
   --overlay: rgba(0, 0, 0, 0.5);
   --overlay-light: rgba(0, 0, 0, 0.1);
+  
+  /* ========== SPACING SYSTEM ========== */
+  --spacing-xs: 0.25rem;   /* 4px */
+  --spacing-sm: 0.5rem;    /* 8px */
+  --spacing-md: 1rem;      /* 16px */
+  --spacing-lg: 1.5rem;    /* 24px */
+  --spacing-xl: 2rem;      /* 32px */
+  --spacing-2xl: 3rem;    /* 48px */
+  --spacing-3xl: 4rem;    /* 64px */
+  
+  /* ========== BORDER RADIUS ========== */
+  --radius-sm: 0.375rem;   /* 6px */
+  --radius-md: 0.5rem;     /* 8px */
+  --radius-lg: 0.75rem;    /* 12px */
+  --radius-xl: 1rem;      /* 16px */
+  --radius-2xl: 1.5rem;   /* 24px */
+  --radius-full: 9999px;
+  
+  /* ========== TRANSITIONS ========== */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ============================================
@@ -183,23 +207,31 @@ a:focus {
 
 .card {
   background-color: var(--bg-secondary);
-  border: 1px solid var(--border);
-  border-radius: 0.75rem;
-  padding: 1.5rem;
-  box-shadow: 0 1px 3px var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
 }
 
 .card:hover {
-  box-shadow: 0 4px 6px var(--shadow-md);
-  border-color: var(--border-dark);
+  box-shadow: var(--shadow-md);
+  border-color: var(--border);
+  transform: translateY(-2px);
 }
 
 .card-elevated {
-  background-color: var(--bg-tertiary);
-  border: 1px solid var(--border);
-  border-radius: 0.75rem;
-  padding: 1.5rem;
-  box-shadow: 0 4px 6px var(--shadow-md);
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-lg);
+  transition: all var(--transition-base);
+}
+
+.card-elevated:hover {
+  box-shadow: var(--shadow-xl);
+  transform: translateY(-4px);
 }
 
 /* ============================================
@@ -210,14 +242,26 @@ a:focus {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.625rem 1.25rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  border-radius: var(--radius-lg);
   border: none;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-base);
   text-decoration: none;
+  box-shadow: var(--shadow-sm);
+  letter-spacing: 0.01em;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-primary {
@@ -287,19 +331,26 @@ a:focus {
 
 .input {
   width: 100%;
-  padding: 0.625rem 0.75rem;
-  font-size: 0.875rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.9375rem;
   color: var(--text-primary);
   background-color: var(--bg-input);
-  border: 1px solid var(--border);
-  border-radius: 0.5rem;
-  transition: all 0.2s ease;
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-sm);
+}
+
+.input:hover {
+  border-color: var(--border);
+  box-shadow: var(--shadow-md);
 }
 
 .input:focus {
   outline: none;
   border-color: var(--border-focus);
-  box-shadow: 0 0 0 3px rgba(128, 0, 32, 0.1);
+  box-shadow: 0 0 0 4px rgba(128, 0, 32, 0.1), var(--shadow-md);
+  transform: translateY(-1px);
 }
 
 .input:disabled {
@@ -402,19 +453,27 @@ a:focus {
    ============================================ */
 
 .shadow-sm {
-  box-shadow: 0 1px 2px var(--shadow-sm);
+  box-shadow: var(--shadow-sm);
 }
 
 .shadow-md {
-  box-shadow: 0 4px 6px var(--shadow-md);
+  box-shadow: var(--shadow-md);
 }
 
 .shadow-lg {
-  box-shadow: 0 10px 15px var(--shadow-lg);
+  box-shadow: var(--shadow-lg);
 }
 
 .shadow-xl {
-  box-shadow: 0 20px 25px var(--shadow-xl);
+  box-shadow: var(--shadow-xl);
+}
+
+.shadow-2xl {
+  box-shadow: var(--shadow-2xl);
+}
+
+.shadow-inner {
+  box-shadow: var(--shadow-inner);
 }
 
 /* ============================================

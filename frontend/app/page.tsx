@@ -22,14 +22,14 @@ export default function Home() {
 
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[var(--bg)]">
       <SEOStructuredData type="home" />
       {/* Running Welcome Message - Temporary */}
       {showWelcomeMessage && (
-        <div className="bg-gradient-to-r from-pink-600 via-red-600 to-pink-700">
+        <div className="bg-gradient-to-r from-[#800020] via-[#900023] to-[#800020] shadow-md">
           <button
             onClick={() => setShowWelcomeMessage(false)}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 z-30 text-white hover:text-red-200"
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 z-30 text-white hover:text-[#D4AF37] transition-colors"
             aria-label="Close welcome message"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -37,7 +37,7 @@ export default function Home() {
             </svg>
           </button>
           <div className="marquee-container pr-16 sm:pr-20">
-            <div className="marquee-text text-base sm:text-lg font-medium whitespace-nowrap">
+            <div className="marquee-text text-base sm:text-lg font-medium whitespace-nowrap text-white">
               🎉 Saurabh Gupta welcomes you to ekGahoi - Your trusted matrimonial platform 🎉
               <span className="mx-8">💍</span>
               🎉 Saurabh Gupta welcomes you to ekGahoi - Your trusted matrimonial platform 🎉
@@ -130,21 +130,21 @@ export default function Home() {
             }}
           />
           {/* Gradient Overlay - very minimal for text readability only */}
-          <div className="absolute inset-0 bg-gradient-to-r from-pink-600/10 via-red-600/10 to-pink-700/10"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-[#800020]/20 via-[#900023]/15 to-[#800020]/20"></div>
         </div>
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-32 lg:py-40">
           <div className="max-w-3xl">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 tracking-tight leading-tight drop-shadow-lg">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 tracking-tight leading-tight text-white drop-shadow-2xl">
               {t('home.title')}
             </h1>
-            <p className="text-lg sm:text-xl text-pink-100 mb-8 font-light max-w-xl drop-shadow-md">
+            <p className="text-lg sm:text-xl text-white/95 mb-8 font-light max-w-xl drop-shadow-lg">
               {t('home.subtitle')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
                 href="/register"
-                className="inline-flex items-center justify-center px-8 py-4 bg-white text-pink-600 font-medium hover:bg-gray-100 btn-primary btn-scale transition-all text-sm uppercase tracking-wider shadow-lg"
+                className="inline-flex items-center justify-center px-8 py-4 bg-[#D4AF37] text-[#800020] font-semibold hover:bg-[#c19d2e] transition-all text-base rounded-lg shadow-xl hover:shadow-2xl transform hover:scale-105"
               >
                 Get Started
               </Link>
@@ -160,12 +160,10 @@ export default function Home() {
         className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24 ${featuresRef.isVisible ? 'scroll-animate-fade-up animate' : 'scroll-animate-fade-up'}`}
       >
         <div className="text-center mb-12 sm:mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-primary mb-4">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-red-600">
-              Complete Community Platform
-            </span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-primary mb-4">
+            Complete Community Platform
           </h2>
-          <p className="text-secondary text-base max-w-2xl mx-auto">{t('home.trustedPlatform')}</p>
+          <p className="text-secondary text-lg max-w-2xl mx-auto">{t('home.trustedPlatform')}</p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12">
@@ -174,7 +172,7 @@ export default function Home() {
             <div className="text-5xl mb-6 group-hover:scale-105 transition-transform duration-300">💍</div>
             <h3 className="text-lg font-medium mb-3 text-primary uppercase tracking-wide">{t('home.features.marriage')}</h3>
             <p className="text-sm text-secondary leading-relaxed">{t('home.features.marriageDesc')}</p>
-            <div className="mt-4 w-12 h-0.5 bg-gradient-to-r from-pink-600 to-red-600 mx-auto"></div>
+            <div className="mt-4 w-12 h-1 bg-gradient-to-r from-[#800020] to-[#D4AF37] mx-auto rounded-full"></div>
           </div>
           
           {/* Census */}
@@ -182,7 +180,7 @@ export default function Home() {
             <div className="text-5xl mb-6 group-hover:scale-105 transition-transform duration-300">📊</div>
             <h3 className="text-lg font-medium mb-3 text-primary uppercase tracking-wide">{t('home.features.census')}</h3>
             <p className="text-sm text-secondary leading-relaxed">{t('home.features.censusDesc')}</p>
-            <div className="mt-4 w-12 h-0.5 bg-gradient-to-r from-pink-600 to-red-600 mx-auto"></div>
+            <div className="mt-4 w-12 h-1 bg-gradient-to-r from-[#800020] to-[#D4AF37] mx-auto rounded-full"></div>
           </div>
           
           {/* Family Data */}
@@ -190,7 +188,7 @@ export default function Home() {
             <div className="text-5xl mb-6 group-hover:scale-105 transition-transform duration-300">👨‍👩‍👧‍👦</div>
             <h3 className="text-lg font-medium mb-3 text-primary uppercase tracking-wide">{t('home.features.family')}</h3>
             <p className="text-sm text-secondary leading-relaxed">{t('home.features.familyDesc')}</p>
-            <div className="mt-4 w-12 h-0.5 bg-gradient-to-r from-pink-600 to-red-600 mx-auto"></div>
+            <div className="mt-4 w-12 h-1 bg-gradient-to-r from-[#800020] to-[#D4AF37] mx-auto rounded-full"></div>
           </div>
           
           {/* Community News */}
@@ -198,7 +196,7 @@ export default function Home() {
             <div className="text-5xl mb-6 group-hover:scale-105 transition-transform duration-300">📰</div>
             <h3 className="text-lg font-medium mb-3 text-primary uppercase tracking-wide">{t('home.features.news')}</h3>
             <p className="text-sm text-secondary leading-relaxed">{t('home.features.newsDesc')}</p>
-            <div className="mt-4 w-12 h-0.5 bg-gradient-to-r from-pink-600 to-red-600 mx-auto"></div>
+            <div className="mt-4 w-12 h-1 bg-gradient-to-r from-[#800020] to-[#D4AF37] mx-auto rounded-full"></div>
           </div>
         </div>
       </div>
@@ -206,36 +204,34 @@ export default function Home() {
       {/* Stats Section - Minimal Design */}
       <div 
         ref={statsRef.ref as React.RefObject<HTMLDivElement>}
-        className={`bg-gradient-to-br from-pink-50 via-red-50 to-pink-100'scroll-animate-scale animate' : 'scroll-animate-scale'}`}
+        className={`bg-gradient-to-br from-[#F5F5DC] via-white to-[#f9f9f0] ${statsRef.isVisible ? 'scroll-animate-scale animate' : 'scroll-animate-scale'}`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
           <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-light text-primary mb-4">
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-red-600">
-                Community Impact
-              </span>
+            <h2 className="text-3xl sm:text-4xl font-bold text-primary mb-4">
+              Community Impact
             </h2>
-            <p className="text-secondary text-base max-w-2xl mx-auto">
+            <p className="text-secondary text-lg max-w-2xl mx-auto">
               Serving the Gahoi community with comprehensive solutions
             </p>
           </div>
           
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 text-center">
-            <div>
-              <div className="text-4xl sm:text-5xl font-light bg-gradient-to-r from-pink-600 to-red-600 bg-clip-text text-transparent mb-2">1000+</div>
-              <div className="text-sm text-secondary uppercase tracking-wider">Happy Marriages</div>
+            <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow">
+              <div className="text-4xl sm:text-5xl font-bold text-[#800020] mb-2">1000+</div>
+              <div className="text-sm text-secondary uppercase tracking-wider font-medium">Happy Marriages</div>
             </div>
-            <div>
-              <div className="text-4xl sm:text-5xl font-light bg-gradient-to-r from-pink-600 to-red-600 bg-clip-text text-transparent mb-2">5000+</div>
-              <div className="text-sm text-secondary uppercase tracking-wider">Families Registered</div>
+            <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow">
+              <div className="text-4xl sm:text-5xl font-bold text-[#800020] mb-2">5000+</div>
+              <div className="text-sm text-secondary uppercase tracking-wider font-medium">Families Registered</div>
             </div>
-            <div>
-              <div className="text-4xl sm:text-5xl font-light bg-gradient-to-r from-pink-600 to-red-600 bg-clip-text text-transparent mb-2">10K+</div>
-              <div className="text-sm text-secondary uppercase tracking-wider">Census Records</div>
+            <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow">
+              <div className="text-4xl sm:text-5xl font-bold text-[#800020] mb-2">10K+</div>
+              <div className="text-sm text-secondary uppercase tracking-wider font-medium">Census Records</div>
             </div>
-            <div>
-              <div className="text-4xl sm:text-5xl font-light bg-gradient-to-r from-pink-600 to-red-600 bg-clip-text text-transparent mb-2">Active</div>
-              <div className="text-sm text-secondary uppercase tracking-wider">Community News</div>
+            <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow">
+              <div className="text-4xl sm:text-5xl font-bold text-[#D4AF37] mb-2">Active</div>
+              <div className="text-sm text-secondary uppercase tracking-wider font-medium">Community News</div>
             </div>
           </div>
         </div>
@@ -323,19 +319,19 @@ export default function Home() {
           />
         </div>
         {/* Gradient Overlay - very minimal for text readability only */}
-        <div className="absolute inset-0 bg-gradient-to-r from-pink-600/10 via-red-600/10 to-pink-700/10"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-[#800020]/20 via-[#900023]/15 to-[#800020]/20"></div>
         
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light mb-6 drop-shadow-lg">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 text-white drop-shadow-2xl">
             Ready to Find Your Perfect Match?
           </h2>
-          <p className="text-lg sm:text-xl text-pink-100 mb-8 max-w-2xl mx-auto drop-shadow-md">
+          <p className="text-lg sm:text-xl text-white/95 mb-8 max-w-2xl mx-auto drop-shadow-lg">
             Join thousands of happy couples who found their life partners through ekGahoi
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link
               href="/register"
-              className="inline-flex items-center justify-center px-8 py-4 bg-white text-pink-600 font-medium hover:bg-gray-100 btn-primary btn-scale transition-all text-sm uppercase tracking-wider shadow-lg"
+              className="inline-flex items-center justify-center px-8 py-4 bg-[#D4AF37] text-[#800020] font-semibold hover:bg-[#c19d2e] transition-all text-base rounded-lg shadow-xl hover:shadow-2xl transform hover:scale-105"
             >
               Create Free Account
             </Link>
