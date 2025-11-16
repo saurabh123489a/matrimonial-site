@@ -56,21 +56,21 @@
   --foreground-secondary: #9ca3af;
   --foreground-muted: #6b7280;
   
-  /* Primary Colors - Dark Mode */
-  --primary: #ff6584; /* Pink-400 - Main brand color */
-  --primary-dark: #f2466c; /* Pink-500 - Hover states */
-  --primary-light: #ff8fa3; /* Pink-300 - Backgrounds/accents */
-  --primary-medium: #f472b6; /* Pink-400 - Medium emphasis */
+  /* Primary Colors - Dark Mode (Red accents like in image) */
+  --primary: #ef4444; /* Red-500 - Main brand color */
+  --primary-dark: #dc2626; /* Red-600 - Hover states */
+  --primary-light: #f87171; /* Red-400 - Backgrounds/accents */
+  --primary-medium: #fca5a5; /* Red-300 - Medium emphasis */
   
   /* Secondary Colors - Dark Mode */
   --secondary: #9ca3af; /* Gray-400 - Supporting text */
   --secondary-dark: #1a1c23; /* Card backgrounds */
   --secondary-light: #1f212a; /* Elevated surfaces */
   
-  /* Accent Colors - Dark Mode */
-  --accent: #f472b6; /* Pink-400 - Accents */
-  --accent-gradient-start: #ff6584; /* Pink-400 */
-  --accent-gradient-end: #f472b6; /* Pink-400 */
+  /* Accent Colors - Dark Mode (Red accents) */
+  --accent: #ef4444; /* Red-500 - Accents */
+  --accent-gradient-start: #dc2626; /* Red-600 */
+  --accent-gradient-end: #ef4444; /* Red-500 */
   
   /* Status Colors - Dark Mode */
   --success: #34d399; /* Green-400 */
@@ -580,11 +580,11 @@ a:focus {
 }
 
 .dark a {
-  color: #f9a8d4; /* Pink-300 - Better contrast on dark bg */
+  color: #f87171; /* Red-400 - Better contrast on dark bg */
 }
 
 .dark a:hover {
-  color: #f472b6; /* Pink-400 - Better contrast */
+  color: #ef4444; /* Red-500 - Better contrast */
 }
 
 /* Ensure button text has sufficient contrast */
@@ -612,7 +612,7 @@ label {
 }
 
 .dark label {
-  color: #f9a8d4; /* pink-300 - Better contrast on dark */
+  color: #f87171; /* red-400 - Better contrast on dark */
 }
 
 .pull-to-refresh-indicator {

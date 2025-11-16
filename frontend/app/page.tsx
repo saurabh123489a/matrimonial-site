@@ -26,10 +26,10 @@ export default function Home() {
       <SEOStructuredData type="home" />
       {/* Running Welcome Message - Temporary */}
       {showWelcomeMessage && (
-        <div className="bg-gradient-to-r from-pink-600 via-red-600 to-pink-700 dark:from-pink-700 dark:via-pink-600 dark:to-pink-800 text-white py-3 overflow-hidden relative z-20">
+        <div className="bg-gradient-to-r from-pink-600 via-red-600 to-pink-700 dark:from-red-700 dark:via-red-600 dark:to-red-800 text-white py-3 overflow-hidden relative z-20">
           <button
             onClick={() => setShowWelcomeMessage(false)}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 z-30 text-white hover:text-pink-200 transition-colors bg-black/20 rounded-full p-1"
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 z-30 text-white hover:text-red-200 dark:hover:text-red-300 transition-colors bg-black/20 rounded-full p-1"
             aria-label="Close welcome message"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -130,7 +130,7 @@ export default function Home() {
             }}
           />
           {/* Gradient Overlay - very minimal for text readability only */}
-          <div className="absolute inset-0 bg-gradient-to-r from-pink-600/10 via-red-600/10 to-pink-700/10 dark:from-pink-600/20 dark:via-pink-700/20 dark:to-pink-800/20"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-pink-600/10 via-red-600/10 to-pink-700/10 dark:from-red-600/20 dark:via-red-700/20 dark:to-red-800/20"></div>
         </div>
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-32 lg:py-40">
@@ -210,7 +210,7 @@ export default function Home() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
           <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-light text-gray-900 dark:text-pink-200 mb-4">
+            <h2 className="text-3xl sm:text-4xl font-light text-gray-900 dark:text-gray-100 mb-4">
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-red-600">
                 Community Impact
               </span>
@@ -323,7 +323,7 @@ export default function Home() {
           />
         </div>
         {/* Gradient Overlay - very minimal for text readability only */}
-        <div className="absolute inset-0 bg-gradient-to-r from-pink-600/10 via-red-600/10 to-pink-700/10 dark:from-pink-500/10 dark:via-pink-600/10 dark:to-pink-700/10"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-pink-600/10 via-red-600/10 to-pink-700/10 dark:from-red-500/10 dark:via-red-600/10 dark:to-red-700/10"></div>
         
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light mb-6 drop-shadow-lg">

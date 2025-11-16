@@ -811,7 +811,7 @@ export default function MyProfilePage() {
         <div className="bg-white dark:bg-[#181b23] rounded-lg p-4 sm:p-6 mb-6 sm:mb-8">
           <div className="flex items-center justify-between mb-4">
             <span className="text-sm font-medium text-gray-700 dark:text-gray-200">Profile Completion</span>
-            <span className="text-sm font-semibold text-pink-600 dark:text-pink-400">
+            <span className="text-sm font-semibold text-pink-600 dark:text-red-500">
               {user.isProfileComplete ? '100%' : '80%'}
             </span>
           </div>
@@ -1162,7 +1162,7 @@ export default function MyProfilePage() {
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
                   Education <span className="text-red-500">*</span>
                   {loadingEducation && (
-                    <span className="ml-2 text-xs text-gray-500 dark:text-pink-400">(Loading...)</span>
+                    <span className="ml-2 text-xs text-gray-500 dark:text-gray-400">(Loading...)</span>
                   )}
                 </label>
                 {editing ? (
@@ -1214,7 +1214,7 @@ export default function MyProfilePage() {
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
                   Occupation <span className="text-red-500">*</span>
                   {loadingOccupation && (
-                    <span className="ml-2 text-xs text-gray-500 dark:text-pink-400">(Loading...)</span>
+                    <span className="ml-2 text-xs text-gray-500 dark:text-gray-400">(Loading...)</span>
                   )}
                 </label>
                 {editing ? (
@@ -1336,7 +1336,7 @@ export default function MyProfilePage() {
                           isSelected
                             ? 'bg-pink-600 text-white'
                             : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
-                        } ${!editing ? 'cursor-default' : 'cursor-pointer hover:bg-pink-100 dark:hover:bg-pink-900/20'}`}
+                        } ${!editing ? 'cursor-default' : 'cursor-pointer hover:bg-pink-100 dark:hover:bg-red-900/20'}`}
                       >
                         {option === 'non-vegetarian' ? 'Non-Veg' : option.charAt(0).toUpperCase() + option.slice(1)}
                       </button>
@@ -1377,7 +1377,7 @@ export default function MyProfilePage() {
                           isSelected
                             ? 'bg-pink-600 text-white'
                             : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
-                        } ${!editing ? 'cursor-default' : 'cursor-pointer hover:bg-pink-100 dark:hover:bg-pink-900/20'}`}
+                        } ${!editing ? 'cursor-default' : 'cursor-pointer hover:bg-pink-100 dark:hover:bg-red-900/20'}`}
                       >
                         {hobby}
                       </button>
@@ -1882,7 +1882,7 @@ export default function MyProfilePage() {
                 <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-3">
                   Age Range
-                  <span className="ml-2 text-pink-600 dark:text-pink-400 font-semibold">
+                  <span className="ml-2 text-pink-600 dark:text-red-500 font-semibold">
                     {formData.preferences?.minAge || user.preferences?.minAge || 28} - {formData.preferences?.maxAge || user.preferences?.maxAge || 34}
                   </span>
                 </label>
@@ -1968,7 +1968,7 @@ export default function MyProfilePage() {
                         }}
                     />
                   </div>
-                    <span className="text-pink-600 dark:text-pink-400 font-semibold text-sm whitespace-nowrap">
+                    <span className="text-pink-600 dark:text-red-500 font-semibold text-sm whitespace-nowrap">
                       {user.preferences?.minAge || 28} - {user.preferences?.maxAge || 34}
                     </span>
                   </div>
@@ -1979,7 +1979,7 @@ export default function MyProfilePage() {
                 <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-3">
                   Height Range
-                  <span className="ml-2 text-pink-600 dark:text-pink-400 font-semibold">
+                  <span className="ml-2 text-pink-600 dark:text-red-500 font-semibold">
                     {(() => {
                       const minH = formData.preferences?.minHeight || user.preferences?.minHeight || 68;
                       const maxH = formData.preferences?.maxHeight || user.preferences?.maxHeight || 74;
@@ -2107,7 +2107,7 @@ export default function MyProfilePage() {
                       }}
                     />
                 </div>
-                    <span className="text-pink-600 dark:text-pink-400 font-semibold text-sm whitespace-nowrap">
+                    <span className="text-pink-600 dark:text-red-500 font-semibold text-sm whitespace-nowrap">
                       {user.preferences?.minHeight 
                         ? (Math.floor(user.preferences.minHeight / 12) + "'" + (user.preferences.minHeight % 12) + '"')
                         : "5'8\""} - {user.preferences?.maxHeight 

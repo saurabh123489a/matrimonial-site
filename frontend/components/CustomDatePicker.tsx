@@ -54,7 +54,7 @@ export default function CustomDatePicker({
           <svg 
             className={`h-4 w-4 sm:h-5 sm:w-5 transition-colors duration-200 ${
               isFocused || value
-                ? 'text-pink-500 dark:text-pink-400' 
+                ? 'text-pink-500 dark:text-red-500' 
                 : 'text-gray-400 dark:text-gray-500'
             }`}
             fill="none" 
@@ -117,7 +117,7 @@ export default function CustomDatePicker({
           <svg 
             className={`w-4 h-4 sm:w-5 sm:h-5 transition-colors duration-200 ${
               isFocused || value
-                ? 'text-pink-500 dark:text-pink-400' 
+                ? 'text-pink-500 dark:text-red-500' 
                 : 'text-gray-400 dark:text-gray-500'
             }`}
             fill="none" 

@@ -74,7 +74,7 @@ export default function CustomSelect({
         <div className="absolute inset-y-0 right-0 flex items-center pr-3 sm:pr-4 pointer-events-none">
           <svg 
             className={`w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-200 text-gray-400 dark:text-gray-500 ${
-              props.value ? 'text-pink-500 dark:text-pink-400' : ''
+              props.value ? 'text-pink-500 dark:text-red-500' : ''
             }`}
             fill="none" 
             stroke="currentColor" 

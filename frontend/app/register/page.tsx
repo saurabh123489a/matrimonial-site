@@ -541,7 +541,7 @@ export default function RegisterPage() {
                     name="name"
                     type="text"
                     required
-                    className={`block w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 border-2 rounded-lg sm:rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 text-sm sm:text-base touch-target ${
+                    className={`block w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 border-2 rounded-lg sm:rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-red-500 focus:border-pink-500 dark:focus:border-red-500 text-sm sm:text-base touch-target ${
                       touchedFields.name && fieldErrors.name
                         ? 'border-red-400 bg-red-50'
                         : 'border-gray-200 bg-gray-50 focus:bg-white'
@@ -577,7 +577,7 @@ export default function RegisterPage() {
                     id="email"
                     name="email"
                     type="email"
-                    className={`block w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 border-2 rounded-lg sm:rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 text-sm sm:text-base touch-target ${
+                    className={`block w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 border-2 rounded-lg sm:rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-red-500 focus:border-pink-500 dark:focus:border-red-500 text-sm sm:text-base touch-target ${
                       touchedFields.email && fieldErrors.email
                         ? 'border-red-400 bg-red-50'
                         : 'border-gray-200 bg-gray-50 focus:bg-white'
@@ -614,7 +614,7 @@ export default function RegisterPage() {
                     name="phone"
                     type="tel"
                     required
-                    className={`block w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 border-2 rounded-lg sm:rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 text-sm sm:text-base touch-target ${
+                    className={`block w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 border-2 rounded-lg sm:rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-red-500 focus:border-pink-500 dark:focus:border-red-500 text-sm sm:text-base touch-target ${
                       touchedFields.phone && fieldErrors.phone
                         ? 'border-red-400 bg-red-50'
                         : 'border-gray-200 bg-gray-50 focus:bg-white'
@@ -771,7 +771,7 @@ export default function RegisterPage() {
                 <select
                   id="communityPosition"
                   name="communityPosition"
-                  className="block w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 border-2 border-gray-200 bg-white text-gray-900 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 text-sm sm:text-base transition-all duration-200 touch-target"
+                  className="block w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 border-2 border-gray-200 dark:border-gray-600 bg-white dark:bg-[#1f212a] text-gray-900 dark:text-gray-50 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-red-500 focus:border-pink-500 dark:focus:border-red-500 text-sm sm:text-base transition-all duration-200 touch-target"
                   value={formData.communityPosition || ''}
                   onChange={(e) => setFormData({ ...formData, communityPosition: e.target.value || null })}
                 >
@@ -790,7 +790,7 @@ export default function RegisterPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex justify-center items-center py-3 sm:py-4 px-4 sm:px-6 border border-transparent text-sm sm:text-base font-semibold rounded-lg sm:rounded-xl text-white bg-gradient-to-r from-pink-600 via-pink-500 to-purple-600 hover:from-pink-700 hover:via-pink-600 hover:to-purple-700 focus:outline-none focus:ring-4 focus:ring-pink-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 touch-target btn-primary btn-scale"
+                className="w-full flex justify-center items-center py-3 sm:py-4 px-4 sm:px-6 border border-transparent text-sm sm:text-base font-semibold rounded-lg sm:rounded-xl text-white bg-gradient-to-r from-pink-600 via-pink-500 to-purple-600 dark:from-red-600 dark:via-red-500 dark:to-red-700 hover:from-pink-700 hover:via-pink-600 hover:to-purple-700 dark:hover:from-red-700 dark:hover:via-red-600 dark:hover:to-red-800 focus:outline-none focus:ring-4 focus:ring-pink-300 dark:focus:ring-red-500/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 touch-target btn-primary btn-scale"
               >
                 {loading ? (
                   <>

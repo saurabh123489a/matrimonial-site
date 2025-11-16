@@ -147,7 +147,7 @@ export default function LoginPage() {
                 name="phone"
                 type="tel"
                 required
-                className="appearance-none relative block w-full px-4 py-3 border-2 border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 sm:text-sm"
+                className="appearance-none relative block w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 placeholder-gray-400 dark:placeholder-gray-500 text-gray-900 dark:text-gray-50 bg-white dark:bg-[#1f212a] rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-red-500 focus:border-pink-500 dark:focus:border-red-500 sm:text-sm"
                 placeholder={t('auth.enterPhone')}
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
@@ -158,7 +158,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading || !phone}
-                className="w-full flex justify-center items-center py-4 px-6 border border-transparent text-base font-semibold rounded-xl text-white bg-gradient-to-r from-pink-600 via-pink-500 to-purple-600 hover:from-pink-700 hover:via-pink-600 hover:to-purple-700 focus:outline-none focus:ring-4 focus:ring-pink-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 btn-primary btn-scale"
+                className="w-full flex justify-center items-center py-4 px-6 border border-transparent text-base font-semibold rounded-xl text-white bg-gradient-to-r from-pink-600 via-pink-500 to-purple-600 dark:from-red-600 dark:via-red-500 dark:to-red-700 hover:from-pink-700 hover:via-pink-600 hover:to-purple-700 dark:hover:from-red-700 dark:hover:via-red-600 dark:hover:to-red-800 focus:outline-none focus:ring-4 focus:ring-pink-300 dark:focus:ring-red-500/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 btn-primary btn-scale"
               >
                 {loading ? (
                   <>
@@ -221,7 +221,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading || otp.length !== 6}
-                className="w-full flex justify-center items-center py-4 px-6 border border-transparent text-base font-semibold rounded-xl text-white bg-gradient-to-r from-pink-600 via-pink-500 to-purple-600 hover:from-pink-700 hover:via-pink-600 hover:to-purple-700 focus:outline-none focus:ring-4 focus:ring-pink-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 btn-primary btn-scale"
+                className="w-full flex justify-center items-center py-4 px-6 border border-transparent text-base font-semibold rounded-xl text-white bg-gradient-to-r from-pink-600 via-pink-500 to-purple-600 dark:from-red-600 dark:via-red-500 dark:to-red-700 hover:from-pink-700 hover:via-pink-600 hover:to-purple-700 dark:hover:from-red-700 dark:hover:via-red-600 dark:hover:to-red-800 focus:outline-none focus:ring-4 focus:ring-pink-300 dark:focus:ring-red-500/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 btn-primary btn-scale"
               >
                 {loading ? (
                   <>
@@ -238,7 +238,7 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={handleBack}
-                className="w-full flex justify-center py-2.5 px-4 border-2 border-gray-300 dark:border-gray-600 text-sm font-medium rounded-lg text-gray-700 dark:text-gray-200 bg-white dark:bg-[#181b23] hover:bg-gray-50 dark:hover:bg-[#1f212a] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 transition-colors"
+                className="w-full flex justify-center py-2.5 px-4 border-2 border-gray-300 dark:border-gray-600 text-sm font-medium rounded-lg text-gray-700 dark:text-gray-200 bg-white dark:bg-[#181b23] hover:bg-gray-50 dark:hover:bg-[#1f212a] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 dark:focus:ring-red-500 transition-colors"
               >
                 {t('auth.changePhoneNumber')}
               </button>
