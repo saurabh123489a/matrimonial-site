@@ -48,6 +48,9 @@
   },
   "auth": {
     "login": "Sign in with Phone",
+    "welcomeBack": "Welcome Back!",
+    "welcomeMessage": "Continue your journey to find your perfect match",
+    "continueWithPhone": "Continue with phone",
     "enterOTP": "Enter OTP",
     "phoneNumber": "Phone Number",
     "enterPhone": "Enter your phone number",
@@ -60,11 +63,17 @@
     "changePhoneNumber": "Change Phone Number",
     "otpSent": "OTP sent successfully!",
     "otpSentTo": "We sent a verification code to",
+    "otpInstructions": "Enter the 6-digit code sent to your phone",
     "or": "Or",
     "developmentMode": "Development Mode",
     "invalidOTP": "Invalid OTP. Please try again.",
     "failedToSendOTP": "Failed to send OTP. Please try again.",
     "createAccount": "create a new account",
+    "errors": {
+      "connectionError": "Unable to connect to server. Please ensure the backend is running on port 5050.",
+      "sendOTPFailed": "Failed to send OTP. Please try again.",
+      "invalidOTP": "Invalid OTP. Please try again."
+    },
     "register": "Register",
     "createAccountTitle": "Create your account",
     "signInToAccount": "Or sign in to your account",
