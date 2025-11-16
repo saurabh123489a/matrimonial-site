@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { Card, Button, Typography, Spacing } from './ui';
 
 interface EmptyStateProps {
   icon?: string;
@@ -23,29 +24,35 @@ export default function EmptyState({
 }: EmptyStateProps) {
   const ActionButton = action ? (
     action.href ? (
-      <Link
-        href={action.href}
-        className="inline-flex items-center px-6 py-3 bg-pink-600 text-white rounded-lg hover:bg-pink-700 transition-colors font-medium"
-      >
-        {action.label}
+      <Link href={action.href}>
+        <Button variant="primary" size="md">
+          {action.label}
+        </Button>
       </Link>
     ) : action.onClick ? (
-      <button
-        onClick={action.onClick}
-        className="inline-flex items-center px-6 py-3 bg-pink-600 text-white rounded-lg hover:bg-pink-700 transition-colors font-medium"
-      >
+      <Button variant="primary" size="md" onClick={action.onClick}>
         {action.label}
-      </button>
+      </Button>
     ) : null
   ) : null;
 
   return (
-    <div className={`bg-white rounded-lg p-8 text-center ${className}`}>
+    <Card variant="default" padding="lg" className={`text-center ${className}`}>
       <div className="text-6xl mb-4">{icon}</div>
-      <h3 className="text-xl font-semibold text-gray-900">{title}</h3>
-      <p className="text-gray-600">{description}</p>
-      {ActionButton}
-    </div>
+      <Typography variant="h3" color="primary" weight="semibold">
+        {title}
+      </Typography>
+      <Spacing size="sm" />
+      <Typography variant="body" color="muted">
+        {description}
+      </Typography>
+      {action && (
+        <>
+          <Spacing size="md" />
+          {ActionButton}
+        </>
+      )}
+    </Card>
   );
 }
 

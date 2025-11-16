@@ -7,6 +7,7 @@ import { userApi, adminApi } from '@/lib/api';
 import { auth } from '@/lib/auth';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useNotifications } from '@/contexts/NotificationContext';
+import { getProfileImageUrl } from '@/lib/profileUtils';
 
 interface DashboardStats {
   totalUsers: number;
@@ -289,6 +290,14 @@ function UsersTab() {
       age: user.age,
     });
     setShowEditModal(true);
+  };
+
+  const getPrimaryPhoto = (photos: any[], gender?: 'male' | 'female' | 'other' | string) => {
+    if (!photos || photos.length === 0) {
+      return gender === 'female' ? '/images/default-female.svg' : '/images/default-male.svg';
+    }
+    const primary = photos.find((p: any) => p.isPrimary);
+    return primary?.url || photos[0]?.url || (gender === 'female' ? '/images/default-female.svg' : '/images/default-male.svg');
   };
 
   return (
