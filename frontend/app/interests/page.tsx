@@ -62,7 +62,10 @@ export default function InterestsPage() {
 
   const getFilteredInterests = (interests: any[]) => {
     if (filterStatus === 'all') return interests;
-    return interests.filter(interest => interest.status === filterStatus);
+    return interests.filter(interest => {
+      const status = interest.status || 'pending';
+      return status === filterStatus;
+    });
   };
 
   const getStatusBadge = (status: InterestStatus) => {
@@ -172,7 +175,7 @@ export default function InterestsPage() {
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              Pending ({currentInterests.filter(i => i.status === 'pending').length})
+              Pending ({currentInterests.filter(i => (i.status || 'pending') === 'pending').length})
             </button>
             <button
               onClick={() => setFilterStatus('accepted')}
@@ -182,7 +185,7 @@ export default function InterestsPage() {
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              Accepted ({currentInterests.filter(i => i.status === 'accepted').length})
+              Accepted ({currentInterests.filter(i => (i.status || 'pending') === 'accepted').length})
             </button>
             <button
               onClick={() => setFilterStatus('rejected')}
@@ -192,7 +195,7 @@ export default function InterestsPage() {
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              Declined ({currentInterests.filter(i => i.status === 'rejected').length})
+              Declined ({currentInterests.filter(i => (i.status || 'pending') === 'rejected').length})
             </button>
           </div>
         </div>
@@ -216,6 +219,7 @@ export default function InterestsPage() {
               const user = activeTab === 'received' ? interest.fromUser : interest.toUser;
               const userId = activeTab === 'received' ? (interest.fromUser?._id || interest.fromUserId) : (interest.toUser?._id || interest.toUserId);
               const profileUrl = user ? getProfileUrl({ _id: userId, gahoiId: user.gahoiId }) : `/profiles/${userId}`;
+              const interestStatus = (interest.status || 'pending') as InterestStatus;
 
               return (
                 <div
@@ -242,13 +246,33 @@ export default function InterestsPage() {
                       
                       {/* Status Badge */}
                       <div className="mb-4">
-                        <span className={`inline-block px-3 py-1 rounded-lg text-xs font-medium uppercase tracking-wider border ${getStatusBadge(interest.status)}`}>
-                          {getStatusLabel(interest.status)}
+                        <span className={`inline-block px-3 py-1 rounded-lg text-xs font-medium uppercase tracking-wider border ${getStatusBadge(interestStatus)}`}>
+                          {getStatusLabel(interestStatus)}
                         </span>
+                        {activeTab === 'received' && interestStatus === 'accepted' && (
+                          <p className="text-xs text-green-600 mt-2 font-medium">
+                            ✓ You can now view their profile and connect
+                          </p>
+                        )}
+                        {activeTab === 'received' && interestStatus === 'rejected' && (
+                          <p className="text-xs text-gray-500 mt-2">
+                            This interest was declined
+                          </p>
+                        )}
+                        {activeTab === 'sent' && interestStatus === 'accepted' && (
+                          <p className="text-xs text-green-600 mt-2 font-medium">
+                            ✓ They accepted your interest! View their profile to connect
+                          </p>
+                        )}
+                        {activeTab === 'sent' && interestStatus === 'rejected' && (
+                          <p className="text-xs text-gray-500 mt-2">
+                            This interest was declined
+                          </p>
+                        )}
                       </div>
 
                       {/* Action Buttons for Received */}
-                      {activeTab === 'received' && interest.status === 'pending' && (
+                      {activeTab === 'received' && interestStatus === 'pending' && (
                         <div className="flex gap-3 flex-wrap">
                           <button
                             onClick={() => handleRespond(userId, 'accept')}

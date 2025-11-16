@@ -18,7 +18,7 @@ export const interestRepository = {
   },
 
   getIncoming: async (userId) => {
-    return await Interest.find({ toUser: userId, status: 'pending' })
+    return await Interest.find({ toUser: userId })
       .populate('fromUser', 'name email age city state religion photos')
       .sort({ createdAt: -1 });
   },
