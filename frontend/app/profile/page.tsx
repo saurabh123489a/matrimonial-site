@@ -685,7 +685,7 @@ export default function MyProfilePage() {
             <button
               onClick={() => setShowShareModal(true)}
               aria-label="Share profile"
-              className="p-2 text-white hover:bg-[#800020]/20 rounded-lg transition-colors"
+              className="p-2 sm:p-2 min-w-[44px] min-h-[44px] text-white hover:bg-[#800020]/20 active:bg-[#800020]/30 rounded-lg transition-colors touch-manipulation"
               title="Share profile"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -698,7 +698,7 @@ export default function MyProfilePage() {
               onClick={handleToggleActive}
               disabled={togglingActive}
               aria-label={user.isActive ? 'Deactivate profile' : 'Activate profile'}
-              className={`p-2 text-white hover:bg-[#800020]/20 rounded-lg transition-colors relative ${
+              className={`p-2 sm:p-2 min-w-[44px] min-h-[44px] text-white hover:bg-[#800020]/20 active:bg-[#800020]/30 rounded-lg transition-colors relative touch-manipulation ${
                 togglingActive ? 'opacity-50 cursor-not-allowed' : ''
               }`}
               title={user.isActive ? 'Profile is active - Click to deactivate' : 'Profile is inactive - Click to activate'}
@@ -784,7 +784,7 @@ export default function MyProfilePage() {
                   setError('');
                 }}
                 aria-label="Edit profile"
-                className="p-2 text-white hover:bg-[#800020]/20 rounded-lg transition-colors flex items-center justify-center"
+                className="p-2 sm:p-2 min-w-[44px] min-h-[44px] text-white hover:bg-[#800020]/20 active:bg-[#800020]/30 rounded-lg transition-colors flex items-center justify-center touch-manipulation"
                 title="Edit profile"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -843,7 +843,7 @@ export default function MyProfilePage() {
                   });
                 }}
                 aria-label="Cancel editing"
-                className="p-2 -mr-2 text-white hover:bg-[#800020]/20 rounded-lg transition-colors"
+                className="p-2 sm:p-2 min-w-[44px] min-h-[44px] text-white hover:bg-[#800020]/20 active:bg-[#800020]/30 rounded-lg transition-colors touch-manipulation"
                 title="Cancel editing"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -1230,7 +1230,7 @@ export default function MyProfilePage() {
                       type="text"
                       value={formData.town || ''}
                       onChange={(e) => setFormData({ ...formData, town: sanitizeFormInput(e.target.value, 'text') })}
-                      className="w-full px-3 py-2 border border-gray-300"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#800020] touch-manipulation"
                       placeholder="Enter town or village name"
                     />
                   </div>
