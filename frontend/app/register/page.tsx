@@ -11,7 +11,7 @@ import { getErrorMessage, getFieldError } from '@/lib/utils/errorMessages';
 import CustomSelect from '@/components/CustomSelect';
 import CustomDatePicker from '@/components/CustomDatePicker';
 import Logo from '@/components/Logo';
-import { validateEmail, validatePhone, validateRequired, validateMinLength } from '@/lib/utils/validation';
+// Validation utilities are imported but using custom validateField function
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -83,26 +83,26 @@ export default function RegisterPage() {
         break;
 
       case 'phone':
-        if (!value || value.trim() === '') {
-          return 'Phone number is required';
-        }
-        const cleanedPhone = value.replace(/[\s-()]/g, '');
-        // Check if empty after cleaning
-        if (cleanedPhone === '') {
-          return 'Phone number is required';
-        }
-        // Check if it's all digits
-        if (!/^\d+$/.test(cleanedPhone.replace('+91', ''))) {
-          return 'Phone number can only contain digits';
-        }
-        // Check length (should be 10 digits, optionally with +91)
-        const phoneWithoutCountryCode = cleanedPhone.replace(/^\+91/, '');
-        if (phoneWithoutCountryCode.length !== 10) {
-          return 'Phone number must be exactly 10 digits';
-        }
-        // Check if starts with valid Indian mobile prefix (6-9)
-        if (!/^[6-9]/.test(phoneWithoutCountryCode)) {
-          return 'Phone number must start with 6, 7, 8, or 9';
+        // Phone is optional, but if provided must be valid
+        if (value && value.trim() !== '') {
+          const cleanedPhone = value.replace(/[\s-()]/g, '');
+          // Check if empty after cleaning
+          if (cleanedPhone === '') {
+            return 'Please enter a valid phone number';
+          }
+          // Check if it's all digits
+          const phoneWithoutCountryCode = cleanedPhone.replace(/^\+91/, '');
+          if (!/^\d+$/.test(phoneWithoutCountryCode)) {
+            return 'Phone number can only contain digits';
+          }
+          // Check length (should be 10 digits)
+          if (phoneWithoutCountryCode.length !== 10) {
+            return 'Phone number must be exactly 10 digits';
+          }
+          // Check if starts with valid Indian mobile prefix (6-9)
+          if (!/^[6-9]/.test(phoneWithoutCountryCode)) {
+            return 'Phone number must start with 6, 7, 8, or 9';
+          }
         }
         break;
 
@@ -266,10 +266,6 @@ export default function RegisterPage() {
     const nameError = validateField('name', formData.name);
     if (nameError) errors.name = nameError;
     
-    // Validate phone (required)
-    const phoneError = validateField('phone', formData.phone);
-    if (phoneError) errors.phone = phoneError;
-    
     // Validate password (required)
     const passwordError = validateField('password', formData.password);
     if (passwordError) errors.password = passwordError;
@@ -286,6 +282,20 @@ export default function RegisterPage() {
     if (formData.email && formData.email.trim()) {
       const emailError = validateField('email', formData.email);
       if (emailError) errors.email = emailError;
+    }
+    
+    // Validate phone (optional, but if provided must be valid)
+    if (formData.phone && formData.phone.trim()) {
+      const phoneError = validateField('phone', formData.phone);
+      if (phoneError) errors.phone = phoneError;
+    }
+    
+    // Validate that at least email OR phone is provided
+    const hasEmail = formData.email && formData.email.trim();
+    const hasPhone = formData.phone && formData.phone.trim();
+    if (!hasEmail && !hasPhone) {
+      errors.email = 'Either email or phone number is required';
+      errors.phone = 'Either email or phone number is required';
     }
     
     // Validate age (should be auto-calculated, but validate if present)
@@ -323,8 +333,17 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
+      // Clean phone number - remove spaces, dashes, parentheses, and country code
+      let cleanedPhone: string | undefined = undefined;
+      if (formData.phone && formData.phone.trim()) {
+        const temp = formData.phone.replace(/[\s-()]/g, '').replace(/^\+91/, '').trim();
+        cleanedPhone = temp || undefined;
+      }
+      
       const data: any = {
-        ...formData,
+        name: formData.name.trim(),
+        password: formData.password,
+        gender: formData.gender,
         age: formData.age ? parseInt(formData.age) : undefined,
         dateOfBirth: formData.dateOfBirth || undefined,
         // Convert empty string to null for communityPosition (required by validation schema)
@@ -333,9 +352,15 @@ export default function RegisterPage() {
           : null,
       };
       
+      // Add email if provided
+      if (formData.email && formData.email.trim()) {
+        data.email = formData.email.trim();
+      }
       
-      if (!data.email || !data.email.trim()) data.email = undefined;
-      if (!data.phone || !data.phone.trim()) data.phone = undefined;
+      // Add phone if provided
+      if (cleanedPhone) {
+        data.phone = cleanedPhone;
+      }
 
       const response = await userApi.create(data);
       
@@ -541,7 +566,7 @@ export default function RegisterPage() {
                     name="name"
                     type="text"
                     required
-                    className={`block w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 border-2 rounded-lg sm:rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-500
+                    className={`block w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 border-2 rounded-lg sm:rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-500 ${
                       touchedFields.name && fieldErrors.name
                         ? 'border-red-400 bg-red-50'
                         : 'border-gray-200'
@@ -577,7 +602,7 @@ export default function RegisterPage() {
                     id="email"
                     name="email"
                     type="email"
-                    className={`block w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 border-2 rounded-lg sm:rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-500
+                    className={`block w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 border-2 rounded-lg sm:rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-500 ${
                       touchedFields.email && fieldErrors.email
                         ? 'border-red-400 bg-red-50'
                         : 'border-gray-200'
@@ -601,7 +626,7 @@ export default function RegisterPage() {
               {/* Phone */}
               <div>
                 <label htmlFor="phone" className="block text-xs sm:text-sm font-semibold text-secondary mb-1.5 sm:mb-2">
-                  {t('auth.phone') || 'Phone Number'} <span className="text-red-500">*</span>
+                  {t('auth.phone') || 'Phone Number'} <span className="text-muted text-xs">({t('auth.emailOrPhoneRequired') || 'Email or Phone required'})</span>
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 sm:pl-4 flex items-center pointer-events-none">
@@ -613,13 +638,12 @@ export default function RegisterPage() {
                     id="phone"
                     name="phone"
                     type="tel"
-                    required
-                    className={`block w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 border-2 rounded-lg sm:rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-500
+                    className={`block w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 border-2 rounded-lg sm:rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-500 ${
                       touchedFields.phone && fieldErrors.phone
                         ? 'border-red-400 bg-red-50'
                         : 'border-gray-200'
                     }`}
-                    placeholder={t('auth.phone') || 'Enter phone number'}
+                    placeholder={t('auth.phoneOptional') || 'Enter phone number (optional)'}
                     value={formData.phone}
                     onChange={(e) => handleChange('phone', sanitizeFormInput(e.target.value, 'phone'))}
                     onBlur={() => handleBlur('phone')}
@@ -651,7 +675,7 @@ export default function RegisterPage() {
                     name="password"
                     type={showPassword ? 'text' : 'password'}
                     required
-                    className={`block w-full pl-10 sm:pl-12 pr-10 sm:pr-12 py-2.5 sm:py-3 border-2 rounded-lg sm:rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-500
+                    className={`block w-full pl-10 sm:pl-12 pr-10 sm:pr-12 py-2.5 sm:py-3 border-2 rounded-lg sm:rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-500 ${
                       touchedFields.password && fieldErrors.password
                         ? 'border-red-400 bg-red-50'
                         : 'border-gray-200'
@@ -698,24 +722,53 @@ export default function RegisterPage() {
 
               {/* Gender and Date of Birth */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                <CustomSelect
-                      id="gender"
-                      name="gender"
-                  label={t('auth.gender')}
-                      required
-                      value={formData.gender}
-                      onChange={(e) => setFormData({ ...formData, gender: e.target.value as any })}
-                  options={[
-                    { value: 'male', label: t('auth.male') },
-                    { value: 'female', label: t('auth.female') },
-                    { value: 'other', label: t('auth.other') },
-                  ]}
-                  icon={
-                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                <div>
+                  <label htmlFor="gender" className="block text-xs sm:text-sm font-semibold text-secondary mb-1.5 sm:mb-2">
+                    {t('auth.gender')} <span className="text-red-500">*</span>
+                  </label>
+                  <CustomSelect
+                    id="gender"
+                    name="gender"
+                    label=""
+                    required
+                    value={formData.gender}
+                    onChange={(e) => {
+                      const newGender = e.target.value as any;
+                      setFormData({ ...formData, gender: newGender });
+                      // Validate gender on change
+                      if (touchedFields.gender) {
+                        const error = validateField('gender', newGender);
+                        if (error) {
+                          setFieldErrors({ ...fieldErrors, gender: error });
+                        } else {
+                          const newErrors = { ...fieldErrors };
+                          delete newErrors.gender;
+                          setFieldErrors(newErrors);
+                        }
+                      }
+                    }}
+                    onBlur={() => handleBlur('gender')}
+                    options={[
+                      { value: 'male', label: t('auth.male') },
+                      { value: 'female', label: t('auth.female') },
+                      { value: 'other', label: t('auth.other') },
+                    ]}
+                    icon={
+                      <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                       </svg>
-                  }
-                />
+                    }
+                    error={touchedFields.gender ? fieldErrors.gender : undefined}
+                  />
+                  {touchedFields.gender && fieldErrors.gender && (
+                    <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm text-red-600 flex items-start">
+                      <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-1 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                      </svg>
+                      <span className="leading-relaxed">{fieldErrors.gender}</span>
+                    </p>
+                  )}
+                </div>
                 <CustomDatePicker
                       id="dateOfBirth"
                       name="dateOfBirth"
