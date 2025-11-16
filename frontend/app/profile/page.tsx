@@ -612,7 +612,7 @@ export default function MyProfilePage() {
   const dietaryOptions = ['vegetarian', 'non-vegetarian', 'vegan', 'jain'];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white pb-20 sm:pb-24">
       {/* Header - Mobile First Design */}
       <div className="bg-[]">
         <div className="flex items-center justify-between px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
@@ -2330,14 +2330,16 @@ export default function MyProfilePage() {
               
         {/* Save Changes Button - Only show when editing */}
           {editing && (
+            <div className="fixed bottom-20 sm:bottom-16 left-0 right-0 z-30 px-4 sm:px-6 lg:px-8 pb-2">
               <button
                 onClick={handleSave}
                 disabled={saving}
                 aria-label={saving ? 'Saving profile changes' : 'Save profile changes'}
-                className="w-full py-4 bg-[#800020]"
+                className="w-full py-4 bg-[#800020] text-white font-bold text-lg hover:bg-[#800020]/90 active:bg-[#800020]/80 transition-colors touch-manipulation shadow-lg rounded-lg"
               >
-            {saving ? 'Saving...' : 'Save Changes'}
+                {saving ? 'Saving...' : 'Save Changes'}
               </button>
+            </div>
         )}
 
       </div>
