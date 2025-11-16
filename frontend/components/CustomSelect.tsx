@@ -103,5 +103,7 @@ function CustomSelect({
   );
 }
 
+CustomSelect.displayName = 'CustomSelect';
+
 export default memo(CustomSelect);
 

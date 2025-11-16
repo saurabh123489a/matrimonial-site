@@ -145,5 +145,7 @@ function CustomDatePicker({
   );
 }
 
+CustomDatePicker.displayName = 'CustomDatePicker';
+
 export default memo(CustomDatePicker);
 

@@ -282,4 +282,6 @@ function ProfileCard({ user }: ProfileCardProps) {
   );
 }
 
+ProfileCard.displayName = 'ProfileCard';
+
 export default memo(ProfileCard);
