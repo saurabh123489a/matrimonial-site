@@ -693,7 +693,71 @@ export default function MyProfilePage() {
               </button>
             ) : (
               <button
-                onClick={() => setEditing(true)}
+                onClick={() => {
+                  // Ensure user data is loaded before entering edit mode
+                  if (!user) {
+                    showError('Profile data not loaded. Please refresh the page.');
+                    return;
+                  }
+                  // Sync formData with current user data before entering edit mode
+                  setFormData({
+                    name: user.name || '',
+                    email: user.email || '',
+                    phone: user.phone || '',
+                    whatsappNumber: user.whatsappNumber || '',
+                    city: user.city || '',
+                    state: user.state || '',
+                    country: user.country || '',
+                    town: user.town || '',
+                    presentAddress: user.presentAddress || '',
+                    permanentAddress: user.permanentAddress || '',
+                    education: user.education || '',
+                    educationalDetail: user.educationalDetail || '',
+                    occupation: user.occupation || '',
+                    profession: user.profession || '',
+                    employer: user.employer || '',
+                    annualIncome: user.annualIncome || '',
+                    bio: user.bio || '',
+                    height: user.height || undefined,
+                    diet: (user.diet as 'vegetarian' | 'non-vegetarian' | 'vegan' | 'jain' | undefined) || undefined,
+                    hobbies: user.hobbies || [],
+                    preferences: {
+                      minAge: user.preferences?.minAge || undefined,
+                      maxAge: user.preferences?.maxAge || undefined,
+                      minHeight: user.preferences?.minHeight || undefined,
+                      maxHeight: user.preferences?.maxHeight || undefined,
+                    },
+                    horoscopeMatchMandatory: user.horoscopeMatchMandatory || false,
+                    dateOfBirth: user.dateOfBirth ? new Date(user.dateOfBirth).toISOString().split('T')[0] : '',
+                    family: {
+                      fathersName: user.family?.fathersName || '',
+                      fathersOccupationType: user.family?.fathersOccupationType || undefined,
+                      fathersOccupationDesc: user.family?.fathersOccupationDesc || '',
+                      fathersContactNumber: user.family?.fathersContactNumber || '',
+                      mothersName: user.family?.mothersName || '',
+                      mothersOccupationType: user.family?.mothersOccupationType || undefined,
+                      mothersOccupationDesc: user.family?.mothersOccupationDesc || '',
+                      numberOfBrothers: user.family?.numberOfBrothers || 0,
+                      numberOfSisters: user.family?.numberOfSisters || 0,
+                      marriedBrothers: user.family?.marriedBrothers || 0,
+                      unmarriedBrothers: user.family?.unmarriedBrothers || 0,
+                      marriedSisters: user.family?.marriedSisters || 0,
+                      unmarriedSisters: user.family?.unmarriedSisters || 0,
+                      familyType: user.family?.familyType || 'nuclear',
+                      familyStatus: user.family?.familyStatus || 'middle-class',
+                      familyValues: user.family?.familyValues || 'moderate',
+                    },
+                    horoscopeDetails: {
+                      rashi: user.horoscopeDetails?.rashi || '',
+                      nakshatra: user.horoscopeDetails?.nakshatra || '',
+                      starSign: user.horoscopeDetails?.starSign || '',
+                      timeOfBirth: user.horoscopeDetails?.timeOfBirth || '',
+                    },
+                  });
+                  setEditing(true);
+                  setFieldErrors({});
+                  setError('');
+                }}
                 aria-label="Edit profile"
                 className="p-2 -mr-2 text-white hover:bg-[#800020]/20"
               >
