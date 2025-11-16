@@ -2335,7 +2335,7 @@ export default function MyProfilePage() {
                 onClick={handleSave}
                 disabled={saving}
                 aria-label={saving ? 'Saving profile changes' : 'Save profile changes'}
-                className="w-full py-4 bg-[#800020] text-white font-bold text-lg hover:bg-[#800020]/90 active:bg-[#800020]/80 transition-colors touch-manipulation shadow-lg rounded-lg"
+                className="w-full py-4 bg-gradient-to-r from-[#800020] to-[#a00030] text-white font-bold text-lg hover:from-[#900025] hover:to-[#b00035] active:from-[#a00030] active:to-[#c00040] transition-all touch-manipulation shadow-xl rounded-lg border-2 border-white/20"
               >
                 {saving ? 'Saving...' : 'Save Changes'}
               </button>
