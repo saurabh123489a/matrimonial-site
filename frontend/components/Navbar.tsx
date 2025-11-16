@@ -757,7 +757,7 @@ export default function Navbar() {
       {/* Bottom Navigation Bar - Only show when authenticated - Mobile & Web */}
       {mounted && isAuthenticated ? (
         <>
-          <nav className="fixed bottom-0 left-0 right-0 bg-white">
+          <nav className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-pink-200 z-40 shadow-2xl safe-area-inset-bottom transition-colors backdrop-blur-sm bg-opacity-95">
             <div className="max-w-7xl mx-auto">
               <div className="flex justify-around items-center h-20 sm:h-16 px-2">
                 {mainNavLinks.map((link) => {
@@ -794,10 +794,10 @@ export default function Navbar() {
                       </span>
                       {/* Active state indicator (pink line at top) */}
                       {isActive && (
-                        <span className="absolute top-0 left-1/2 transform -translate-x-1/2 w-12 h-1 bg-gradient-to-r from-pink-500 to-pink-600"></span>
+                        <span className="absolute top-0 left-1/2 transform -translate-x-1/2 w-12 h-1 bg-gradient-to-r from-pink-500 to-pink-600 rounded-full"></span>
                       )}
                       {/* Hover effect background */}
-                      <div className="absolute inset-0 rounded-lg bg-pink-50"></div>
+                      <div className="absolute inset-0 rounded-lg bg-pink-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
                     </Link>
                   );
                 })}
