@@ -171,7 +171,7 @@ export default function RootLayout({
               <ProfileActionProvider>
                 <GoogleAnalytics />
                 <Navbar />
-                <main className="min-h-screen bg-gray-50 dark:bg-black transition-colors pb-32 sm:pb-28">
+                <main className="min-h-screen bg-gray-50 dark:bg-black transition-colors pb-32 sm:pb-28 safe-area-bottom">
                   {children}
                 </main>
                 <BottomActionBar />
