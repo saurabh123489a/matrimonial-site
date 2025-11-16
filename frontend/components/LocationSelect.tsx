@@ -43,9 +43,7 @@ export default function LocationSelect({
           setCountries(response.data || []);
         }
       } catch (error) {
-        if (process.env.NODE_ENV === 'development') {
-          console.error('Failed to load countries:', error);
-        }
+        console.error('Failed to load countries:', error);
       } finally {
         setLoadingCountries(false);
       }
@@ -73,19 +71,16 @@ export default function LocationSelect({
         if (response.status && response.data) {
           setStates(response.data || []);
         } else {
-          if (process.env.NODE_ENV === 'development') {
-            console.warn('States API returned no data:', response);
-          }
+          console.warn('States API returned no data:', response);
           setStates([]);
         }
       } catch (error: any) {
-        if (process.env.NODE_ENV === 'development') {
-          console.error('Failed to load states:', error);
-          if (error.response) {
-            console.error('API Error:', error.response.status, error.response.data);
-          } else if (error.request) {
-            console.error('Network Error - No response received');
-          }
+        console.error('Failed to load states:', error);
+        // Show user-friendly error
+        if (error.response) {
+          console.error('API Error:', error.response.status, error.response.data);
+        } else if (error.request) {
+          console.error('Network Error - No response received');
         }
         setStates([]);
       } finally {
@@ -118,20 +113,16 @@ export default function LocationSelect({
         if (response.status && response.data) {
           setCities(response.data);
         } else {
-          if (process.env.NODE_ENV === 'development') {
-            console.warn('Cities API returned no data:', response);
-          }
+          console.warn('Cities API returned no data:', response);
           setCities([]);
         }
       } catch (error: any) {
-        // Log error for debugging (only in development)
-        if (process.env.NODE_ENV === 'development') {
-          console.error('Failed to load cities:', error);
-          if (error.response) {
-            console.error('API Error:', error.response.status, error.response.data);
-          } else if (error.request) {
-            console.error('Network Error - No response received');
-          }
+        console.error('Failed to load cities:', error);
+        // Show user-friendly error
+        if (error.response) {
+          console.error('API Error:', error.response.status, error.response.data);
+        } else if (error.request) {
+          console.error('Network Error - No response received');
         }
         setCities([]);
       } finally {

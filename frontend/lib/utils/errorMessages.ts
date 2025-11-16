@@ -79,20 +79,6 @@ export function getErrorMessage(error: ApiError | any, t?: (key: string) => stri
     return message;
   }
 
-  // Handle validation errors object
-  if (error.response?.data?.errors || error.response?.data?.validationErrors) {
-    const errors = error.response.data.errors || error.response.data.validationErrors;
-    if (typeof errors === 'object') {
-      const firstError = Object.values(errors)[0];
-      if (Array.isArray(firstError) && firstError.length > 0) {
-        return String(firstError[0]);
-      }
-      if (typeof firstError === 'string') {
-        return firstError;
-      }
-    }
-  }
-
   // Generic error message
   if (error.message) {
     return error.message;
@@ -131,49 +117,5 @@ export function getFieldError(fieldName: string, errors: any, t?: (key: string) 
   }
 
   return null;
-}
-
-/**
- * Extract validation errors from API error response
- * Useful for form validation error handling
- */
-export function extractValidationErrors(error: any): Record<string, string> {
-  const validationErrors: Record<string, string> = {};
-  
-  if (!error?.response?.data) {
-    return validationErrors;
-  }
-
-  const { errors, validationErrors: valErrors } = error.response.data;
-  const errorData = errors || valErrors;
-
-  if (!errorData) {
-    return validationErrors;
-  }
-
-  // Handle Zod validation errors (array format)
-  if (Array.isArray(errorData)) {
-    errorData.forEach((err: any) => {
-      if (err.path && err.path.length > 0) {
-        const fieldName = err.path[err.path.length - 1];
-        validationErrors[fieldName] = err.message || 'Invalid value';
-      }
-    });
-  } 
-  // Handle object format
-  else if (typeof errorData === 'object') {
-    Object.keys(errorData).forEach((key) => {
-      const errorValue = errorData[key];
-      if (typeof errorValue === 'string') {
-        validationErrors[key] = errorValue;
-      } else if (Array.isArray(errorValue) && errorValue.length > 0) {
-        validationErrors[key] = String(errorValue[0]);
-      } else if (errorValue?.message) {
-        validationErrors[key] = String(errorValue.message);
-      }
-    });
-  }
-
-  return validationErrors;
 }
 

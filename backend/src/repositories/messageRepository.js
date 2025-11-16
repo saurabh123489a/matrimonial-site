@@ -18,26 +18,40 @@ export const messageRepository = {
   /**
    * Get conversation between two users
    * Returns messages sorted by creation date (newest first)
+   * Supports cursor-based pagination with 'before' parameter
    * @param {string|ObjectId} userId1 - First user ID
    * @param {string|ObjectId} userId2 - Second user ID
    * @param {Object} [options] - Query options
-   * @param {number} [options.skip=0] - Number of messages to skip
+   * @param {number} [options.skip=0] - Number of messages to skip (for offset pagination)
    * @param {number} [options.limit=50] - Maximum number of messages to return
+   * @param {string|Date} [options.before] - Cursor for pagination (message createdAt date)
    * @param {string} [options.sortBy='createdAt'] - Field to sort by
    * @param {number} [options.sortOrder=-1] - Sort order
-   * @returns {Promise<Array>} Array of message objects with populated sender/receiver
+   * @returns {Promise<Array|Object>} Array of message objects or object with messages, hasMore, nextCursor
    */
   async getConversation(userId1, userId2, options = {}) {
-    const { skip = 0, limit = 50, sortBy = 'createdAt', sortOrder = -1 } = options;
+    const { skip = 0, limit = 50, before, sortBy = 'createdAt', sortOrder = -1 } = options;
     const conversationId = generateConversationId(userId1, userId2);
 
+    // Build query
+    const query = { conversationId };
+    
+    // Support cursor-based pagination
+    if (before) {
+      const beforeDate = before instanceof Date ? before : new Date(before);
+      query.createdAt = { $lt: beforeDate };
+    }
+
+    // Fetch limit + 1 to check if more messages exist
+    const fetchLimit = before ? limit + 1 : limit;
+    
     // Get all messages in the conversation (both sent and received)
-    const messages = await Message.find({ conversationId })
+    const messages = await Message.find(query)
       .populate('senderId', 'name photos email phone')
       .populate('receiverId', 'name photos email phone')
       .sort({ [sortBy]: sortOrder })
-      .skip(skip)
-      .limit(limit)
+      .skip(before ? 0 : skip) // Skip only for offset pagination
+      .limit(fetchLimit)
       .lean(); // Use lean() for better performance
 
     // Collect all unique user IDs that need to be populated
@@ -85,6 +99,18 @@ export const messageRepository = {
       return msg;
     });
 
+    // If using cursor-based pagination, check if more messages exist
+    if (before && populatedMessages.length > limit) {
+      const result = populatedMessages.slice(0, limit);
+      const oldestMessage = result[result.length - 1];
+      return {
+        messages: result.reverse(), // Reverse to show oldest first
+        hasMore: true,
+        nextCursor: oldestMessage?.createdAt || null,
+      };
+    }
+
+    // For offset pagination or when no more messages, return array
     return populatedMessages;
   },
 

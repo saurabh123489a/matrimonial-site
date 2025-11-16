@@ -1,17 +1,23 @@
-// Service Worker for Push Notifications
-const CACHE_NAME = 'matrimonial-v1';
-const urlsToCache = [
+// Service Worker for offline support
+const CACHE_NAME = 'ekgahoi-v1';
+const API_CACHE_NAME = 'ekgahoi-api-v1';
+
+// Assets to cache on install
+const STATIC_ASSETS = [
   '/',
-  '/notifications',
-  '/messages',
+  '/login',
+  '/register',
+  '/offline',
 ];
 
-// Install event - cache resources
+// Install event - cache static assets
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(urlsToCache))
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(STATIC_ASSETS);
+    })
   );
+  self.skipWaiting();
 });
 
 // Activate event - clean up old caches
@@ -19,145 +25,107 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME) {
-            return caches.delete(cacheName);
-          }
-        })
+        cacheNames
+          .filter((name) => name !== CACHE_NAME && name !== API_CACHE_NAME)
+          .map((name) => caches.delete(name))
       );
+    })
+  );
+  self.clients.claim();
+});
+
+// Fetch event - serve from cache, fallback to network
+self.addEventListener('fetch', (event) => {
+  const { request } = event;
+  const url = new URL(request.url);
+
+  // Skip non-GET requests
+  if (request.method !== 'GET') {
+    return;
+  }
+
+  // Skip cross-origin requests
+  if (url.origin !== location.origin && !url.href.includes('/api/')) {
+    return;
+  }
+
+  // Handle API requests
+  if (url.pathname.startsWith('/api/')) {
+    event.respondWith(
+      caches.open(API_CACHE_NAME).then((cache) => {
+        return fetch(request)
+          .then((response) => {
+            // Cache successful GET responses
+            if (response.status === 200) {
+              cache.put(request, response.clone());
+            }
+            return response;
+          })
+          .catch(() => {
+            // Return cached response if network fails
+            return cache.match(request).then((cachedResponse) => {
+              if (cachedResponse) {
+                return cachedResponse;
+              }
+              // Return offline response for API calls
+              return new Response(
+                JSON.stringify({
+                  status: false,
+                  message: 'You are offline. Please check your connection.',
+                  offline: true,
+                }),
+                {
+                  headers: { 'Content-Type': 'application/json' },
+                }
+              );
+            });
+          });
+      })
+    );
+    return;
+  }
+
+  // Handle page requests
+  event.respondWith(
+    caches.match(request).then((cachedResponse) => {
+      if (cachedResponse) {
+        return cachedResponse;
+      }
+
+      return fetch(request)
+        .then((response) => {
+          // Don't cache non-successful responses
+          if (!response || response.status !== 200 || response.type !== 'basic') {
+            return response;
+          }
+
+          const responseToCache = response.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(request, responseToCache);
+          });
+
+          return response;
+        })
+        .catch(() => {
+          // Return offline page for navigation requests
+          if (request.mode === 'navigate') {
+            return caches.match('/offline');
+          }
+          return new Response('Offline', { status: 503 });
+        });
     })
   );
 });
 
-// Push event - handle incoming push notifications
-self.addEventListener('push', (event) => {
-  let notificationData = {
-    title: 'New Notification',
-    body: 'You have a new notification',
-    icon: '/icon-192x192.png',
-    badge: '/icon-192x192.png',
-    tag: 'notification',
-    data: {
-      url: '/notifications',
-    },
-  };
-
-  if (event.data) {
-    try {
-      const data = event.data.json();
-      notificationData = {
-        title: data.title || notificationData.title,
-        body: data.body || notificationData.body,
-        icon: data.icon || notificationData.icon,
-        badge: data.badge || notificationData.badge,
-        image: data.image,
-        tag: data.tag || notificationData.tag,
-        requireInteraction: data.requireInteraction || false,
-        silent: data.silent || false,
-        data: {
-          ...notificationData.data,
-          ...data.data,
-          url: data.data?.url || data.url || '/notifications',
-        },
-      };
-    } catch (e) {
-      console.error('Error parsing push data:', e);
-    }
-  }
-
-  // Mobile-optimized notification options
-  const notificationOptions = {
-    body: notificationData.body,
-    icon: notificationData.icon,
-    badge: notificationData.badge,
-    image: notificationData.image,
-    tag: notificationData.tag,
-    requireInteraction: notificationData.requireInteraction,
-    silent: notificationData.silent,
-    data: notificationData.data,
-    vibrate: [200, 100, 200],
-    // Mobile-friendly actions
-    actions: [
-      {
-        action: 'open',
-        title: 'Open',
-        icon: '/icon-192x192.png',
-      },
-      {
-        action: 'close',
-        title: 'Close',
-      },
-    ],
-    // Mobile-specific options
-    dir: 'auto', // Support RTL languages
-    lang: 'en',
-    renotify: true, // Re-notify if tag matches
-    sticky: false, // Don't require user interaction on mobile
-  };
-
-  const promiseChain = self.registration.showNotification(notificationData.title, notificationOptions);
-
-  event.waitUntil(promiseChain);
-});
-
-// Notification click event - handle user clicking on notification
-self.addEventListener('notificationclick', (event) => {
-  event.notification.close();
-
-  const urlToOpen = event.notification.data?.url || '/notifications';
-  const baseUrl = self.location.origin;
-
-  if (event.action === 'open' || !event.action) {
-    event.waitUntil(
-      clients.matchAll({ 
-        type: 'window', 
-        includeUncontrolled: true 
-      })
-        .then((clientList) => {
-          // Check if there's already a window/tab open
-          for (let i = 0; i < clientList.length; i++) {
-            const client = clientList[i];
-            // Check if client URL matches or is on the same origin
-            if (client.url.startsWith(baseUrl) && 'focus' in client) {
-              // Focus existing window and navigate if needed
-              client.focus();
-              // Try to navigate to the notification URL
-              if ('navigate' in client && client.navigate) {
-                return client.navigate(urlToOpen);
-              }
-              return Promise.resolve();
-            }
-          }
-          // If no window is open, open a new one
-          if (clients.openWindow) {
-            return clients.openWindow(urlToOpen);
-          }
-        })
-        .catch((error) => {
-          console.error('Error handling notification click:', error);
-          // Fallback: try to open window anyway
-          if (clients.openWindow) {
-            return clients.openWindow(urlToOpen);
-          }
-        })
-    );
-  } else if (event.action === 'close') {
-    // Just close the notification
-    return;
-  }
-});
-
-// Background sync (optional - for offline support)
+// Background sync for sending messages when online
 self.addEventListener('sync', (event) => {
-  if (event.tag === 'sync-notifications') {
-    event.waitUntil(
-      // Sync notifications when back online
-      fetch('/api/notifications')
-        .then((response) => response.json())
-        .catch((error) => {
-          console.error('Sync failed:', error);
-        })
-    );
+  if (event.tag === 'send-message') {
+    event.waitUntil(sendPendingMessages());
   }
 });
 
+async function sendPendingMessages() {
+  // This would be implemented with IndexedDB to store pending messages
+  // For now, it's a placeholder
+  console.log('Background sync: sending pending messages');
+}

@@ -166,6 +166,43 @@ export const cacheService = {
   has(key) {
     return cache.has(key);
   },
+
+  /**
+   * Get value from cache or fetch and cache it
+   * @param {string} key - Cache key
+   * @param {Function} fetchFn - Function to fetch data if not cached
+   * @param {number} [ttl=600] - Time to live in seconds
+   * @returns {Promise<any>} Cached or fetched data
+   */
+  async getOrSet(key, fetchFn, ttl = 600) {
+    const cached = this.get(key);
+    if (cached !== null && cached !== undefined) {
+      return cached;
+    }
+    
+    const data = await fetchFn();
+    this.set(key, data, ttl);
+    return data;
+  },
+
+  /**
+   * Clear all cache entries matching a pattern
+   * @param {string} pattern - Pattern to match (e.g., 'user:*' or 'conversation:123:*')
+   */
+  clearPattern(pattern) {
+    const keys = cache.keys();
+    const regex = new RegExp(pattern.replace(/\*/g, '.*'));
+    let cleared = 0;
+    
+    keys.forEach(key => {
+      if (regex.test(key)) {
+        cache.del(key);
+        cleared++;
+      }
+    });
+    
+    return cleared;
+  },
 };
 
 // Log cache statistics periodically (optional, for monitoring)

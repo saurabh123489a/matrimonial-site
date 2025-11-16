@@ -35,6 +35,10 @@ const profileViewSchema = new mongoose.Schema(
 profileViewSchema.index({ viewerId: 1, viewedUserId: 1, viewedAt: -1 });
 // Index for getting views of a specific user
 profileViewSchema.index({ viewedUserId: 1, viewedAt: -1 });
+// Composite index for "who viewed my profile" queries with date sorting
+profileViewSchema.index({ viewedUserId: 1, viewedAt: -1, createdAt: -1 });
+// Index for "who I viewed" queries
+profileViewSchema.index({ viewerId: 1, viewedAt: -1 });
 
 export default mongoose.model('ProfileView', profileViewSchema);
 

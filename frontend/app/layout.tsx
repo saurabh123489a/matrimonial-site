@@ -10,6 +10,7 @@ import WelcomeTour from "@/components/WelcomeTour";
 import ProfileSetupWizard from "@/components/ProfileSetupWizard";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import BottomActionBar from "@/components/BottomActionBar";
+import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -127,6 +128,7 @@ export default function RootLayout({
             </Script>
           </>
         )}
+        <ServiceWorkerRegistration />
         <LanguageProvider>
           <NotificationProvider>
             <ProfileActionProvider>

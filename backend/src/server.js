@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
+import { createServer } from 'http';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
@@ -10,6 +11,7 @@ import { connectToDatabase } from './config/database.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 import { antiScrapingMiddleware, enforcePaginationLimits, securityHeaders } from './middleware/antiScraping.js';
 import router from './routes/index.js';
+import { initializeSocket } from './services/socketService.js';
 
 // Validate critical environment variables on startup
 function validateEnvironment() {
@@ -149,12 +151,19 @@ app.use(errorHandler);
 // Server startup
 const PORT = process.env.PORT || 5050;
 
+// Create HTTP server for Socket.IO
+const httpServer = createServer(app);
+
 // Connect to database and start server
 connectToDatabase()
   .then(() => {
-    app.listen(PORT, () => {
+    // Initialize Socket.IO
+    initializeSocket(httpServer);
+    
+    httpServer.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}`);
       console.log(`📱 API available at http://localhost:${PORT}/api`);
+      console.log(`🔌 Socket.IO initialized`);
     });
   })
   .catch((error) => {

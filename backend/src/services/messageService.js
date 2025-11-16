@@ -5,6 +5,7 @@ import { userRepository } from '../repositories/userRepository.js';
 import { sanitizeMessageContent } from '../utils/sanitize.js';
 import { cacheService } from '../utils/cache.js';
 import { generateConversationId } from '../utils/conversationUtils.js';
+import { emitNewMessage, emitNotification } from './socketService.js';
 import Message from '../models/Message.js';
 
 export const messageService = {
@@ -60,11 +61,25 @@ export const messageService = {
     cacheService.clearUserConversationsCache(receiverId);
 
     // Populate sender/receiver for response
-    return await messageRepository.getConversation(senderId, receiverId, {
+    const populatedMessage = await messageRepository.getConversation(senderId, receiverId, {
       limit: 1,
       sortBy: 'createdAt',
       sortOrder: -1,
     }).then(messages => messages[0]);
+
+    // Emit new message via WebSocket
+    emitNewMessage(senderId, receiverId, populatedMessage);
+
+    // Emit notification via WebSocket
+    emitNotification(receiverId, {
+      type: 'message_received',
+      title: 'New Message',
+      message: `${sender.name} sent you a message`,
+      relatedUserId: senderId,
+      relatedId: message._id,
+    });
+
+    return populatedMessage;
   },
 
   /**

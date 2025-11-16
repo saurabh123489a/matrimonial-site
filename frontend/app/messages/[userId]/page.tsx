@@ -9,6 +9,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { getProfileUrl } from '@/lib/profileUtils';
 import ReadReceipt from '@/components/ReadReceipt';
 import TypingIndicator from '@/components/TypingIndicator';
+import { useSocket } from '@/hooks/useSocket';
 
 interface Message {
   _id: string;
@@ -36,6 +37,10 @@ export default function ChatPage() {
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [isTyping, setIsTyping] = useState(false);
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [hasMore, setHasMore] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [nextCursor, setNextCursor] = useState<string | null>(null);
+  const socket = useSocket();
 
   useEffect(() => {
     if (!auth.isAuthenticated()) {
@@ -61,18 +66,49 @@ export default function ChatPage() {
 
     loadData();
 
-    
-    const interval = setInterval(() => {
-      if (isMounted) {
-        loadConversation(false); 
-      }
-    }, 5000);
-
     return () => {
       isMounted = false;
-      clearInterval(interval);
     };
   }, [userId, router]);
+
+  // WebSocket: Listen for new messages
+  useEffect(() => {
+    if (!socket || !currentUserId || !userId) return;
+
+    const conversationId = [currentUserId, userId].sort().join('_');
+    
+    // Join conversation room
+    socket.emit('join-conversation', conversationId);
+
+    // Listen for new messages
+    const handleNewMessage = (message: Message) => {
+      // Verify message belongs to this conversation
+      const msgSenderId = typeof message.senderId === 'string' ? message.senderId : message.senderId._id;
+      const msgReceiverId = typeof message.receiverId === 'string' ? message.receiverId : message.receiverId._id;
+      
+      if (
+        (msgSenderId === userId || msgSenderId === currentUserId) &&
+        (msgReceiverId === userId || msgReceiverId === currentUserId)
+      ) {
+        setMessages(prev => {
+          // Avoid duplicates
+          if (prev.some(m => m._id === message._id)) return prev;
+          const updated = [...prev, message];
+          return updated.sort((a, b) => 
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+          );
+        });
+        scrollToBottom();
+      }
+    };
+
+    socket.on('new-message', handleNewMessage);
+
+    return () => {
+      socket.off('new-message', handleNewMessage);
+      socket.emit('leave-conversation', conversationId);
+    };
+  }, [socket, userId, currentUserId]);
 
   useEffect(() => {
     scrollToBottom();
@@ -98,12 +134,18 @@ export default function ChatPage() {
       if (showLoading) setLoading(true);
       const response = await messageApi.getConversation(userId, { limit: 50 });
       if (response.status) {
-        
-        const reversedMessages = [...(response.data || [])].reverse();
+        const messages = response.data || [];
+        const reversedMessages = [...messages].reverse();
         setMessages(reversedMessages);
         
+        // Handle pagination metadata
+        if ('hasMore' in response) {
+          setHasMore(response.hasMore || false);
+          setNextCursor(response.nextCursor || null);
+        }
         
-        if (response.data && response.data.length > 0) {
+        // Mark as read
+        if (messages.length > 0) {
           await messageApi.markAsRead(userId).catch(() => {});
         }
       }
@@ -115,6 +157,44 @@ export default function ChatPage() {
       if (showLoading) setLoading(false);
     }
   };
+
+  const loadMoreMessages = async () => {
+    if (!hasMore || loadingMore || !nextCursor) return;
+    
+    setLoadingMore(true);
+    try {
+      const response = await messageApi.getConversation(userId, {
+        limit: 20,
+        before: nextCursor,
+      });
+      
+      if (response.status && response.data) {
+        const olderMessages = [...response.data].reverse();
+        setMessages(prev => [...olderMessages, ...prev]);
+        setHasMore(response.hasMore || false);
+        setNextCursor(response.nextCursor || null);
+      }
+    } catch (err: any) {
+      console.error('Failed to load more messages:', err);
+    } finally {
+      setLoadingMore(false);
+    }
+  };
+
+  // Intersection observer for infinite scroll
+  const loadMoreRef = useCallback((node: HTMLDivElement | null) => {
+    if (loadingMore) return;
+    
+    const observer = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && hasMore && nextCursor) {
+        loadMoreMessages();
+      }
+    }, { threshold: 0.1 });
+    
+    if (node) observer.observe(node);
+    
+    return () => observer.disconnect();
+  }, [loadingMore, hasMore, nextCursor]);
 
   // Handle typing detection with debouncing
   const handleInputChange = useCallback((value: string) => {
@@ -293,6 +373,17 @@ export default function ChatPage() {
             </div>
           ) : (
             <div className="space-y-4">
+              {/* Load more trigger for pagination */}
+              {hasMore && (
+                <div ref={loadMoreRef} className="flex justify-center py-4">
+                  {loadingMore ? (
+                    <div className="text-sm text-gray-500">Loading older messages...</div>
+                  ) : (
+                    <div className="text-sm text-gray-400">Scroll up to load more</div>
+                  )}
+                </div>
+              )}
+              
               {messages.map((message, index) => {
                 const myMessage = isMyMessage(message);
                 const showDate = index === 0 || 

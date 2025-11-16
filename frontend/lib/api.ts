@@ -629,7 +629,7 @@ export const messageApi = {
     const response = await api.get(`/messages/conversations?${params.toString()}`);
     return response.data;
   },
-  getConversation: async (userId: string, options?: { page?: number; limit?: number }): Promise<ApiResponse<any[]>> => {
+  getConversation: async (userId: string, options?: { page?: number; limit?: number; before?: string }): Promise<ApiResponse<any[]> & { hasMore?: boolean; nextCursor?: string | null }> => {
     const params = new URLSearchParams();
     if (options) {
       Object.entries(options).forEach(([key, value]) => {

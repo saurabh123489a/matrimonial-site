@@ -51,18 +51,39 @@ export const getConversation = async (req, res, next) => {
       });
     }
 
-    const { page = 1, limit = 50 } = req.query;
-    const skip = (page - 1) * limit;
-
-    const messages = await messageService.getConversation(userId1, userId2, {
-      skip: parseInt(skip),
+    const { page, limit = 50, before } = req.query;
+    
+    // Support both offset and cursor-based pagination
+    const options = {
       limit: parseInt(limit),
-    });
+    };
+    
+    if (before) {
+      // Cursor-based pagination
+      options.before = before;
+    } else if (page) {
+      // Offset-based pagination (backward compatibility)
+      const skip = (parseInt(page) - 1) * parseInt(limit);
+      options.skip = skip;
+    }
+
+    const result = await messageService.getConversation(userId1, userId2, options);
+
+    // Handle paginated response (object) vs array response
+    if (result && typeof result === 'object' && !Array.isArray(result)) {
+      return res.json({
+        status: true,
+        message: 'Conversation retrieved successfully',
+        data: result.messages,
+        hasMore: result.hasMore,
+        nextCursor: result.nextCursor,
+      });
+    }
 
     return res.json({
       status: true,
       message: 'Conversation retrieved successfully',
-      data: messages,
+      data: result,
     });
   } catch (err) {
     next(err);
