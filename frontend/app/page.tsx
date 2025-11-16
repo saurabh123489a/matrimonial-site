@@ -160,44 +160,44 @@ export default function Home() {
         className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24 ${featuresRef.isVisible ? 'scroll-animate-fade-up animate' : 'scroll-animate-fade-up'}`}
       >
         <div className="text-center mb-12 sm:mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-gray-900 dark:text-gray-50 mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-primary mb-4">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-red-600">
               Complete Community Platform
             </span>
           </h2>
-          <p className="text-gray-600 dark:text-gray-300 text-base max-w-2xl mx-auto">{t('home.trustedPlatform')}</p>
+          <p className="text-secondary text-base max-w-2xl mx-auto">{t('home.trustedPlatform')}</p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12">
           {/* Marriage Matching */}
           <div className="text-center group animate-slide-up" style={{ animationDelay: '0.1s' }}>
             <div className="text-5xl mb-6 group-hover:scale-105 transition-transform duration-300">💍</div>
-            <h3 className="text-lg font-medium mb-3 text-gray-900 dark:text-white uppercase tracking-wide">{t('home.features.marriage')}</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">{t('home.features.marriageDesc')}</p>
+            <h3 className="text-lg font-medium mb-3 text-primary uppercase tracking-wide">{t('home.features.marriage')}</h3>
+            <p className="text-sm text-secondary leading-relaxed">{t('home.features.marriageDesc')}</p>
             <div className="mt-4 w-12 h-0.5 bg-gradient-to-r from-pink-600 to-red-600 mx-auto"></div>
           </div>
           
           {/* Census */}
           <div className="text-center group animate-slide-up" style={{ animationDelay: '0.2s' }}>
             <div className="text-5xl mb-6 group-hover:scale-105 transition-transform duration-300">📊</div>
-            <h3 className="text-lg font-medium mb-3 text-gray-900 dark:text-white uppercase tracking-wide">{t('home.features.census')}</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">{t('home.features.censusDesc')}</p>
+            <h3 className="text-lg font-medium mb-3 text-primary uppercase tracking-wide">{t('home.features.census')}</h3>
+            <p className="text-sm text-secondary leading-relaxed">{t('home.features.censusDesc')}</p>
             <div className="mt-4 w-12 h-0.5 bg-gradient-to-r from-pink-600 to-red-600 mx-auto"></div>
           </div>
           
           {/* Family Data */}
           <div className="text-center group animate-slide-up" style={{ animationDelay: '0.3s' }}>
             <div className="text-5xl mb-6 group-hover:scale-105 transition-transform duration-300">👨‍👩‍👧‍👦</div>
-            <h3 className="text-lg font-medium mb-3 text-gray-900 dark:text-white uppercase tracking-wide">{t('home.features.family')}</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">{t('home.features.familyDesc')}</p>
+            <h3 className="text-lg font-medium mb-3 text-primary uppercase tracking-wide">{t('home.features.family')}</h3>
+            <p className="text-sm text-secondary leading-relaxed">{t('home.features.familyDesc')}</p>
             <div className="mt-4 w-12 h-0.5 bg-gradient-to-r from-pink-600 to-red-600 mx-auto"></div>
           </div>
           
           {/* Community News */}
           <div className="text-center group animate-slide-up" style={{ animationDelay: '0.4s' }}>
             <div className="text-5xl mb-6 group-hover:scale-105 transition-transform duration-300">📰</div>
-            <h3 className="text-lg font-medium mb-3 text-gray-900 dark:text-white uppercase tracking-wide">{t('home.features.news')}</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">{t('home.features.newsDesc')}</p>
+            <h3 className="text-lg font-medium mb-3 text-primary uppercase tracking-wide">{t('home.features.news')}</h3>
+            <p className="text-sm text-secondary leading-relaxed">{t('home.features.newsDesc')}</p>
             <div className="mt-4 w-12 h-0.5 bg-gradient-to-r from-pink-600 to-red-600 mx-auto"></div>
           </div>
         </div>
@@ -210,12 +210,12 @@ export default function Home() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
           <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-light text-gray-900 dark:text-gray-100 mb-4">
+            <h2 className="text-3xl sm:text-4xl font-light text-primary mb-4">
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-red-600">
                 Community Impact
               </span>
             </h2>
-            <p className="text-gray-600 dark:text-gray-300 text-base max-w-2xl mx-auto">
+            <p className="text-secondary text-base max-w-2xl mx-auto">
               Serving the Gahoi community with comprehensive solutions
             </p>
           </div>
@@ -223,19 +223,19 @@ export default function Home() {
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 text-center">
             <div>
               <div className="text-4xl sm:text-5xl font-light bg-gradient-to-r from-pink-600 to-red-600 bg-clip-text text-transparent mb-2">1000+</div>
-              <div className="text-sm text-gray-600 dark:text-gray-300 uppercase tracking-wider">Happy Marriages</div>
+              <div className="text-sm text-secondary uppercase tracking-wider">Happy Marriages</div>
             </div>
             <div>
               <div className="text-4xl sm:text-5xl font-light bg-gradient-to-r from-pink-600 to-red-600 bg-clip-text text-transparent mb-2">5000+</div>
-              <div className="text-sm text-gray-600 dark:text-gray-300 uppercase tracking-wider">Families Registered</div>
+              <div className="text-sm text-secondary uppercase tracking-wider">Families Registered</div>
             </div>
             <div>
               <div className="text-4xl sm:text-5xl font-light bg-gradient-to-r from-pink-600 to-red-600 bg-clip-text text-transparent mb-2">10K+</div>
-              <div className="text-sm text-gray-600 dark:text-gray-300 uppercase tracking-wider">Census Records</div>
+              <div className="text-sm text-secondary uppercase tracking-wider">Census Records</div>
             </div>
             <div>
               <div className="text-4xl sm:text-5xl font-light bg-gradient-to-r from-pink-600 to-red-600 bg-clip-text text-transparent mb-2">Active</div>
-              <div className="text-sm text-gray-600 dark:text-gray-300 uppercase tracking-wider">Community News</div>
+              <div className="text-sm text-secondary uppercase tracking-wider">Community News</div>
             </div>
           </div>
         </div>

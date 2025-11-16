@@ -93,12 +93,12 @@
   --bg-active: #1F1417;
   
   /* ========== TEXT COLORS ========== */
-  /* Fully readable white/light colors */
-  --text-primary: #FFFFFF;
-  --text-secondary: #D5D3D7;
-  --text-muted: #A29CA3;
-  --text-disabled: #6b7280;
-  --text-inverse: #232323;
+  /* Fully readable white/light colors - !important ensures override */
+  --text-primary: #FFFFFF !important;
+  --text-secondary: #D5D3D7 !important;
+  --text-muted: #A29CA3 !important;
+  --text-disabled: #A29CA3 !important;
+  --text-inverse: #1A0C11;
   
   /* ========== PRIMARY COLORS (Red Accent Family) ========== */
   --primary: #E04F5F;
@@ -158,8 +158,28 @@
 
 body {
   background-color: var(--bg);
-  color: var(--text-primary);
+  color: var(--text-primary) !important;
   font-family: 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+}
+
+/* Global text color enforcement - Override Tailwind gray classes in dark mode */
+.dark .text-gray-50,
+.dark .text-gray-100,
+.dark .text-gray-200,
+.dark .text-gray-300,
+.dark .text-gray-400,
+.dark .text-gray-500,
+.dark .text-gray-600,
+.dark .text-gray-700,
+.dark .text-gray-800,
+.dark .text-gray-900,
+.dark .text-black {
+  color: var(--text-primary) !important;
+}
+
+.dark .text-gray-400,
+.dark .text-gray-500 {
+  color: var(--text-muted) !important;
 }
 
 /* ============================================
@@ -167,33 +187,62 @@ body {
    ============================================ */
 
 .text-primary {
-  color: var(--text-primary);
+  color: var(--text-primary) !important;
 }
 
 .text-secondary {
-  color: var(--text-secondary);
+  color: var(--text-secondary) !important;
 }
 
 .text-muted {
-  color: var(--text-muted);
+  color: var(--text-muted) !important;
 }
 
 .text-disabled {
-  color: var(--text-disabled);
+  color: var(--text-disabled) !important;
 }
 
 .text-inverse {
-  color: var(--text-inverse);
+  color: var(--text-inverse) !important;
 }
 
-/* Heading colors */
+/* Heading colors - Force use of theme variables */
 h1, h2, h3, h4, h5, h6 {
-  color: var(--text-primary);
+  color: var(--text-primary) !important;
 }
 
-/* Body text */
-p, span, div, li {
-  color: var(--text-secondary);
+/* Body text - Force use of theme variables */
+p, span, div, li, label {
+  color: var(--text-secondary) !important;
+}
+
+/* Dark mode text enforcement */
+.dark h1,
+.dark h2,
+.dark h3,
+.dark h4,
+.dark h5,
+.dark h6,
+.dark p,
+.dark span,
+.dark div,
+.dark li,
+.dark label {
+  color: var(--text-primary) !important;
+}
+
+.dark .text-secondary,
+.dark p.text-secondary,
+.dark span.text-secondary,
+.dark div.text-secondary {
+  color: var(--text-secondary) !important;
+}
+
+.dark .text-muted,
+.dark p.text-muted,
+.dark span.text-muted,
+.dark div.text-muted {
+  color: var(--text-muted) !important;
 }
 
 /* Links */

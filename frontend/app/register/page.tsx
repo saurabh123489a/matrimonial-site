@@ -504,7 +504,7 @@ export default function RegisterPage() {
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent px-2">
               {t('auth.createAccountTitle')}
             </h2>
-            <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm px-2">
+            <p className="text-secondary text-xs sm:text-sm px-2">
               {t('auth.signInToAccount').split('Or')[0]}Or{' '}
               <Link href="/login" className="font-semibold text-pink-600 hover:text-pink-700 dark:text-[#E04F5F] dark:hover:text-[#C43A4E] transition-colors">
                 {t('auth.signInToAccount').includes('sign in') ? 'sign in to your account' : 'अपने खाते में साइन इन करें'}
@@ -527,12 +527,12 @@ export default function RegisterPage() {
             <div className="space-y-4 sm:space-y-5">
               {/* Full Name */}
               <div>
-                <label htmlFor="name" className="block text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1.5 sm:mb-2">
+                <label htmlFor="name" className="block text-xs sm:text-sm font-semibold text-secondary mb-1.5 sm:mb-2">
                   {t('auth.fullName')} <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 sm:pl-4 flex items-center pointer-events-none">
-                    <svg className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="h-4 w-4 sm:h-5 sm:w-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
                   </div>
@@ -544,7 +544,7 @@ export default function RegisterPage() {
                     className={`block w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 border-2 rounded-lg sm:rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F] focus:border-pink-500 dark:focus:border-[#E04F5F] text-sm sm:text-base touch-target ${
                       touchedFields.name && fieldErrors.name
                         ? 'border-red-400 bg-red-50 dark:border-[#F25D5D] dark:bg-[#F25D5D]/10'
-                        : 'border-gray-200 dark:border-[#2F2327] bg-gray-50 dark:bg-[#1F1417] focus:bg-white dark:focus:bg-[#1F1417] text-gray-900 dark:text-white'
+                        : 'border-gray-200 dark:border-[#2F2327] bg-gray-50 dark:bg-[#1F1417] focus:bg-white dark:focus:bg-[#1F1417] text-primary'
                     }`}
                     placeholder={t('auth.fullName')}
                     value={formData.name}
@@ -564,12 +564,12 @@ export default function RegisterPage() {
 
               {/* Email */}
               <div>
-                <label htmlFor="email" className="block text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1.5 sm:mb-2">
-                  {t('auth.emailOptional')} <span className="text-gray-400 dark:text-gray-400 text-xs font-normal">({t('auth.emailOrPhoneRequired') || 'Email or Phone required'})</span>
+                <label htmlFor="email" className="block text-xs sm:text-sm font-semibold text-secondary mb-1.5 sm:mb-2">
+                  {t('auth.emailOptional')} <span className="text-muted dark:text-muted text-xs font-normal">({t('auth.emailOrPhoneRequired') || 'Email or Phone required'})</span>
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 sm:pl-4 flex items-center pointer-events-none">
-                    <svg className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="h-4 w-4 sm:h-5 sm:w-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
                   </div>
@@ -580,7 +580,7 @@ export default function RegisterPage() {
                     className={`block w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 border-2 rounded-lg sm:rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F] focus:border-pink-500 dark:focus:border-[#E04F5F] text-sm sm:text-base touch-target ${
                       touchedFields.email && fieldErrors.email
                         ? 'border-red-400 bg-red-50 dark:border-[#F25D5D] dark:bg-[#F25D5D]/10'
-                        : 'border-gray-200 dark:border-[#2F2327] bg-gray-50 dark:bg-[#1F1417] focus:bg-white dark:focus:bg-[#1F1417] text-gray-900 dark:text-white'
+                        : 'border-gray-200 dark:border-[#2F2327] bg-gray-50 dark:bg-[#1F1417] focus:bg-white dark:focus:bg-[#1F1417] text-primary'
                     }`}
                     placeholder={t('auth.emailOptional')}
                     value={formData.email}
@@ -600,12 +600,12 @@ export default function RegisterPage() {
 
               {/* Phone */}
               <div>
-                <label htmlFor="phone" className="block text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1.5 sm:mb-2">
+                <label htmlFor="phone" className="block text-xs sm:text-sm font-semibold text-secondary mb-1.5 sm:mb-2">
                   {t('auth.phone') || 'Phone Number'} <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 sm:pl-4 flex items-center pointer-events-none">
-                    <svg className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="h-4 w-4 sm:h-5 sm:w-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                     </svg>
                   </div>
@@ -617,7 +617,7 @@ export default function RegisterPage() {
                     className={`block w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 border-2 rounded-lg sm:rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F] focus:border-pink-500 dark:focus:border-[#E04F5F] text-sm sm:text-base touch-target ${
                       touchedFields.phone && fieldErrors.phone
                         ? 'border-red-400 bg-red-50 dark:border-[#F25D5D] dark:bg-[#F25D5D]/10'
-                        : 'border-gray-200 dark:border-[#2F2327] bg-gray-50 dark:bg-[#1F1417] focus:bg-white dark:focus:bg-[#1F1417] text-gray-900 dark:text-white'
+                        : 'border-gray-200 dark:border-[#2F2327] bg-gray-50 dark:bg-[#1F1417] focus:bg-white dark:focus:bg-[#1F1417] text-primary'
                     }`}
                     placeholder={t('auth.phone') || 'Enter phone number'}
                     value={formData.phone}
@@ -637,12 +637,12 @@ export default function RegisterPage() {
 
               {/* Password */}
               <div>
-                <label htmlFor="password" className="block text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1.5 sm:mb-2">
+                <label htmlFor="password" className="block text-xs sm:text-sm font-semibold text-secondary mb-1.5 sm:mb-2">
                   {t('auth.password')} <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 sm:pl-4 flex items-center pointer-events-none">
-                    <svg className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="h-4 w-4 sm:h-5 sm:w-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                     </svg>
                   </div>
@@ -664,7 +664,7 @@ export default function RegisterPage() {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 pr-3 sm:pr-4 flex items-center text-gray-400 hover:text-gray-600 transition-colors touch-target"
+                    className="absolute inset-y-0 right-0 pr-3 sm:pr-4 flex items-center text-muted hover:text-gray-600 transition-colors touch-target"
                     aria-label={showPassword ? 'Hide password' : 'Show password'}
                   >
                     {showPassword ? (
@@ -687,7 +687,7 @@ export default function RegisterPage() {
                     <span className="leading-relaxed">{fieldErrors.password}</span>
                   </p>
                 ) : (
-                  <p className="mt-1.5 sm:mt-2 text-xs text-gray-500 flex items-center">
+                  <p className="mt-1.5 sm:mt-2 text-xs text-muted flex items-center">
                     <svg className="w-3 h-3 mr-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                     </svg>
@@ -733,11 +733,11 @@ export default function RegisterPage() {
               {formData.age && (
                 <div>
                   <label htmlFor="age" className="block text-sm font-semibold text-gray-700 mb-2">
-                    Age <span className="text-gray-400 text-xs font-normal">(Auto-calculated)</span>
+                    Age <span className="text-muted text-xs font-normal">(Auto-calculated)</span>
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                      <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="h-5 w-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </div>
@@ -756,15 +756,15 @@ export default function RegisterPage() {
 
             {/* Community Position */}
             <div className="rounded-lg sm:rounded-xl bg-gradient-to-br from-gray-50 to-gray-100 p-4 sm:p-5 border-2 border-gray-200">
-              <label htmlFor="communityPosition" className="block text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1.5 sm:mb-2">
+              <label htmlFor="communityPosition" className="block text-xs sm:text-sm font-semibold text-secondary mb-1.5 sm:mb-2">
                 {t('auth.communityPosition')}
               </label>
-              <p className="text-xs text-gray-600 dark:text-gray-300 mb-2 sm:mb-3 leading-relaxed">
+              <p className="text-xs text-secondary mb-2 sm:mb-3 leading-relaxed">
                 {t('auth.communityPositionDesc')}
               </p>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 sm:pl-4 flex items-center pointer-events-none">
-                  <svg className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="h-4 w-4 sm:h-5 sm:w-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                   </svg>
                 </div>

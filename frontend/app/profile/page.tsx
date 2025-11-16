@@ -592,7 +592,7 @@ export default function MyProfilePage() {
       <div className="max-w-4xl mx-auto px-4 py-12">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-pink-600"></div>
-          <p className="mt-4 text-gray-600">{t('common.loading')}</p>
+          <p className="mt-4 text-secondary">{t('common.loading')}</p>
         </div>
       </div>
     );
@@ -671,13 +671,13 @@ export default function MyProfilePage() {
               }
             }}
             aria-label={editing ? 'Cancel editing and discard changes' : 'Go back'}
-            className="p-2 -ml-2 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-[#241317] rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F] focus:ring-offset-2"
+            className="p-2 -ml-2 text-secondary hover:bg-gray-100 dark:hover:bg-[#241317] rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F] focus:ring-offset-2"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight text-primary">
             {editing ? 'Edit Profile' : t('profile.myProfile')}
           </h1>
           <div className="flex items-center gap-1">
@@ -685,7 +685,7 @@ export default function MyProfilePage() {
               <button
                 onClick={() => setShowShareModal(true)}
                 aria-label="Share profile"
-                className="p-2 -mr-2 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-[#241317] rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F] focus:ring-offset-2"
+                className="p-2 -mr-2 text-secondary hover:bg-gray-100 dark:hover:bg-[#241317] rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F] focus:ring-offset-2"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
@@ -695,7 +695,7 @@ export default function MyProfilePage() {
               <button
                 onClick={() => setEditing(true)}
                 aria-label="Edit profile"
-                className="p-2 -mr-2 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-[#241317] rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F] focus:ring-offset-2"
+                className="p-2 -mr-2 text-secondary hover:bg-gray-100 dark:hover:bg-[#241317] rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F] focus:ring-offset-2"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
@@ -796,7 +796,7 @@ export default function MyProfilePage() {
                   };
                   input.click();
                 }}
-                className="w-full h-19 rounded-lg border-2 border-dashed border-gray-300 dark:border-[#2F2327] flex flex-col items-center justify-center text-gray-500 dark:text-[#A29CA3] hover:border-pink-500 dark:hover:border-[#E04F5F] transition-colors"
+                className="w-full h-19 rounded-lg border-2 border-dashed border-gray-300 dark:border-[#2F2327] flex flex-col items-center justify-center text-muted hover:border-pink-500 dark:hover:border-[#E04F5F] transition-colors"
               >
                 <svg className="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -810,7 +810,7 @@ export default function MyProfilePage() {
         {/* Profile Completion */}
         <div className="bg-white dark:bg-[#2B0F17] rounded-lg p-4 sm:p-6 mb-6 sm:mb-8 border dark:border-[#2F2327]">
           <div className="flex items-center justify-between mb-4">
-            <span className="text-sm font-medium text-gray-700 dark:text-[#D5D3D7]">Profile Completion</span>
+            <span className="text-sm font-medium text-secondary">Profile Completion</span>
             <span className="text-sm font-semibold text-pink-600 dark:text-[#E04F5F]">
               {user.isProfileComplete ? '100%' : '80%'}
             </span>
@@ -832,9 +832,9 @@ export default function MyProfilePage() {
             aria-label={`${expandedSections.aboutMe ? 'Collapse' : 'Expand'} About Me section`}
             className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 rounded-lg"
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-gray-900 dark:text-white">About Me</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-primary">About Me</h2>
             <svg 
-              className={`w-5 h-5 text-gray-500 dark:text-[#A29CA3] transition-transform ${expandedSections.aboutMe ? 'rotate-180' : ''}`}
+              className={`w-5 h-5 text-muted transition-transform ${expandedSections.aboutMe ? 'rotate-180' : ''}`}
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
@@ -848,7 +848,7 @@ export default function MyProfilePage() {
             <div id="about-me-section" className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
               {/* Full Name */}
             <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Full Name <span className="text-red-500">*</span></label>
+                <label className="block text-sm font-medium text-secondary mb-2">Full Name <span className="text-red-500">*</span></label>
               {editing ? (
                 <input
                   type="text"
@@ -857,13 +857,13 @@ export default function MyProfilePage() {
                   className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg bg-gray-50 dark:bg-[#1F1417] cursor-not-allowed"
                 />
               ) : (
-                <p className="text-gray-900 dark:text-white">{user.name}</p>
+                <p className="text-primary">{user.name}</p>
               )}
             </div>
 
               {/* Age */}
             <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Age <span className="text-red-500 dark:text-[#F25D5D]">*</span></label>
+                <label className="block text-sm font-medium text-secondary mb-2">Age <span className="text-red-500 dark:text-[#F25D5D]">*</span></label>
               {editing ? (
                   <input
                     type="number"
@@ -872,13 +872,13 @@ export default function MyProfilePage() {
                     className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg bg-gray-50 dark:bg-[#1F1417]"
                   />
                 ) : (
-                  <p className="text-gray-900 dark:text-white">{user.age || 'Not provided'}</p>
+                  <p className="text-primary">{user.age || 'Not provided'}</p>
               )}
             </div>
 
               {/* Height */}
             <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Height</label>
+                <label className="block text-sm font-medium text-secondary mb-2">Height</label>
               {editing ? (
                 <>
                   <input
@@ -917,7 +917,7 @@ export default function MyProfilePage() {
                   )}
                 </>
               ) : (
-                <p className="text-gray-900 dark:text-white">
+                <p className="text-primary">
                     {user.height ? `${Math.floor(user.height / 12)}'${user.height % 12}"` : 'Not provided'}
                 </p>
               )}
@@ -925,7 +925,7 @@ export default function MyProfilePage() {
 
               {/* Bio */}
             <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Bio</label>
+                <label className="block text-sm font-medium text-secondary mb-2">Bio</label>
               {editing ? (
                   <>
                     <textarea
@@ -954,12 +954,12 @@ export default function MyProfilePage() {
                         {fieldErrors.bio}
                       </p>
                     )}
-                    <p className="mt-1 text-xs text-gray-500 dark:text-[#A29CA3]">
+                    <p className="mt-1 text-xs text-muted">
                       {(formData.bio || '').length}/2000 characters
                     </p>
                   </>
               ) : (
-                  <p className="text-gray-900 dark:text-white">{user.bio || 'No bio provided'}</p>
+                  <p className="text-primary">{user.bio || 'No bio provided'}</p>
               )}
             </div>
                 </div>
@@ -975,9 +975,9 @@ export default function MyProfilePage() {
             aria-label={`${expandedSections.contact ? 'Collapse' : 'Expand'} Contact Information section`}
             className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 rounded-lg"
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-gray-900 dark:text-white">Contact Information</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-primary">Contact Information</h2>
             <svg 
-              className={`w-5 h-5 text-gray-500 dark:text-[#A29CA3] transition-transform ${expandedSections.contact ? 'rotate-180' : ''}`}
+              className={`w-5 h-5 text-muted transition-transform ${expandedSections.contact ? 'rotate-180' : ''}`}
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
@@ -991,7 +991,7 @@ export default function MyProfilePage() {
             <div className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
               {/* Email */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Email</label>
+                <label className="block text-sm font-medium text-secondary mb-2">Email</label>
                 {editing ? (
                   <input
                     type="email"
@@ -1000,13 +1000,13 @@ export default function MyProfilePage() {
                     className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg bg-gray-50 dark:bg-[#1F1417] cursor-not-allowed"
                   />
                 ) : (
-                  <p className="text-gray-900 dark:text-white">{user.email || 'Not provided'}</p>
+                  <p className="text-primary">{user.email || 'Not provided'}</p>
                 )}
               </div>
 
               {/* Phone */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Phone</label>
+                <label className="block text-sm font-medium text-secondary mb-2">Phone</label>
                 {editing ? (
                   <input
                     type="tel"
@@ -1015,13 +1015,13 @@ export default function MyProfilePage() {
                     className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg bg-gray-50 dark:bg-[#1F1417] cursor-not-allowed"
                   />
                 ) : (
-                  <p className="text-gray-900 dark:text-white">{user.phone || 'Not provided'}</p>
+                  <p className="text-primary">{user.phone || 'Not provided'}</p>
                 )}
               </div>
 
               {/* WhatsApp Number */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">WhatsApp Number</label>
+                <label className="block text-sm font-medium text-secondary mb-2">WhatsApp Number</label>
                 {editing ? (
                   <input
                     type="tel"
@@ -1030,7 +1030,7 @@ export default function MyProfilePage() {
                     className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg bg-gray-50 dark:bg-[#1F1417] cursor-not-allowed"
                   />
                 ) : (
-                  <p className="text-gray-900 dark:text-white">{user.whatsappNumber || 'Not provided'}</p>
+                  <p className="text-primary">{user.whatsappNumber || 'Not provided'}</p>
                 )}
               </div>
             </div>
@@ -1046,9 +1046,9 @@ export default function MyProfilePage() {
             aria-label={`${expandedSections.location ? 'Collapse' : 'Expand'} Location section`}
             className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 rounded-lg"
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-gray-900 dark:text-white">Location</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-primary">Location</h2>
             <svg 
-              className={`w-5 h-5 text-gray-500 dark:text-[#A29CA3] transition-transform ${expandedSections.location ? 'rotate-180' : ''}`}
+              className={`w-5 h-5 text-muted transition-transform ${expandedSections.location ? 'rotate-180' : ''}`}
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
@@ -1070,19 +1070,19 @@ export default function MyProfilePage() {
                   onCityChange={handleCityChange}
                 />
               ) : (
-                <div className="space-y-2 text-gray-900 dark:text-white">
+                <div className="space-y-2 text-primary">
                   {user.country && <p><span className="font-medium dark:text-[#D5D3D7]">Country:</span> {user.country}</p>}
                   {user.state && <p><span className="font-medium dark:text-[#D5D3D7]">State:</span> {user.state}</p>}
                   {user.city && <p><span className="font-medium dark:text-[#D5D3D7]">City:</span> {user.city}</p>}
                   {user.town && <p><span className="font-medium dark:text-[#D5D3D7]">Town:</span> {user.town}</p>}
-                  {!user.country && !user.state && !user.city && <p className="text-gray-900 dark:text-[#A29CA3]">Not provided</p>}
+                  {!user.country && !user.state && !user.city && <p className="text-muted">Not provided</p>}
                 </div>
               )}
               
               {editing && (
                 <>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Town/Village</label>
+                    <label className="block text-sm font-medium text-secondary mb-2">Town/Village</label>
                     <input
                       type="text"
                       value={formData.town || ''}
@@ -1092,7 +1092,7 @@ export default function MyProfilePage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Present Address</label>
+                    <label className="block text-sm font-medium text-secondary mb-2">Present Address</label>
                     <textarea
                       value={formData.presentAddress || ''}
                       onChange={(e) => setFormData({ ...formData, presentAddress: sanitizeFormInput(e.target.value, 'textarea') })}
@@ -1102,7 +1102,7 @@ export default function MyProfilePage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Permanent Address</label>
+                    <label className="block text-sm font-medium text-secondary mb-2">Permanent Address</label>
                     <textarea
                       value={formData.permanentAddress || ''}
                       onChange={(e) => setFormData({ ...formData, permanentAddress: sanitizeFormInput(e.target.value, 'textarea') })}
@@ -1118,14 +1118,14 @@ export default function MyProfilePage() {
                 <>
                   {user.presentAddress && (
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Present Address</label>
-                      <p className="text-gray-900 dark:text-white">{user.presentAddress}</p>
+                      <label className="block text-sm font-medium text-secondary mb-2">Present Address</label>
+                      <p className="text-primary">{user.presentAddress}</p>
                     </div>
                   )}
                   {user.permanentAddress && (
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Permanent Address</label>
-                      <p className="text-gray-900 dark:text-white">{user.permanentAddress}</p>
+                      <label className="block text-sm font-medium text-secondary mb-2">Permanent Address</label>
+                      <p className="text-primary">{user.permanentAddress}</p>
                     </div>
                   )}
                 </>
@@ -1143,9 +1143,9 @@ export default function MyProfilePage() {
             aria-label={`${expandedSections.education ? 'Collapse' : 'Expand'} Education & Career section`}
             className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 rounded-lg"
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-gray-900 dark:text-white">Education & Career</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-primary">Education & Career</h2>
             <svg 
-              className={`w-5 h-5 text-gray-500 dark:text-[#A29CA3] transition-transform ${expandedSections.education ? 'rotate-180' : ''}`}
+              className={`w-5 h-5 text-muted transition-transform ${expandedSections.education ? 'rotate-180' : ''}`}
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
@@ -1159,10 +1159,10 @@ export default function MyProfilePage() {
             <div id="education-section" className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
               {/* Education */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">
+                <label className="block text-sm font-medium text-secondary mb-2">
                   Education <span className="text-red-500">*</span>
                   {loadingEducation && (
-                    <span className="ml-2 text-xs text-gray-500 dark:text-[#A29CA3]">(Loading...)</span>
+                    <span className="ml-2 text-xs text-muted">(Loading...)</span>
                   )}
                 </label>
                 {editing ? (
@@ -1180,7 +1180,7 @@ export default function MyProfilePage() {
                     ))}
                   </select>
                 ) : (
-                  <p className="text-gray-900 dark:text-white">
+                  <p className="text-primary">
                     {user.education 
                       ? educationOptions.find(opt => opt.value === user.education)?.label || user.education
                       : 'Not provided'}
@@ -1190,7 +1190,7 @@ export default function MyProfilePage() {
 
               {/* Educational Detail */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Educational Detail</label>
+                <label className="block text-sm font-medium text-secondary mb-2">Educational Detail</label>
                 {editing ? (
                   <select
                     value={formData.educationalDetail || ''}
@@ -1205,16 +1205,16 @@ export default function MyProfilePage() {
                     <option value="Professional">Professional</option>
                   </select>
                 ) : (
-                  <p className="text-gray-900 dark:text-white">{user.educationalDetail || 'Not provided'}</p>
+                  <p className="text-primary">{user.educationalDetail || 'Not provided'}</p>
                 )}
               </div>
 
               {/* Occupation */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">
+                <label className="block text-sm font-medium text-secondary mb-2">
                   Occupation <span className="text-red-500">*</span>
                   {loadingOccupation && (
-                    <span className="ml-2 text-xs text-gray-500 dark:text-[#A29CA3]">(Loading...)</span>
+                    <span className="ml-2 text-xs text-muted">(Loading...)</span>
                   )}
                 </label>
                 {editing ? (
@@ -1232,7 +1232,7 @@ export default function MyProfilePage() {
                     ))}
                   </select>
                 ) : (
-                  <p className="text-gray-900 dark:text-white">
+                  <p className="text-primary">
                     {user.occupation 
                       ? occupationOptions.find(opt => opt.value === user.occupation)?.label || user.occupation
                       : 'Not provided'}
@@ -1242,7 +1242,7 @@ export default function MyProfilePage() {
 
               {/* Profession */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Profession</label>
+                <label className="block text-sm font-medium text-secondary mb-2">Profession</label>
                 {editing ? (
                   <input
                     type="text"
@@ -1252,13 +1252,13 @@ export default function MyProfilePage() {
                     placeholder="e.g., Computer Software Professional"
                   />
                 ) : (
-                  <p className="text-gray-900 dark:text-white">{user.profession || 'Not provided'}</p>
+                  <p className="text-primary">{user.profession || 'Not provided'}</p>
                 )}
               </div>
 
               {/* Employer/Company */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Employer/Company</label>
+                <label className="block text-sm font-medium text-secondary mb-2">Employer/Company</label>
                 {editing ? (
                   <input
                     type="text"
@@ -1268,13 +1268,13 @@ export default function MyProfilePage() {
                     placeholder="Company name"
                   />
                 ) : (
-                  <p className="text-gray-900 dark:text-white">{user.employer || 'Not provided'}</p>
+                  <p className="text-primary">{user.employer || 'Not provided'}</p>
                 )}
               </div>
 
               {/* Annual Income */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Annual Income</label>
+                <label className="block text-sm font-medium text-secondary mb-2">Annual Income</label>
                 {editing ? (
                   <select
                     value={formData.annualIncome || ''}
@@ -1290,7 +1290,7 @@ export default function MyProfilePage() {
                     ))}
                   </select>
                 ) : (
-                  <p className="text-gray-900 dark:text-white">{user.annualIncome || 'Not provided'}</p>
+                  <p className="text-primary">{user.annualIncome || 'Not provided'}</p>
                 )}
               </div>
             </div>
@@ -1306,9 +1306,9 @@ export default function MyProfilePage() {
             aria-label={`${expandedSections.lifestyle ? 'Collapse' : 'Expand'} Lifestyle & Interests section`}
             className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 rounded-lg"
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-gray-900 dark:text-white">Lifestyle & Interests</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-primary">Lifestyle & Interests</h2>
             <svg 
-              className={`w-5 h-5 text-gray-500 dark:text-[#A29CA3] transition-transform ${expandedSections.lifestyle ? 'rotate-180' : ''}`}
+              className={`w-5 h-5 text-muted transition-transform ${expandedSections.lifestyle ? 'rotate-180' : ''}`}
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
@@ -1322,7 +1322,7 @@ export default function MyProfilePage() {
             <div id="lifestyle-section" className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
               {/* Dietary Preferences */}
             <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-3">Dietary Preferences</label>
+                <label className="block text-sm font-medium text-secondary mb-3">Dietary Preferences</label>
                 <div className="flex flex-wrap gap-2">
                   {dietaryOptions.map((option) => {
                     const isSelected = formData.diet === option;
@@ -1335,7 +1335,7 @@ export default function MyProfilePage() {
                         className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                           isSelected
                             ? 'bg-pink-600 text-white'
-                            : 'bg-gray-200 dark:bg-[#241317] text-gray-700 dark:text-[#D5D3D7]'
+                            : 'bg-gray-200 dark:bg-[#241317] text-secondary'
                         } ${!editing ? 'cursor-default' : 'cursor-pointer hover:bg-pink-100 dark:hover:bg-red-900/20'}`}
                       >
                         {option === 'non-vegetarian' ? 'Non-Veg' : option.charAt(0).toUpperCase() + option.slice(1)}
@@ -1354,7 +1354,7 @@ export default function MyProfilePage() {
 
               {/* Hobbies & Interests */}
             <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-3">Hobbies & Interests</label>
+                <label className="block text-sm font-medium text-secondary mb-3">Hobbies & Interests</label>
                 <div className="flex flex-wrap gap-2">
                   {commonHobbies.map((hobby) => {
                     const isSelected = (formData.hobbies || []).includes(hobby);
@@ -1376,7 +1376,7 @@ export default function MyProfilePage() {
                         className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                           isSelected
                             ? 'bg-pink-600 text-white'
-                            : 'bg-gray-200 dark:bg-[#241317] text-gray-700 dark:text-[#D5D3D7]'
+                            : 'bg-gray-200 dark:bg-[#241317] text-secondary'
                         } ${!editing ? 'cursor-default' : 'cursor-pointer hover:bg-pink-100 dark:hover:bg-red-900/20'}`}
                       >
                         {hobby}
@@ -1386,7 +1386,7 @@ export default function MyProfilePage() {
                   {editing && (
                     <button
                       type="button"
-                      className="px-4 py-2 rounded-full text-sm font-medium border-2 border-dashed border-gray-300 dark:border-[#2F2327] text-gray-500 dark:text-[#A29CA3] hover:border-pink-500 dark:hover:border-[#E04F5F] transition-colors"
+                      className="px-4 py-2 rounded-full text-sm font-medium border-2 border-dashed border-gray-300 dark:border-[#2F2327] text-muted hover:border-pink-500 dark:hover:border-[#E04F5F] transition-colors"
                     >
                       + Add
                     </button>
@@ -1403,7 +1403,7 @@ export default function MyProfilePage() {
                       </span>
                     ))}
                     {(!user.hobbies || user.hobbies.length === 0) && (
-                      <span className="text-gray-500 dark:text-[#A29CA3] text-sm">No hobbies listed</span>
+                      <span className="text-muted text-sm">No hobbies listed</span>
               )}
             </div>
               )}
@@ -1421,9 +1421,9 @@ export default function MyProfilePage() {
             aria-label={`${expandedSections.family ? 'Collapse' : 'Expand'} Family Information section`}
             className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 rounded-lg"
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-gray-900 dark:text-white">👨‍👩‍👧‍👦 Family Information</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-primary">👨‍👩‍👧‍👦 Family Information</h2>
             <svg 
-              className={`w-5 h-5 text-gray-500 dark:text-[#A29CA3] transition-transform ${expandedSections.family ? 'rotate-180' : ''}`}
+              className={`w-5 h-5 text-muted transition-transform ${expandedSections.family ? 'rotate-180' : ''}`}
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
@@ -1438,7 +1438,7 @@ export default function MyProfilePage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Father's Name */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Father's Name</label>
+                  <label className="block text-sm font-medium text-secondary mb-2">Father's Name</label>
                   {editing ? (
                     <input
                       type="text"
@@ -1454,13 +1454,13 @@ export default function MyProfilePage() {
                       placeholder="Enter father's name"
                     />
                   ) : (
-                    <p className="text-gray-900 dark:text-white">{user.family?.fathersName || 'Not provided'}</p>
+                    <p className="text-primary">{user.family?.fathersName || 'Not provided'}</p>
                   )}
                 </div>
 
                 {/* Father's Occupation Type */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Father's Occupation Type</label>
+                  <label className="block text-sm font-medium text-secondary mb-2">Father's Occupation Type</label>
                   {editing ? (
                     <select
                       value={formData.family?.fathersOccupationType || ''}
@@ -1481,7 +1481,7 @@ export default function MyProfilePage() {
                       <option value="business">Business</option>
                     </select>
                   ) : (
-                    <p className="text-gray-900 dark:text-white">
+                    <p className="text-primary">
                       {user.family?.fathersOccupationType 
                         ? user.family.fathersOccupationType.charAt(0).toUpperCase() + user.family.fathersOccupationType.slice(1)
                         : 'Not provided'}
@@ -1492,7 +1492,7 @@ export default function MyProfilePage() {
                 {/* Father's Occupation Description */}
                 {editing && formData.family?.fathersOccupationType && (
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Father's Occupation Description</label>
+                    <label className="block text-sm font-medium text-secondary mb-2">Father's Occupation Description</label>
                     <input
                       type="text"
                       value={formData.family?.fathersOccupationDesc || ''}
@@ -1511,14 +1511,14 @@ export default function MyProfilePage() {
 
                 {!editing && user.family?.fathersOccupationDesc && (
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Father's Occupation Description</label>
-                    <p className="text-gray-900 dark:text-white">{user.family.fathersOccupationDesc}</p>
+                    <label className="block text-sm font-medium text-secondary mb-2">Father's Occupation Description</label>
+                    <p className="text-primary">{user.family.fathersOccupationDesc}</p>
                   </div>
                 )}
 
                 {/* Father's Contact Number */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Father's Contact Number</label>
+                  <label className="block text-sm font-medium text-secondary mb-2">Father's Contact Number</label>
                   {editing ? (
                     <input
                       type="tel"
@@ -1534,13 +1534,13 @@ export default function MyProfilePage() {
                       placeholder="Enter contact number"
                     />
                   ) : (
-                    <p className="text-gray-900 dark:text-white">{user.family?.fathersContactNumber || 'Not provided'}</p>
+                    <p className="text-primary">{user.family?.fathersContactNumber || 'Not provided'}</p>
                   )}
                 </div>
 
                 {/* Mother's Name */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Mother's Name</label>
+                  <label className="block text-sm font-medium text-secondary mb-2">Mother's Name</label>
                   {editing ? (
                     <input
                       type="text"
@@ -1556,13 +1556,13 @@ export default function MyProfilePage() {
                       placeholder="Enter mother's name"
                     />
                   ) : (
-                    <p className="text-gray-900 dark:text-white">{user.family?.mothersName || 'Not provided'}</p>
+                    <p className="text-primary">{user.family?.mothersName || 'Not provided'}</p>
                   )}
                 </div>
 
                 {/* Mother's Occupation Type */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Mother's Occupation Type</label>
+                  <label className="block text-sm font-medium text-secondary mb-2">Mother's Occupation Type</label>
                   {editing ? (
                     <select
                       value={formData.family?.mothersOccupationType || ''}
@@ -1583,7 +1583,7 @@ export default function MyProfilePage() {
                       <option value="business">Business</option>
                     </select>
                   ) : (
-                    <p className="text-gray-900 dark:text-white">
+                    <p className="text-primary">
                       {user.family?.mothersOccupationType 
                         ? user.family.mothersOccupationType.charAt(0).toUpperCase() + user.family.mothersOccupationType.slice(1)
                         : 'Not provided'}
@@ -1594,7 +1594,7 @@ export default function MyProfilePage() {
                 {/* Mother's Occupation Description */}
                 {editing && formData.family?.mothersOccupationType && (
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Mother's Occupation Description</label>
+                    <label className="block text-sm font-medium text-secondary mb-2">Mother's Occupation Description</label>
                     <input
                       type="text"
                       value={formData.family?.mothersOccupationDesc || ''}
@@ -1613,14 +1613,14 @@ export default function MyProfilePage() {
 
                 {!editing && user.family?.mothersOccupationDesc && (
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Mother's Occupation Description</label>
-                    <p className="text-gray-900 dark:text-white">{user.family.mothersOccupationDesc}</p>
+                    <label className="block text-sm font-medium text-secondary mb-2">Mother's Occupation Description</label>
+                    <p className="text-primary">{user.family.mothersOccupationDesc}</p>
                   </div>
                 )}
 
                 {/* Siblings Information */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Number of Brothers</label>
+                  <label className="block text-sm font-medium text-secondary mb-2">Number of Brothers</label>
                   {editing ? (
                     <input
                       type="number"
@@ -1636,12 +1636,12 @@ export default function MyProfilePage() {
                       className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F]"
                     />
                   ) : (
-                    <p className="text-gray-900 dark:text-white">{user.family?.numberOfBrothers || 0}</p>
+                    <p className="text-primary">{user.family?.numberOfBrothers || 0}</p>
                   )}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Number of Sisters</label>
+                  <label className="block text-sm font-medium text-secondary mb-2">Number of Sisters</label>
                   {editing ? (
                     <input
                       type="number"
@@ -1657,7 +1657,7 @@ export default function MyProfilePage() {
                       className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F]"
                     />
                   ) : (
-                    <p className="text-gray-900 dark:text-white">{user.family?.numberOfSisters || 0}</p>
+                    <p className="text-primary">{user.family?.numberOfSisters || 0}</p>
                   )}
                 </div>
               </div>
@@ -1674,9 +1674,9 @@ export default function MyProfilePage() {
             aria-label={`${expandedSections.horoscope ? 'Collapse' : 'Expand'} Horoscope Details section`}
             className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 rounded-lg"
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-gray-900 dark:text-white">🔮 Horoscope Details</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-primary">🔮 Horoscope Details</h2>
             <svg 
-              className={`w-5 h-5 text-gray-500 dark:text-[#A29CA3] transition-transform ${expandedSections.horoscope ? 'rotate-180' : ''}`}
+              className={`w-5 h-5 text-muted transition-transform ${expandedSections.horoscope ? 'rotate-180' : ''}`}
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
@@ -1706,8 +1706,8 @@ export default function MyProfilePage() {
                 />
               ) : (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Date of Birth</label>
-                  <p className="text-gray-900 dark:text-white">
+                  <label className="block text-sm font-medium text-secondary mb-2">Date of Birth</label>
+                  <p className="text-primary">
                     {user.dateOfBirth ? new Date(user.dateOfBirth).toLocaleDateString() : 'Not provided'}
                   </p>
                 </div>
@@ -1715,7 +1715,7 @@ export default function MyProfilePage() {
 
               {/* Time of Birth */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Time of Birth (HH:MM:SS)</label>
+                <label className="block text-sm font-medium text-secondary mb-2">Time of Birth (HH:MM:SS)</label>
                 {editing ? (
                   <input
                     type="time"
@@ -1735,7 +1735,7 @@ export default function MyProfilePage() {
                     placeholder="HH:MM:SS"
                   />
                 ) : (
-                  <p className="text-gray-900 dark:text-white">
+                  <p className="text-primary">
                     {user.horoscopeDetails?.timeOfBirth || 'Not provided'}
                   </p>
                 )}
@@ -1743,7 +1743,7 @@ export default function MyProfilePage() {
 
               {/* Rashi */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Rashi (Moon Sign)</label>
+                <label className="block text-sm font-medium text-secondary mb-2">Rashi (Moon Sign)</label>
                 {(editing || editingHoroscope) ? (
                   <select
                     value={formData.horoscopeDetails?.rashi || ''}
@@ -1771,7 +1771,7 @@ export default function MyProfilePage() {
                     <option value="Pisces">Pisces (Meena)</option>
                   </select>
                 ) : (
-                  <p className="text-gray-900 dark:text-white">
+                  <p className="text-primary">
                     {user.horoscopeDetails?.rashi || 'Not provided'}
                   </p>
                 )}
@@ -1779,7 +1779,7 @@ export default function MyProfilePage() {
 
               {/* Nakshatra */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Nakshatra</label>
+                <label className="block text-sm font-medium text-secondary mb-2">Nakshatra</label>
                 {(editing || editingHoroscope) ? (
                   <select
                     value={formData.horoscopeDetails?.nakshatra || ''}
@@ -1822,7 +1822,7 @@ export default function MyProfilePage() {
                     <option value="Revati">Revati</option>
                   </select>
                 ) : (
-                  <p className="text-gray-900 dark:text-white">
+                  <p className="text-primary">
                     {user.horoscopeDetails?.nakshatra || 'Not provided'}
                   </p>
                 )}
@@ -1830,7 +1830,7 @@ export default function MyProfilePage() {
 
               {/* Star Sign */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Star Sign</label>
+                <label className="block text-sm font-medium text-secondary mb-2">Star Sign</label>
                 {(editing || editingHoroscope) ? (
                   <input
                     type="text"
@@ -1846,7 +1846,7 @@ export default function MyProfilePage() {
                     placeholder="Optional"
                   />
                 ) : (
-                  <p className="text-gray-900 dark:text-white">
+                  <p className="text-primary">
                     {user.horoscopeDetails?.starSign || 'Not provided'}
                   </p>
                 )}
@@ -1864,9 +1864,9 @@ export default function MyProfilePage() {
             aria-label={`${expandedSections.partnerPreferences ? 'Collapse' : 'Expand'} Partner Preferences section`}
             className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 rounded-lg"
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-gray-900 dark:text-white">Partner Preferences</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-primary">Partner Preferences</h2>
             <svg 
-              className={`w-5 h-5 text-gray-500 dark:text-[#A29CA3] transition-transform ${expandedSections.partnerPreferences ? 'rotate-180' : ''}`}
+              className={`w-5 h-5 text-muted transition-transform ${expandedSections.partnerPreferences ? 'rotate-180' : ''}`}
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
@@ -1880,7 +1880,7 @@ export default function MyProfilePage() {
             <div id="partner-preferences-section" className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
               {/* Age Range */}
                 <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-3">
+                <label className="block text-sm font-medium text-secondary mb-3">
                   Age Range
                   <span className="ml-2 text-pink-600 dark:text-[#E04F5F] font-semibold">
                     {formData.preferences?.minAge || user.preferences?.minAge || 28} - {formData.preferences?.maxAge || user.preferences?.maxAge || 34}
@@ -1890,7 +1890,7 @@ export default function MyProfilePage() {
                   <div className="space-y-2">
                     <div className="flex gap-4">
                       <div className="flex-1">
-                        <label className="block text-xs text-gray-500 dark:text-[#A29CA3] mb-1">Min Age</label>
+                        <label className="block text-xs text-muted mb-1">Min Age</label>
                     <input
                           type="number"
                           min="18"
@@ -1923,7 +1923,7 @@ export default function MyProfilePage() {
                     )}
                 </div>
                       <div className="flex-1">
-                        <label className="block text-xs text-gray-500 dark:text-[#A29CA3] mb-1">Max Age</label>
+                        <label className="block text-xs text-muted mb-1">Max Age</label>
                     <input
                           type="number"
                           min="18"
@@ -1977,7 +1977,7 @@ export default function MyProfilePage() {
 
               {/* Height Range */}
                 <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-3">
+                <label className="block text-sm font-medium text-secondary mb-3">
                   Height Range
                   <span className="ml-2 text-pink-600 dark:text-[#E04F5F] font-semibold">
                     {(() => {
@@ -1995,7 +1995,7 @@ export default function MyProfilePage() {
                   <div className="space-y-2">
                     <div className="flex gap-4">
                       <div className="flex-1">
-                        <label className="block text-xs text-gray-500 dark:text-[#A29CA3] mb-1">Min Height</label>
+                        <label className="block text-xs text-muted mb-1">Min Height</label>
                     <input
                           type="text"
                           value={(() => {
@@ -2045,7 +2045,7 @@ export default function MyProfilePage() {
                     )}
                 </div>
                       <div className="flex-1">
-                        <label className="block text-xs text-gray-500 dark:text-[#A29CA3] mb-1">Max Height</label>
+                        <label className="block text-xs text-muted mb-1">Max Height</label>
                     <input
                           type="text"
                           value={(() => {
@@ -2129,12 +2129,12 @@ export default function MyProfilePage() {
                     aria-label="Require horoscope match for partner preferences"
                     className="w-5 h-5 text-pink-600 border-gray-300 rounded focus:ring-pink-500 focus:ring-2 focus:ring-offset-2 dark:border-gray-600 dark:bg-[#1f212a] disabled:opacity-50 disabled:cursor-not-allowed"
                   />
-                  <span className="text-sm font-medium text-gray-700 dark:text-[#D5D3D7]">
-                    Require Horoscope Match <span className="text-gray-500 dark:text-[#A29CA3] text-xs">(Mandatory for matches)</span>
+                  <span className="text-sm font-medium text-secondary">
+                    Require Horoscope Match <span className="text-muted text-xs">(Mandatory for matches)</span>
                   </span>
                 </label>
                 {!editing && (
-                  <p className="mt-2 text-sm text-gray-600 dark:text-[#D5D3D7]">
+                  <p className="mt-2 text-sm text-secondary dark:text-[#D5D3D7]">
                     {user.horoscopeMatchMandatory 
                       ? 'Horoscope compatibility is required for matches' 
                       : 'Horoscope compatibility is optional for matches'}

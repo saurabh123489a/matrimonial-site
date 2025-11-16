@@ -147,7 +147,7 @@ function ProfileCard({ user }: ProfileCardProps) {
       <div className="p-5 sm:p-6">
         {/* Name and Gender */}
         <div className="mb-5">
-          <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2 line-clamp-1 group-hover:text-pink-600 dark:group-hover:text-[#E04F5F] transition-colors duration-300">{user.name}</h3>
+          <h3 className="text-xl sm:text-2xl font-bold text-primary mb-2 line-clamp-1 group-hover:text-pink-600 dark:group-hover:text-[#E04F5F] transition-colors duration-300">{user.name}</h3>
           <div className="flex items-center gap-3">
             {user.gender && (
               <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-gray-50 rounded-full text-gray-700 text-sm font-medium capitalize">
@@ -168,19 +168,19 @@ function ProfileCard({ user }: ProfileCardProps) {
           {user.education && (
             <div className="flex items-center gap-2.5 text-sm bg-gradient-to-r from-gray-50 to-gray-50/50 dark:from-[#241317] dark:to-[#241317]/50 rounded-xl px-3.5 py-2.5 hover:from-pink-50 hover:to-pink-50/50 dark:hover:from-[#1F1417] dark:hover:to-[#1F1417]/50 transition-all duration-300 border border-gray-100 dark:border-[#2F2327] hover:border-pink-200 dark:hover:border-[#E04F5F]">
               <span className="text-pink-600 dark:text-[#E04F5F] text-lg flex-shrink-0">🎓</span>
-              <span className="text-gray-700 dark:text-[#D5D3D7] truncate font-medium" title={user.education}>{user.education}</span>
+              <span className="text-secondary truncate font-medium" title={user.education}>{user.education}</span>
             </div>
           )}
           {user.occupation && (
             <div className="flex items-center gap-2.5 text-sm bg-gradient-to-r from-gray-50 to-gray-50/50 dark:from-[#241317] dark:to-[#241317]/50 rounded-xl px-3.5 py-2.5 hover:from-pink-50 hover:to-pink-50/50 dark:hover:from-[#1F1417] dark:hover:to-[#1F1417]/50 transition-all duration-300 border border-gray-100 dark:border-[#2F2327] hover:border-pink-200 dark:hover:border-[#E04F5F]">
               <span className="text-pink-600 dark:text-[#E04F5F] text-lg flex-shrink-0">💼</span>
-              <span className="text-gray-700 dark:text-[#D5D3D7] truncate font-medium" title={user.occupation}>{user.occupation}</span>
+              <span className="text-secondary truncate font-medium" title={user.occupation}>{user.occupation}</span>
             </div>
           )}
           {(user.city || user.state) && (
             <div className={`flex items-center gap-2.5 text-sm bg-gradient-to-r from-gray-50 to-gray-50/50 dark:from-[#241317] dark:to-[#241317]/50 rounded-xl px-3.5 py-2.5 hover:from-pink-50 hover:to-pink-50/50 dark:hover:from-[#1F1417] dark:hover:to-[#1F1417]/50 transition-all duration-300 border border-gray-100 dark:border-[#2F2327] hover:border-pink-200 dark:hover:border-[#E04F5F] ${user.education && user.occupation ? 'sm:col-span-2' : ''}`}>
               <span className="text-pink-600 dark:text-[#E04F5F] text-lg flex-shrink-0">📍</span>
-              <span className="text-gray-700 dark:text-[#D5D3D7] truncate font-medium" title={`${user.city || ''}${user.state ? `, ${user.state}` : ''}${user.country ? `, ${user.country}` : ''}`}>
+              <span className="text-secondary truncate font-medium" title={`${user.city || ''}${user.state ? `, ${user.state}` : ''}${user.country ? `, ${user.country}` : ''}`}>
                 {user.city}{user.state && `, ${user.state}`}{user.country && `, ${user.country}`}
               </span>
             </div>
@@ -190,7 +190,7 @@ function ProfileCard({ user }: ProfileCardProps) {
         {/* Bio Preview */}
         {user.bio && (
           <div className="mb-5 border-t border-gray-100 pt-4">
-            <p className="text-sm text-gray-600 dark:text-[#D5D3D7] line-clamp-2 leading-relaxed">
+            <p className="text-sm text-secondary line-clamp-2 leading-relaxed">
               {user.bio}
             </p>
           </div>

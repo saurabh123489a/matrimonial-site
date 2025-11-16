@@ -92,11 +92,11 @@ export default function NotificationsPage() {
     <div className="min-h-screen bg-gray-50 dark:bg-[#1A0C11] py-8 transition-colors">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">Notifications</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-primary">Notifications</h1>
           <div className="flex gap-2">
             <button
               onClick={() => setFilter(filter === 'all' ? 'unread' : 'all')}
-              className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-[#D5D3D7] bg-white dark:bg-[#2B0F17] border border-gray-300 dark:border-[#2F2327] rounded-md hover:bg-gray-50 dark:hover:bg-[#241317]"
+              className="px-4 py-2 text-sm font-medium text-secondary bg-white dark:bg-[#2B0F17] border border-gray-300 dark:border-[#2F2327] rounded-md hover:bg-gray-50 dark:hover:bg-[#241317]"
             >
               {filter === 'all' ? 'Unread Only' : 'All'}
             </button>
@@ -121,11 +121,11 @@ export default function NotificationsPage() {
 
         {loading ? (
           <div className="text-center py-12">
-            <p className="text-gray-500">Loading notifications...</p>
+            <p className="text-muted">Loading notifications...</p>
           </div>
         ) : notifications.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-gray-500">No notifications found</p>
+            <p className="text-muted">No notifications found</p>
           </div>
         ) : (
           <div className="space-y-3">
@@ -140,9 +140,9 @@ export default function NotificationsPage() {
                   <div className="flex items-start space-x-3 flex-1">
                     <span className="text-2xl">{getNotificationIcon(notification.type)}</span>
                     <div className="flex-1">
-                      <h3 className="font-semibold text-gray-900 dark:text-white">{notification.title}</h3>
-                      <p className="text-gray-600 dark:text-[#D5D3D7] text-sm mt-1">{notification.message}</p>
-                      <p className="text-xs text-gray-400 dark:text-[#A29CA3] mt-2">
+                      <h3 className="font-semibold text-primary">{notification.title}</h3>
+                      <p className="text-secondary text-sm mt-1">{notification.message}</p>
+                      <p className="text-xs text-muted mt-2">
                         {new Date(notification.createdAt).toLocaleString()}
                       </p>
                       {notification.relatedUserId && (
@@ -174,7 +174,7 @@ export default function NotificationsPage() {
                           console.error('Failed to delete:', error);
                         }
                       }}
-                      className="text-gray-400 dark:text-[#A29CA3] hover:text-red-600 dark:hover:text-[#F25D5D]"
+                      className="text-muted hover:text-red-600 dark:hover:text-[#F25D5D]"
                     >
                       ✕
                     </button>

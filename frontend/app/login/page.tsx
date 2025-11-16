@@ -102,10 +102,10 @@ export default function LoginPage() {
               <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 dark:from-[#E04F5F] dark:to-[#C43A4E] bg-clip-text text-transparent mb-3">
                 {t('auth.welcomeBack') || 'Welcome Back!'}
               </h2>
-              <p className="text-base text-gray-600 dark:text-gray-300 mb-1">
+              <p className="text-base text-secondary mb-1">
                 {t('auth.welcomeMessage') || 'Continue your journey to find your perfect match'}
               </p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
+              <p className="text-sm text-muted">
                 {t('auth.or')}{' '}
                 <Link href="/register" className="font-medium text-pink-600 hover:text-pink-500 dark:text-[#E04F5F] dark:hover:text-[#C43A4E] transition-colors">
                   {t('auth.createAccount')}
@@ -116,10 +116,10 @@ export default function LoginPage() {
 
           {step === 'otp' && (
             <div className="text-center">
-              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-50 mb-2">
+              <h2 className="text-2xl sm:text-3xl font-bold text-primary mb-2">
                 {t('auth.enterOTP')}
               </h2>
-              <p className="text-sm text-gray-600 dark:text-gray-300">
+              <p className="text-sm text-secondary">
                 {t('auth.otpSentTo')}{' '}
                 <span className="font-medium">{phone}</span>
               </p>
@@ -139,7 +139,7 @@ export default function LoginPage() {
               </div>
             )}
             <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1.5">
+              <label htmlFor="phone" className="block text-sm font-medium text-secondary mb-1.5">
                 {t('auth.phoneNumber')}
               </label>
               <input
@@ -147,7 +147,7 @@ export default function LoginPage() {
                 name="phone"
                 type="tel"
                 required
-                className="appearance-none relative block w-full px-4 py-3 border-2 border-gray-300 dark:border-[#2F2327] placeholder-gray-400 dark:placeholder-[#A29CA3] text-gray-900 dark:text-white bg-white dark:bg-[#1F1417] rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F] focus:border-pink-500 dark:focus:border-[#E04F5F] sm:text-sm"
+                className="appearance-none relative block w-full px-4 py-3 border-2 border-gray-300 dark:border-[#2F2327] placeholder-gray-400 dark:placeholder-[#A29CA3] text-primary bg-white dark:bg-[#1F1417] rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F] focus:border-pink-500 dark:focus:border-[#E04F5F] sm:text-sm"
                 placeholder={t('auth.enterPhone')}
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
@@ -194,7 +194,7 @@ export default function LoginPage() {
               </div>
             )}
             <div>
-              <label htmlFor="otp" className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1.5">
+              <label htmlFor="otp" className="block text-sm font-medium text-secondary mb-1.5">
                 {t('auth.otpCode')}
               </label>
               <input
@@ -204,7 +204,7 @@ export default function LoginPage() {
                 required
                 maxLength={6}
                 pattern="[0-9]{6}"
-                className="appearance-none relative block w-full px-4 py-3 border-2 border-gray-300 dark:border-[#2F2327] placeholder-gray-400 dark:placeholder-[#A29CA3] text-gray-900 dark:text-white bg-white dark:bg-[#1F1417] rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F] focus:border-pink-500 dark:focus:border-[#E04F5F] sm:text-sm text-center text-2xl tracking-[0.5em] font-semibold"
+                className="appearance-none relative block w-full px-4 py-3 border-2 border-gray-300 dark:border-[#2F2327] placeholder-gray-400 dark:placeholder-[#A29CA3] text-primary bg-white dark:bg-[#1F1417] rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F] focus:border-pink-500 dark:focus:border-[#E04F5F] sm:text-sm text-center text-2xl tracking-[0.5em] font-semibold"
                 placeholder="000000"
                 value={otp}
                 onChange={(e) => {
@@ -212,7 +212,7 @@ export default function LoginPage() {
                   setOtp(value);
                 }}
               />
-              <p className="mt-2 text-xs text-gray-500 dark:text-gray-400 text-center">
+              <p className="mt-2 text-xs text-muted text-center">
                 {t('auth.otpInstructions') || 'Enter the 6-digit code sent to your phone'}
               </p>
             </div>
@@ -238,7 +238,7 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={handleBack}
-                className="w-full flex justify-center py-2.5 px-4 border-2 border-gray-300 dark:border-[#2F2327] text-sm font-medium rounded-lg text-gray-700 dark:text-[#D5D3D7] bg-white dark:bg-[#2B0F17] hover:bg-gray-50 dark:hover:bg-[#241317] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F] transition-colors"
+                className="w-full flex justify-center py-2.5 px-4 border-2 border-gray-300 dark:border-[#2F2327] text-sm font-medium rounded-lg text-secondary bg-white dark:bg-[#2B0F17] hover:bg-gray-50 dark:hover:bg-[#241317] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F] transition-colors"
               >
                 {t('auth.changePhoneNumber')}
               </button>
