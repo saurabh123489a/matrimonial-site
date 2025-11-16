@@ -277,10 +277,10 @@ export default function Navbar() {
   ];
 
   // Authenticated user links (all menu items NOT in bottom navigation)
+  // Note: Settings is hardcoded separately, so exclude it here to avoid duplicates
   const authenticatedLinks = isAuthenticated ? [
     { href: '/notifications', label: t('common.notifications') },
     { href: '/profile-views', label: t('common.profileViews') },
-    { href: '/settings', label: t('settings.title') || 'Settings' },
   ] : [];
 
   // Admin links (only for admins)
@@ -504,17 +504,27 @@ export default function Navbar() {
                           <Link
                             href="/profile"
                             onClick={() => setShowUserMenu(false)}
-                            className={`flex items-center gap-3 px-4 py-3 text-sm font-medium transition-all duration-200 rounded-lg transform active:scale-95 ${
+                            className={`flex items-center justify-between gap-3 px-4 py-3 text-sm font-medium transition-all duration-200 rounded-lg transform active:scale-95 ${
                               pathname === '/profile'
-                                ? 'bg-pink-50'
+                                ? 'bg-pink-50 text-[#800020]'
                                 : 'text-gray-700'
                             }`}
                             style={{ animationDelay: '0.05s' }}
                           >
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                            </svg>
-                            <span>{t('profile.myProfile') || 'My Profile'}</span>
+                            <div className="flex items-center gap-3">
+                              <svg className={`w-5 h-5 ${pathname === '/profile' ? 'text-pink-600' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                              </svg>
+                              <span>{t('profile.myProfile') || 'My Profile'}</span>
+                            </div>
+                            {pathname === '/profile' && (
+                              <div className="flex items-center gap-1">
+                                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                                <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                </svg>
+                              </div>
+                            )}
                           </Link>
                           
                           {/* Settings Link */}
@@ -538,8 +548,13 @@ export default function Navbar() {
                           {/* Divider */}
                           <div className="border-t border-gray-200"></div>
                           
-                          {/* Additional Links */}
-                          {additionalLinks.map((link, index) => (
+                          {/* Additional Links - Filter out duplicates */}
+                          {additionalLinks
+                            .filter((link, index, self) => 
+                              // Remove duplicates and exclude /settings since it's hardcoded above
+                              index === self.findIndex(l => l.href === link.href) && link.href !== '/settings'
+                            )
+                            .map((link, index) => (
                             <Link
                               key={link.href}
                               href={link.href}
@@ -556,7 +571,6 @@ export default function Navbar() {
                                  link.href === '/about' ? '📧' :
                                  link.href === '/notifications' ? '🔔' :
                                  link.href === '/profile-views' ? '👁️' :
-                                 link.href === '/settings' ? '⚙️' :
                                  link.href === '/settings/language' ? '🌐' :
                                  link.href === '/settings/privacy' ? '🔒' :
                                  link.href === '/admin' ? '⚙️' :
