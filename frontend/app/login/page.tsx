@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { authApi } from '@/lib/api';
 import { auth } from '@/lib/auth';
 import { useTranslation } from '@/hooks/useTranslation';
+import Logo from '@/components/Logo';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -92,11 +93,9 @@ export default function LoginPage() {
         <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 space-y-6">
           {step === 'phone' && (
             <div className="text-center mb-6">
-              {/* Logo/Icon */}
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-pink-500 to-purple-600 rounded-2xl shadow-lg mb-4">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
+              {/* Logo */}
+              <div className="flex justify-center mb-4">
+                <Logo size="lg" />
               </div>
               
               {/* Welcoming Text */}

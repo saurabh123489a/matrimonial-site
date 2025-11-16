@@ -43,16 +43,16 @@ export default function CustomDatePicker({
       {label && (
         <label 
           htmlFor={props.id} 
-          className="block text-sm font-semibold text-gray-700 dark:text-pink-200 mb-2"
+          className="block text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1.5 sm:mb-2"
         >
           {label} {required && <span className="text-red-500">*</span>}
         </label>
       )}
       <div className="relative">
         {/* Calendar Icon */}
-        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
+        <div className="absolute inset-y-0 left-0 pl-3 sm:pl-4 flex items-center pointer-events-none z-10">
           <svg 
-            className={`h-5 w-5 transition-colors duration-200 ${
+            className={`h-4 w-4 sm:h-5 sm:w-5 transition-colors duration-200 ${
               isFocused || value
                 ? 'text-pink-500 dark:text-pink-400' 
                 : 'text-gray-400 dark:text-gray-500'
@@ -81,19 +81,20 @@ export default function CustomDatePicker({
           onChange={onChange}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
+          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20 touch-target"
         />
 
         {/* Custom Styled Display */}
         <div
           onClick={() => inputRef.current?.showPicker?.() || inputRef.current?.focus()}
           className={`
-            block w-full pl-12 pr-4 py-3 
-            border-2 rounded-xl 
+            block w-full pl-10 sm:pl-12 pr-10 sm:pr-12 py-2.5 sm:py-3 
+            border-2 rounded-lg sm:rounded-xl 
             transition-all duration-200 
-            cursor-pointer
+            cursor-pointer touch-target
             bg-white dark:bg-[#1f212a]
-            text-gray-900 dark:text-pink-100
+            text-sm sm:text-base
+            text-gray-900 dark:text-gray-50
             ${error 
               ? 'border-red-400 bg-red-50 dark:bg-red-900/20 dark:border-red-500' 
               : isFocused
@@ -112,9 +113,9 @@ export default function CustomDatePicker({
         </div>
 
         {/* Calendar Dropdown Indicator */}
-        <div className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
+        <div className="absolute inset-y-0 right-0 flex items-center pr-3 sm:pr-4 pointer-events-none">
           <svg 
-            className={`w-5 h-5 transition-colors duration-200 ${
+            className={`w-4 h-4 sm:w-5 sm:h-5 transition-colors duration-200 ${
               isFocused || value
                 ? 'text-pink-500 dark:text-pink-400' 
                 : 'text-gray-400 dark:text-gray-500'
@@ -133,11 +134,11 @@ export default function CustomDatePicker({
         </div>
       </div>
       {error && (
-        <p className="mt-2 text-sm text-red-600 dark:text-red-400 flex items-center">
-          <svg className="w-4 h-4 mr-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+        <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm text-red-600 dark:text-red-400 flex items-start">
+          <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-1 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
           </svg>
-          {error}
+          <span className="leading-relaxed">{error}</span>
         </p>
       )}
     </div>

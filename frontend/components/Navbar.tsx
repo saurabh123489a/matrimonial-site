@@ -8,6 +8,7 @@ import { notificationApi, userApi } from '@/lib/api';
 import { useTranslation } from '@/hooks/useTranslation';
 import LanguageSwitcher from './LanguageSwitcher';
 import ThemeToggle from './ThemeToggle';
+import Logo from './Logo';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useRouter } from 'next/navigation';
@@ -258,12 +259,12 @@ export default function Navbar() {
             )}
             
             {/* Logo - Left on mobile (right after hamburger/spacer), Center on larger screens */}
-            <Link 
-              href="/" 
-              className="absolute left-[56px] sm:left-1/2 sm:transform sm:-translate-x-1/2 text-lg sm:text-xl md:text-2xl font-light text-gray-900 dark:text-white tracking-tight px-2 truncate max-w-[60vw] sm:max-w-none flex items-center justify-center"
-            >
-              💍 {t('common.appName')}
-            </Link>
+            <div className="absolute left-[56px] sm:left-1/2 sm:transform sm:-translate-x-1/2 px-2 flex items-center justify-center">
+              <Logo 
+                size="md" 
+                className="truncate max-w-[60vw] sm:max-w-none"
+              />
+            </div>
             
             {/* Right: Icons */}
             <div className="flex items-center space-x-1 sm:space-x-2 md:space-x-3 flex-shrink-0">

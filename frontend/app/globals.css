@@ -275,66 +275,60 @@ body {
 
 /* Heading Styles */
 h1 {
-  font-size: 2.5rem; /* 40px - Mobile */
+  font-size: 1.875rem; /* 30px - Mobile (was h2) */
   font-weight: 700; /* Bold */
-  line-height: 1.1; /* Tight for large headings */
-  letter-spacing: -0.02em;
-  color: var(--foreground);
-}
-
-@media (min-width: 640px) {
-  h1 {
-    font-size: 3rem; /* 48px - Tablet */
-  }
-}
-
-@media (min-width: 1024px) {
-  h1 {
-    font-size: 3.75rem; /* 60px - Desktop */
-  }
-}
-
-h2 {
-  font-size: 1.875rem; /* 30px - Mobile */
-  font-weight: 600; /* Semibold */
   line-height: 1.2; /* Tight but readable */
   letter-spacing: -0.01em;
   color: var(--foreground);
 }
 
 @media (min-width: 640px) {
+  h1 {
+    font-size: 2.25rem; /* 36px - Tablet (was h2) */
+  }
+}
+
+@media (min-width: 1024px) {
+  h1 {
+    font-size: 2.5rem; /* 40px - Desktop (was h2) */
+  }
+}
+
+h2 {
+  font-size: 1.5rem; /* 24px - Mobile (was h3) */
+  font-weight: 600; /* Semibold */
+  line-height: 1.3; /* Comfortable */
+  letter-spacing: -0.01em;
+  color: var(--foreground);
+}
+
+@media (min-width: 640px) {
   h2 {
-    font-size: 2.25rem; /* 36px - Tablet */
+    font-size: 1.75rem; /* 28px - Tablet (was h3) */
   }
 }
 
 @media (min-width: 1024px) {
   h2 {
-    font-size: 2.5rem; /* 40px - Desktop */
+    font-size: 2rem; /* 32px - Desktop (was h3) */
   }
 }
 
 h3 {
-  font-size: 1.5rem; /* 24px - Mobile */
+  font-size: 1.25rem; /* 20px - Mobile (was h4) */
   font-weight: 600; /* Semibold */
-  line-height: 1.3; /* Comfortable */
+  line-height: 1.4; /* Comfortable */
   color: var(--foreground);
 }
 
 @media (min-width: 640px) {
   h3 {
-    font-size: 1.75rem; /* 28px - Tablet */
-  }
-}
-
-@media (min-width: 1024px) {
-  h3 {
-    font-size: 2rem; /* 32px - Desktop */
+    font-size: 1.5rem; /* 24px - Tablet+ (was h4) */
   }
 }
 
 h4 {
-  font-size: 1.25rem; /* 20px - Mobile */
+  font-size: 1.125rem; /* 18px - Mobile */
   font-weight: 600; /* Semibold */
   line-height: 1.4; /* Comfortable */
   color: var(--foreground);
@@ -342,7 +336,7 @@ h4 {
 
 @media (min-width: 640px) {
   h4 {
-    font-size: 1.5rem; /* 24px - Tablet+ */
+    font-size: 1.25rem; /* 20px - Tablet+ */
   }
 }
 
