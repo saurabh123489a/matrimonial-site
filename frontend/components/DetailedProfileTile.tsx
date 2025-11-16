@@ -9,6 +9,7 @@ import { useProfileAction } from '@/contexts/ProfileActionContext';
 import LazyImage from './LazyImage';
 import { getProfileUrl, getProfileImageUrl } from '@/lib/profileUtils';
 import QuickMessageModal from './QuickMessageModal';
+import { Badge } from './ui';
 
 interface DetailedProfileTileProps {
   user: User;
@@ -276,12 +277,14 @@ export default function DetailedProfileTile({ user }: DetailedProfileTileProps) 
             {user.hobbies && user.hobbies.length > 0 && (
               <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-2 sm:mb-3">
                 {user.hobbies.slice(0, 2).map((hobby, index) => (
-                  <span 
+                  <Badge 
                     key={index}
-                    className="bg-white/20 backdrop-blur-sm text-white text-xs px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full font-medium border border-white/30"
+                    variant="default"
+                    size="sm"
+                    className="bg-white/20 backdrop-blur-sm text-white border border-white/30"
                   >
                     {hobby}
-                  </span>
+                  </Badge>
                 ))}
               </div>
             )}
@@ -289,9 +292,9 @@ export default function DetailedProfileTile({ user }: DetailedProfileTileProps) 
             {/* Horoscope Match and Profile Management */}
             <div className="flex flex-wrap items-center gap-2 text-xs">
               {user.horoscopeDetails && (
-                <span className="bg-yellow-500/90 backdrop-blur-sm px-2 py-0.5 sm:py-1 rounded font-medium text-xs">
+                <Badge variant="warning" size="sm" className="backdrop-blur-sm">
                   Horoscope Available
-                </span>
+                </Badge>
               )}
               <span className="text-white/80 text-xs">
                 Profile managed by {getProfileManagedBy()}

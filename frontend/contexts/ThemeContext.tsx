@@ -2,12 +2,14 @@
 
 import { createContext, useContext, ReactNode } from 'react';
 
+type ColorTheme = 'pink' | 'blue' | 'green' | 'purple' | 'amber' | 'red' | 'teal' | 'indigo' | 'cyan' | 'rose' | 'violet' | 'emerald' | 'lime' | 'fuchsia' | 'sky' | 'orange' | 'yellow' | 'slate' | 'stone';
+
 interface ThemeContextType {
   theme: 'light';
-  colorTheme: 'pink';
+  colorTheme: ColorTheme;
   resolvedTheme: 'light';
   setTheme: (theme: 'light') => void;
-  setColorTheme: (colorTheme: 'pink') => void;
+  setColorTheme: (colorTheme: ColorTheme) => void;
   toggleTheme: () => void;
 }
 
@@ -19,7 +21,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     colorTheme: 'pink',
     resolvedTheme: 'light',
     setTheme: () => {}, // No-op
-    setColorTheme: () => {}, // No-op
+    setColorTheme: () => {}, // No-op - theme switching disabled
     toggleTheme: () => {}, // No-op
   };
 

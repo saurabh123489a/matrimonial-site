@@ -10,6 +10,7 @@ import { useNotifications } from '@/contexts/NotificationContext';
 import QuickMessageModal from './QuickMessageModal';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import LoadingSpinner from './LoadingSpinner';
+import { Badge } from './ui';
 
 interface ProfileCardProps {
   user: User;
@@ -190,12 +191,9 @@ function ProfileCard({ user }: ProfileCardProps) {
         {user.hobbies && user.hobbies.length > 0 && (
           <div className="flex flex-wrap items-center gap-2 mb-5">
             {user.hobbies.slice(0, 2).map((hobby, index) => (
-              <span 
-                key={index}
-                className="inline-flex items-center px-3 py-1 bg-pink-50 text-pink-700 text-xs font-medium rounded-full border border-pink-200"
-              >
+              <Badge key={index} variant="accent" size="md">
                 {hobby}
-              </span>
+              </Badge>
             ))}
           </div>
         )}

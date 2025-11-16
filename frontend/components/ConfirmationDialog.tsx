@@ -1,5 +1,7 @@
 'use client';
 
+import { Button, Card, Typography, Spacing } from './ui';
+
 interface ConfirmationDialogProps {
   isOpen: boolean;
   title: string;
@@ -23,34 +25,40 @@ export default function ConfirmationDialog({
 }: ConfirmationDialogProps) {
   if (!isOpen) return null;
 
-  const variantStyles = {
-    danger: 'bg-red-600 hover:bg-red-700',
-    warning: 'bg-yellow-600 hover:bg-yellow-700',
-    info: 'bg-pink-600 hover:bg-pink-700',
+  const variantMap: Record<'danger' | 'warning' | 'info', 'primary' | 'secondary' | 'danger'> = {
+    danger: 'danger',
+    warning: 'secondary',
+    info: 'primary',
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white">
+    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+      <Card variant="elevated" padding="lg" className="max-w-md w-full">
         <div className="text-center">
-          <h3 className="text-xl font-bold text-gray-900">{title}</h3>
-          <p className="text-gray-600">{message}</p>
+          <Typography variant="h3" color="primary" weight="bold">
+            {title}
+          </Typography>
+          <Spacing size="sm" />
+          <Typography variant="body" color="muted">
+            {message}
+          </Typography>
         </div>
+        <Spacing size="lg" />
         <div className="flex justify-end gap-3">
-          <button
+          <Button
+            variant="outline"
             onClick={onCancel}
-            className="px-4 py-2 border border-gray-300"
           >
             {cancelLabel}
-          </button>
-          <button
+          </Button>
+          <Button
+            variant={variantMap[variant]}
             onClick={onConfirm}
-            className={`px-4 py-2 text-white rounded-lg transition-colors font-medium ${variantStyles[variant]}`}
           >
             {confirmLabel}
-          </button>
+          </Button>
         </div>
-      </div>
+      </Card>
     </div>
   );
 }
