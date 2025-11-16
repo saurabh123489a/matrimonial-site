@@ -612,9 +612,9 @@ export default function MyProfilePage() {
   const dietaryOptions = ['vegetarian', 'non-vegetarian', 'vegan', 'jain'];
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-[#0f1117] pb-24 transition-colors">
+    <div className="min-h-screen bg-gray-50 dark:bg-[#1A0C11] pb-24 transition-colors">
       {/* Header - Mobile First Design */}
-      <div className="bg-white dark:bg-[#181b23] border-b border-gray-200 dark:border-[#303341] sticky top-0 z-30">
+      <div className="bg-white dark:bg-[#2B0F17] border-b border-gray-200 dark:border-[#2F2327] sticky top-0 z-30">
         <div className="flex items-center justify-between px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
           <button
             onClick={() => {
@@ -671,13 +671,13 @@ export default function MyProfilePage() {
               }
             }}
             aria-label={editing ? 'Cancel editing and discard changes' : 'Go back'}
-            className="p-2 -ml-2 text-gray-700 dark:text-gray-50 hover:bg-gray-100 dark:hover:bg-[#1f212a] rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2"
+            className="p-2 -ml-2 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-[#241317] rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F] focus:ring-offset-2"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight text-gray-900 dark:text-gray-50">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
             {editing ? 'Edit Profile' : t('profile.myProfile')}
           </h1>
           <div className="flex items-center gap-1">
@@ -685,7 +685,7 @@ export default function MyProfilePage() {
               <button
                 onClick={() => setShowShareModal(true)}
                 aria-label="Share profile"
-                className="p-2 -mr-2 text-gray-700 dark:text-gray-50 hover:bg-gray-100 dark:hover:bg-[#1f212a] rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2"
+                className="p-2 -mr-2 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-[#241317] rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F] focus:ring-offset-2"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
@@ -695,7 +695,7 @@ export default function MyProfilePage() {
               <button
                 onClick={() => setEditing(true)}
                 aria-label="Edit profile"
-                className="p-2 -mr-2 text-gray-700 dark:text-gray-50 hover:bg-gray-100 dark:hover:bg-[#1f212a] rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2"
+                className="p-2 -mr-2 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-[#241317] rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F] focus:ring-offset-2"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
@@ -715,9 +715,9 @@ export default function MyProfilePage() {
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
               </svg>
               <div className="flex-1">
-                <p className="text-sm text-red-800 dark:text-red-200 font-medium">{error}</p>
+                <p className="text-sm text-red-800 dark:text-[#F25D5D] font-medium">{error}</p>
                 {Object.keys(fieldErrors).length > 0 && (
-                  <p className="text-xs text-red-600 dark:text-red-300 mt-1">
+                  <p className="text-xs text-red-600 dark:text-[#F25D5D] mt-1">
                     Please check the fields marked in red below
                   </p>
                 )}
@@ -796,7 +796,7 @@ export default function MyProfilePage() {
                   };
                   input.click();
                 }}
-                className="w-full h-19 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 flex flex-col items-center justify-center text-gray-500 dark:text-gray-400 hover:border-pink-500 dark:hover:border-pink-500 transition-colors"
+                className="w-full h-19 rounded-lg border-2 border-dashed border-gray-300 dark:border-[#2F2327] flex flex-col items-center justify-center text-gray-500 dark:text-[#A29CA3] hover:border-pink-500 dark:hover:border-[#E04F5F] transition-colors"
               >
                 <svg className="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -808,10 +808,10 @@ export default function MyProfilePage() {
                     </div>
 
         {/* Profile Completion */}
-        <div className="bg-white dark:bg-[#181b23] rounded-lg p-4 sm:p-6 mb-6 sm:mb-8">
+        <div className="bg-white dark:bg-[#2B0F17] rounded-lg p-4 sm:p-6 mb-6 sm:mb-8 border dark:border-[#2F2327]">
           <div className="flex items-center justify-between mb-4">
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-200">Profile Completion</span>
-            <span className="text-sm font-semibold text-pink-600 dark:text-red-500">
+            <span className="text-sm font-medium text-gray-700 dark:text-[#D5D3D7]">Profile Completion</span>
+            <span className="text-sm font-semibold text-pink-600 dark:text-[#E04F5F]">
               {user.isProfileComplete ? '100%' : '80%'}
             </span>
           </div>
@@ -832,9 +832,9 @@ export default function MyProfilePage() {
             aria-label={`${expandedSections.aboutMe ? 'Collapse' : 'Expand'} About Me section`}
             className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 rounded-lg"
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-gray-900 dark:text-gray-50">About Me</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-gray-900 dark:text-white">About Me</h2>
             <svg 
-              className={`w-5 h-5 text-gray-500 dark:text-gray-400 transition-transform ${expandedSections.aboutMe ? 'rotate-180' : ''}`}
+              className={`w-5 h-5 text-gray-500 dark:text-[#A29CA3] transition-transform ${expandedSections.aboutMe ? 'rotate-180' : ''}`}
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
@@ -848,7 +848,7 @@ export default function MyProfilePage() {
             <div id="about-me-section" className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
               {/* Full Name */}
             <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Full Name <span className="text-red-500">*</span></label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Full Name <span className="text-red-500">*</span></label>
               {editing ? (
                 <input
                   type="text"
@@ -857,7 +857,7 @@ export default function MyProfilePage() {
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-gray-50 rounded-lg bg-gray-50 dark:bg-gray-800 cursor-not-allowed"
                 />
               ) : (
-                <p className="text-gray-900 dark:text-gray-50">{user.name}</p>
+                <p className="text-gray-900 dark:text-white">{user.name}</p>
               )}
             </div>
 
@@ -869,7 +869,7 @@ export default function MyProfilePage() {
                     type="number"
                     value={user.age || ''}
                     readOnly
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-gray-50 rounded-lg bg-gray-50 dark:bg-gray-800"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg bg-gray-50 dark:bg-[#1F1417]"
                   />
                 ) : (
                   <p className="text-gray-900 dark:text-gray-50">{user.age || 'Not provided'}</p>

@@ -46,37 +46,41 @@
 }
 
 .dark {
-  /* Background Colors - Dark Mode */
-  --background: #0f1117;
-  --background-secondary: #181b23;
-  --background-tertiary: #1f212a;
+  /* Background Colors - Dark Maroon Matrimonial Theme */
+  --background: #1A0C11; /* Primary dark background */
+  --background-secondary: #2B0F17; /* Primary surface */
+  --background-tertiary: #241317; /* Elevated surface */
+  --background-input: #1F1417; /* Input/bg secondary */
   
-  /* Foreground Colors - Dark Mode */
-  --foreground: #f5f6f9;
-  --foreground-secondary: #9ca3af;
-  --foreground-muted: #6b7280;
+  /* Foreground Colors - Dark Maroon Theme */
+  --foreground: #FFFFFF; /* Primary text */
+  --foreground-secondary: #D5D3D7; /* Secondary text */
+  --foreground-muted: #A29CA3; /* Muted text */
   
-  /* Primary Colors - Dark Mode (Red accents like in image) */
-  --primary: #ef4444; /* Red-500 - Main brand color */
-  --primary-dark: #dc2626; /* Red-600 - Hover states */
-  --primary-light: #f87171; /* Red-400 - Backgrounds/accents */
-  --primary-medium: #fca5a5; /* Red-300 - Medium emphasis */
+  /* Primary Colors - Dark Maroon Theme */
+  --primary: #E04F5F; /* Primary accent */
+  --primary-dark: #C43A4E; /* Secondary accent / Hover states */
+  --primary-light: #E04F5F; /* Light variant */
+  --primary-medium: #C43A4E; /* Medium emphasis */
   
-  /* Secondary Colors - Dark Mode */
-  --secondary: #9ca3af; /* Gray-400 - Supporting text */
-  --secondary-dark: #1a1c23; /* Card backgrounds */
-  --secondary-light: #1f212a; /* Elevated surfaces */
+  /* Secondary Colors - Dark Maroon Theme */
+  --secondary: #C43A4E; /* Secondary accent */
+  --secondary-dark: #241317; /* Elevated surface */
+  --secondary-light: #1F1417; /* Input/bg secondary */
   
-  /* Accent Colors - Dark Mode (Red accents) */
-  --accent: #ef4444; /* Red-500 - Accents */
-  --accent-gradient-start: #dc2626; /* Red-600 */
-  --accent-gradient-end: #ef4444; /* Red-500 */
+  /* Accent Colors - Dark Maroon Theme */
+  --accent: #E04F5F; /* Primary accent */
+  --accent-gradient-start: #E04F5F; /* Gradient start */
+  --accent-gradient-end: #C43A4E; /* Gradient end */
   
-  /* Status Colors - Dark Mode */
-  --success: #34d399; /* Green-400 */
-  --error: #f87171; /* Red-400 */
-  --warning: #fbbf24; /* Amber-400 */
-  --info: #60a5fa; /* Blue-400 */
+  /* Border Colors */
+  --border: #2F2327; /* Border color */
+  
+  /* Status Colors - Dark Maroon Theme */
+  --success: #64D39A; /* Success green */
+  --error: #F25D5D; /* Danger red */
+  --warning: #F5C75B; /* Warning yellow */
+  --info: #E04F5F; /* Info (using primary accent) */
 }
 
 .dark.dark-blue {
@@ -365,25 +369,25 @@ li {
   line-height: 1.6;
 }
 
-/* Improved Dark Mode Text Contrast */
+/* Dark Maroon Theme Text Colors */
 .dark {
-  --foreground: #f5f6f9; /* Light gray for headings */
-  --foreground-secondary: #e5e7eb; /* Lighter gray for body text - better contrast */
-  --foreground-muted: #d1d5db; /* Even lighter for secondary text */
+  --foreground: #FFFFFF; /* Primary text */
+  --foreground-secondary: #D5D3D7; /* Secondary text */
+  --foreground-muted: #A29CA3; /* Muted text */
 }
 
-/* Ensure sufficient contrast for all text in dark mode */
+/* Ensure sufficient contrast for all text in dark maroon theme */
 .dark h1,
 .dark h2,
 .dark h3,
 .dark h4 {
-  color: #f9fafb; /* Gray-50 - maximum contrast */
+  color: #FFFFFF; /* Primary text - maximum contrast */
 }
 
 .dark p,
 .dark span,
 .dark div {
-  color: #e5e7eb; /* Gray-200 - good contrast for body text */
+  color: #D5D3D7; /* Secondary text - good contrast */
 }
 
 .profile-card {

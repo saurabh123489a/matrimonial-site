@@ -22,7 +22,7 @@ export default function Home() {
 
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0f1117] transition-colors">
+    <div className="min-h-screen bg-white dark:bg-[#1A0C11] transition-colors">
       <SEOStructuredData type="home" />
       {/* Running Welcome Message - Temporary */}
       {showWelcomeMessage && (

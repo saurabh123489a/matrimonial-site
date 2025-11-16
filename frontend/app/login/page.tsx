@@ -40,9 +40,9 @@ export default function LoginPage() {
       }
     } catch (err: any) {
       if ((err as any).isCorsError || err.code === 'ERR_NETWORK' || err.code === 'ECONNREFUSED') {
-        setError('Unable to connect to server. Please ensure the backend is running on port 5050.');
+        setError(t('auth.errors.connectionError') || 'Unable to connect to server. Please ensure the backend is running on port 5050.');
       } else {
-        setError(err.response?.data?.message || err.message || 'Failed to send OTP. Please try again.');
+        setError(err.response?.data?.message || err.message || t('auth.errors.sendOTPFailed') || 'Failed to send OTP. Please try again.');
       }
     } finally {
       setLoading(false);
@@ -62,12 +62,12 @@ export default function LoginPage() {
         router.push('/profile');
         return;
       }
-      setError('Invalid OTP. Please try again.');
+      setError(t('auth.errors.invalidOTP') || 'Invalid OTP. Please try again.');
     } catch (err: any) {
       if ((err as any).isCorsError || err.code === 'ERR_NETWORK' || err.code === 'ECONNREFUSED') {
-        setError('Unable to connect to server. Please ensure the backend is running on port 5050.');
+        setError(t('auth.errors.connectionError') || 'Unable to connect to server. Please ensure the backend is running on port 5050.');
       } else {
-        setError(err.response?.data?.message || err.message || 'Invalid OTP. Please try again.');
+        setError(err.response?.data?.message || err.message || t('auth.errors.invalidOTP') || 'Invalid OTP. Please try again.');
       }
     } finally {
       setLoading(false);
@@ -90,7 +90,7 @@ export default function LoginPage() {
       <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
 
       <div className="max-w-md w-full relative z-10">
-        <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 space-y-6">
+        <div className="bg-white dark:bg-[#2B0F17] rounded-2xl shadow-xl p-6 sm:p-8 space-y-6 border dark:border-[#2F2327]">
           {step === 'phone' && (
             <div className="text-center mb-6">
               {/* Logo */}
@@ -99,15 +99,15 @@ export default function LoginPage() {
               </div>
               
               {/* Welcoming Text */}
-              <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent mb-3">
-                Welcome Back!
+              <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 dark:from-[#E04F5F] dark:to-[#C43A4E] bg-clip-text text-transparent mb-3">
+                {t('auth.welcomeBack') || 'Welcome Back!'}
               </h2>
               <p className="text-base text-gray-600 dark:text-gray-300 mb-1">
-                Continue your journey to find your perfect match
+                {t('auth.welcomeMessage') || 'Continue your journey to find your perfect match'}
               </p>
               <p className="text-sm text-gray-500 dark:text-gray-400">
                 {t('auth.or')}{' '}
-                <Link href="/register" className="font-medium text-pink-600 hover:text-pink-500 transition-colors">
+                <Link href="/register" className="font-medium text-pink-600 hover:text-pink-500 dark:text-[#E04F5F] dark:hover:text-[#C43A4E] transition-colors">
                   {t('auth.createAccount')}
                 </Link>
               </p>
@@ -147,7 +147,7 @@ export default function LoginPage() {
                 name="phone"
                 type="tel"
                 required
-                className="appearance-none relative block w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 placeholder-gray-400 dark:placeholder-gray-500 text-gray-900 dark:text-gray-50 bg-white dark:bg-[#1f212a] rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-red-500 focus:border-pink-500 dark:focus:border-red-500 sm:text-sm"
+                className="appearance-none relative block w-full px-4 py-3 border-2 border-gray-300 dark:border-[#2F2327] placeholder-gray-400 dark:placeholder-[#A29CA3] text-gray-900 dark:text-white bg-white dark:bg-[#1F1417] rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F] focus:border-pink-500 dark:focus:border-[#E04F5F] sm:text-sm"
                 placeholder={t('auth.enterPhone')}
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
@@ -173,7 +173,7 @@ export default function LoginPage() {
                     <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                     </svg>
-                    Continue with phone
+                    {t('auth.continueWithPhone') || 'Continue with phone'}
                   </>
                 )}
               </button>
@@ -204,7 +204,7 @@ export default function LoginPage() {
                 required
                 maxLength={6}
                 pattern="[0-9]{6}"
-                className="appearance-none relative block w-full px-4 py-3 border-2 border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 sm:text-sm text-center text-2xl tracking-[0.5em] font-semibold"
+                className="appearance-none relative block w-full px-4 py-3 border-2 border-gray-300 dark:border-[#2F2327] placeholder-gray-400 dark:placeholder-[#A29CA3] text-gray-900 dark:text-white bg-white dark:bg-[#1F1417] rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F] focus:border-pink-500 dark:focus:border-[#E04F5F] sm:text-sm text-center text-2xl tracking-[0.5em] font-semibold"
                 placeholder="000000"
                 value={otp}
                 onChange={(e) => {
@@ -213,7 +213,7 @@ export default function LoginPage() {
                 }}
               />
               <p className="mt-2 text-xs text-gray-500 dark:text-gray-400 text-center">
-                Enter the 6-digit code sent to your phone
+                {t('auth.otpInstructions') || 'Enter the 6-digit code sent to your phone'}
               </p>
             </div>
 
@@ -238,7 +238,7 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={handleBack}
-                className="w-full flex justify-center py-2.5 px-4 border-2 border-gray-300 dark:border-gray-600 text-sm font-medium rounded-lg text-gray-700 dark:text-gray-200 bg-white dark:bg-[#181b23] hover:bg-gray-50 dark:hover:bg-[#1f212a] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 dark:focus:ring-red-500 transition-colors"
+                className="w-full flex justify-center py-2.5 px-4 border-2 border-gray-300 dark:border-[#2F2327] text-sm font-medium rounded-lg text-gray-700 dark:text-[#D5D3D7] bg-white dark:bg-[#2B0F17] hover:bg-gray-50 dark:hover:bg-[#241317] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F] transition-colors"
               >
                 {t('auth.changePhoneNumber')}
               </button>

@@ -163,7 +163,7 @@ export default function RootLayout({
         )}
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white dark:bg-[#0f1117] text-gray-900 dark:text-gray-50 transition-colors`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white dark:bg-[#1A0C11] text-gray-900 dark:text-white transition-colors`}
       >
         <ThemeProvider>
           <LanguageProvider>
@@ -171,7 +171,7 @@ export default function RootLayout({
               <ProfileActionProvider>
                 <GoogleAnalytics />
                 <Navbar />
-                <main className="min-h-screen bg-gray-50 dark:bg-black transition-colors pb-32 sm:pb-28 safe-area-bottom">
+                <main className="min-h-screen bg-gray-50 dark:bg-[#1A0C11] transition-colors pb-32 sm:pb-28 safe-area-bottom">
                   {children}
                 </main>
                 <BottomActionBar />

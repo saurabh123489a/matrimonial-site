@@ -27,14 +27,14 @@ export default function LoadingSpinner({
   return (
     <div className={`flex flex-col items-center justify-center ${className}`}>
       <div
-        className={`${sizeClasses[size]} animate-spin rounded-full border-b-2 border-pink-600 dark:border-pink-400`}
+        className={`${sizeClasses[size]} animate-spin rounded-full border-b-2 border-pink-600 dark:border-red-500`}
         role="status"
         aria-label="Loading"
       >
         <span className="sr-only">Loading...</span>
       </div>
       {displayText && (
-        <p className="mt-2 text-sm text-gray-600 dark:text-pink-300 text-center">{displayText}</p>
+        <p className="mt-2 text-sm text-gray-600 dark:text-gray-300 text-center">{displayText}</p>
       )}
     </div>
   );

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, memo } from 'react';
 
 interface CustomDatePickerProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
   label?: string;
@@ -10,7 +10,7 @@ interface CustomDatePickerProps extends Omit<React.InputHTMLAttributes<HTMLInput
   max?: string;
 }
 
-export default function CustomDatePicker({
+function CustomDatePicker({
   label,
   error,
   required,
@@ -43,7 +43,7 @@ export default function CustomDatePicker({
       {label && (
         <label 
           htmlFor={props.id} 
-          className="block text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1.5 sm:mb-2"
+          className="block text-xs sm:text-sm font-semibold text-gray-700 dark:text-[#D5D3D7] mb-1.5 sm:mb-2"
         >
           {label} {required && <span className="text-red-500">*</span>}
         </label>
@@ -54,8 +54,8 @@ export default function CustomDatePicker({
           <svg 
             className={`h-4 w-4 sm:h-5 sm:w-5 transition-colors duration-200 ${
               isFocused || value
-                ? 'text-pink-500 dark:text-red-500' 
-                : 'text-gray-400 dark:text-gray-500'
+                ? 'text-pink-500 dark:text-[#E04F5F]' 
+                : 'text-gray-400 dark:text-[#A29CA3]'
             }`}
             fill="none" 
             stroke="currentColor" 
@@ -92,21 +92,21 @@ export default function CustomDatePicker({
             border-2 rounded-lg sm:rounded-xl 
             transition-all duration-200 
             cursor-pointer touch-target
-            bg-white dark:bg-[#1f212a]
+            bg-white dark:bg-[#1F1417]
             text-sm sm:text-base
-            text-gray-900 dark:text-gray-50
+            text-gray-900 dark:text-white
             ${error 
-              ? 'border-red-400 bg-red-50 dark:bg-red-900/20 dark:border-red-500' 
+              ? 'border-red-400 bg-red-50 dark:bg-[#F25D5D]/10 dark:border-[#F25D5D]' 
               : isFocused
-                ? 'border-pink-500 bg-white dark:bg-[#1f212a] ring-2 ring-pink-500 ring-opacity-20'
-                : 'border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-[#1f212a] hover:border-pink-300 dark:hover:border-pink-600'
+                ? 'border-pink-500 dark:border-[#E04F5F] bg-white dark:bg-[#1F1417] ring-2 ring-pink-500 dark:ring-[#E04F5F] ring-opacity-20'
+                : 'border-gray-200 dark:border-[#2F2327] bg-gray-50 dark:bg-[#1F1417] hover:border-pink-300 dark:hover:border-[#E04F5F]'
             }
-            ${!value ? 'text-gray-400 dark:text-gray-500' : ''}
+            ${!value ? 'text-gray-400 dark:text-[#A29CA3]' : ''}
             ${className}
           `}
         >
           {displayValue || (
-            <span className="text-gray-400 dark:text-gray-500">
+            <span className="text-gray-400 dark:text-[#A29CA3]">
               Select date
             </span>
           )}
@@ -117,8 +117,8 @@ export default function CustomDatePicker({
           <svg 
             className={`w-4 h-4 sm:w-5 sm:h-5 transition-colors duration-200 ${
               isFocused || value
-                ? 'text-pink-500 dark:text-red-500' 
-                : 'text-gray-400 dark:text-gray-500'
+                ? 'text-pink-500 dark:text-[#E04F5F]' 
+                : 'text-gray-400 dark:text-[#A29CA3]'
             }`}
             fill="none" 
             stroke="currentColor" 
@@ -134,7 +134,7 @@ export default function CustomDatePicker({
         </div>
       </div>
       {error && (
-        <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm text-red-600 dark:text-red-400 flex items-start">
+        <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm text-red-600 dark:text-[#F25D5D] flex items-start">
           <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-1 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
           </svg>
@@ -144,4 +144,6 @@ export default function CustomDatePicker({
     </div>
   );
 }
+
+export default memo(CustomDatePicker);
 

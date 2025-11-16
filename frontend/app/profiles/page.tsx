@@ -335,19 +335,19 @@ function SearchProfilesPageContent() {
   const maritalStatusOptions = ['Never Married', 'Divorced', 'Widowed', 'Awaiting Divorce'];
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-[#0f1117] pb-24 transition-colors">
+    <div className="min-h-screen bg-gray-50 dark:bg-[#1A0C11] pb-24 transition-colors">
       {/* Filter/View Bar */}
-      <div className="bg-white dark:bg-[#181b23] border-b border-gray-200 dark:border-[#303341] sticky top-0 z-30 px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
+      <div className="bg-white dark:bg-[#2B0F17] border-b border-gray-200 dark:border-[#2F2327] sticky top-0 z-30 px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
         <div className="flex gap-2">
           <button
             onClick={() => setShowFilters(!showFilters)}
             aria-expanded={showFilters}
             aria-controls="filters-panel"
             aria-label={showFilters ? 'Hide filters' : 'Show filters'}
-            className={`flex-1 px-4 py-2 rounded-lg font-medium text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 ${
+            className={`flex-1 px-4 py-2 rounded-lg font-medium text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F] focus:ring-offset-2 ${
               showFilters
-                ? 'bg-pink-600 text-white dark:bg-pink-600'
-                : 'bg-gray-100 dark:bg-[#1f212a] text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-[#252730]'
+                ? 'bg-pink-600 text-white dark:bg-[#E04F5F]'
+                : 'bg-gray-100 dark:bg-[#241317] text-gray-700 dark:text-[#D5D3D7] hover:bg-gray-200 dark:hover:bg-[#1F1417]'
             }`}
           >
             Filter
@@ -355,10 +355,10 @@ function SearchProfilesPageContent() {
           <button
             onClick={() => setViewMode(viewMode === 'compact' ? 'detailed' : 'compact')}
             aria-label={`Switch to ${viewMode === 'detailed' ? 'compact' : 'detailed'} view`}
-            className={`flex-1 px-4 py-2 rounded-lg font-medium text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 ${
+            className={`flex-1 px-4 py-2 rounded-lg font-medium text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F] focus:ring-offset-2 ${
               viewMode === 'detailed'
-                ? 'bg-pink-600 text-white dark:bg-pink-600'
-                : 'bg-gray-100 dark:bg-[#1f212a] text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-[#252730]'
+                ? 'bg-pink-600 text-white dark:bg-[#E04F5F]'
+                : 'bg-gray-100 dark:bg-[#241317] text-gray-700 dark:text-[#D5D3D7] hover:bg-gray-200 dark:hover:bg-[#1F1417]'
             }`}
           >
             {viewMode === 'detailed' ? 'Detailed' : 'Compact'}
@@ -368,10 +368,10 @@ function SearchProfilesPageContent() {
 
       {/* Filters Panel */}
       {showFilters && (
-        <div id="filters-panel" className="bg-white dark:bg-[#181b23] border-b border-gray-200 dark:border-[#303341] p-4 sm:p-6 space-y-4 sm:space-y-6">
+        <div id="filters-panel" className="bg-white dark:bg-[#2B0F17] border-b border-gray-200 dark:border-[#2F2327] p-4 sm:p-6 space-y-4 sm:space-y-6">
           {/* Gahoi ID Search */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">
               Search by Gahoi ID
             </label>
             <input
@@ -379,19 +379,19 @@ function SearchProfilesPageContent() {
               value={filters.gahoiId || ''}
               onChange={(e) => handleFilterChange('gahoiId', sanitizeFormInput(e.target.value, 'text'))}
               placeholder="e.g., 10001"
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-pink-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F]"
             />
           </div>
 
           {/* Gender */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">
               Gender
             </label>
             <select
               value={filters.gender || ''}
               onChange={(e) => handleFilterChange('gender', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-pink-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F]"
             >
               <option value="">All</option>
               <option value="male">Male</option>
@@ -403,7 +403,7 @@ function SearchProfilesPageContent() {
           {/* Age Range */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">
                 Min Age
               </label>
               <input
@@ -412,11 +412,11 @@ function SearchProfilesPageContent() {
                 max="100"
                 value={filters.minAge || ''}
                 onChange={(e) => handleFilterChange('minAge', e.target.value ? parseInt(e.target.value) : undefined)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-pink-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F]"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">
                 Max Age
               </label>
               <input
@@ -425,7 +425,7 @@ function SearchProfilesPageContent() {
                 max="100"
                 value={filters.maxAge || ''}
                 onChange={(e) => handleFilterChange('maxAge', e.target.value ? parseInt(e.target.value) : undefined)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-pink-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F]"
               />
             </div>
           </div>

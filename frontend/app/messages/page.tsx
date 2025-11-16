@@ -89,7 +89,7 @@ export default function MessagesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-[#1A0C11] flex items-center justify-center">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-pink-600 border-t-transparent"></div>
           <p className="mt-4 text-gray-600">{t('messages.loading')}</p>
@@ -99,44 +99,44 @@ export default function MessagesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-[#1A0C11]">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('messages.title')}</h1>
-          <p className="text-gray-600">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">{t('messages.title')}</h1>
+          <p className="text-gray-600 dark:text-[#D5D3D7]">
             {unreadCount > 0 ? t('messages.unreadCount', { count: unreadCount, plural: unreadCount > 1 ? 's' : '' }) : t('messages.allCaughtUp')}
           </p>
         </div>
 
         {error && (
-          <div className="mb-4 bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded">
+          <div className="mb-4 bg-red-50 dark:bg-[#F25D5D]/10 border border-red-200 dark:border-[#F25D5D] text-red-800 dark:text-[#F25D5D] px-4 py-3 rounded">
             {error}
           </div>
         )}
 
         {/* Conversations List */}
         {conversations.length === 0 ? (
-          <div className="bg-white rounded-lg shadow-md p-12 text-center">
+          <div className="bg-white dark:bg-[#2B0F17] rounded-lg shadow-md p-12 text-center border dark:border-[#2F2327]">
             <div className="text-6xl mb-4">💬</div>
-            <p className="text-gray-600 text-lg mb-2">{t('messages.noConversations')}</p>
-            <p className="text-gray-500 text-sm mb-4">
+            <p className="text-gray-600 dark:text-[#D5D3D7] text-lg mb-2">{t('messages.noConversations')}</p>
+            <p className="text-gray-500 dark:text-[#A29CA3] text-sm mb-4">
               {t('messages.noConversationsDesc')}
             </p>
             <Link
               href="/profiles"
-              className="inline-block px-6 py-2 bg-pink-600 text-white rounded-md hover:bg-pink-700"
+              className="inline-block px-6 py-2 bg-pink-600 dark:bg-[#E04F5F] text-white rounded-md hover:bg-pink-700 dark:hover:bg-[#C43A4E]"
             >
               {t('messages.browseProfiles')}
             </Link>
           </div>
         ) : (
-          <div className="bg-white rounded-lg shadow-md divide-y divide-gray-200">
+          <div className="bg-white dark:bg-[#2B0F17] rounded-lg shadow-md divide-y divide-gray-200 dark:divide-[#2F2327] border dark:border-[#2F2327]">
             {conversations.map((conv) => (
               <Link
                 key={conv.conversationId}
                 href={`/messages/${conv.otherUser._id}`}
-                className="block hover:bg-gray-50 transition-colors"
+                className="block hover:bg-gray-50 dark:hover:bg-[#241317] transition-colors"
               >
                 <div className="flex items-center gap-4 p-4">
                   {/* Avatar */}
@@ -144,7 +144,7 @@ export default function MessagesPage() {
                     <img
                       src={getPrimaryPhoto(conv.otherUser.photos || [])}
                       alt={conv.otherUser.name}
-                      className="w-14 h-14 rounded-full object-cover border-2 border-gray-200"
+                      className="w-14 h-14 rounded-full object-cover border-2 border-gray-200 dark:border-[#2F2327]"
                       loading="lazy"
                       decoding="async"
                     />
@@ -158,16 +158,16 @@ export default function MessagesPage() {
                   {/* Message Info */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-1">
-                      <h3 className="text-lg font-semibold text-gray-900 truncate">
+                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white truncate">
                         {conv.otherUser.name}
                       </h3>
-                      <span className="text-xs text-gray-500 flex-shrink-0 ml-2">
+                      <span className="text-xs text-gray-500 dark:text-[#A29CA3] flex-shrink-0 ml-2">
                         {formatTime(conv.lastMessage.createdAt)}
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
                       <p className={`text-sm truncate ${
-                        conv.unreadCount > 0 ? 'font-semibold text-gray-900' : 'text-gray-600'
+                        conv.unreadCount > 0 ? 'font-semibold text-gray-900 dark:text-white' : 'text-gray-600 dark:text-[#D5D3D7]'
                       }`} dir="auto" lang={language}>
                         {(() => {
                           
@@ -180,7 +180,7 @@ export default function MessagesPage() {
                         {conv.lastMessage.content}
                       </p>
                       {conv.unreadCount > 0 && (
-                        <div className="w-2 h-2 bg-pink-600 rounded-full flex-shrink-0 ml-2"></div>
+                        <div className="w-2 h-2 bg-pink-600 dark:bg-[#E04F5F] rounded-full flex-shrink-0 ml-2"></div>
                       )}
                     </div>
                   </div>

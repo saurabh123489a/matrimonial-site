@@ -26,7 +26,14 @@ export default function Navbar() {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
-  const [notifications, setNotifications] = useState<any[]>([]);
+  const [notifications, setNotifications] = useState<Array<{
+    _id: string;
+    title: string;
+    message: string;
+    type: string;
+    isRead: boolean;
+    createdAt: string;
+  }>>([]);
   const [loadingNotifications, setLoadingNotifications] = useState(false);
 
   // Check authentication on client side only
@@ -237,7 +244,7 @@ export default function Navbar() {
   return (
     <>
       {/* Top Bar - Hamburger Menu (Left) | Logo (Center) | Icons (Right) */}
-      <nav className="bg-white dark:bg-[#0f1117] border-b border-gray-200 dark:border-[#262932] sticky top-0 z-30 transition-colors">
+      <nav className="bg-white dark:bg-[#1A0C11] border-b border-gray-200 dark:border-[#2F2327] sticky top-0 z-30 transition-colors">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 sm:h-20 relative">
             {/* Left: Hamburger Menu Button - Only show when NOT authenticated */}
@@ -274,6 +281,7 @@ export default function Navbar() {
                   onClick={() => setShowAuthModal(true)}
                   className="min-w-[44px] min-h-[44px] p-2 text-gray-700 dark:text-gray-100 hover:text-pink-600 dark:hover:text-red-400 active:bg-gray-200 dark:active:bg-slate-600 transition-all duration-200 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 touch-manipulation flex items-center justify-center"
                   title="Search"
+                  aria-label="Search profiles"
                 >
                   <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -289,8 +297,9 @@ export default function Navbar() {
                   <div className="relative">
                     <button
                       onClick={handleNotificationClick}
-                      className="relative min-w-[44px] min-h-[44px] p-2 text-gray-700 dark:text-gray-100 hover:text-pink-600 dark:hover:text-red-400 active:bg-gray-200 dark:active:bg-slate-600 transition-all duration-200 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 touch-manipulation flex items-center justify-center"
+                      className="relative min-w-[44px] min-h-[44px] p-2 text-gray-700 dark:text-white hover:text-pink-600 dark:hover:text-[#E04F5F] active:bg-gray-200 dark:active:bg-[#241317] transition-all duration-200 rounded-lg hover:bg-gray-100 dark:hover:bg-[#2B0F17] touch-manipulation flex items-center justify-center"
                       title={t('common.notifications')}
+                      aria-label={`${t('common.notifications')}${unreadCount > 0 ? `, ${unreadCount} unread` : ''}`}
                     >
                       <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
@@ -310,14 +319,14 @@ export default function Navbar() {
                           onClick={() => setShowNotifications(false)}
                           aria-hidden="true"
                         />
-                        <div className="absolute right-0 top-full mt-2 w-80 sm:w-96 max-w-[90vw] bg-white dark:bg-[#181b23] shadow-2xl rounded-lg border border-gray-200 dark:border-[#303341] z-50 max-h-[70vh] overflow-hidden flex flex-col animate-slide-down">
-                          <div className="sticky top-0 bg-white dark:bg-[#181b23] border-b border-gray-200 dark:border-[#303341] px-4 py-3 flex items-center justify-between z-10">
-                            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                        <div className="absolute right-0 top-full mt-2 w-80 sm:w-96 max-w-[90vw] bg-white dark:bg-[#2B0F17] shadow-2xl rounded-lg border border-gray-200 dark:border-[#2F2327] z-50 max-h-[70vh] overflow-hidden flex flex-col animate-slide-down">
+                          <div className="sticky top-0 bg-white dark:bg-[#2B0F17] border-b border-gray-200 dark:border-[#2F2327] px-4 py-3 flex items-center justify-between z-10">
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                               {t('common.notifications') || 'Notifications'}
                             </h3>
                             <button
                               onClick={() => setShowNotifications(false)}
-                              className="p-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-[#1f212a] rounded transition-colors"
+                              className="p-1 text-gray-500 dark:text-[#A29CA3] hover:text-gray-700 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-[#241317] rounded transition-colors"
                               aria-label="Close notifications"
                             >
                               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -349,20 +358,20 @@ export default function Navbar() {
                                         handleMarkAsRead(notification._id);
                                       }
                                     }}
-                                    className={`block p-4 hover:bg-gray-50 dark:hover:bg-[#1f212a] transition-colors cursor-pointer ${
-                                      !notification.isRead ? 'bg-pink-50/50 dark:bg-red-900/20' : ''
+                                    className={`block p-4 hover:bg-gray-50 dark:hover:bg-[#241317] transition-colors cursor-pointer ${
+                                      !notification.isRead ? 'bg-pink-50/50 dark:bg-[#241317]' : ''
                                     }`}
                                   >
                                     <div className="flex items-start gap-3">
                                       <span className="text-2xl flex-shrink-0">{getNotificationIcon(notification.type)}</span>
                                       <div className="flex-1 min-w-0">
-                                        <h4 className="font-semibold text-gray-900 dark:text-gray-100 text-sm mb-1">
+                                        <h4 className="font-semibold text-gray-900 dark:text-white text-sm mb-1">
                                           {notification.title}
                                         </h4>
-                                        <p className="text-gray-600 dark:text-gray-300 text-xs mb-2 line-clamp-2">
+                                        <p className="text-gray-600 dark:text-[#D5D3D7] text-xs mb-2 line-clamp-2">
                                           {notification.message}
                                         </p>
-                                        <p className="text-xs text-gray-400 dark:text-gray-400">
+                                        <p className="text-xs text-gray-400 dark:text-[#A29CA3]">
                                           {new Date(notification.createdAt).toLocaleString()}
                                         </p>
                                       </div>
@@ -376,11 +385,11 @@ export default function Navbar() {
                             )}
                           </div>
                           
-                          <div className="sticky bottom-0 bg-white dark:bg-[#181b23] border-t border-gray-200 dark:border-[#303341] px-4 py-3">
+                          <div className="sticky bottom-0 bg-white dark:bg-[#2B0F17] border-t border-gray-200 dark:border-[#2F2327] px-4 py-3">
                             <Link
                               href="/notifications"
                               onClick={() => setShowNotifications(false)}
-                              className="block w-full text-center px-4 py-2 text-sm font-medium text-pink-600 dark:text-red-400 hover:text-pink-700 dark:hover:text-red-300 hover:bg-pink-50 dark:hover:bg-red-900/20 rounded-md transition-colors"
+                              className="block w-full text-center px-4 py-2 text-sm font-medium text-pink-600 dark:text-[#E04F5F] hover:text-pink-700 dark:hover:text-[#C43A4E] hover:bg-pink-50 dark:hover:bg-[#241317] rounded-md transition-colors"
                             >
                               View More →
                             </Link>
@@ -439,8 +448,8 @@ export default function Navbar() {
                             onClick={() => setShowUserMenu(false)}
                             className={`flex items-center gap-3 px-4 py-3 text-sm font-medium transition-all duration-200 rounded-lg transform active:scale-95 ${
                               pathname === '/profile'
-                                ? 'bg-pink-50 dark:bg-red-900/20 text-pink-600 dark:text-red-400'
-                                : 'text-gray-700 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-[#1f212a]'
+                                ? 'bg-pink-50 dark:bg-[#241317] text-pink-600 dark:text-[#E04F5F]'
+                                : 'text-gray-700 dark:text-[#D5D3D7] hover:bg-gray-50 dark:hover:bg-[#241317]'
                             }`}
                             style={{ animationDelay: '0.05s' }}
                           >
@@ -456,8 +465,8 @@ export default function Navbar() {
                             onClick={() => setShowUserMenu(false)}
                             className={`flex items-center gap-3 px-4 py-3 text-sm font-medium transition-all duration-200 rounded-lg transform active:scale-95 ${
                               pathname === '/settings' || pathname.startsWith('/settings/')
-                                ? 'bg-pink-50 dark:bg-red-900/20 text-pink-600 dark:text-red-400'
-                                : 'text-gray-700 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-[#1f212a]'
+                                ? 'bg-pink-50 dark:bg-[#241317] text-pink-600 dark:text-[#E04F5F]'
+                                : 'text-gray-700 dark:text-[#D5D3D7] hover:bg-gray-50 dark:hover:bg-[#241317]'
                             }`}
                             style={{ animationDelay: '0.1s' }}
                           >
@@ -469,7 +478,7 @@ export default function Navbar() {
                           </Link>
                           
                           {/* Divider */}
-                          <div className="border-t border-gray-200 dark:border-[#303341] my-2"></div>
+                          <div className="border-t border-gray-200 dark:border-[#2F2327] my-2"></div>
                           
                           {/* Additional Links */}
                           {additionalLinks.map((link, index) => (
@@ -501,7 +510,7 @@ export default function Navbar() {
                           ))}
                           
                           {/* Divider before logout */}
-                          <div className="border-t border-gray-200 dark:border-[#303341] my-2"></div>
+                          <div className="border-t border-gray-200 dark:border-[#2F2327] my-2"></div>
                           
                           {/* Logout */}
                           <button
@@ -510,7 +519,7 @@ export default function Navbar() {
                               setShowUserMenu(false);
                               router.push('/login');
                             }}
-                            className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-200 rounded-lg transform active:scale-95"
+                            className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-red-600 dark:text-[#F25D5D] hover:bg-red-50 dark:hover:bg-[#241317] transition-all duration-200 rounded-lg transform active:scale-95"
                           >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -528,7 +537,7 @@ export default function Navbar() {
                   {/* Login Button */}
                   <Link
                     href="/login"
-                    className="px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-white bg-pink-600 dark:bg-red-500 hover:bg-pink-700 dark:hover:bg-red-600 active:bg-pink-800 dark:active:bg-red-700 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform active:scale-95 min-h-[36px] sm:min-h-[40px] flex items-center justify-center touch-manipulation whitespace-nowrap"
+                    className="px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-white bg-pink-600 dark:bg-[#E04F5F] hover:bg-pink-700 dark:hover:bg-[#C43A4E] active:bg-pink-800 dark:active:bg-[#C43A4E] rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform active:scale-95 min-h-[36px] sm:min-h-[40px] flex items-center justify-center touch-manipulation whitespace-nowrap"
                     title="Login"
                   >
                     {t('auth.login') || 'Login'}
@@ -572,8 +581,8 @@ export default function Navbar() {
                             onClick={() => setShowUserMenu(false)}
                             className={`flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-all duration-200 rounded-lg transform active:scale-95 ${
                               pathname === '/about'
-                                ? 'bg-pink-50 dark:bg-red-900/20 text-pink-600 dark:text-red-400'
-                                : 'text-gray-700 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-[#1f212a]'
+                                ? 'bg-pink-50 dark:bg-[#241317] text-pink-600 dark:text-[#E04F5F]'
+                                : 'text-gray-700 dark:text-[#D5D3D7] hover:bg-gray-50 dark:hover:bg-[#241317]'
                             }`}
                             style={{ animationDelay: '0.05s' }}
                           >
@@ -587,8 +596,8 @@ export default function Navbar() {
                             onClick={() => setShowUserMenu(false)}
                             className={`flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-all duration-200 rounded-lg transform active:scale-95 ${
                               pathname === '/login'
-                                ? 'bg-pink-50 dark:bg-red-900/20 text-pink-600 dark:text-red-400'
-                                : 'text-gray-700 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-[#1f212a]'
+                                ? 'bg-pink-50 dark:bg-[#241317] text-pink-600 dark:text-[#E04F5F]'
+                                : 'text-gray-700 dark:text-[#D5D3D7] hover:bg-gray-50 dark:hover:bg-[#241317]'
                             }`}
                             style={{ animationDelay: '0.1s' }}
                           >
@@ -602,8 +611,8 @@ export default function Navbar() {
                             onClick={() => setShowUserMenu(false)}
                             className={`flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-all duration-200 rounded-lg transform active:scale-95 ${
                               pathname === '/register'
-                                ? 'bg-pink-50 dark:bg-red-900/20 text-pink-600 dark:text-red-400'
-                                : 'text-gray-700 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-[#1f212a]'
+                                ? 'bg-pink-50 dark:bg-[#241317] text-pink-600 dark:text-[#E04F5F]'
+                                : 'text-gray-700 dark:text-[#D5D3D7] hover:bg-gray-50 dark:hover:bg-[#241317]'
                             }`}
                             style={{ animationDelay: '0.15s' }}
                           >
@@ -631,7 +640,7 @@ export default function Navbar() {
               router.push('/');
             }}
           ></div>
-          <div className="bg-white dark:bg-[#181b23] rounded-lg sm:rounded-xl shadow-2xl max-w-md w-full relative z-10 animate-scale-in transform transition-all duration-300 ease-out">
+          <div className="bg-white dark:bg-[#2B0F17] rounded-lg sm:rounded-xl shadow-2xl max-w-md w-full relative z-10 animate-scale-in transform transition-all duration-300 ease-out border dark:border-[#2F2327]">
             <div className="p-6 sm:p-8">
               {/* Close Button */}
               <button
@@ -639,7 +648,7 @@ export default function Navbar() {
                   setShowAuthModal(false);
                   router.push('/');
                 }}
-                className="absolute top-3 right-3 sm:top-4 sm:right-4 min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-400 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-100 text-2xl sm:text-3xl font-bold transition-all duration-200 hover:scale-110 active:scale-95 rounded-full hover:bg-gray-100 dark:hover:bg-[#1f212a]"
+                className="absolute top-3 right-3 sm:top-4 sm:right-4 min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-400 dark:text-[#A29CA3] hover:text-gray-600 dark:hover:text-white text-2xl sm:text-3xl font-bold transition-all duration-200 hover:scale-110 active:scale-95 rounded-full hover:bg-gray-100 dark:hover:bg-[#241317]"
                 aria-label="Close"
               >
                 ×
@@ -648,10 +657,10 @@ export default function Navbar() {
               {/* Modal Content */}
               <div className="text-center mb-6 animate-slide-up">
                 <div className="text-5xl sm:text-6xl mb-4 transform transition-transform duration-300 hover:scale-110">🔒</div>
-                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
                   Login Required
                 </h2>
-                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 mb-6 px-2">
+                <p className="text-sm sm:text-base text-gray-600 dark:text-[#D5D3D7] mb-6 px-2">
                   Please login or sign up to search profiles, send interests, and connect with matches.
                 </p>
               </div>
@@ -668,7 +677,7 @@ export default function Navbar() {
                 <Link
                   href="/register"
                   onClick={() => setShowAuthModal(false)}
-                  className="block w-full px-6 py-3.5 sm:py-3 bg-white dark:bg-[#1f212a] border-2 border-pink-600 dark:border-red-500 text-pink-600 dark:text-red-400 font-semibold rounded-md hover:bg-pink-50 dark:hover:bg-red-900/20 transition-all duration-200 shadow-md text-center transform active:scale-95 hover:shadow-lg min-h-[48px] flex items-center justify-center"
+                  className="block w-full px-6 py-3.5 sm:py-3 bg-white dark:bg-[#1F1417] border-2 border-pink-600 dark:border-[#E04F5F] text-pink-600 dark:text-[#E04F5F] font-semibold rounded-md hover:bg-pink-50 dark:hover:bg-[#241317] transition-all duration-200 shadow-md text-center transform active:scale-95 hover:shadow-lg min-h-[48px] flex items-center justify-center"
                 >
                   {t('auth.signUp') || 'Sign Up'}
                 </Link>
@@ -677,7 +686,7 @@ export default function Navbar() {
                     setShowAuthModal(false);
                     router.push('/');
                   }}
-                  className="block w-full px-6 py-2.5 sm:py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-100 font-medium text-sm transition-colors duration-200 min-h-[44px] flex items-center justify-center"
+                  className="block w-full px-6 py-2.5 sm:py-2 text-gray-600 dark:text-[#A29CA3] hover:text-gray-800 dark:hover:text-white font-medium text-sm transition-colors duration-200 min-h-[44px] flex items-center justify-center"
                 >
                   Continue Browsing
                 </button>
@@ -690,7 +699,7 @@ export default function Navbar() {
       {/* Bottom Navigation Bar - Only show when authenticated - Mobile & Web */}
       {mounted && isAuthenticated ? (
         <>
-          <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-[#0f1117] border-t-2 border-pink-200 dark:border-red-800 z-40 shadow-2xl safe-area-inset-bottom transition-colors backdrop-blur-sm bg-opacity-95 dark:bg-opacity-95">
+          <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-[#1A0C11] border-t-2 border-pink-200 dark:border-[#2F2327] z-40 shadow-2xl safe-area-inset-bottom transition-colors backdrop-blur-sm bg-opacity-95 dark:bg-opacity-95">
             <div className="max-w-7xl mx-auto">
               <div className="flex justify-around items-center h-20 sm:h-16 px-2">
                 {mainNavLinks.map((link) => {
@@ -705,8 +714,8 @@ export default function Navbar() {
                       data-tour={link.tourId}
                       className={`relative flex flex-col items-center justify-center flex-1 py-2 px-2 transition-all duration-300 min-w-0 group ${
                         isActive
-                          ? 'text-pink-600 dark:text-red-500'
-                          : 'text-gray-500 dark:text-gray-400 hover:text-pink-500 dark:hover:text-red-400'
+                          ? 'text-pink-600 dark:text-[#E04F5F]'
+                          : 'text-gray-500 dark:text-[#A29CA3] hover:text-pink-500 dark:hover:text-[#E04F5F]'
                       }`}
                     >
                       {/* Icon with improved styling */}
@@ -727,10 +736,10 @@ export default function Navbar() {
                       </span>
                       {/* Active state indicator (pink line at top) */}
                       {isActive && (
-                        <span className="absolute top-0 left-1/2 transform -translate-x-1/2 w-12 h-1 bg-gradient-to-r from-pink-500 to-pink-600 dark:from-red-500 dark:to-red-600 rounded-full shadow-lg"></span>
+                        <span className="absolute top-0 left-1/2 transform -translate-x-1/2 w-12 h-1 bg-gradient-to-r from-pink-500 to-pink-600 dark:from-[#E04F5F] dark:to-[#C43A4E] rounded-full shadow-lg"></span>
                       )}
                       {/* Hover effect background */}
-                      <div className="absolute inset-0 rounded-lg bg-pink-50 dark:bg-red-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
+                      <div className="absolute inset-0 rounded-lg bg-pink-50 dark:bg-[#241317] opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
                     </Link>
                   );
                 })}
@@ -757,7 +766,7 @@ function BottomMenuDropdown({
   isAdmin: boolean;
   pathname: string;
   t: (key: string) => string;
-  auth: any;
+  auth: typeof import('@/lib/auth').auth;
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
