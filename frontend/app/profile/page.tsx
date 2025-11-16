@@ -614,7 +614,7 @@ export default function MyProfilePage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header - Mobile First Design */}
-      <div className="bg-[#800020]">
+      <div className="bg-[]">
         <div className="flex items-center justify-between px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
           <button
             onClick={() => {

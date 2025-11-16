@@ -80,7 +80,7 @@ export default function CommunityPage() {
         {auth.isAuthenticated() && activeTab === 'qa' && (
           <Link
             href="/community/ask"
-            className="px-6 py-2 bg-pink-600 text-white rounded-md hover:bg-pink-700 transition-colors"
+            className="px-6 py-2 bg-pink-600 text-white font-bold rounded-md hover:bg-pink-700 transition-colors"
           >
             Ask Question
           </Link>
