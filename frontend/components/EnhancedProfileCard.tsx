@@ -79,7 +79,7 @@ export default function EnhancedProfileCard({ user, showActions = true }: Enhanc
       }}
     >
       {/* Photo Section with Overlay */}
-      <div className="relative h-64 sm:h-80 bg-gradient-to-br from-pink-50 to-purple-50">
+      <div className="relative h-80 sm:h-96 md:h-[28rem] bg-gradient-to-br from-pink-50 to-purple-50">
         <LazyImage
           src={profileImageUrl}
           alt={user.name}

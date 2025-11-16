@@ -38,7 +38,7 @@ export default function CompactProfileCard({ user, showOnlineStatus = false }: C
     >
       <Link href={getProfileUrl(user)} className="block">
         {/* Photo Section */}
-        <div className={`relative h-48 sm:h-56 ${bgColor}`}>
+        <div className={`relative h-64 sm:h-80 ${bgColor}`}>
           <LazyImage
             src={profileImageUrl}
             alt={user.name}

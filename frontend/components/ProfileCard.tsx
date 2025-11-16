@@ -102,7 +102,7 @@ function ProfileCard({ user }: ProfileCardProps) {
       className={`bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-[var(--border-light)] ${isVisible ? 'scroll-animate-fade-up animate' : 'scroll-animate-fade-up'}`}
     >
       {/* Photo Section */}
-      <div className="relative h-64 sm:h-80 bg-gradient-to-br from-[#f5e6b3] to-[#D4AF37]/20 overflow-hidden">
+      <div className="relative h-80 sm:h-96 md:h-[28rem] bg-gradient-to-br from-[#f5e6b3] to-[#D4AF37]/20 overflow-hidden">
         <LazyImage
           src={profileImageUrl}
           alt={`${user.name}'s profile photo`}

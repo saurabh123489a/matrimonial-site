@@ -188,7 +188,7 @@ export default function DetailedProfileTile({ user }: DetailedProfileTileProps) 
     <div className="bg-white">
       <Link href={getProfileUrl(user)} className="block" onClick={handleCardClick}>
         {/* Photo Section with Overlays */}
-        <div className="relative h-72 sm:h-80 md:h-96 bg-gradient-to-br from-pink-50 to-purple-50">
+        <div className="relative h-96 sm:h-[28rem] md:h-[32rem] bg-gradient-to-br from-pink-50 to-purple-50">
           <LazyImage
             src={profileImageUrl}
             alt={user.name}
