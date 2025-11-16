@@ -302,8 +302,8 @@ export default function MyProfilePage() {
     setFieldErrors({});
 
     try {
-      // Exclude name, phone, email, and whatsappNumber from updates (non-editable fields)
-      const { name, phone, email, whatsappNumber, ...updateData } = formData;
+      // Exclude name, phone, and email from updates (non-editable fields)
+      const { name, phone, email, ...updateData } = formData;
       
       // Client-side validation
       const validationErrors = validateFormData(updateData);
@@ -1040,21 +1040,49 @@ export default function MyProfilePage() {
                     value={formData.height ? `${Math.floor(formData.height / 12)}'${formData.height % 12}"` : ''}
                     onChange={(e) => {
                       const value = e.target.value;
-                      const match = value.match(/(\d+)'(\d+)"/);
-                      if (match) {
-                        const feet = parseInt(match[1]);
-                        const inches = parseInt(match[2]);
-                        setFormData({ ...formData, height: feet * 12 + inches });
+                      // Try multiple formats: 5'6", 5'6, 5 6, 66 (inches only)
+                      let heightInInches: number | undefined = undefined;
+                      
+                      // Format: 5'6" or 5'6
+                      const match1 = value.match(/(\d+)'(\d+)/);
+                      if (match1) {
+                        const feet = parseInt(match1[1]);
+                        const inches = parseInt(match1[2]);
+                        if (feet >= 0 && feet <= 8 && inches >= 0 && inches < 12) {
+                          heightInInches = feet * 12 + inches;
+                        }
+                      }
+                      // Format: 5 6 (space separated)
+                      else if (value.match(/^\d+\s+\d+$/)) {
+                        const parts = value.split(/\s+/);
+                        const feet = parseInt(parts[0]);
+                        const inches = parseInt(parts[1]);
+                        if (feet >= 0 && feet <= 8 && inches >= 0 && inches < 12) {
+                          heightInInches = feet * 12 + inches;
+                        }
+                      }
+                      // Format: just inches (e.g., 66)
+                      else if (value.match(/^\d+$/)) {
+                        const totalInches = parseInt(value);
+                        if (totalInches >= 0 && totalInches <= 96) {
+                          heightInInches = totalInches;
+                        }
+                      }
+                      // Empty value
+                      else if (value === '') {
+                        heightInInches = undefined;
+                      }
+                      
+                      if (heightInInches !== undefined || value === '') {
+                        setFormData({ ...formData, height: heightInInches });
                         if (fieldErrors.height) {
                           const newErrors = { ...fieldErrors };
                           delete newErrors.height;
                           setFieldErrors(newErrors);
                         }
-                      } else if (value === '') {
-                        setFormData({ ...formData, height: undefined });
                       }
                     }}
-                    placeholder="5'6&quot;"
+                    placeholder="5'6&quot; or 5 6 or 66"
                     className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 touch-manipulation ${
                       fieldErrors.height 
                         ? 'border-red-400 focus:ring-red-500 focus:border-red-500' 
