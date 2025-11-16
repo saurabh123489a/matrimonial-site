@@ -782,6 +782,17 @@ export default function MyProfilePage() {
                   setEditing(true);
                   setFieldErrors({});
                   setError('');
+                  // Auto-expand sections when entering edit mode
+                  setExpandedSections({
+                    aboutMe: true,
+                    contact: true,
+                    location: true,
+                    education: true,
+                    lifestyle: true,
+                    family: true,
+                    horoscope: false,
+                    partnerPreferences: true,
+                  });
                 }}
                 aria-label="Edit profile"
                 className="p-2 sm:p-2 min-w-[44px] min-h-[44px] text-white hover:bg-[#800020]/20 active:bg-[#800020]/30 rounded-lg transition-colors flex items-center justify-center touch-manipulation"
@@ -1044,10 +1055,10 @@ export default function MyProfilePage() {
                       }
                     }}
                     placeholder="5'6&quot;"
-                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 touch-manipulation ${
                       fieldErrors.height 
                         ? 'border-red-400 focus:ring-red-500 focus:border-red-500' 
-                        : 'border-gray-300'
+                        : 'border-gray-300 focus:ring-[#800020] focus:border-[#800020]'
                     }`}
                   />
                   {fieldErrors.height && (
@@ -1082,10 +1093,10 @@ export default function MyProfilePage() {
                         }
                       }}
                       rows={4}
-                      className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                      className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 touch-manipulation ${
                         fieldErrors.bio 
                           ? 'border-red-400 focus:ring-red-500 focus:border-red-500' 
-                          : 'border-gray-300'
+                          : 'border-gray-300 focus:ring-[#800020] focus:border-[#800020]'
                       }`}
                       placeholder="A software engineer with a passion for travel and classical dance. Looking for a partner who values family, honesty, and a good sense of humor."
                     />
@@ -1168,9 +1179,10 @@ export default function MyProfilePage() {
                 {editing ? (
                   <input
                     type="tel"
-                    value={user.whatsappNumber || ''}
-                    readOnly
-                    className="w-full px-3 py-2 border border-gray-300"
+                    value={formData.whatsappNumber || ''}
+                    onChange={(e) => setFormData({ ...formData, whatsappNumber: sanitizeFormInput(e.target.value, 'phone') })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#800020] focus:border-[#800020] touch-manipulation"
+                    placeholder="Enter WhatsApp number"
                   />
                 ) : (
                   <p className="text-[#800020]">{user.whatsappNumber || 'Not provided'}</p>
