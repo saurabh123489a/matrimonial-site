@@ -824,7 +824,7 @@ export default function MyProfilePage() {
           </div>
 
         {/* About Me Section - Collapsible */}
-        <div className="bg-white dark:bg-[#181b23] rounded-lg overflow-hidden">
+        <div className="bg-white dark:bg-[#2B0F17] rounded-lg overflow-hidden border dark:border-[#2F2327]">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, aboutMe: !expandedSections.aboutMe })}
             aria-expanded={expandedSections.aboutMe}
@@ -854,7 +854,7 @@ export default function MyProfilePage() {
                   type="text"
                   value={user.name || ''}
                   readOnly
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-gray-50 rounded-lg bg-gray-50 dark:bg-gray-800 cursor-not-allowed"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg bg-gray-50 dark:bg-[#1F1417] cursor-not-allowed"
                 />
               ) : (
                 <p className="text-gray-900 dark:text-white">{user.name}</p>
@@ -863,7 +863,7 @@ export default function MyProfilePage() {
 
               {/* Age */}
             <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Age <span className="text-red-500">*</span></label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Age <span className="text-red-500 dark:text-[#F25D5D]">*</span></label>
               {editing ? (
                   <input
                     type="number"
@@ -872,13 +872,13 @@ export default function MyProfilePage() {
                     className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg bg-gray-50 dark:bg-[#1F1417]"
                   />
                 ) : (
-                  <p className="text-gray-900 dark:text-gray-50">{user.age || 'Not provided'}</p>
+                  <p className="text-gray-900 dark:text-white">{user.age || 'Not provided'}</p>
               )}
             </div>
 
               {/* Height */}
             <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Height</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Height</label>
               {editing ? (
                 <>
                   <input
@@ -901,7 +901,7 @@ export default function MyProfilePage() {
                       }
                     }}
                     placeholder="5'6&quot;"
-                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 dark:bg-[#1f212a] dark:text-gray-50 ${
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 dark:bg-[#1F1417] dark:text-white ${
                       fieldErrors.height 
                         ? 'border-red-400 focus:ring-red-500 focus:border-red-500' 
                         : 'border-gray-300 dark:border-gray-600 focus:ring-pink-500'
@@ -917,7 +917,7 @@ export default function MyProfilePage() {
                   )}
                 </>
               ) : (
-                <p className="text-gray-900 dark:text-gray-50">
+                <p className="text-gray-900 dark:text-white">
                     {user.height ? `${Math.floor(user.height / 12)}'${user.height % 12}"` : 'Not provided'}
                 </p>
               )}
@@ -925,7 +925,7 @@ export default function MyProfilePage() {
 
               {/* Bio */}
             <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Bio</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Bio</label>
               {editing ? (
                   <>
                     <textarea
@@ -939,7 +939,7 @@ export default function MyProfilePage() {
                         }
                       }}
                       rows={4}
-                      className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 dark:bg-[#1f212a] dark:text-gray-50 ${
+                      className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 dark:bg-[#1F1417] dark:text-white ${
                         fieldErrors.bio 
                           ? 'border-red-400 focus:ring-red-500 focus:border-red-500' 
                           : 'border-gray-300 dark:border-gray-600 focus:ring-pink-500'
@@ -954,12 +954,12 @@ export default function MyProfilePage() {
                         {fieldErrors.bio}
                       </p>
                     )}
-                    <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                    <p className="mt-1 text-xs text-gray-500 dark:text-[#A29CA3]">
                       {(formData.bio || '').length}/2000 characters
                     </p>
                   </>
               ) : (
-                  <p className="text-gray-900 dark:text-gray-50">{user.bio || 'No bio provided'}</p>
+                  <p className="text-gray-900 dark:text-white">{user.bio || 'No bio provided'}</p>
               )}
             </div>
                 </div>
@@ -967,7 +967,7 @@ export default function MyProfilePage() {
                   </div>
 
         {/* Contact Information Section - Collapsible */}
-        <div className="bg-white dark:bg-[#181b23] rounded-lg overflow-hidden">
+        <div className="bg-white dark:bg-[#2B0F17] rounded-lg overflow-hidden border dark:border-[#2F2327]">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, contact: !expandedSections.contact })}
             aria-expanded={expandedSections.contact}
@@ -975,9 +975,9 @@ export default function MyProfilePage() {
             aria-label={`${expandedSections.contact ? 'Collapse' : 'Expand'} Contact Information section`}
             className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 rounded-lg"
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-gray-900 dark:text-gray-50">Contact Information</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-gray-900 dark:text-white">Contact Information</h2>
             <svg 
-              className={`w-5 h-5 text-gray-500 dark:text-gray-400 transition-transform ${expandedSections.contact ? 'rotate-180' : ''}`}
+              className={`w-5 h-5 text-gray-500 dark:text-[#A29CA3] transition-transform ${expandedSections.contact ? 'rotate-180' : ''}`}
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
@@ -991,46 +991,46 @@ export default function MyProfilePage() {
             <div className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
               {/* Email */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Email</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Email</label>
                 {editing ? (
                   <input
                     type="email"
                     value={user.email || ''}
                     readOnly
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-gray-50 rounded-lg bg-gray-50 dark:bg-gray-800 cursor-not-allowed"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg bg-gray-50 dark:bg-[#1F1417] cursor-not-allowed"
                   />
                 ) : (
-                  <p className="text-gray-900 dark:text-gray-50">{user.email || 'Not provided'}</p>
+                  <p className="text-gray-900 dark:text-white">{user.email || 'Not provided'}</p>
                 )}
               </div>
 
               {/* Phone */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Phone</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Phone</label>
                 {editing ? (
                   <input
                     type="tel"
                     value={user.phone || ''}
                     readOnly
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-gray-50 rounded-lg bg-gray-50 dark:bg-gray-800 cursor-not-allowed"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg bg-gray-50 dark:bg-[#1F1417] cursor-not-allowed"
                   />
                 ) : (
-                  <p className="text-gray-900 dark:text-gray-50">{user.phone || 'Not provided'}</p>
+                  <p className="text-gray-900 dark:text-white">{user.phone || 'Not provided'}</p>
                 )}
               </div>
 
               {/* WhatsApp Number */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">WhatsApp Number</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">WhatsApp Number</label>
                 {editing ? (
                   <input
                     type="tel"
                     value={user.whatsappNumber || ''}
                     readOnly
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-gray-50 rounded-lg bg-gray-50 dark:bg-gray-800 cursor-not-allowed"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg bg-gray-50 dark:bg-[#1F1417] cursor-not-allowed"
                   />
                 ) : (
-                  <p className="text-gray-900 dark:text-gray-50">{user.whatsappNumber || 'Not provided'}</p>
+                  <p className="text-gray-900 dark:text-white">{user.whatsappNumber || 'Not provided'}</p>
                 )}
               </div>
             </div>
@@ -1038,7 +1038,7 @@ export default function MyProfilePage() {
         </div>
 
         {/* Location Section - Collapsible */}
-        <div className="bg-white dark:bg-[#181b23] rounded-lg overflow-hidden">
+        <div className="bg-white dark:bg-[#2B0F17] rounded-lg overflow-hidden border dark:border-[#2F2327]">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, location: !expandedSections.location })}
             aria-expanded={expandedSections.location}
@@ -1046,9 +1046,9 @@ export default function MyProfilePage() {
             aria-label={`${expandedSections.location ? 'Collapse' : 'Expand'} Location section`}
             className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 rounded-lg"
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-gray-900 dark:text-gray-50">Location</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-gray-900 dark:text-white">Location</h2>
             <svg 
-              className={`w-5 h-5 text-gray-500 dark:text-gray-400 transition-transform ${expandedSections.location ? 'rotate-180' : ''}`}
+              className={`w-5 h-5 text-gray-500 dark:text-[#A29CA3] transition-transform ${expandedSections.location ? 'rotate-180' : ''}`}
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
@@ -1070,11 +1070,11 @@ export default function MyProfilePage() {
                   onCityChange={handleCityChange}
                 />
               ) : (
-                <div className="space-y-2 text-gray-900 dark:text-gray-50">
-                  {user.country && <p><span className="font-medium dark:text-gray-200">Country:</span> {user.country}</p>}
-                  {user.state && <p><span className="font-medium dark:text-gray-200">State:</span> {user.state}</p>}
-                  {user.city && <p><span className="font-medium dark:text-gray-200">City:</span> {user.city}</p>}
-                  {user.town && <p><span className="font-medium dark:text-gray-200">Town:</span> {user.town}</p>}
+                <div className="space-y-2 text-gray-900 dark:text-white">
+                  {user.country && <p><span className="font-medium dark:text-[#D5D3D7]">Country:</span> {user.country}</p>}
+                  {user.state && <p><span className="font-medium dark:text-[#D5D3D7]">State:</span> {user.state}</p>}
+                  {user.city && <p><span className="font-medium dark:text-[#D5D3D7]">City:</span> {user.city}</p>}
+                  {user.town && <p><span className="font-medium dark:text-[#D5D3D7]">Town:</span> {user.town}</p>}
                   {!user.country && !user.state && !user.city && <p>Not provided</p>}
                 </div>
               )}
@@ -1082,32 +1082,32 @@ export default function MyProfilePage() {
               {editing && (
                 <>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Town/Village</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Town/Village</label>
                     <input
                       type="text"
                       value={formData.town || ''}
                       onChange={(e) => setFormData({ ...formData, town: sanitizeFormInput(e.target.value, 'text') })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F]"
                       placeholder="Enter town or village name"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Present Address</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Present Address</label>
                     <textarea
                       value={formData.presentAddress || ''}
                       onChange={(e) => setFormData({ ...formData, presentAddress: sanitizeFormInput(e.target.value, 'textarea') })}
                       rows={2}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F]"
                       placeholder="Enter present address"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Permanent Address</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Permanent Address</label>
                     <textarea
                       value={formData.permanentAddress || ''}
                       onChange={(e) => setFormData({ ...formData, permanentAddress: sanitizeFormInput(e.target.value, 'textarea') })}
                       rows={2}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F]"
                       placeholder="Enter permanent address"
                     />
                   </div>
@@ -1118,14 +1118,14 @@ export default function MyProfilePage() {
                 <>
                   {user.presentAddress && (
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Present Address</label>
-                      <p className="text-gray-900 dark:text-gray-50">{user.presentAddress}</p>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Present Address</label>
+                      <p className="text-gray-900 dark:text-white">{user.presentAddress}</p>
                     </div>
                   )}
                   {user.permanentAddress && (
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Permanent Address</label>
-                      <p className="text-gray-900 dark:text-gray-50">{user.permanentAddress}</p>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Permanent Address</label>
+                      <p className="text-gray-900 dark:text-white">{user.permanentAddress}</p>
                     </div>
                   )}
                 </>
@@ -1135,7 +1135,7 @@ export default function MyProfilePage() {
         </div>
 
         {/* Education & Career Section - Collapsible */}
-        <div className="bg-white dark:bg-[#181b23] rounded-lg overflow-hidden">
+        <div className="bg-white dark:bg-[#2B0F17] rounded-lg overflow-hidden border dark:border-[#2F2327]">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, education: !expandedSections.education })}
             aria-expanded={expandedSections.education}
@@ -1143,9 +1143,9 @@ export default function MyProfilePage() {
             aria-label={`${expandedSections.education ? 'Collapse' : 'Expand'} Education & Career section`}
             className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 rounded-lg"
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-gray-900 dark:text-gray-50">Education & Career</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-gray-900 dark:text-white">Education & Career</h2>
             <svg 
-              className={`w-5 h-5 text-gray-500 dark:text-gray-400 transition-transform ${expandedSections.education ? 'rotate-180' : ''}`}
+              className={`w-5 h-5 text-gray-500 dark:text-[#A29CA3] transition-transform ${expandedSections.education ? 'rotate-180' : ''}`}
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
@@ -1159,10 +1159,10 @@ export default function MyProfilePage() {
             <div id="education-section" className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
               {/* Education */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">
                   Education <span className="text-red-500">*</span>
                   {loadingEducation && (
-                    <span className="ml-2 text-xs text-gray-500 dark:text-gray-400">(Loading...)</span>
+                    <span className="ml-2 text-xs text-gray-500 dark:text-[#A29CA3]">(Loading...)</span>
                   )}
                 </label>
                 {editing ? (
@@ -1170,7 +1170,7 @@ export default function MyProfilePage() {
                     value={formData.education || ''}
                     onChange={(e) => setFormData({ ...formData, education: e.target.value })}
                     disabled={loadingEducation}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 disabled:opacity-50"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F] disabled:opacity-50"
                   >
                     <option value="">Select Education</option>
                     {educationOptions.map((option) => (
@@ -1180,7 +1180,7 @@ export default function MyProfilePage() {
                     ))}
                   </select>
                 ) : (
-                  <p className="text-gray-900 dark:text-gray-50">
+                  <p className="text-gray-900 dark:text-white">
                     {user.education 
                       ? educationOptions.find(opt => opt.value === user.education)?.label || user.education
                       : 'Not provided'}
@@ -1190,12 +1190,12 @@ export default function MyProfilePage() {
 
               {/* Educational Detail */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Educational Detail</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Educational Detail</label>
                 {editing ? (
                   <select
                     value={formData.educationalDetail || ''}
                     onChange={(e) => setFormData({ ...formData, educationalDetail: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F]"
                   >
                     <option value="">Select</option>
                     <option value="Graduate">Graduate</option>
@@ -1205,16 +1205,16 @@ export default function MyProfilePage() {
                     <option value="Professional">Professional</option>
                   </select>
                 ) : (
-                  <p className="text-gray-900 dark:text-gray-50">{user.educationalDetail || 'Not provided'}</p>
+                  <p className="text-gray-900 dark:text-white">{user.educationalDetail || 'Not provided'}</p>
                 )}
               </div>
 
               {/* Occupation */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">
                   Occupation <span className="text-red-500">*</span>
                   {loadingOccupation && (
-                    <span className="ml-2 text-xs text-gray-500 dark:text-gray-400">(Loading...)</span>
+                    <span className="ml-2 text-xs text-gray-500 dark:text-[#A29CA3]">(Loading...)</span>
                   )}
                 </label>
                 {editing ? (
@@ -1222,7 +1222,7 @@ export default function MyProfilePage() {
                     value={formData.occupation || ''}
                     onChange={(e) => setFormData({ ...formData, occupation: e.target.value })}
                     disabled={loadingOccupation}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 disabled:opacity-50"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F] disabled:opacity-50"
                   >
                     <option value="">Select Occupation</option>
                     {occupationOptions.map((option) => (
@@ -1232,7 +1232,7 @@ export default function MyProfilePage() {
                     ))}
                   </select>
                 ) : (
-                  <p className="text-gray-900 dark:text-gray-50">
+                  <p className="text-gray-900 dark:text-white">
                     {user.occupation 
                       ? occupationOptions.find(opt => opt.value === user.occupation)?.label || user.occupation
                       : 'Not provided'}
@@ -1242,45 +1242,45 @@ export default function MyProfilePage() {
 
               {/* Profession */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Profession</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Profession</label>
                 {editing ? (
                   <input
                     type="text"
                     value={formData.profession || ''}
                     onChange={(e) => setFormData({ ...formData, profession: sanitizeFormInput(e.target.value, 'text') })}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F]"
                     placeholder="e.g., Computer Software Professional"
                   />
                 ) : (
-                  <p className="text-gray-900 dark:text-gray-50">{user.profession || 'Not provided'}</p>
+                  <p className="text-gray-900 dark:text-white">{user.profession || 'Not provided'}</p>
                 )}
               </div>
 
               {/* Employer/Company */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Employer/Company</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Employer/Company</label>
                 {editing ? (
                   <input
                     type="text"
                     value={formData.employer || ''}
                     onChange={(e) => setFormData({ ...formData, employer: sanitizeFormInput(e.target.value, 'text') })}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F]"
                     placeholder="Company name"
                   />
                 ) : (
-                  <p className="text-gray-900 dark:text-gray-50">{user.employer || 'Not provided'}</p>
+                  <p className="text-gray-900 dark:text-white">{user.employer || 'Not provided'}</p>
                 )}
               </div>
 
               {/* Annual Income */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Annual Income</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Annual Income</label>
                 {editing ? (
                   <select
                     value={formData.annualIncome || ''}
                     onChange={(e) => setFormData({ ...formData, annualIncome: e.target.value })}
                     disabled={loadingSalary}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 disabled:opacity-50"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F] disabled:opacity-50"
                   >
                     <option value="">Select Annual Income</option>
                     {salaryOptions.map((option) => (
@@ -1290,7 +1290,7 @@ export default function MyProfilePage() {
                     ))}
                   </select>
                 ) : (
-                  <p className="text-gray-900 dark:text-gray-50">{user.annualIncome || 'Not provided'}</p>
+                  <p className="text-gray-900 dark:text-white">{user.annualIncome || 'Not provided'}</p>
                 )}
               </div>
             </div>
@@ -1298,7 +1298,7 @@ export default function MyProfilePage() {
         </div>
 
         {/* Lifestyle & Interests Section - Collapsible */}
-        <div className="bg-white dark:bg-[#181b23] rounded-lg overflow-hidden">
+        <div className="bg-white dark:bg-[#2B0F17] rounded-lg overflow-hidden border dark:border-[#2F2327]">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, lifestyle: !expandedSections.lifestyle })}
             aria-expanded={expandedSections.lifestyle}
@@ -1306,9 +1306,9 @@ export default function MyProfilePage() {
             aria-label={`${expandedSections.lifestyle ? 'Collapse' : 'Expand'} Lifestyle & Interests section`}
             className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 rounded-lg"
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-gray-900 dark:text-gray-50">Lifestyle & Interests</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-gray-900 dark:text-white">Lifestyle & Interests</h2>
             <svg 
-              className={`w-5 h-5 text-gray-500 dark:text-gray-400 transition-transform ${expandedSections.lifestyle ? 'rotate-180' : ''}`}
+              className={`w-5 h-5 text-gray-500 dark:text-[#A29CA3] transition-transform ${expandedSections.lifestyle ? 'rotate-180' : ''}`}
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
@@ -1322,7 +1322,7 @@ export default function MyProfilePage() {
             <div id="lifestyle-section" className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
               {/* Dietary Preferences */}
             <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-3">Dietary Preferences</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-3">Dietary Preferences</label>
                 <div className="flex flex-wrap gap-2">
                   {dietaryOptions.map((option) => {
                     const isSelected = formData.diet === option;
@@ -1335,7 +1335,7 @@ export default function MyProfilePage() {
                         className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                           isSelected
                             ? 'bg-pink-600 text-white'
-                            : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                            : 'bg-gray-200 dark:bg-[#241317] text-gray-700 dark:text-[#D5D3D7]'
                         } ${!editing ? 'cursor-default' : 'cursor-pointer hover:bg-pink-100 dark:hover:bg-red-900/20'}`}
                       >
                         {option === 'non-vegetarian' ? 'Non-Veg' : option.charAt(0).toUpperCase() + option.slice(1)}
@@ -1354,7 +1354,7 @@ export default function MyProfilePage() {
 
               {/* Hobbies & Interests */}
             <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-3">Hobbies & Interests</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-3">Hobbies & Interests</label>
                 <div className="flex flex-wrap gap-2">
                   {commonHobbies.map((hobby) => {
                     const isSelected = (formData.hobbies || []).includes(hobby);
@@ -1376,7 +1376,7 @@ export default function MyProfilePage() {
                         className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                           isSelected
                             ? 'bg-pink-600 text-white'
-                            : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                            : 'bg-gray-200 dark:bg-[#241317] text-gray-700 dark:text-[#D5D3D7]'
                         } ${!editing ? 'cursor-default' : 'cursor-pointer hover:bg-pink-100 dark:hover:bg-red-900/20'}`}
                       >
                         {hobby}
@@ -1386,7 +1386,7 @@ export default function MyProfilePage() {
                   {editing && (
                     <button
                       type="button"
-                      className="px-4 py-2 rounded-full text-sm font-medium border-2 border-dashed border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 hover:border-pink-500 dark:hover:border-pink-500 transition-colors"
+                      className="px-4 py-2 rounded-full text-sm font-medium border-2 border-dashed border-gray-300 dark:border-[#2F2327] text-gray-500 dark:text-[#A29CA3] hover:border-pink-500 dark:hover:border-[#E04F5F] transition-colors"
                     >
                       + Add
                     </button>
@@ -1403,7 +1403,7 @@ export default function MyProfilePage() {
                       </span>
                     ))}
                     {(!user.hobbies || user.hobbies.length === 0) && (
-                      <span className="text-gray-500 dark:text-gray-400 text-sm">No hobbies listed</span>
+                      <span className="text-gray-500 dark:text-[#A29CA3] text-sm">No hobbies listed</span>
               )}
             </div>
               )}
@@ -1413,7 +1413,7 @@ export default function MyProfilePage() {
                 </div>
 
         {/* Family Information Section - Collapsible */}
-        <div className="bg-white dark:bg-[#181b23] rounded-lg overflow-hidden">
+        <div className="bg-white dark:bg-[#2B0F17] rounded-lg overflow-hidden border dark:border-[#2F2327]">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, family: !expandedSections.family })}
             aria-expanded={expandedSections.family}
@@ -1421,9 +1421,9 @@ export default function MyProfilePage() {
             aria-label={`${expandedSections.family ? 'Collapse' : 'Expand'} Family Information section`}
             className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 rounded-lg"
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-gray-900 dark:text-gray-50">👨‍👩‍👧‍👦 Family Information</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-gray-900 dark:text-white">👨‍👩‍👧‍👦 Family Information</h2>
             <svg 
-              className={`w-5 h-5 text-gray-500 dark:text-gray-400 transition-transform ${expandedSections.family ? 'rotate-180' : ''}`}
+              className={`w-5 h-5 text-gray-500 dark:text-[#A29CA3] transition-transform ${expandedSections.family ? 'rotate-180' : ''}`}
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
@@ -1438,7 +1438,7 @@ export default function MyProfilePage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Father's Name */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Father's Name</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Father's Name</label>
                   {editing ? (
                     <input
                       type="text"
@@ -1450,17 +1450,17 @@ export default function MyProfilePage() {
                           fathersName: sanitizeFormInput(e.target.value, 'text'),
                         },
                       })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F]"
                       placeholder="Enter father's name"
                     />
                   ) : (
-                    <p className="text-gray-900 dark:text-gray-50">{user.family?.fathersName || 'Not provided'}</p>
+                    <p className="text-gray-900 dark:text-white">{user.family?.fathersName || 'Not provided'}</p>
                   )}
                 </div>
 
                 {/* Father's Occupation Type */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Father's Occupation Type</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Father's Occupation Type</label>
                   {editing ? (
                     <select
                       value={formData.family?.fathersOccupationType || ''}
@@ -1472,7 +1472,7 @@ export default function MyProfilePage() {
                           fathersOccupationDesc: e.target.value ? formData.family?.fathersOccupationDesc : '', 
                         },
                       })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F]"
                     >
                       <option value="">Select Type</option>
                       <option value="job">Job</option>
@@ -1481,7 +1481,7 @@ export default function MyProfilePage() {
                       <option value="business">Business</option>
                     </select>
                   ) : (
-                    <p className="text-gray-900 dark:text-gray-50">
+                    <p className="text-gray-900 dark:text-white">
                       {user.family?.fathersOccupationType 
                         ? user.family.fathersOccupationType.charAt(0).toUpperCase() + user.family.fathersOccupationType.slice(1)
                         : 'Not provided'}
@@ -1492,7 +1492,7 @@ export default function MyProfilePage() {
                 {/* Father's Occupation Description */}
                 {editing && formData.family?.fathersOccupationType && (
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Father's Occupation Description</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Father's Occupation Description</label>
                     <input
                       type="text"
                       value={formData.family?.fathersOccupationDesc || ''}
@@ -1503,7 +1503,7 @@ export default function MyProfilePage() {
                           fathersOccupationDesc: sanitizeFormInput(e.target.value, 'text'),
                         },
                       })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F]"
                       placeholder={`Enter ${formData.family.fathersOccupationType} details`}
                     />
                   </div>
@@ -1511,14 +1511,14 @@ export default function MyProfilePage() {
 
                 {!editing && user.family?.fathersOccupationDesc && (
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Father's Occupation Description</label>
-                    <p className="text-gray-900 dark:text-gray-50">{user.family.fathersOccupationDesc}</p>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Father's Occupation Description</label>
+                    <p className="text-gray-900 dark:text-white">{user.family.fathersOccupationDesc}</p>
                   </div>
                 )}
 
                 {/* Father's Contact Number */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Father's Contact Number</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Father's Contact Number</label>
                   {editing ? (
                     <input
                       type="tel"
@@ -1530,17 +1530,17 @@ export default function MyProfilePage() {
                           fathersContactNumber: sanitizeFormInput(e.target.value, 'phone'),
                         },
                       })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F]"
                       placeholder="Enter contact number"
                     />
                   ) : (
-                    <p className="text-gray-900 dark:text-gray-50">{user.family?.fathersContactNumber || 'Not provided'}</p>
+                    <p className="text-gray-900 dark:text-white">{user.family?.fathersContactNumber || 'Not provided'}</p>
                   )}
                 </div>
 
                 {/* Mother's Name */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Mother's Name</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Mother's Name</label>
                   {editing ? (
                     <input
                       type="text"
@@ -1552,17 +1552,17 @@ export default function MyProfilePage() {
                           mothersName: sanitizeFormInput(e.target.value, 'text'),
                         },
                       })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F]"
                       placeholder="Enter mother's name"
                     />
                   ) : (
-                    <p className="text-gray-900 dark:text-gray-50">{user.family?.mothersName || 'Not provided'}</p>
+                    <p className="text-gray-900 dark:text-white">{user.family?.mothersName || 'Not provided'}</p>
                   )}
                 </div>
 
                 {/* Mother's Occupation Type */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Mother's Occupation Type</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Mother's Occupation Type</label>
                   {editing ? (
                     <select
                       value={formData.family?.mothersOccupationType || ''}
@@ -1574,7 +1574,7 @@ export default function MyProfilePage() {
                           mothersOccupationDesc: e.target.value ? formData.family?.mothersOccupationDesc : '', 
                         },
                       })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F]"
                     >
                       <option value="">Select Type</option>
                       <option value="job">Job</option>
@@ -1583,7 +1583,7 @@ export default function MyProfilePage() {
                       <option value="business">Business</option>
                     </select>
                   ) : (
-                    <p className="text-gray-900 dark:text-gray-50">
+                    <p className="text-gray-900 dark:text-white">
                       {user.family?.mothersOccupationType 
                         ? user.family.mothersOccupationType.charAt(0).toUpperCase() + user.family.mothersOccupationType.slice(1)
                         : 'Not provided'}
@@ -1594,7 +1594,7 @@ export default function MyProfilePage() {
                 {/* Mother's Occupation Description */}
                 {editing && formData.family?.mothersOccupationType && (
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Mother's Occupation Description</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Mother's Occupation Description</label>
                     <input
                       type="text"
                       value={formData.family?.mothersOccupationDesc || ''}
@@ -1605,7 +1605,7 @@ export default function MyProfilePage() {
                           mothersOccupationDesc: sanitizeFormInput(e.target.value, 'text'),
                         },
                       })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F]"
                       placeholder={`Enter ${formData.family.mothersOccupationType} details`}
                     />
                   </div>
@@ -1613,14 +1613,14 @@ export default function MyProfilePage() {
 
                 {!editing && user.family?.mothersOccupationDesc && (
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Mother's Occupation Description</label>
-                    <p className="text-gray-900 dark:text-gray-50">{user.family.mothersOccupationDesc}</p>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Mother's Occupation Description</label>
+                    <p className="text-gray-900 dark:text-white">{user.family.mothersOccupationDesc}</p>
                   </div>
                 )}
 
                 {/* Siblings Information */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Number of Brothers</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Number of Brothers</label>
                   {editing ? (
                     <input
                       type="number"
@@ -1633,15 +1633,15 @@ export default function MyProfilePage() {
                           numberOfBrothers: parseInt(e.target.value) || 0,
                         },
                       })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F]"
                     />
                   ) : (
-                    <p className="text-gray-900 dark:text-gray-50">{user.family?.numberOfBrothers || 0}</p>
+                    <p className="text-gray-900 dark:text-white">{user.family?.numberOfBrothers || 0}</p>
                   )}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Number of Sisters</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Number of Sisters</label>
                   {editing ? (
                     <input
                       type="number"
@@ -1654,10 +1654,10 @@ export default function MyProfilePage() {
                           numberOfSisters: parseInt(e.target.value) || 0,
                         },
                       })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F]"
                     />
                   ) : (
-                    <p className="text-gray-900 dark:text-gray-50">{user.family?.numberOfSisters || 0}</p>
+                    <p className="text-gray-900 dark:text-white">{user.family?.numberOfSisters || 0}</p>
                   )}
                 </div>
               </div>
@@ -1666,7 +1666,7 @@ export default function MyProfilePage() {
         </div>
 
         {/* Horoscope Details Section - Collapsible */}
-        <div className="bg-white dark:bg-[#181b23] rounded-lg overflow-hidden">
+        <div className="bg-white dark:bg-[#2B0F17] rounded-lg overflow-hidden border dark:border-[#2F2327]">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, horoscope: !expandedSections.horoscope })}
             aria-expanded={expandedSections.horoscope}
@@ -1706,8 +1706,8 @@ export default function MyProfilePage() {
                 />
               ) : (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Date of Birth</label>
-                  <p className="text-gray-900 dark:text-gray-50">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Date of Birth</label>
+                  <p className="text-gray-900 dark:text-white">
                     {user.dateOfBirth ? new Date(user.dateOfBirth).toLocaleDateString() : 'Not provided'}
                   </p>
                 </div>
@@ -1715,7 +1715,7 @@ export default function MyProfilePage() {
 
               {/* Time of Birth */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Time of Birth (HH:MM:SS)</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Time of Birth (HH:MM:SS)</label>
                 {editing ? (
                   <input
                     type="time"
@@ -1731,11 +1731,11 @@ export default function MyProfilePage() {
                         },
                       });
                     }}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F]"
                     placeholder="HH:MM:SS"
                   />
                 ) : (
-                  <p className="text-gray-900 dark:text-gray-50">
+                  <p className="text-gray-900 dark:text-white">
                     {user.horoscopeDetails?.timeOfBirth || 'Not provided'}
                   </p>
                 )}
@@ -1743,7 +1743,7 @@ export default function MyProfilePage() {
 
               {/* Rashi */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Rashi (Moon Sign)</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Rashi (Moon Sign)</label>
                 {(editing || editingHoroscope) ? (
                   <select
                     value={formData.horoscopeDetails?.rashi || ''}
@@ -1754,7 +1754,7 @@ export default function MyProfilePage() {
                         rashi: e.target.value,
                       },
                     })}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F]"
                   >
                     <option value="">Select Rashi</option>
                     <option value="Aries">Aries (Mesha)</option>
@@ -1771,7 +1771,7 @@ export default function MyProfilePage() {
                     <option value="Pisces">Pisces (Meena)</option>
                   </select>
                 ) : (
-                  <p className="text-gray-900 dark:text-gray-50">
+                  <p className="text-gray-900 dark:text-white">
                     {user.horoscopeDetails?.rashi || 'Not provided'}
                   </p>
                 )}
@@ -1779,7 +1779,7 @@ export default function MyProfilePage() {
 
               {/* Nakshatra */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Nakshatra</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Nakshatra</label>
                 {(editing || editingHoroscope) ? (
                   <select
                     value={formData.horoscopeDetails?.nakshatra || ''}
@@ -1790,7 +1790,7 @@ export default function MyProfilePage() {
                         nakshatra: e.target.value,
                       },
                     })}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F]"
                   >
                     <option value="">Select Nakshatra</option>
                     <option value="Ashwini">Ashwini</option>
@@ -1822,7 +1822,7 @@ export default function MyProfilePage() {
                     <option value="Revati">Revati</option>
                   </select>
                 ) : (
-                  <p className="text-gray-900 dark:text-gray-50">
+                  <p className="text-gray-900 dark:text-white">
                     {user.horoscopeDetails?.nakshatra || 'Not provided'}
                   </p>
                 )}
@@ -1830,7 +1830,7 @@ export default function MyProfilePage() {
 
               {/* Star Sign */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Star Sign</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-2">Star Sign</label>
                 {(editing || editingHoroscope) ? (
                   <input
                     type="text"
@@ -1842,11 +1842,11 @@ export default function MyProfilePage() {
                         starSign: e.target.value,
                       },
                     })}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#2F2327] dark:bg-[#1F1417] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F]"
                     placeholder="Optional"
                   />
                 ) : (
-                  <p className="text-gray-900 dark:text-gray-50">
+                  <p className="text-gray-900 dark:text-white">
                     {user.horoscopeDetails?.starSign || 'Not provided'}
                   </p>
                 )}
@@ -1856,7 +1856,7 @@ export default function MyProfilePage() {
         </div>
 
         {/* Partner Preferences Section - Collapsible */}
-        <div className="bg-white dark:bg-[#181b23] rounded-lg overflow-hidden">
+        <div className="bg-white dark:bg-[#2B0F17] rounded-lg overflow-hidden border dark:border-[#2F2327]">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, partnerPreferences: !expandedSections.partnerPreferences })}
             aria-expanded={expandedSections.partnerPreferences}
@@ -1910,7 +1910,7 @@ export default function MyProfilePage() {
                           setFieldErrors(newErrors);
                         }
                       }}
-                          className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 dark:bg-[#1f212a] dark:text-gray-50 ${
+                          className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 dark:bg-[#1F1417] dark:text-white ${
                             fieldErrors['preferences.minAge'] 
                               ? 'border-red-400 focus:ring-red-500 focus:border-red-500' 
                               : 'border-gray-300 dark:border-gray-600 focus:ring-pink-500'
@@ -1943,7 +1943,7 @@ export default function MyProfilePage() {
                           setFieldErrors(newErrors);
                         }
                       }}
-                          className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 dark:bg-[#1f212a] dark:text-gray-50 ${
+                          className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 dark:bg-[#1F1417] dark:text-white ${
                             fieldErrors['preferences.maxAge'] 
                               ? 'border-red-400 focus:ring-red-500 focus:border-red-500' 
                               : 'border-gray-300 dark:border-gray-600 focus:ring-pink-500'
@@ -2032,7 +2032,7 @@ export default function MyProfilePage() {
                             }
                       }}
                           placeholder="5'8&quot;"
-                          className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 dark:bg-[#1f212a] dark:text-gray-50 ${
+                          className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 dark:bg-[#1F1417] dark:text-white ${
                             fieldErrors['preferences.minHeight'] 
                               ? 'border-red-400 focus:ring-red-500 focus:border-red-500' 
                               : 'border-gray-300 dark:border-gray-600 focus:ring-pink-500'
@@ -2082,7 +2082,7 @@ export default function MyProfilePage() {
                             }
                       }}
                           placeholder="6'2&quot;"
-                          className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 dark:bg-[#1f212a] dark:text-gray-50 ${
+                          className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 dark:bg-[#1F1417] dark:text-white ${
                             fieldErrors['preferences.maxHeight'] 
                               ? 'border-red-400 focus:ring-red-500 focus:border-red-500' 
                               : 'border-gray-300 dark:border-gray-600 focus:ring-pink-500'

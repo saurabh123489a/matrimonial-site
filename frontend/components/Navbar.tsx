@@ -150,14 +150,73 @@ export default function Navbar() {
 
   const getNotificationIcon = (type: string) => {
     switch (type) {
-      case 'shortlist': return '⭐';
-      case 'profile_view': return '👁️';
-      case 'interest_received': return '💝';
-      case 'interest_accepted': return '✅';
-      case 'message_received': return '💬';
-      case 'admin': return '📢';
-      default: return '🔔';
+      case 'shortlist':
+        return (
+          <svg className="w-5 h-5 text-yellow-500 dark:text-yellow-400" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+        );
+      case 'profile_view':
+        return (
+          <svg className="w-5 h-5 text-blue-500 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+          </svg>
+        );
+      case 'interest_received':
+        return (
+          <svg className="w-5 h-5 text-pink-500 dark:text-pink-400" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+        );
+      case 'interest_accepted':
+        return (
+          <svg className="w-5 h-5 text-green-500 dark:text-green-400" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+          </svg>
+        );
+      case 'message_received':
+        return (
+          <svg className="w-5 h-5 text-blue-500 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+          </svg>
+        );
+      case 'admin':
+        return (
+          <svg className="w-5 h-5 text-purple-500 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+          </svg>
+        );
+      default:
+        return (
+          <svg className="w-5 h-5 text-gray-500 dark:text-[#A29CA3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+          </svg>
+        );
     }
+  };
+
+  const parseNotificationMessage = (message: string) => {
+    // Parse message to extract user names and make them clickable
+    // Example: "User 5554 accepted your interest" -> "User 5554" and "your interest" are links
+    const parts = message.split(/(User \d+|your interest|their shortlist)/g);
+    return parts.map((part, index) => {
+      if (part.match(/User \d+/)) {
+        return (
+          <span key={index} className="underline text-pink-600 dark:text-[#E04F5F] cursor-pointer hover:text-pink-700 dark:hover:text-[#C43A4E]">
+            {part}
+          </span>
+        );
+      }
+      if (part.match(/(your interest|their shortlist)/)) {
+        return (
+          <span key={index} className="underline text-pink-600 dark:text-[#E04F5F] cursor-pointer hover:text-pink-700 dark:hover:text-[#C43A4E]">
+            {part}
+          </span>
+        );
+      }
+      return <span key={index}>{part}</span>;
+    });
   };
 
   // Main navigation links for bottom bar - 5 items (Interests combined)
@@ -338,16 +397,16 @@ export default function Navbar() {
                           <div className="overflow-y-auto flex-1">
                             {loadingNotifications ? (
                               <div className="p-8 text-center">
-                                <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-red-500 dark:border-red-500 border-t-transparent"></div>
-                                <p className="mt-4 text-sm text-gray-600 dark:text-gray-300">Loading notifications...</p>
+                                <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-pink-500 dark:border-[#E04F5F] border-t-transparent"></div>
+                                <p className="mt-4 text-sm text-gray-600 dark:text-[#D5D3D7]">Loading notifications...</p>
                               </div>
                             ) : notifications.length === 0 ? (
                               <div className="p-8 text-center">
                                 <div className="text-4xl mb-3">🔔</div>
-                                <p className="text-sm text-gray-600 dark:text-gray-300">No new notifications</p>
+                                <p className="text-sm text-gray-600 dark:text-[#D5D3D7]">No new notifications</p>
                               </div>
                             ) : (
-                              <div className="divide-y divide-gray-200 dark:divide-[#303341]">
+                              <div className="divide-y divide-gray-200 dark:divide-[#2F2327]">
                                 {notifications.map((notification) => (
                                   <Link
                                     key={notification._id}
@@ -359,24 +418,26 @@ export default function Navbar() {
                                       }
                                     }}
                                     className={`block p-4 hover:bg-gray-50 dark:hover:bg-[#241317] transition-colors cursor-pointer ${
-                                      !notification.isRead ? 'bg-pink-50/50 dark:bg-[#241317]' : ''
+                                      !notification.isRead ? 'bg-pink-50/50 dark:bg-[#241317] dark:border-l-2 dark:border-l-[#E04F5F]' : ''
                                     }`}
                                   >
                                     <div className="flex items-start gap-3">
-                                      <span className="text-2xl flex-shrink-0">{getNotificationIcon(notification.type)}</span>
+                                      <div className="flex-shrink-0 mt-0.5">
+                                        {getNotificationIcon(notification.type)}
+                                      </div>
                                       <div className="flex-1 min-w-0">
-                                        <h4 className="font-semibold text-gray-900 dark:text-white text-sm mb-1">
+                                        <h4 className="font-semibold text-gray-900 dark:text-white text-sm mb-1.5">
                                           {notification.title}
                                         </h4>
-                                        <p className="text-gray-600 dark:text-[#D5D3D7] text-xs mb-2 line-clamp-2">
-                                          {notification.message}
+                                        <p className="text-gray-600 dark:text-[#D5D3D7] text-xs mb-2 leading-relaxed">
+                                          {parseNotificationMessage(notification.message)}
                                         </p>
-                                        <p className="text-xs text-gray-400 dark:text-[#A29CA3]">
+                                        <p className="text-xs text-gray-500 dark:text-[#A29CA3] mt-2">
                                           {new Date(notification.createdAt).toLocaleString()}
                                         </p>
                                       </div>
                                       {!notification.isRead && (
-                                        <span className="w-2 h-2 bg-red-500 dark:bg-red-500 rounded-full flex-shrink-0 mt-1"></span>
+                                        <span className="w-2.5 h-2.5 bg-red-500 dark:bg-red-500 rounded-full flex-shrink-0 mt-1.5"></span>
                                       )}
                                     </div>
                                   </Link>
@@ -391,7 +452,7 @@ export default function Navbar() {
                               onClick={() => setShowNotifications(false)}
                               className="block w-full text-center px-4 py-2 text-sm font-medium text-pink-600 dark:text-[#E04F5F] hover:text-pink-700 dark:hover:text-[#C43A4E] hover:bg-pink-50 dark:hover:bg-[#241317] rounded-md transition-colors"
                             >
-                              View More →
+                              View More <span className="inline-block ml-1">→</span>
                             </Link>
                           </div>
                         </div>
