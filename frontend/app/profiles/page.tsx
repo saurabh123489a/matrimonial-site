@@ -49,6 +49,7 @@ function SearchProfilesPageContent() {
   const [viewMode, setViewMode] = useState<'compact' | 'detailed'>('detailed');
   const [showShareModal, setShowShareModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [hasSearched, setHasSearched] = useState(false);
   
   // Filter states
   const [filters, setFilters] = useState<SearchFilters>({
@@ -84,13 +85,7 @@ function SearchProfilesPageContent() {
       return;
     }
 
-    // Load current user to determine default gender filter
-    loadCurrentUser();
-    
-    // Load options
-    loadEducationOptions();
-    
-    // Load filters from URL params
+    // Load filters from URL params first (synchronous)
     const urlFilters: SearchFilters = {};
     if (searchParams.get('gender')) urlFilters.gender = searchParams.get('gender') || '';
     if (searchParams.get('minAge')) urlFilters.minAge = parseInt(searchParams.get('minAge') || '');
@@ -108,6 +103,14 @@ function SearchProfilesPageContent() {
     if (Object.keys(urlFilters).length > 0) {
       setFilters(prev => ({ ...prev, ...urlFilters }));
     }
+
+    // Load current user and education options in parallel for faster loading
+    Promise.all([
+      loadCurrentUser(),
+      loadEducationOptions()
+    ]).catch(err => {
+      console.error('Failed to load initial data:', err);
+    });
   }, []);
 
   useEffect(() => {
@@ -125,34 +128,50 @@ function SearchProfilesPageContent() {
   }, [currentUser?.gender]);
 
   useEffect(() => {
-    if (mounted && auth.isAuthenticated() && currentUser) {
-      // Initial search - load profiles automatically when page opens
-      // Wait for filters to be set (especially default gender filter)
-      const timeoutId = setTimeout(() => {
+    if (mounted && auth.isAuthenticated() && currentUser && !hasSearched) {
+      // Trigger search immediately - filters are set synchronously from URL or will be set by the gender effect
+      // The performSearch function reads filters from state, so it will use the latest values
+      setHasSearched(true);
+      // Use requestAnimationFrame to ensure state updates are flushed
+      requestAnimationFrame(() => {
         performSearch(1, false);
-      }, 300);
-      
-      return () => clearTimeout(timeoutId);
+      });
     }
-  }, [mounted, currentUser]);
+  }, [mounted, currentUser, hasSearched]);
 
   const loadCurrentUser = async () => {
     try {
       const response = await userApi.getMe();
       if (response.status && response.data) {
         setCurrentUser(response.data);
+        return response.data;
       }
     } catch (err) {
       console.error('Failed to load current user:', err);
+      throw err;
     }
   };
 
   const loadEducationOptions = async () => {
+    // Check cache first (sessionStorage for this session)
+    const cacheKey = 'educationOptions';
+    const cached = sessionStorage.getItem(cacheKey);
+    if (cached) {
+      try {
+        setEducationOptions(JSON.parse(cached));
+        return;
+      } catch (e) {
+        // Invalid cache, continue to fetch
+      }
+    }
+
     setLoadingEducation(true);
     try {
       const response = await metaDataApi.getEducation();
       if (response.status && response.data) {
         setEducationOptions(response.data);
+        // Cache for this session
+        sessionStorage.setItem(cacheKey, JSON.stringify(response.data));
       }
     } catch (error) {
       console.error('Failed to load education options:', error);
@@ -164,11 +183,25 @@ function SearchProfilesPageContent() {
   const loadOccupationOptions = async () => {
     if (!currentUser?.gender) return;
     
+    // Check cache first (sessionStorage for this session)
+    const cacheKey = `occupationOptions_${currentUser.gender}`;
+    const cached = sessionStorage.getItem(cacheKey);
+    if (cached) {
+      try {
+        setOccupationOptions(JSON.parse(cached));
+        return;
+      } catch (e) {
+        // Invalid cache, continue to fetch
+      }
+    }
+    
     setLoadingOccupation(true);
     try {
       const response = await metaDataApi.getOccupation(currentUser.gender);
       if (response.status && response.data) {
         setOccupationOptions(response.data);
+        // Cache for this session
+        sessionStorage.setItem(cacheKey, JSON.stringify(response.data));
       }
     } catch (error) {
       console.error('Failed to load occupation options:', error);
@@ -268,6 +301,7 @@ function SearchProfilesPageContent() {
   };
 
   const handleSearch = () => {
+    setHasSearched(true);
     performSearch(1, false);
   };
 
