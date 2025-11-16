@@ -178,7 +178,27 @@ function ProfileCard({ user }: ProfileCardProps) {
               </span>
             </div>
           )}
+          {user.diet && (
+            <div className="flex items-center gap-2.5 text-sm bg-gradient-to-r from-gray-50 to-gray-50/50">
+              <span className="text-pink-600">🥗</span>
+              <span className="text-secondary truncate font-medium capitalize" title={user.diet}>{user.diet === 'non-vegetarian' ? 'Non-Veg' : user.diet}</span>
+            </div>
+          )}
         </div>
+
+        {/* Interests/Hobbies - Show first 2 */}
+        {user.hobbies && user.hobbies.length > 0 && (
+          <div className="flex flex-wrap items-center gap-2 mb-5">
+            {user.hobbies.slice(0, 2).map((hobby, index) => (
+              <span 
+                key={index}
+                className="inline-flex items-center px-3 py-1 bg-pink-50 text-pink-700 text-xs font-medium rounded-full border border-pink-200"
+              >
+                {hobby}
+              </span>
+            ))}
+          </div>
+        )}
 
         {/* Bio Preview */}
         {user.bio && (

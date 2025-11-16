@@ -264,7 +264,27 @@ export default function DetailedProfileTile({ user }: DetailedProfileTileProps) 
                   <span className="drop-shadow-md truncate">{user.education}</span>
                 </div>
               )}
+              {user.diet && (
+                <div className="flex items-center gap-1">
+                  <span className="text-white/90 text-xs sm:text-sm">🥗</span>
+                  <span className="drop-shadow-md truncate capitalize">{user.diet === 'non-vegetarian' ? 'Non-Veg' : user.diet}</span>
+                </div>
+              )}
             </div>
+
+            {/* Interests/Hobbies - Show first 2 */}
+            {user.hobbies && user.hobbies.length > 0 && (
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-2 sm:mb-3">
+                {user.hobbies.slice(0, 2).map((hobby, index) => (
+                  <span 
+                    key={index}
+                    className="bg-white/20 backdrop-blur-sm text-white text-xs px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full font-medium border border-white/30"
+                  >
+                    {hobby}
+                  </span>
+                ))}
+              </div>
+            )}
 
             {/* Horoscope Match and Profile Management */}
             <div className="flex flex-wrap items-center gap-2 text-xs">
