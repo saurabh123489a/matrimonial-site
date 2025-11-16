@@ -784,11 +784,11 @@ export default function MyProfilePage() {
                   setError('');
                 }}
                 aria-label="Edit profile"
-                className="p-2 -mr-2 text-white hover:bg-[#800020]/20 rounded-lg transition-colors"
+                className="p-2 text-white hover:bg-[#800020]/20 rounded-lg transition-colors flex items-center justify-center"
                 title="Edit profile"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                 </svg>
               </button>
             ) : (
