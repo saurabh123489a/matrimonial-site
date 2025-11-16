@@ -135,7 +135,7 @@ export default function Home() {
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-32 lg:py-40">
           <div className="max-w-3xl">
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-light mb-6 tracking-tight leading-none drop-shadow-lg">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 tracking-tight leading-tight drop-shadow-lg">
               {t('home.title')}
             </h1>
             <p className="text-lg sm:text-xl text-pink-100 mb-8 font-light max-w-xl drop-shadow-md">
@@ -160,7 +160,7 @@ export default function Home() {
         className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24 ${featuresRef.isVisible ? 'scroll-animate-fade-up animate' : 'scroll-animate-fade-up'}`}
       >
         <div className="text-center mb-12 sm:mb-16">
-          <h2 className="text-3xl sm:text-4xl font-light text-gray-900 mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-gray-900 dark:text-gray-50 mb-4">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-red-600">
               Complete Community Platform
             </span>

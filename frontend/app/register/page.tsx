@@ -8,6 +8,8 @@ import { auth } from '@/lib/auth';
 import { useTranslation } from '@/hooks/useTranslation';
 import { sanitizeFormInput } from '@/hooks/useSanitizedInput';
 import { getErrorMessage, getFieldError } from '@/lib/utils/errorMessages';
+import CustomSelect from '@/components/CustomSelect';
+import CustomDatePicker from '@/components/CustomDatePicker';
 import { validateEmail, validatePhone, validateRequired, validateMinLength } from '@/lib/utils/validation';
 
 export default function RegisterPage() {
@@ -694,66 +696,36 @@ export default function RegisterPage() {
               </div>
 
               {/* Gender and Date of Birth */}
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="gender" className="block text-sm font-semibold text-gray-700 mb-2">
-                    {t('auth.gender')} <span className="text-red-500">*</span>
-                  </label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                      <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                      </svg>
-                    </div>
-                    <select
-                      id="gender"
-                      name="gender"
-                      required
-                      className="block w-full pl-12 pr-4 py-3 border-2 border-gray-200 bg-gray-50 text-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 sm:text-sm transition-all duration-200 focus:bg-white"
-                      value={formData.gender}
-                      onChange={(e) => setFormData({ ...formData, gender: e.target.value as any })}
-                    >
-                      <option value="male">{t('auth.male')}</option>
-                      <option value="female">{t('auth.female')}</option>
-                      <option value="other">{t('auth.other')}</option>
-                    </select>
-                  </div>
-                </div>
-                <div>
-                  <label htmlFor="dateOfBirth" className="block text-sm font-semibold text-gray-700 mb-2">
-                    Date of Birth <span className="text-red-500">*</span>
-                  </label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                      <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
-                    </div>
-                    <input
-                      id="dateOfBirth"
-                      name="dateOfBirth"
-                      type="date"
-                      max={new Date(new Date().setFullYear(new Date().getFullYear() - 18)).toISOString().split('T')[0]}
-                      min={new Date(new Date().setFullYear(new Date().getFullYear() - 100)).toISOString().split('T')[0]}
-                      className={`block w-full pl-12 pr-4 py-3 border-2 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 sm:text-sm ${
-                        touchedFields.dateOfBirth && fieldErrors.dateOfBirth
-                          ? 'border-red-400 bg-red-50'
-                          : 'border-gray-200 bg-gray-50 focus:bg-white'
-                      }`}
-                      value={formData.dateOfBirth}
-                      onChange={(e) => handleChange('dateOfBirth', e.target.value)}
-                      onBlur={() => handleBlur('dateOfBirth')}
-                    />
-                  </div>
-                  {touchedFields.dateOfBirth && fieldErrors.dateOfBirth && (
-                    <p className="mt-2 text-sm text-red-600 flex items-center">
-                      <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                      </svg>
-                      {fieldErrors.dateOfBirth}
-                    </p>
-                  )}
-                </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <CustomSelect
+                  id="gender"
+                  name="gender"
+                  label={t('auth.gender')}
+                  required
+                  value={formData.gender}
+                  onChange={(e) => setFormData({ ...formData, gender: e.target.value as any })}
+                  options={[
+                    { value: 'male', label: t('auth.male') },
+                    { value: 'female', label: t('auth.female') },
+                    { value: 'other', label: t('auth.other') },
+                  ]}
+                  icon={
+                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                  }
+                />
+                <CustomDatePicker
+                  id="dateOfBirth"
+                  name="dateOfBirth"
+                  label="Date of Birth"
+                  required
+                  max={new Date(new Date().setFullYear(new Date().getFullYear() - 18)).toISOString().split('T')[0]}
+                  min={new Date(new Date().setFullYear(new Date().getFullYear() - 100)).toISOString().split('T')[0]}
+                  value={formData.dateOfBirth}
+                  onChange={(e) => handleChange('dateOfBirth', e.target.value)}
+                  error={touchedFields.dateOfBirth ? fieldErrors.dateOfBirth : undefined}
+                />
               </div>
 
               {/* Age (Auto-filled, read-only) */}

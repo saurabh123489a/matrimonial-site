@@ -1,13 +1,41 @@
 @import "tailwindcss";
 
+/* ============================================
+   COLOR SYSTEM - Primary, Secondary, Accent
+   ============================================ */
+
 :root {
+  /* Background Colors - Light Mode */
   --background: #ffffff;
+  --background-secondary: #f9fafb;
+  --background-tertiary: #f3f4f6;
+  
+  /* Foreground Colors - Light Mode */
   --foreground: #171717;
-  --primary: #c2185b;
-  --primary-dark: #a0144a;
-  --primary-light: #f5e6ed;
-  --secondary: #333333;
-  --accent: #ff6b9d;
+  --foreground-secondary: #6b7280;
+  --foreground-muted: #9ca3af;
+  
+  /* Primary Colors - Light Mode */
+  --primary: #ec4899; /* Pink-500 - Main brand color */
+  --primary-dark: #be185d; /* Pink-700 - Hover states */
+  --primary-light: #f9a8d4; /* Pink-300 - Backgrounds/accents */
+  --primary-medium: #f472b6; /* Pink-400 - Medium emphasis */
+  
+  /* Secondary Colors - Light Mode */
+  --secondary: #6b7280; /* Gray-500 - Supporting text */
+  --secondary-dark: #374151; /* Gray-700 - Headings */
+  --secondary-light: #f3f4f6; /* Gray-100 - Backgrounds */
+  
+  /* Accent Colors - Light Mode */
+  --accent: #dc2626; /* Red-600 - Accents */
+  --accent-gradient-start: #ec4899; /* Pink-600 */
+  --accent-gradient-end: #dc2626; /* Red-600 */
+  
+  /* Status Colors - Light Mode */
+  --success: #10b981; /* Green-500 */
+  --error: #ef4444; /* Red-500 */
+  --warning: #f59e0b; /* Amber-500 */
+  --info: #3b82f6; /* Blue-500 */
 }
 
 @theme inline {
@@ -17,19 +45,38 @@
   --font-mono: var(--font-geist-mono);
 }
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 .dark {
+  /* Background Colors - Dark Mode */
   --background: #0f1117;
+  --background-secondary: #181b23;
+  --background-tertiary: #1f212a;
+  
+  /* Foreground Colors - Dark Mode */
   --foreground: #f5f6f9;
-  --primary: #ff6584;
-  --primary-dark: #f2466c;
-  --primary-light: #ff8fa3;
-  --secondary: #1a1c23;
-  --accent: #ffd1dc;
+  --foreground-secondary: #9ca3af;
+  --foreground-muted: #6b7280;
+  
+  /* Primary Colors - Dark Mode */
+  --primary: #ff6584; /* Pink-400 - Main brand color */
+  --primary-dark: #f2466c; /* Pink-500 - Hover states */
+  --primary-light: #ff8fa3; /* Pink-300 - Backgrounds/accents */
+  --primary-medium: #f472b6; /* Pink-400 - Medium emphasis */
+  
+  /* Secondary Colors - Dark Mode */
+  --secondary: #9ca3af; /* Gray-400 - Supporting text */
+  --secondary-dark: #1a1c23; /* Card backgrounds */
+  --secondary-light: #1f212a; /* Elevated surfaces */
+  
+  /* Accent Colors - Dark Mode */
+  --accent: #f472b6; /* Pink-400 - Accents */
+  --accent-gradient-start: #ff6584; /* Pink-400 */
+  --accent-gradient-end: #f472b6; /* Pink-400 */
+  
+  /* Status Colors - Dark Mode */
+  --success: #34d399; /* Green-400 */
+  --error: #f87171; /* Red-400 */
+  --warning: #fbbf24; /* Amber-400 */
+  --info: #60a5fa; /* Blue-400 */
 }
 
 .dark.dark-blue {
@@ -212,11 +259,137 @@
   --accent: #e7e5e4;
 }
 
+/* ============================================
+   TYPOGRAPHY SYSTEM
+   ============================================ */
+
+/* Base Typography */
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+  font-size: 1rem; /* 16px */
+  line-height: 1.6; /* Optimal for body text */
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Heading Styles */
+h1 {
+  font-size: 2.5rem; /* 40px - Mobile */
+  font-weight: 700; /* Bold */
+  line-height: 1.1; /* Tight for large headings */
+  letter-spacing: -0.02em;
+  color: var(--foreground);
+}
+
+@media (min-width: 640px) {
+  h1 {
+    font-size: 3rem; /* 48px - Tablet */
+  }
+}
+
+@media (min-width: 1024px) {
+  h1 {
+    font-size: 3.75rem; /* 60px - Desktop */
+  }
+}
+
+h2 {
+  font-size: 1.875rem; /* 30px - Mobile */
+  font-weight: 600; /* Semibold */
+  line-height: 1.2; /* Tight but readable */
+  letter-spacing: -0.01em;
+  color: var(--foreground);
+}
+
+@media (min-width: 640px) {
+  h2 {
+    font-size: 2.25rem; /* 36px - Tablet */
+  }
+}
+
+@media (min-width: 1024px) {
+  h2 {
+    font-size: 2.5rem; /* 40px - Desktop */
+  }
+}
+
+h3 {
+  font-size: 1.5rem; /* 24px - Mobile */
+  font-weight: 600; /* Semibold */
+  line-height: 1.3; /* Comfortable */
+  color: var(--foreground);
+}
+
+@media (min-width: 640px) {
+  h3 {
+    font-size: 1.75rem; /* 28px - Tablet */
+  }
+}
+
+@media (min-width: 1024px) {
+  h3 {
+    font-size: 2rem; /* 32px - Desktop */
+  }
+}
+
+h4 {
+  font-size: 1.25rem; /* 20px - Mobile */
+  font-weight: 600; /* Semibold */
+  line-height: 1.4; /* Comfortable */
+  color: var(--foreground);
+}
+
+@media (min-width: 640px) {
+  h4 {
+    font-size: 1.5rem; /* 24px - Tablet+ */
+  }
+}
+
+/* Body Text - Improved Contrast for Dark Mode */
+p {
+  font-size: 1rem; /* 16px */
+  line-height: 1.6; /* Relaxed for readability */
+  color: var(--foreground-secondary);
+}
+
+.dark p {
+  color: var(--foreground-secondary); /* Ensures good contrast */
+}
+
+/* Links */
+a {
+  line-height: 1.5;
+}
+
+/* Lists */
+ul, ol {
+  line-height: 1.6;
+}
+
+li {
+  line-height: 1.6;
+}
+
+/* Improved Dark Mode Text Contrast */
+.dark {
+  --foreground: #f5f6f9; /* Light gray for headings */
+  --foreground-secondary: #e5e7eb; /* Lighter gray for body text - better contrast */
+  --foreground-muted: #d1d5db; /* Even lighter for secondary text */
+}
+
+/* Ensure sufficient contrast for all text in dark mode */
+.dark h1,
+.dark h2,
+.dark h3,
+.dark h4 {
+  color: #f9fafb; /* Gray-50 - maximum contrast */
+}
+
+.dark p,
+.dark span,
+.dark div {
+  color: #e5e7eb; /* Gray-200 - good contrast for body text */
 }
 
 .profile-card {
@@ -1050,4 +1223,32 @@ label {
 
 .animate-delay-500 {
   animation-delay: 0.5s;
+}
+
+/* Blob animation for decorative backgrounds */
+@keyframes blob {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
 }
