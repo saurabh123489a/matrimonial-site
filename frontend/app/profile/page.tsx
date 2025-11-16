@@ -908,7 +908,7 @@ export default function MyProfilePage() {
                     }`}
                   />
                   {fieldErrors.height && (
-                    <p className="mt-1 text-sm text-red-600 dark:text-red-400 flex items-center">
+                    <p className="mt-1 text-sm text-red-600 dark:text-[#F25D5D] flex items-center">
                       <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                       </svg>
@@ -947,7 +947,7 @@ export default function MyProfilePage() {
                       placeholder="A software engineer with a passion for travel and classical dance. Looking for a partner who values family, honesty, and a good sense of humor."
                     />
                     {fieldErrors.bio && (
-                      <p className="mt-1 text-sm text-red-600 dark:text-red-400 flex items-center">
+                      <p className="mt-1 text-sm text-red-600 dark:text-[#F25D5D] flex items-center">
                         <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                         </svg>
@@ -1075,7 +1075,7 @@ export default function MyProfilePage() {
                   {user.state && <p><span className="font-medium dark:text-[#D5D3D7]">State:</span> {user.state}</p>}
                   {user.city && <p><span className="font-medium dark:text-[#D5D3D7]">City:</span> {user.city}</p>}
                   {user.town && <p><span className="font-medium dark:text-[#D5D3D7]">Town:</span> {user.town}</p>}
-                  {!user.country && !user.state && !user.city && <p>Not provided</p>}
+                  {!user.country && !user.state && !user.city && <p className="text-gray-900 dark:text-[#A29CA3]">Not provided</p>}
                 </div>
               )}
               
@@ -1674,9 +1674,9 @@ export default function MyProfilePage() {
             aria-label={`${expandedSections.horoscope ? 'Collapse' : 'Expand'} Horoscope Details section`}
             className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 rounded-lg"
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-gray-900 dark:text-gray-50">🔮 Horoscope Details</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-gray-900 dark:text-white">🔮 Horoscope Details</h2>
             <svg 
-              className={`w-5 h-5 text-gray-500 dark:text-gray-400 transition-transform ${expandedSections.horoscope ? 'rotate-180' : ''}`}
+              className={`w-5 h-5 text-gray-500 dark:text-[#A29CA3] transition-transform ${expandedSections.horoscope ? 'rotate-180' : ''}`}
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
@@ -1864,9 +1864,9 @@ export default function MyProfilePage() {
             aria-label={`${expandedSections.partnerPreferences ? 'Collapse' : 'Expand'} Partner Preferences section`}
             className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 rounded-lg"
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-gray-900 dark:text-gray-50">Partner Preferences</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-gray-900 dark:text-white">Partner Preferences</h2>
             <svg 
-              className={`w-5 h-5 text-gray-500 dark:text-gray-400 transition-transform ${expandedSections.partnerPreferences ? 'rotate-180' : ''}`}
+              className={`w-5 h-5 text-gray-500 dark:text-[#A29CA3] transition-transform ${expandedSections.partnerPreferences ? 'rotate-180' : ''}`}
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
@@ -1880,9 +1880,9 @@ export default function MyProfilePage() {
             <div id="partner-preferences-section" className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
               {/* Age Range */}
                 <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-3">
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-3">
                   Age Range
-                  <span className="ml-2 text-pink-600 dark:text-red-500 font-semibold">
+                  <span className="ml-2 text-pink-600 dark:text-[#E04F5F] font-semibold">
                     {formData.preferences?.minAge || user.preferences?.minAge || 28} - {formData.preferences?.maxAge || user.preferences?.maxAge || 34}
                   </span>
                 </label>
@@ -1890,7 +1890,7 @@ export default function MyProfilePage() {
                   <div className="space-y-2">
                     <div className="flex gap-4">
                       <div className="flex-1">
-                        <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">Min Age</label>
+                        <label className="block text-xs text-gray-500 dark:text-[#A29CA3] mb-1">Min Age</label>
                     <input
                           type="number"
                           min="18"
@@ -1917,13 +1917,13 @@ export default function MyProfilePage() {
                           }`}
                     />
                     {fieldErrors['preferences.minAge'] && (
-                      <p className="mt-1 text-xs text-red-600 dark:text-red-400">
+                      <p className="mt-1 text-xs text-red-600 dark:text-[#F25D5D]">
                         {fieldErrors['preferences.minAge']}
                       </p>
                     )}
                 </div>
                       <div className="flex-1">
-                        <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">Max Age</label>
+                        <label className="block text-xs text-gray-500 dark:text-[#A29CA3] mb-1">Max Age</label>
                     <input
                           type="number"
                           min="18"
@@ -1950,7 +1950,7 @@ export default function MyProfilePage() {
                           }`}
                     />
                     {fieldErrors['preferences.maxAge'] && (
-                      <p className="mt-1 text-xs text-red-600 dark:text-red-400">
+                      <p className="mt-1 text-xs text-red-600 dark:text-[#F25D5D]">
                         {fieldErrors['preferences.maxAge']}
                       </p>
                     )}
@@ -1968,7 +1968,7 @@ export default function MyProfilePage() {
                         }}
                     />
                   </div>
-                    <span className="text-pink-600 dark:text-red-500 font-semibold text-sm whitespace-nowrap">
+                    <span className="text-pink-600 dark:text-[#E04F5F] font-semibold text-sm whitespace-nowrap">
                       {user.preferences?.minAge || 28} - {user.preferences?.maxAge || 34}
                     </span>
                   </div>
@@ -1977,9 +1977,9 @@ export default function MyProfilePage() {
 
               {/* Height Range */}
                 <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-3">
+                <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-3">
                   Height Range
-                  <span className="ml-2 text-pink-600 dark:text-red-500 font-semibold">
+                  <span className="ml-2 text-pink-600 dark:text-[#E04F5F] font-semibold">
                     {(() => {
                       const minH = formData.preferences?.minHeight || user.preferences?.minHeight || 68;
                       const maxH = formData.preferences?.maxHeight || user.preferences?.maxHeight || 74;
@@ -1995,7 +1995,7 @@ export default function MyProfilePage() {
                   <div className="space-y-2">
                     <div className="flex gap-4">
                       <div className="flex-1">
-                        <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">Min Height</label>
+                        <label className="block text-xs text-gray-500 dark:text-[#A29CA3] mb-1">Min Height</label>
                     <input
                           type="text"
                           value={(() => {
@@ -2039,13 +2039,13 @@ export default function MyProfilePage() {
                           }`}
                     />
                     {fieldErrors['preferences.minHeight'] && (
-                      <p className="mt-1 text-xs text-red-600 dark:text-red-400">
+                      <p className="mt-1 text-xs text-red-600 dark:text-[#F25D5D]">
                         {fieldErrors['preferences.minHeight']}
                       </p>
                     )}
                 </div>
                       <div className="flex-1">
-                        <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">Max Height</label>
+                        <label className="block text-xs text-gray-500 dark:text-[#A29CA3] mb-1">Max Height</label>
                     <input
                           type="text"
                           value={(() => {
@@ -2089,7 +2089,7 @@ export default function MyProfilePage() {
                           }`}
                     />
                     {fieldErrors['preferences.maxHeight'] && (
-                      <p className="mt-1 text-xs text-red-600 dark:text-red-400">
+                      <p className="mt-1 text-xs text-red-600 dark:text-[#F25D5D]">
                         {fieldErrors['preferences.maxHeight']}
                       </p>
                     )}
@@ -2107,7 +2107,7 @@ export default function MyProfilePage() {
                       }}
                     />
                 </div>
-                    <span className="text-pink-600 dark:text-red-500 font-semibold text-sm whitespace-nowrap">
+                    <span className="text-pink-600 dark:text-[#E04F5F] font-semibold text-sm whitespace-nowrap">
                       {user.preferences?.minHeight 
                         ? (Math.floor(user.preferences.minHeight / 12) + "'" + (user.preferences.minHeight % 12) + '"')
                         : "5'8\""} - {user.preferences?.maxHeight 
@@ -2129,12 +2129,12 @@ export default function MyProfilePage() {
                     aria-label="Require horoscope match for partner preferences"
                     className="w-5 h-5 text-pink-600 border-gray-300 rounded focus:ring-pink-500 focus:ring-2 focus:ring-offset-2 dark:border-gray-600 dark:bg-[#1f212a] disabled:opacity-50 disabled:cursor-not-allowed"
                   />
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
-                    Require Horoscope Match <span className="text-gray-500 dark:text-gray-400 text-xs">(Mandatory for matches)</span>
+                  <span className="text-sm font-medium text-gray-700 dark:text-[#D5D3D7]">
+                    Require Horoscope Match <span className="text-gray-500 dark:text-[#A29CA3] text-xs">(Mandatory for matches)</span>
                   </span>
                 </label>
                 {!editing && (
-                  <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                  <p className="mt-2 text-sm text-gray-600 dark:text-[#D5D3D7]">
                     {user.horoscopeMatchMandatory 
                       ? 'Horoscope compatibility is required for matches' 
                       : 'Horoscope compatibility is optional for matches'}
