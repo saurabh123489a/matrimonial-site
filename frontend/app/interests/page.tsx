@@ -99,8 +99,8 @@ export default function InterestsPage() {
   const filteredInterests = getFilteredInterests(currentInterests);
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen bg-white pb-20 sm:pb-24">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {/* Header with Tabs */}
         <div className="mb-6">
           <div className="flex items-center gap-3 mb-6">
@@ -158,8 +158,8 @@ export default function InterestsPage() {
               onClick={() => setFilterStatus('all')}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                 filterStatus === 'all'
-                  ? 'bg-gradient-to-r from-pink-600 to-red-600'
-                  : 'bg-gray-100'
+                  ? 'bg-gradient-to-r from-pink-600 to-red-600 text-white shadow-lg'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
               All ({currentInterests.length})
@@ -169,7 +169,7 @@ export default function InterestsPage() {
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                 filterStatus === 'pending'
                   ? 'bg-gradient-to-r from-pink-600 to-red-600 text-white shadow-lg'
-                  : 'bg-gray-100'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
               Pending ({currentInterests.filter(i => i.status === 'pending').length})
@@ -179,7 +179,7 @@ export default function InterestsPage() {
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                 filterStatus === 'accepted'
                   ? 'bg-gradient-to-r from-pink-600 to-red-600 text-white shadow-lg'
-                  : 'bg-gray-100'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
               Accepted ({currentInterests.filter(i => i.status === 'accepted').length})
@@ -189,7 +189,7 @@ export default function InterestsPage() {
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                 filterStatus === 'rejected'
                   ? 'bg-gradient-to-r from-pink-600 to-red-600 text-white shadow-lg'
-                  : 'bg-gray-100'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
               Declined ({currentInterests.filter(i => i.status === 'rejected').length})
@@ -220,23 +220,23 @@ export default function InterestsPage() {
               return (
                 <div
                   key={interest._id || interest.id}
-                  className="bg-white"
+                  className="bg-white border border-gray-200 rounded-xl shadow-sm p-4 sm:p-6 hover:shadow-md transition-shadow"
                 >
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex-1 min-w-0">
                       <Link
                         href={profileUrl}
-                        className="block"
+                        className="block hover:opacity-80 transition-opacity"
                       >
-                        <h3 className="text-lg font-medium text-gray-900">
+                        <h3 className="text-lg font-semibold text-gray-900 mb-1">
                           {user?.name || 'Unknown User'}
                         </h3>
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-gray-600 mb-2">
                           {user?.age && `${user.age} years`}
                           {user?.city && ` • ${user.city}`}
                         </p>
                       </Link>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-gray-500 mb-3">
                         {activeTab === 'received' ? 'Received' : 'Sent'} on {new Date(interest.createdAt || interest.sentAt).toLocaleDateString()}
                       </p>
                       
@@ -249,22 +249,22 @@ export default function InterestsPage() {
 
                       {/* Action Buttons for Received */}
                       {activeTab === 'received' && interest.status === 'pending' && (
-                        <div className="flex gap-3">
+                        <div className="flex gap-3 flex-wrap">
                           <button
                             onClick={() => handleRespond(userId, 'accept')}
-                            className="flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-pink-600 to-red-600"
+                            className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-pink-600 to-red-600 text-white font-semibold rounded-lg hover:from-pink-700 hover:to-red-700 transition-all shadow-md hover:shadow-lg touch-manipulation min-h-[44px]"
                           >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                             </svg>
                             Accept
                           </button>
                           <button
                             onClick={() => handleRespond(userId, 'reject')}
-                            className="flex items-center gap-2 px-6 py-2 border-2 border-gray-300"
+                            className="flex items-center gap-2 px-6 py-2.5 border-2 border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-all touch-manipulation min-h-[44px]"
                           >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                             </svg>
                             Decline
                           </button>
@@ -276,7 +276,7 @@ export default function InterestsPage() {
                         <img
                           src={user.photos[0].url}
                           alt={user.name}
-                          className="w-20 h-20 object-cover rounded-lg"
+                          className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-lg shadow-sm"
                         />
                       </div>
                     )}
