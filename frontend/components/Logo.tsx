@@ -43,72 +43,52 @@ export default function Logo({
 
   const currentSize = sizeClasses[size];
 
-  // Custom Ring Icon SVG
-  const RingIcon = () => (
-    <svg 
-      className={`${currentSize.icon} flex-shrink-0 transition-transform duration-300 group-hover:scale-110`}
-      viewBox="0 0 64 64" 
-      fill="none" 
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-    >
-      {/* Outer Ring */}
-      <circle 
-        cx="32" 
-        cy="32" 
-        r="28" 
-        stroke="currentColor" 
-        strokeWidth="2.5"
-        fill="none"
-        className="text-pink-500 dark:text-pink-400"
-      />
-      {/* Inner Ring */}
-      <circle 
-        cx="32" 
-        cy="32" 
-        r="20" 
-        stroke="currentColor" 
-        strokeWidth="2"
-        fill="none"
-        className="text-purple-500 dark:text-purple-400"
-        strokeDasharray="4 2"
-      />
-      {/* Center Gem/Diamond */}
-      <path 
-        d="M32 18 L38 28 L32 38 L26 28 Z" 
-        fill="currentColor"
-        className="text-pink-600 dark:text-pink-500"
-      />
-      {/* Sparkle effect */}
-      <circle 
-        cx="32" 
-        cy="12" 
-        r="1.5" 
-        fill="currentColor"
-        className="text-pink-400 dark:text-pink-300"
-      />
-      <circle 
-        cx="32" 
-        cy="52" 
-        r="1.5" 
-        fill="currentColor"
-        className="text-purple-400 dark:text-purple-300"
-      />
-      <circle 
-        cx="12" 
-        cy="32" 
-        r="1.5" 
-        fill="currentColor"
-        className="text-pink-400 dark:text-pink-300"
-      />
-      <circle 
-        cx="52" 
-        cy="32" 
-        r="1.5" 
-        fill="currentColor"
-        className="text-purple-400 dark:text-purple-300"
-      />
-    </svg>
+  // Modern Elegant Logo Icon - Stylized "e" with heart accent
+  const LogoIcon = () => (
+    <div className={`${currentSize.icon} relative flex items-center justify-center`}>
+      <svg 
+        className="w-full h-full flex-shrink-0 transition-transform duration-300 group-hover:scale-105"
+        viewBox="0 0 56 56" 
+        fill="none" 
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        {/* Background circle */}
+        <circle 
+          cx="28" 
+          cy="28" 
+          r="26" 
+          fill="url(#logoGradient)"
+          className="opacity-10 dark:opacity-20"
+        />
+        {/* Stylized "e" letter */}
+        <path 
+          d="M28 12C20 12 14 18 14 26C14 30 16 33 19 35C17 37 16 40 16 43C16 47 19 50 23 50C25 50 27 49 28 48V44C27 45 25 45 23 45C21 45 19 43 19 41C19 39 20 37 22 36C20 35 18 32 18 28C18 22 22 18 28 18C34 18 38 22 38 28C38 30 37 32 36 33C38 34 40 37 40 41C40 43 38 45 36 45C34 45 32 44 31 43V47C32 48 34 49 36 49C40 49 43 46 43 42C43 39 42 36 40 34C42 32 44 29 44 25C44 19 38 13 28 13Z" 
+          fill="url(#logoGradient)"
+          className="group-hover:opacity-90 transition-opacity"
+        />
+        {/* Small heart accent */}
+        <path 
+          d="M28 38C27 37 25 35 24 33C24 31 25 29 27 29C28 29 28.5 29.5 29 30C29.5 29.5 30 29 31 29C33 29 34 31 34 33C34 35 32 37 31 38C30.5 38.5 28.5 38.5 28 38Z" 
+          fill="url(#logoGradient)"
+        />
+        {/* Gradient definition */}
+        <defs>
+          <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#db2777" />
+            <stop offset="50%" stopColor="#9333ea" />
+            <stop offset="100%" stopColor="#db2777" />
+          </linearGradient>
+          <style>{`
+            @media (prefers-color-scheme: dark) {
+              #logoGradient stop:nth-child(1),
+              #logoGradient stop:nth-child(3) { stop-color: #f472b6; }
+              #logoGradient stop:nth-child(2) { stop-color: #c084fc; }
+            }
+          `}</style>
+        </defs>
+      </svg>
+    </div>
   );
 
   // Minimal variant - just icon
@@ -119,7 +99,7 @@ export default function Logo({
         className={`inline-flex items-center justify-center group ${className}`}
         aria-label={`${t('common.appName')} - Home`}
       >
-        <RingIcon />
+        <LogoIcon />
       </Link>
     );
   }
@@ -130,9 +110,9 @@ export default function Logo({
       className={`inline-flex items-center group transition-all duration-300 hover:opacity-90 ${currentSize.container} ${className}`}
       aria-label={`${t('common.appName')} - Home`}
     >
-      <RingIcon />
+      <LogoIcon />
       {showText && (
-        <span className={`font-bold tracking-tight bg-gradient-to-r from-pink-600 via-purple-600 to-pink-600 bg-clip-text text-transparent dark:from-pink-400 dark:via-purple-400 dark:to-pink-400 ${currentSize.text} transition-all duration-300 group-hover:scale-105`}>
+        <span className={`font-semibold tracking-wide bg-gradient-to-r from-pink-600 via-purple-600 to-pink-600 bg-clip-text text-transparent dark:from-pink-400 dark:via-purple-400 dark:to-pink-400 ${currentSize.text} transition-all duration-300`}>
           {t('common.appName')}
         </span>
       )}
