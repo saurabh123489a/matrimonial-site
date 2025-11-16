@@ -494,7 +494,7 @@ export default function RegisterPage() {
       </div>
 
       <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl relative z-10">
-        <div className="bg-white/80 dark:bg-[#12121a] backdrop-blur-lg rounded-2xl sm:rounded-3xl shadow-2xl p-4 sm:p-6 md:p-8 lg:p-10 space-y-4 sm:space-y-6 md:space-y-8 border border-white/20 dark:border-[#2a2a3a]">
+        <div className="bg-white/80">
           {/* Header */}
           <div className="text-center space-y-2 sm:space-y-3">
             {/* Logo */}
@@ -506,7 +506,7 @@ export default function RegisterPage() {
             </h2>
             <p className="text-secondary text-xs sm:text-sm px-2">
               {t('auth.signInToAccount').split('Or')[0]}Or{' '}
-              <Link href="/login" className="font-semibold text-pink-600 hover:text-pink-700 dark:text-[#00FFFF] dark:hover:text-[#00E6E6] transition-colors">
+              <Link href="/login" className="font-semibold text-pink-600 hover:text-pink-700">
                 {t('auth.signInToAccount').includes('sign in') ? 'sign in to your account' : 'अपने खाते में साइन इन करें'}
               </Link>
             </p>
@@ -541,10 +541,10 @@ export default function RegisterPage() {
                     name="name"
                     type="text"
                     required
-                    className={`block w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 border-2 rounded-lg sm:rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#00FFFF] focus:border-pink-500 dark:focus:border-[#00FFFF] text-sm sm:text-base touch-target ${
+                    className={`block w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 border-2 rounded-lg sm:rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-500
                       touchedFields.name && fieldErrors.name
-                        ? 'border-red-400 bg-red-50 dark:border-[#F25D5D] dark:bg-[#F25D5D]/10'
-                        : 'border-gray-200 dark:border-[#2a2a3a] bg-gray-50 dark:bg-[#151520] focus:bg-white dark:focus:bg-[#1F1417] text-primary'
+                        ? 'border-red-400 bg-red-50'
+                        : 'border-gray-200'
                     }`}
                     placeholder={t('auth.fullName')}
                     value={formData.name}
@@ -565,7 +565,7 @@ export default function RegisterPage() {
               {/* Email */}
               <div>
                 <label htmlFor="email" className="block text-xs sm:text-sm font-semibold text-secondary mb-1.5 sm:mb-2">
-                  {t('auth.emailOptional')} <span className="text-muted dark:text-muted text-xs font-normal">({t('auth.emailOrPhoneRequired') || 'Email or Phone required'})</span>
+                  {t('auth.emailOptional')} <span className="text-muted">({t('auth.emailOrPhoneRequired') || 'Email or Phone required'})</span>
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 sm:pl-4 flex items-center pointer-events-none">
@@ -577,10 +577,10 @@ export default function RegisterPage() {
                     id="email"
                     name="email"
                     type="email"
-                    className={`block w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 border-2 rounded-lg sm:rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#00FFFF] focus:border-pink-500 dark:focus:border-[#00FFFF] text-sm sm:text-base touch-target ${
+                    className={`block w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 border-2 rounded-lg sm:rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-500
                       touchedFields.email && fieldErrors.email
-                        ? 'border-red-400 bg-red-50 dark:border-[#F25D5D] dark:bg-[#F25D5D]/10'
-                        : 'border-gray-200 dark:border-[#2a2a3a] bg-gray-50 dark:bg-[#151520] focus:bg-white dark:focus:bg-[#1F1417] text-primary'
+                        ? 'border-red-400 bg-red-50'
+                        : 'border-gray-200'
                     }`}
                     placeholder={t('auth.emailOptional')}
                     value={formData.email}
@@ -614,10 +614,10 @@ export default function RegisterPage() {
                     name="phone"
                     type="tel"
                     required
-                    className={`block w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 border-2 rounded-lg sm:rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#00FFFF] focus:border-pink-500 dark:focus:border-[#00FFFF] text-sm sm:text-base touch-target ${
+                    className={`block w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 border-2 rounded-lg sm:rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-500
                       touchedFields.phone && fieldErrors.phone
-                        ? 'border-red-400 bg-red-50 dark:border-[#F25D5D] dark:bg-[#F25D5D]/10'
-                        : 'border-gray-200 dark:border-[#2a2a3a] bg-gray-50 dark:bg-[#151520] focus:bg-white dark:focus:bg-[#1F1417] text-primary'
+                        ? 'border-red-400 bg-red-50'
+                        : 'border-gray-200'
                     }`}
                     placeholder={t('auth.phone') || 'Enter phone number'}
                     value={formData.phone}
@@ -651,10 +651,10 @@ export default function RegisterPage() {
                     name="password"
                     type={showPassword ? 'text' : 'password'}
                     required
-                    className={`block w-full pl-10 sm:pl-12 pr-10 sm:pr-12 py-2.5 sm:py-3 border-2 rounded-lg sm:rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-red-500 focus:border-pink-500 dark:focus:border-red-500 text-sm sm:text-base touch-target ${
+                    className={`block w-full pl-10 sm:pl-12 pr-10 sm:pr-12 py-2.5 sm:py-3 border-2 rounded-lg sm:rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-pink-500
                       touchedFields.password && fieldErrors.password
-                        ? 'border-red-400 bg-red-50 dark:border-red-500 dark:bg-red-900/20'
-                        : 'border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-[#1f212a] focus:bg-white dark:focus:bg-[#1f212a] text-gray-900 dark:text-gray-50'
+                        ? 'border-red-400 bg-red-50'
+                        : 'border-gray-200'
                     }`}
                     placeholder={t('auth.password')}
                     value={formData.password}
@@ -699,12 +699,12 @@ export default function RegisterPage() {
               {/* Gender and Date of Birth */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <CustomSelect
-                  id="gender"
-                  name="gender"
+                      id="gender"
+                      name="gender"
                   label={t('auth.gender')}
-                  required
-                  value={formData.gender}
-                  onChange={(e) => setFormData({ ...formData, gender: e.target.value as any })}
+                      required
+                      value={formData.gender}
+                      onChange={(e) => setFormData({ ...formData, gender: e.target.value as any })}
                   options={[
                     { value: 'male', label: t('auth.male') },
                     { value: 'female', label: t('auth.female') },
@@ -713,18 +713,18 @@ export default function RegisterPage() {
                   icon={
                     <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg>
+                      </svg>
                   }
                 />
                 <CustomDatePicker
-                  id="dateOfBirth"
-                  name="dateOfBirth"
+                      id="dateOfBirth"
+                      name="dateOfBirth"
                   label="Date of Birth"
                   required
-                  max={new Date(new Date().setFullYear(new Date().getFullYear() - 18)).toISOString().split('T')[0]}
-                  min={new Date(new Date().setFullYear(new Date().getFullYear() - 100)).toISOString().split('T')[0]}
-                  value={formData.dateOfBirth}
-                  onChange={(e) => handleChange('dateOfBirth', e.target.value)}
+                      max={new Date(new Date().setFullYear(new Date().getFullYear() - 18)).toISOString().split('T')[0]}
+                      min={new Date(new Date().setFullYear(new Date().getFullYear() - 100)).toISOString().split('T')[0]}
+                      value={formData.dateOfBirth}
+                      onChange={(e) => handleChange('dateOfBirth', e.target.value)}
                   error={touchedFields.dateOfBirth ? fieldErrors.dateOfBirth : undefined}
                 />
               </div>
@@ -746,7 +746,7 @@ export default function RegisterPage() {
                       name="age"
                       type="number"
                       readOnly
-                      className="block w-full pl-12 pr-4 py-3 border-2 border-gray-200 dark:border-[#2a2a3a] bg-gray-100 dark:bg-[#151520] text-gray-700 dark:text-[#D5D3D7] rounded-xl sm:text-sm cursor-not-allowed"
+                      className="block w-full pl-12 pr-4 py-3 border-2 border-gray-200"
                       value={formData.age}
                     />
                   </div>
@@ -771,7 +771,7 @@ export default function RegisterPage() {
                 <select
                   id="communityPosition"
                   name="communityPosition"
-                  className="block w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 border-2 border-gray-200 dark:border-gray-600 bg-white dark:bg-[#1f212a] text-gray-900 dark:text-gray-50 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-red-500 focus:border-pink-500 dark:focus:border-red-500 text-sm sm:text-base transition-all duration-200 touch-target"
+                  className="block w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 border-2 border-gray-200"
                   value={formData.communityPosition || ''}
                   onChange={(e) => setFormData({ ...formData, communityPosition: e.target.value || null })}
                 >
@@ -790,7 +790,7 @@ export default function RegisterPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex justify-center items-center py-3 sm:py-4 px-4 sm:px-6 border border-transparent text-sm sm:text-base font-semibold rounded-lg sm:rounded-xl text-white bg-gradient-to-r from-pink-600 via-pink-500 to-purple-600 dark:from-[#E04F5F] dark:via-[#E04F5F] dark:to-[#C43A4E] hover:from-pink-700 hover:via-pink-600 hover:to-purple-700 dark:hover:from-[#C43A4E] dark:hover:via-[#C43A4E] dark:hover:to-[#C43A4E] focus:outline-none focus:ring-4 focus:ring-pink-300 dark:focus:ring-[#00FFFF]/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 touch-target btn-primary btn-scale"
+                className="w-full flex justify-center items-center py-3 sm:py-4 px-4 sm:px-6 border border-transparent text-sm sm:text-base font-semibold rounded-lg sm:rounded-xl text-white bg-gradient-to-r from-pink-600 via-pink-500 to-purple-600"
               >
                 {loading ? (
                   <>

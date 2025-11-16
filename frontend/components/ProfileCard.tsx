@@ -97,7 +97,7 @@ function ProfileCard({ user }: ProfileCardProps) {
   return (
     <div 
       ref={scrollRef as React.RefObject<HTMLDivElement>}
-      className={`bg-white dark:bg-[#2B0F17] rounded-2xl shadow-lg overflow-hidden profile-card card-lift card-image-zoom border border-gray-200 dark:border-[#2F2327] group ${isVisible ? 'scroll-animate-fade-up animate' : 'scroll-animate-fade-up'}`}
+      className={`bg-white'scroll-animate-fade-up animate' : 'scroll-animate-fade-up'}`}
     >
       {/* Photo Section */}
       <div className="relative h-64 sm:h-80 bg-gradient-to-br from-pink-100 to-red-100 overflow-hidden">
@@ -147,7 +147,7 @@ function ProfileCard({ user }: ProfileCardProps) {
       <div className="p-5 sm:p-6">
         {/* Name and Gender */}
         <div className="mb-5">
-          <h3 className="text-xl sm:text-2xl font-bold text-primary mb-2 line-clamp-1 group-hover:text-pink-600 dark:group-hover:text-[#E04F5F] transition-colors duration-300">{user.name}</h3>
+          <h3 className="text-xl sm:text-2xl font-bold text-primary mb-2 line-clamp-1 group-hover:text-pink-600">{user.name}</h3>
           <div className="flex items-center gap-3">
             {user.gender && (
               <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-gray-50 rounded-full text-gray-700 text-sm font-medium capitalize">
@@ -156,7 +156,7 @@ function ProfileCard({ user }: ProfileCardProps) {
               </span>
             )}
             {user.gahoiId && (
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-pink-50 dark:bg-[#241317] text-pink-700 dark:text-[#E04F5F] rounded-full text-xs font-semibold border dark:border-[#2F2327]">
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-pink-50">
                 ID: {user.gahoiId}
               </span>
             )}
@@ -166,20 +166,20 @@ function ProfileCard({ user }: ProfileCardProps) {
         {/* Key Details Grid - Improved Layout */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
           {user.education && (
-            <div className="flex items-center gap-2.5 text-sm bg-gradient-to-r from-gray-50 to-gray-50/50 dark:from-[#241317] dark:to-[#241317]/50 rounded-xl px-3.5 py-2.5 hover:from-pink-50 hover:to-pink-50/50 dark:hover:from-[#1F1417] dark:hover:to-[#1F1417]/50 transition-all duration-300 border border-gray-100 dark:border-[#2F2327] hover:border-pink-200 dark:hover:border-[#E04F5F]">
-              <span className="text-pink-600 dark:text-[#E04F5F] text-lg flex-shrink-0">🎓</span>
+            <div className="flex items-center gap-2.5 text-sm bg-gradient-to-r from-gray-50 to-gray-50/50">
+              <span className="text-pink-600">🎓</span>
               <span className="text-secondary truncate font-medium" title={user.education}>{user.education}</span>
             </div>
           )}
           {user.occupation && (
-            <div className="flex items-center gap-2.5 text-sm bg-gradient-to-r from-gray-50 to-gray-50/50 dark:from-[#241317] dark:to-[#241317]/50 rounded-xl px-3.5 py-2.5 hover:from-pink-50 hover:to-pink-50/50 dark:hover:from-[#1F1417] dark:hover:to-[#1F1417]/50 transition-all duration-300 border border-gray-100 dark:border-[#2F2327] hover:border-pink-200 dark:hover:border-[#E04F5F]">
-              <span className="text-pink-600 dark:text-[#E04F5F] text-lg flex-shrink-0">💼</span>
+            <div className="flex items-center gap-2.5 text-sm bg-gradient-to-r from-gray-50 to-gray-50/50">
+              <span className="text-pink-600">💼</span>
               <span className="text-secondary truncate font-medium" title={user.occupation}>{user.occupation}</span>
             </div>
           )}
           {(user.city || user.state) && (
-            <div className={`flex items-center gap-2.5 text-sm bg-gradient-to-r from-gray-50 to-gray-50/50 dark:from-[#241317] dark:to-[#241317]/50 rounded-xl px-3.5 py-2.5 hover:from-pink-50 hover:to-pink-50/50 dark:hover:from-[#1F1417] dark:hover:to-[#1F1417]/50 transition-all duration-300 border border-gray-100 dark:border-[#2F2327] hover:border-pink-200 dark:hover:border-[#E04F5F] ${user.education && user.occupation ? 'sm:col-span-2' : ''}`}>
-              <span className="text-pink-600 dark:text-[#E04F5F] text-lg flex-shrink-0">📍</span>
+            <div className={`flex items-center gap-2.5 text-sm bg-gradient-to-r from-gray-50 to-gray-50/50'sm:col-span-2' : ''}`}>
+              <span className="text-pink-600">📍</span>
               <span className="text-secondary truncate font-medium" title={`${user.city || ''}${user.state ? `, ${user.state}` : ''}${user.country ? `, ${user.country}` : ''}`}>
                 {user.city}{user.state && `, ${user.state}`}{user.country && `, ${user.country}`}
               </span>
@@ -202,7 +202,7 @@ function ProfileCard({ user }: ProfileCardProps) {
           <div className="flex gap-2.5">
             <Link
               href={getProfileUrl(user)}
-              className="flex-1 text-center px-4 py-3 bg-gradient-to-r from-pink-600 via-pink-500 to-red-600 dark:from-[#E04F5F] dark:via-[#E04F5F] dark:to-[#C43A4E] text-white font-bold rounded-xl hover:from-pink-700 hover:via-pink-600 hover:to-red-700 dark:hover:from-[#C43A4E] dark:hover:via-[#C43A4E] dark:hover:to-[#C43A4E] btn-primary btn-scale transition-all text-sm shadow-lg hover:shadow-xl touch-manipulation"
+              className="flex-1 text-center px-4 py-3 bg-gradient-to-r from-pink-600 via-pink-500 to-red-600"
             >
               View Profile
             </Link>
@@ -226,7 +226,7 @@ function ProfileCard({ user }: ProfileCardProps) {
             <button
               onClick={handleSendInterest}
               disabled={actionLoading || !isAuthenticated}
-              className="flex-1 px-4 py-3 bg-gradient-to-r from-pink-50 to-pink-100 dark:from-[#241317] dark:to-[#241317] text-pink-700 dark:text-[#E04F5F] font-bold rounded-xl hover:from-pink-100 hover:to-pink-200 dark:hover:from-[#1F1417] dark:hover:to-[#1F1417] disabled:opacity-50 disabled:cursor-not-allowed btn-secondary btn-scale transition-all text-sm border-2 border-pink-200 dark:border-[#2F2327] hover:border-pink-300 dark:hover:border-[#E04F5F] shadow-sm hover:shadow-md"
+              className="flex-1 px-4 py-3 bg-gradient-to-r from-pink-50 to-pink-100"
               title={isAuthenticated ? 'Send Interest' : 'Login to send interest'}
               aria-label={isAuthenticated ? 'Send Interest' : 'Login to send interest'}
             >

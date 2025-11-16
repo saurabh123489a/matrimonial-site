@@ -80,7 +80,7 @@ export default function ProfileBadges({
       {/* Verification Badge */}
       {isVerified && (
         <span 
-          className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-semibold rounded-full"
+          className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100"
           title="Verified Profile"
         >
           <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
@@ -95,8 +95,8 @@ export default function ProfileBadges({
         <span 
           className={`inline-flex items-center gap-1 px-2 py-1 text-xs font-semibold rounded-full ${
             isOnline 
-              ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200' 
-              : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
+              ? 'bg-green-100' 
+              : 'bg-gray-100'
           }`}
           title={isOnline ? 'Currently Online' : 'Offline'}
         >
@@ -133,7 +133,7 @@ export default function ProfileBadges({
 
       {/* Last Seen */}
       {showLastSeen && !isOnline && lastSeen && (
-        <span className="text-xs text-gray-500 dark:text-gray-400">
+        <span className="text-xs text-gray-500">
           Last seen {getLastSeenText()}
         </span>
       )}

@@ -183,10 +183,10 @@ export default function DetailedProfileTile({ user }: DetailedProfileTileProps) 
   };
 
   return (
-    <div className="bg-white dark:bg-[#181b23] rounded-2xl overflow-hidden shadow-xl border border-gray-200 dark:border-gray-700 relative card-lift card-image-zoom group">
+    <div className="bg-white">
       <Link href={getProfileUrl(user)} className="block" onClick={handleCardClick}>
         {/* Photo Section with Overlays */}
-        <div className="relative h-72 sm:h-80 md:h-96 bg-gradient-to-br from-pink-50 to-purple-50 dark:from-gray-800 dark:to-gray-900 overflow-hidden">
+        <div className="relative h-72 sm:h-80 md:h-96 bg-gradient-to-br from-pink-50 to-purple-50">
           {primaryPhoto ? (
             <>
               <LazyImage
@@ -199,8 +199,8 @@ export default function DetailedProfileTile({ user }: DetailedProfileTileProps) 
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
             </>
           ) : (
-            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-pink-100 to-purple-100 dark:from-gray-800 dark:to-gray-900">
-              <div className="text-8xl text-gray-300 dark:text-gray-600">👤</div>
+            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-pink-100 to-purple-100">
+              <div className="text-8xl text-gray-300">👤</div>
             </div>
           )}
 
@@ -213,7 +213,7 @@ export default function DetailedProfileTile({ user }: DetailedProfileTileProps) 
             )}
             <div className="flex gap-2">
               {photoCount > 0 && (
-                <div className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm text-gray-700 dark:text-gray-200 text-xs font-bold px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 shadow-lg border border-gray-200/50 dark:border-gray-700/50">
+                <div className="bg-white/95">
                   <span>📷</span>
                   <span>{photoCount}</span>
                 </div>
@@ -290,28 +290,28 @@ export default function DetailedProfileTile({ user }: DetailedProfileTileProps) 
 
       {/* Action Buttons */}
       {isAuthenticated && (
-        <div className="p-4 sm:p-5 bg-gray-50 dark:bg-[#1f212a] border-t border-gray-200 dark:border-gray-700">
+        <div className="p-4 sm:p-5 bg-gray-50">
           <div className="grid grid-cols-4 gap-2.5">
             {/* Interest */}
             <button
               onClick={handleSendInterest}
               disabled={actionLoading || hasInterest}
-              className="flex flex-col items-center gap-1.5 px-2 py-3 sm:py-3.5 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600 btn-secondary btn-scale transition-all touch-manipulation disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
+              className="flex flex-col items-center gap-1.5 px-2 py-3 sm:py-3.5 bg-white"
               title={hasInterest ? 'Interest Already Sent' : 'Send Interest'}
             >
               <span className="text-xl sm:text-2xl">✉️</span>
-              <span className="text-xs font-bold text-gray-700 dark:text-gray-300">Interest</span>
+              <span className="text-xs font-bold text-gray-700">Interest</span>
             </button>
 
             {/* Super Interest */}
             <button
               onClick={handleSuperInterest}
               disabled={actionLoading}
-              className="flex flex-col items-center gap-1.5 px-2 py-3 sm:py-3.5 bg-gradient-to-br from-pink-50 to-pink-100 dark:from-pink-900/20 dark:to-pink-800/20 border-2 border-pink-300 dark:border-pink-600 rounded-xl hover:from-pink-100 hover:to-pink-200 dark:hover:from-pink-900/30 dark:hover:to-pink-800/30 active:from-pink-200 active:to-pink-300 btn-secondary btn-scale transition-all touch-manipulation disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
+              className="flex flex-col items-center gap-1.5 px-2 py-3 sm:py-3.5 bg-gradient-to-br from-pink-50 to-pink-100"
               title="Send Super Interest"
             >
               <span className="text-xl sm:text-2xl">💕</span>
-              <span className="text-xs font-bold text-gray-700 dark:text-gray-300">Super</span>
+              <span className="text-xs font-bold text-gray-700">Super</span>
             </button>
 
             {/* Shortlist */}
@@ -321,12 +321,12 @@ export default function DetailedProfileTile({ user }: DetailedProfileTileProps) 
               className={`flex flex-col items-center gap-1.5 px-2 py-3 sm:py-3.5 border-2 rounded-xl btn-scale transition-all touch-manipulation disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md ${
                 isShortlisted
                   ? 'bg-gradient-to-br from-yellow-400 to-yellow-500 border-yellow-500 text-white hover:from-yellow-500 hover:to-yellow-600'
-                  : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
+                  : 'bg-white'
               }`}
               title={isShortlisted ? 'Remove from Shortlist' : 'Add to Shortlist'}
             >
               <span className="text-xl sm:text-2xl">⭐</span>
-              <span className={`text-xs font-bold ${isShortlisted ? 'text-white' : 'text-gray-700 dark:text-gray-300'}`}>{isShortlisted ? 'Saved' : 'Save'}</span>
+              <span className={`text-xs font-bold ${isShortlisted ? 'text-white' : 'text-gray-700'}`}>{isShortlisted ? 'Saved' : 'Save'}</span>
             </button>
 
             {/* Chat */}

@@ -31,15 +31,15 @@ export default function ConfirmationDialog({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-[#111111] rounded-2xl shadow-xl p-6 sm:p-8 max-w-md w-full animate-scale-in">
+      <div className="bg-white">
         <div className="text-center">
-          <h3 className="text-xl font-bold text-gray-900 dark:text-pink-300 mb-2">{title}</h3>
-          <p className="text-gray-600 dark:text-pink-200 mb-6">{message}</p>
+          <h3 className="text-xl font-bold text-gray-900">{title}</h3>
+          <p className="text-gray-600">{message}</p>
         </div>
         <div className="flex justify-end gap-3">
           <button
             onClick={onCancel}
-            className="px-4 py-2 border border-gray-300 dark:border-pink-800 text-gray-700 dark:text-pink-200 rounded-lg hover:bg-gray-50 dark:hover:bg-[#1a1a1a] transition-colors font-medium"
+            className="px-4 py-2 border border-gray-300"
           >
             {cancelLabel}
           </button>

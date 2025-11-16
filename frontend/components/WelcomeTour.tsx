@@ -157,22 +157,22 @@ export default function WelcomeTour() {
 
       {/* Tooltip */}
       <div
-        className="fixed z-[62] bg-white dark:bg-gray-800 rounded-lg shadow-2xl p-6 max-w-sm transition-all"
+        className="fixed z-[62] bg-white"
         style={getTooltipPosition()}
       >
         <div className="mb-4">
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{step.title}</h3>
-          <p className="text-sm text-gray-600 dark:text-gray-300">{step.content}</p>
+          <h3 className="text-lg font-bold text-gray-900">{step.title}</h3>
+          <p className="text-sm text-gray-600">{step.content}</p>
         </div>
         <div className="flex items-center justify-between">
           <button
             onClick={handleSkip}
-            className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+            className="text-sm text-gray-500"
           >
             Skip Tour
           </button>
           <div className="flex items-center gap-2">
-            <span className="text-xs text-gray-500 dark:text-gray-400">
+            <span className="text-xs text-gray-500">
               {currentStep + 1} / {tourSteps.length}
             </span>
             <button

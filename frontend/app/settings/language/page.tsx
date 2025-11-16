@@ -36,7 +36,7 @@ export default function LanguageSettingsPage() {
 
   if (!mounted) {
     return (
-      <div className="min-h-screen bg-white dark:bg-black flex items-center justify-center">
+      <div className="min-h-screen bg-white">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-pink-600 border-t-transparent"></div>
         </div>
@@ -45,13 +45,13 @@ export default function LanguageSettingsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black pb-20 transition-colors">
+    <div className="min-h-screen bg-white">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Settings Navigation */}
-        <div className="flex gap-4 mb-6 border-b border-gray-200 dark:border-pink-800">
+        <div className="flex gap-4 mb-6 border-b border-gray-200">
           <Link
             href="/settings/privacy"
-            className="px-4 py-2 font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
+            className="px-4 py-2 font-medium text-gray-600"
           >
             Privacy
           </Link>
@@ -62,12 +62,12 @@ export default function LanguageSettingsPage() {
             Language
           </Link>
         </div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-pink-300 mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
           Language Preferences
         </h1>
 
-        <div className="bg-white dark:bg-[#111111] rounded-lg shadow-md p-6">
-          <p className="text-sm text-gray-600 dark:text-pink-200 mb-6">
+        <div className="bg-white">
+          <p className="text-sm text-gray-600">
             Choose your preferred language for the application interface.
           </p>
           <div className="space-y-4">
@@ -77,15 +77,15 @@ export default function LanguageSettingsPage() {
                 onClick={() => handleLanguageChange(lang.code)}
                 className={`w-full flex items-center justify-between p-4 rounded-lg border-2 transition-all ${
                   language === lang.code
-                    ? 'border-pink-600 bg-pink-50 dark:bg-pink-900/20'
-                    : 'border-gray-200 dark:border-pink-800 hover:border-pink-300 dark:hover:border-pink-600'
+                    ? 'border-pink-600 bg-pink-50'
+                    : 'border-gray-200'
                 }`}
               >
                 <div className="flex items-center gap-3">
                   <span className="text-2xl">{lang.flag}</span>
                   <div className="text-left">
-                    <p className="font-semibold text-gray-900 dark:text-pink-300">{lang.name}</p>
-                    <p className="text-sm text-gray-600 dark:text-pink-200">{lang.nativeName}</p>
+                    <p className="font-semibold text-gray-900">{lang.name}</p>
+                    <p className="text-sm text-gray-600">{lang.nativeName}</p>
                   </div>
                 </div>
                 {language === lang.code && (

@@ -148,14 +148,14 @@ export default function LocationSelect({
     <div className="space-y-4">
       {showCountry && (
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
+          <label className="block text-sm font-medium text-gray-700">
             Country <span className="text-red-500">*</span>
           </label>
           <select
             value={selectedCountry}
             onChange={(e) => onCountryChange(e.target.value)}
             disabled={loadingCountries}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-pink-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 disabled:opacity-50"
+            className="w-full px-3 py-2 border border-gray-300"
           >
             <option value="">Select Country</option>
             {countries.map((country) => (
@@ -169,17 +169,17 @@ export default function LocationSelect({
 
       {showState && (
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
+          <label className="block text-sm font-medium text-gray-700">
             State <span className="text-red-500">*</span>
             {loadingStates && (
-              <span className="ml-2 text-xs text-gray-500 dark:text-pink-400">(Loading...)</span>
+              <span className="ml-2 text-xs text-gray-500">(Loading...)</span>
             )}
           </label>
           <select
             value={selectedState}
             onChange={(e) => onStateChange(e.target.value)}
             disabled={!selectedCountry || loadingStates}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-pink-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 disabled:opacity-50"
+            className="w-full px-3 py-2 border border-gray-300"
           >
             <option value="">
               {!selectedCountry ? 'Select Country first' : loadingStates ? 'Loading states...' : 'Select State'}
@@ -191,7 +191,7 @@ export default function LocationSelect({
             ))}
           </select>
           {!selectedCountry && (
-            <p className="mt-1 text-xs text-gray-500 dark:text-pink-400">
+            <p className="mt-1 text-xs text-gray-500">
               Please select a country first
             </p>
           )}
@@ -200,17 +200,17 @@ export default function LocationSelect({
 
       {showCity && (
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
+          <label className="block text-sm font-medium text-gray-700">
             City <span className="text-red-500">*</span>
             {loadingCities && (
-              <span className="ml-2 text-xs text-gray-500 dark:text-pink-400">(Loading...)</span>
+              <span className="ml-2 text-xs text-gray-500">(Loading...)</span>
             )}
           </label>
           <select
             value={selectedCity}
             onChange={(e) => onCityChange(e.target.value)}
             disabled={!selectedCountry || !selectedState || loadingCities}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-pink-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 disabled:opacity-50"
+            className="w-full px-3 py-2 border border-gray-300"
           >
             <option value="">
               {!selectedState 
@@ -228,12 +228,12 @@ export default function LocationSelect({
             ))}
           </select>
           {!selectedState && selectedCountry && (
-            <p className="mt-1 text-xs text-gray-500 dark:text-pink-400">
+            <p className="mt-1 text-xs text-gray-500">
               Please select a state first to see cities
             </p>
           )}
           {!loadingCities && cities.length === 0 && selectedCountry && selectedState && (
-            <p className="mt-1 text-xs text-gray-500 dark:text-pink-400">
+            <p className="mt-1 text-xs text-gray-500">
               No cities available for this state
             </p>
           )}

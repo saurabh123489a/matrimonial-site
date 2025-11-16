@@ -73,7 +73,7 @@ export default function QuickMessageModal({
         }
       }}
     >
-      <div className="bg-white dark:bg-[#111111] rounded-xl sm:rounded-2xl shadow-xl max-w-md w-full max-h-[90vh] sm:max-h-[85vh] flex flex-col animate-scale-in">
+      <div className="bg-white">
         <div className="p-4 sm:p-6 flex-1 flex flex-col min-h-0">
           {/* Header */}
           <div className="flex items-center gap-3 sm:gap-4 mb-4 flex-shrink-0">
@@ -85,13 +85,13 @@ export default function QuickMessageModal({
               />
             )}
             <div className="flex-1 min-w-0">
-              <h3 className="text-base sm:text-xl font-bold text-gray-900 dark:text-pink-300 truncate">
+              <h3 className="text-base sm:text-xl font-bold text-gray-900">
                 Send Message to <span className="hidden sm:inline">{userName}</span><span className="sm:hidden">{userName.length > 15 ? userName.substring(0, 15) + '...' : userName}</span>
               </h3>
             </div>
             <button
               onClick={onClose}
-              className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors flex-shrink-0 p-1 touch-manipulation"
+              className="text-gray-500 hover:text-gray-700"
               disabled={sending}
               aria-label="Close"
             >
@@ -108,16 +108,16 @@ export default function QuickMessageModal({
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Type your message here..."
-              className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent dark:bg-gray-800 dark:text-white resize-none flex-1 min-h-[120px] sm:min-h-[150px]"
+              className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300"
               maxLength={5000}
               disabled={sending}
               autoFocus
             />
             <div className="flex justify-between items-center mt-2 flex-shrink-0">
-              <p className="text-xs text-gray-500 dark:text-gray-400 hidden sm:block">
+              <p className="text-xs text-gray-500">
                 Press Cmd/Ctrl + Enter to send
               </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400 sm:ml-auto">
+              <p className="text-xs text-gray-500">
                 {message.length}/5000
               </p>
             </div>
@@ -128,7 +128,7 @@ export default function QuickMessageModal({
             <button
               onClick={onClose}
               disabled={sending}
-              className="flex-1 px-3 sm:px-4 py-2.5 sm:py-2 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 active:bg-gray-100 dark:active:bg-gray-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation text-sm sm:text-base"
+              className="flex-1 px-3 sm:px-4 py-2.5 sm:py-2 border border-gray-300"
             >
               Cancel
             </button>

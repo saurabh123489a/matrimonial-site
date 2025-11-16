@@ -9,14 +9,14 @@ interface SkeletonLoaderProps {
 export default function SkeletonLoader({ type = 'text', count = 1, className = '' }: SkeletonLoaderProps) {
   if (type === 'profile-card') {
     return (
-      <div className={`bg-white dark:bg-black rounded-xl shadow-lg overflow-hidden animate-pulse ${className}`}>
-        <div className="h-64 sm:h-80 bg-gray-200 dark:bg-[#1a1a1a]"></div>
+      <div className={`bg-white rounded-lg border border-gray-200 shadow-sm ${className}`}>
+        <div className="h-64 sm:h-80 bg-gray-200 animate-pulse rounded-t-lg"></div>
         <div className="p-4 sm:p-5 space-y-3">
-          <div className="h-6 bg-gray-200 dark:bg-[#1a1a1a] rounded w-3/4"></div>
-          <div className="h-4 bg-gray-200 dark:bg-[#1a1a1a] rounded w-1/2"></div>
+          <div className="h-6 bg-gray-200 animate-pulse rounded"></div>
+          <div className="h-4 bg-gray-200 animate-pulse rounded w-3/4"></div>
           <div className="grid grid-cols-2 gap-2">
-            <div className="h-4 bg-gray-200 dark:bg-[#1a1a1a] rounded"></div>
-            <div className="h-4 bg-gray-200 dark:bg-[#1a1a1a] rounded"></div>
+            <div className="h-4 bg-gray-200 animate-pulse rounded"></div>
+            <div className="h-4 bg-gray-200 animate-pulse rounded"></div>
           </div>
         </div>
       </div>
@@ -35,13 +35,13 @@ export default function SkeletonLoader({ type = 'text', count = 1, className = '
 
   if (type === 'image') {
     return (
-      <div className={`bg-gray-200 dark:bg-[#1a1a1a] rounded animate-pulse ${className}`}></div>
+      <div className={`bg-gray-200 animate-pulse rounded ${className}`} />
     );
   }
 
   if (type === 'button') {
     return (
-      <div className={`h-10 bg-gray-200 dark:bg-[#1a1a1a] rounded animate-pulse ${className}`}></div>
+      <div className={`h-10 bg-gray-200 animate-pulse rounded ${className}`} />
     );
   }
 
@@ -50,7 +50,7 @@ export default function SkeletonLoader({ type = 'text', count = 1, className = '
       {Array.from({ length: count }).map((_, i) => (
         <div
           key={i}
-          className={`h-4 bg-gray-200 dark:bg-[#1a1a1a] rounded animate-pulse mb-2 ${className}`}
+          className={`h-4 bg-gray-200 animate-pulse rounded ${className}`}
           style={{ width: i === count - 1 ? '60%' : '100%' }}
         ></div>
       ))}

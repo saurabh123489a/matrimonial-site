@@ -182,8 +182,8 @@ export default function PhotoUpload({
           className={`
             relative border-2 border-dashed rounded-lg p-8 text-center transition-all
             ${dragActive
-              ? 'border-pink-500 bg-pink-50 dark:bg-pink-900/20'
-              : 'border-gray-300 dark:border-pink-800 bg-gray-50 dark:bg-black'
+              ? 'border-pink-500 bg-pink-50'
+              : 'border-gray-300'
             }
             ${disabled || uploading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:border-pink-400'}
           `}
@@ -200,9 +200,9 @@ export default function PhotoUpload({
           />
           
           <div className="space-y-4">
-            <div className="mx-auto w-16 h-16 bg-pink-100 dark:bg-pink-900/30 rounded-full flex items-center justify-center">
+            <div className="mx-auto w-16 h-16 bg-pink-100">
               <svg
-                className="w-8 h-8 text-pink-600 dark:text-pink-400"
+                className="w-8 h-8 text-pink-600"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -217,13 +217,13 @@ export default function PhotoUpload({
             </div>
             
             <div>
-              <p className="text-lg font-semibold text-gray-900 dark:text-pink-300">
+              <p className="text-lg font-semibold text-gray-900">
                 {dragActive ? 'Drop photos here' : 'Drag & drop photos here'}
               </p>
-              <p className="text-sm text-gray-500 dark:text-pink-200 mt-2">
-                or <span className="text-pink-600 dark:text-pink-400 font-medium">click to browse</span>
+              <p className="text-sm text-gray-500">
+                or <span className="text-pink-600">click to browse</span>
               </p>
-              <p className="text-xs text-gray-400 dark:text-pink-200 mt-2">
+              <p className="text-xs text-gray-400">
                 JPEG, PNG, WebP up to 5MB • {remainingSlots} slot{remainingSlots !== 1 ? 's' : ''} remaining
               </p>
             </div>
@@ -238,7 +238,7 @@ export default function PhotoUpload({
             {previews.map((preview, index) => (
               <div
                 key={index}
-                className="relative group aspect-square rounded-lg overflow-hidden border-2 border-gray-200 dark:border-pink-800 bg-gray-100 dark:bg-black"
+                className="relative group aspect-square rounded-lg overflow-hidden border-2 border-gray-200"
               >
                 <img
                   src={preview.preview}
@@ -274,7 +274,7 @@ export default function PhotoUpload({
           {/* Upload Button and Progress */}
           <div className="space-y-2">
             {uploadProgress > 0 && uploadProgress < 100 && (
-              <div className="w-full bg-gray-200 dark:bg-[#1a1a1a] rounded-full h-2.5">
+              <div className="w-full bg-gray-200">
                 <div
                   className="bg-gradient-to-r from-pink-600 to-red-600 h-2.5 rounded-full transition-all duration-300"
                   style={{ width: `${uploadProgress}%` }}
@@ -330,7 +330,7 @@ export default function PhotoUpload({
                   }
                 }}
                 disabled={uploading}
-                className="px-6 py-3 border-2 border-gray-300 dark:border-pink-800 text-gray-700 dark:text-pink-200 font-semibold rounded-lg hover:bg-gray-50 dark:hover:bg-[#1a1a1a] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-6 py-3 border-2 border-gray-300"
               >
                 Cancel
               </button>
@@ -341,7 +341,7 @@ export default function PhotoUpload({
 
       {/* Upload More Button (when previews are empty but can upload more) */}
       {previews.length === 0 && !canUploadMore && (
-        <div className="text-center py-4 text-gray-500 dark:text-pink-200">
+        <div className="text-center py-4 text-gray-500">
           <p>Maximum {maxPhotos} photos reached</p>
           <p className="text-sm mt-1">Delete a photo to upload a new one</p>
         </div>

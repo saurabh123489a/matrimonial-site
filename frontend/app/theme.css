@@ -1,11 +1,11 @@
 /**
  * ============================================
- * COMPLETE LIGHT + DARK THEME SYSTEM
+ * LIGHT THEME SYSTEM
  * Matrimonial Site - Premium Theme Tokens
  * ============================================
  * 
  * This file provides a complete theme system using CSS variables
- * for both Light and Dark (Neon) themes.
+ * for the Light theme (Maroon & Gold).
  * 
  * All components MUST use CSS variables - no hardcoded colors.
  */
@@ -80,75 +80,6 @@
 }
 
 /* ============================================
-   DARK THEME TOKENS (Maroon & Gold Theme)
-   ============================================ */
-
-.dark {
-  /* ========== BACKGROUND COLORS ========== */
-  --bg: #2A000A; /* Dark Maroon/Brown */
-  --bg-secondary: #3a0012;
-  --bg-tertiary: #4a001a;
-  --bg-input: #3a0012;
-  --bg-hover: #4a001a;
-  --bg-active: #3a0012;
-  
-  /* ========== TEXT COLORS ========== */
-  /* Soft Cream for readability - !important ensures override */
-  --text-primary: #F5F5DC !important;
-  --text-secondary: #E8E8C8 !important;
-  --text-muted: #C8C8A8 !important;
-  --text-disabled: #A0A088 !important;
-  --text-inverse: #2A000A;
-  
-  /* ========== PRIMARY COLORS (Deep Maroon) ========== */
-  --primary: #800020;
-  --primary-dark: #5a0017;
-  --primary-light: #a00028;
-  --primary-medium: #900023;
-  --primary-hover: #900023;
-  --primary-active: #5a0017;
-  --primary-disabled: #6b6b5a;
-  
-  /* ========== ACCENT COLORS (Gold) ========== */
-  --accent: #D4AF37;
-  --accent-hover: #c19d2e;
-  --accent-light: #3a0012;
-  
-  /* ========== BORDER COLORS ========== */
-  --border: rgba(212, 175, 55, 0.1); /* Gold with opacity */
-  --border-light: rgba(212, 175, 55, 0.05);
-  --border-dark: rgba(212, 175, 55, 0.2);
-  --border-focus: #D4AF37;
-  
-  /* ========== STATE COLORS ========== */
-  --success: #4ade80;
-  --success-bg: rgba(74, 222, 128, 0.15);
-  --success-text: #4ade80;
-  
-  --error: #ef4444;
-  --error-bg: rgba(239, 68, 68, 0.15);
-  --error-text: #ef4444;
-  
-  --warning: #D4AF37;
-  --warning-bg: rgba(212, 175, 55, 0.15);
-  --warning-text: #D4AF37;
-  
-  --info: #D4AF37;
-  --info-bg: rgba(212, 175, 55, 0.15);
-  --info-text: #D4AF37;
-  
-  /* ========== SHADOW COLORS ========== */
-  --shadow-sm: rgba(128, 0, 32, 0.1);
-  --shadow-md: rgba(128, 0, 32, 0.2);
-  --shadow-lg: rgba(128, 0, 32, 0.3);
-  --shadow-xl: rgba(128, 0, 32, 0.4);
-  
-  /* ========== OVERLAY COLORS ========== */
-  --overlay: rgba(0, 0, 0, 0.8);
-  --overlay-light: rgba(0, 0, 0, 0.4);
-}
-
-/* ============================================
    BASE STYLES
    ============================================ */
 
@@ -160,26 +91,6 @@ body {
   background-color: var(--bg);
   color: var(--text-primary) !important;
   font-family: 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
-}
-
-/* Global text color enforcement - Override Tailwind gray classes in dark mode */
-.dark .text-gray-50,
-.dark .text-gray-100,
-.dark .text-gray-200,
-.dark .text-gray-300,
-.dark .text-gray-400,
-.dark .text-gray-500,
-.dark .text-gray-600,
-.dark .text-gray-700,
-.dark .text-gray-800,
-.dark .text-gray-900,
-.dark .text-black {
-  color: var(--text-primary) !important;
-}
-
-.dark .text-gray-400,
-.dark .text-gray-500 {
-  color: var(--text-muted) !important;
 }
 
 /* ============================================
@@ -214,35 +125,6 @@ h1, h2, h3, h4, h5, h6 {
 /* Body text - Force use of theme variables */
 p, span, div, li, label {
   color: var(--text-secondary) !important;
-}
-
-/* Dark mode text enforcement */
-.dark h1,
-.dark h2,
-.dark h3,
-.dark h4,
-.dark h5,
-.dark h6,
-.dark p,
-.dark span,
-.dark div,
-.dark li,
-.dark label {
-  color: var(--text-primary) !important;
-}
-
-.dark .text-secondary,
-.dark p.text-secondary,
-.dark span.text-secondary,
-.dark div.text-secondary {
-  color: var(--text-secondary) !important;
-}
-
-.dark .text-muted,
-.dark p.text-muted,
-.dark span.text-muted,
-.dark div.text-muted {
-  color: var(--text-muted) !important;
 }
 
 /* Links */
@@ -417,11 +299,7 @@ a:focus {
 .input:focus {
   outline: none;
   border-color: var(--border-focus);
-  box-shadow: 0 0 0 3px rgba(224, 79, 95, 0.1);
-}
-
-.dark .input:focus {
-  box-shadow: 0 0 0 3px rgba(224, 79, 95, 0.2);
+  box-shadow: 0 0 0 3px rgba(128, 0, 32, 0.1);
 }
 
 .input:disabled {
@@ -441,10 +319,6 @@ a:focus {
 .input-error:focus {
   border-color: var(--error);
   box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
-}
-
-.dark .input-error:focus {
-  box-shadow: 0 0 0 3px rgba(242, 93, 93, 0.2);
 }
 
 /* ============================================
@@ -631,11 +505,6 @@ a:focus {
   color: var(--primary-dark);
 }
 
-.dark .badge {
-  background-color: var(--primary);
-  color: var(--text-inverse);
-}
-
 /* Example: Divider */
 .divider {
   height: 1px;
@@ -659,11 +528,6 @@ a:focus {
   :root {
     --text-primary: #000000;
     --border: #000000;
-  }
-  
-  .dark {
-    --text-primary: #FFFFFF;
-    --border: #FFFFFF;
   }
 }
 

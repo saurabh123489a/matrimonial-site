@@ -76,7 +76,7 @@ export default function CommunityPage() {
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-pink-100">Community</h1>
+        <h1 className="text-3xl font-bold text-gray-900">Community</h1>
         {auth.isAuthenticated() && activeTab === 'qa' && (
           <Link
             href="/community/ask"
@@ -88,13 +88,13 @@ export default function CommunityPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 mb-6 border-b border-gray-200 dark:border-[#303341]">
+      <div className="flex gap-2 mb-6 border-b border-gray-200">
         <button
           onClick={() => setActiveTab('qa')}
           className={`px-6 py-3 font-medium transition-colors ${
             activeTab === 'qa'
-              ? 'text-pink-600 dark:text-pink-400 border-b-2 border-pink-600 dark:border-pink-400'
-              : 'text-gray-600 dark:text-pink-300 hover:text-pink-600 dark:hover:text-pink-400'
+              ? 'text-pink-600'
+              : 'text-gray-600'
           }`}
         >
           Q&A
@@ -103,8 +103,8 @@ export default function CommunityPage() {
           onClick={() => setActiveTab('events')}
           className={`px-6 py-3 font-medium transition-colors ${
             activeTab === 'events'
-              ? 'text-pink-600 dark:text-pink-400 border-b-2 border-pink-600 dark:border-pink-400'
-              : 'text-gray-600 dark:text-pink-300 hover:text-pink-600 dark:hover:text-pink-400'
+              ? 'text-pink-600'
+              : 'text-gray-600'
           }`}
         >
           Events
@@ -123,14 +123,14 @@ export default function CommunityPage() {
         <>
 
       {/* Filters */}
-      <div className="bg-white dark:bg-[#181b23] p-4 rounded-lg shadow-md mb-6 transition-colors">
+      <div className="bg-white">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Category</label>
+            <label className="block text-sm font-medium text-gray-700">Category</label>
             <select
               value={filters.category}
               onChange={(e) => setFilters({ ...filters, category: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-[#303341] rounded-md focus:outline-none focus:ring-pink-500 bg-white dark:bg-[#181b23] text-gray-900 dark:text-pink-100 transition-colors"
+              className="w-full px-3 py-2 border border-gray-300"
             >
               {categories.map((cat) => (
                 <option key={cat.value} value={cat.value}>{cat.label}</option>
@@ -138,21 +138,21 @@ export default function CommunityPage() {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Search</label>
+            <label className="block text-sm font-medium text-gray-700">Search</label>
             <input
               type="text"
               value={filters.search}
               onChange={(e) => setFilters({ ...filters, search: e.target.value })}
               placeholder="Search questions..."
-              className="w-full px-3 py-2 border border-gray-300 dark:border-[#303341] rounded-md focus:outline-none focus:ring-pink-500 bg-white dark:bg-[#181b23] text-gray-900 dark:text-pink-100 transition-colors"
+              className="w-full px-3 py-2 border border-gray-300"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Sort By</label>
+            <label className="block text-sm font-medium text-gray-700">Sort By</label>
             <select
               value={filters.sortBy}
               onChange={(e) => setFilters({ ...filters, sortBy: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-[#303341] rounded-md focus:outline-none focus:ring-pink-500 bg-white dark:bg-[#181b23] text-gray-900 dark:text-pink-100 transition-colors"
+              className="w-full px-3 py-2 border border-gray-300"
             >
               <option value="createdAt">Newest</option>
               <option value="upvotes">Most Upvoted</option>
@@ -185,7 +185,7 @@ export default function CommunityPage() {
             <Link
               key={question._id}
               href={`/community/${question._id}`}
-              className="block bg-white dark:bg-[#181b23] rounded-lg shadow-md p-6 hover:shadow-lg transition-all transition-colors"
+              className="block bg-white"
             >
               <div className="flex items-start gap-4">
                 <div className="flex-shrink-0 text-center">
@@ -194,9 +194,9 @@ export default function CommunityPage() {
                   <div className="text-sm text-gray-500 mt-2">{question.answersCount} answers</div>
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-xl font-semibold text-gray-900 dark:text-pink-100 mb-2">{question.title}</h3>
-                  <p className="text-gray-600 dark:text-pink-200 mb-3 line-clamp-2">{question.content}</p>
-                  <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-pink-300">
+                  <h3 className="text-xl font-semibold text-gray-900">{question.title}</h3>
+                  <p className="text-gray-600">{question.content}</p>
+                  <div className="flex items-center gap-4 text-sm text-gray-500">
                     <span className="px-2 py-1 bg-pink-100 text-pink-700 rounded">
                       {question.category}
                     </span>

@@ -195,13 +195,13 @@ export default function ProfileShareCard({ user, onClose }: ProfileShareCardProp
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-scale-in">
+      <div className="bg-white">
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
-            <h3 className="text-xl font-bold text-gray-900 dark:text-pink-300">Share Profile Card</h3>
+            <h3 className="text-xl font-bold text-gray-900">Share Profile Card</h3>
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 dark:hover:text-red-400 transition-colors"
+              className="text-gray-400 hover:text-gray-600"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -367,13 +367,13 @@ export default function ProfileShareCard({ user, onClose }: ProfileShareCardProp
             <div className="flex items-center justify-center py-12">
               <div className="text-center">
                 <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-pink-600 border-t-transparent mb-4"></div>
-                <p className="text-gray-600 dark:text-pink-200">Generating your profile card...</p>
+                <p className="text-gray-600">Generating your profile card...</p>
               </div>
             </div>
           ) : cardImageUrl ? (
             <div className="space-y-6">
               {/* Card Preview */}
-              <div className="border-2 border-gray-200 dark:border-pink-700 rounded-lg overflow-hidden">
+              <div className="border-2 border-gray-200">
                 <img
                   src={cardImageUrl}
                   alt="Profile Card"
@@ -414,7 +414,7 @@ export default function ProfileShareCard({ user, onClose }: ProfileShareCardProp
                     className={`px-6 py-3 font-semibold rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-lg ${
                       isShortlisted
                         ? 'bg-yellow-500 text-white hover:bg-yellow-600'
-                        : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                        : 'bg-gray-200'
                     }`}
                   >
                     ⭐
@@ -422,7 +422,7 @@ export default function ProfileShareCard({ user, onClose }: ProfileShareCardProp
                 </div>
 
                 {/* Share Options */}
-                <div className="pt-3 border-t border-gray-200 dark:border-gray-700 space-y-3">
+                <div className="pt-3 border-t border-gray-200">
                   <button
                     onClick={shareViaWhatsApp}
                     className="w-full flex items-center justify-center gap-3 px-6 py-3 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition-colors shadow-lg"
@@ -452,7 +452,7 @@ export default function ProfileShareCard({ user, onClose }: ProfileShareCardProp
             </div>
           ) : (
             <div className="text-center py-12">
-              <p className="text-gray-600 dark:text-pink-200">Preparing your profile card...</p>
+              <p className="text-gray-600">Preparing your profile card...</p>
             </div>
           )}
         </div>

@@ -96,7 +96,7 @@ export default function PollVoting({
 
   if (loading) {
     return (
-      <div className={`bg-white dark:bg-[#181b23] rounded-lg shadow-md p-6 ${className} transition-colors`}>
+      <div className={`bg-white rounded-lg border border-gray-200 shadow-sm p-6 flex items-center justify-center`}>
         <LoadingSpinner size="md" text="Loading poll..." />
       </div>
     );
@@ -104,8 +104,8 @@ export default function PollVoting({
 
   if (error && !poll) {
     return (
-      <div className={`bg-white dark:bg-[#181b23] rounded-lg shadow-md p-6 ${className} transition-colors`}>
-        <div className="bg-red-50 dark:bg-red-900/10 border-l-4 border-red-400 text-red-800 dark:text-red-200 px-4 py-3 rounded">
+      <div className={`bg-white rounded-lg border border-gray-200 shadow-sm p-6`}>
+        <div className="bg-red-50 border border-red-200 rounded p-4 text-red-800">
           {error}
         </div>
       </div>
@@ -114,7 +114,7 @@ export default function PollVoting({
 
   if (!poll) {
     return (
-      <div className={`bg-white dark:bg-[#181b23] rounded-lg shadow-md p-6 ${className} transition-colors`}>
+      <div className={`bg-white rounded-lg border border-gray-200 shadow-sm p-6`}>
         <EmptyState
           icon="📊"
           title={t('polls.noPolls') || 'Poll not found'}
@@ -128,41 +128,41 @@ export default function PollVoting({
   const showVoteResults = poll.hasVoted || showResults || !isAuthenticated;
 
   return (
-    <div className={`bg-white dark:bg-[#181b23] rounded-lg shadow-md p-4 sm:p-6 ${className} transition-colors`}>
+    <div className={`bg-white rounded-lg border border-gray-200 shadow-sm p-6`}>
       {/* Poll Header */}
       <div className="mb-4">
         <div className="flex items-start justify-between gap-4 mb-2">
-          <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-pink-100 flex-1">
+          <h3 className="text-lg sm:text-xl font-semibold text-gray-900">
             {poll.title}
           </h3>
           {poll.category && (
-            <span className="px-2 py-1 text-xs font-medium bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300 rounded whitespace-nowrap">
+            <span className="px-2 py-1 text-xs font-medium bg-pink-100">
               {poll.category}
             </span>
           )}
         </div>
         
         {poll.description && (
-          <p className="text-sm text-gray-600 dark:text-pink-200 mb-3">
+          <p className="text-sm text-gray-600">
             {poll.description}
           </p>
         )}
 
         {/* Poll Status */}
-        <div className="flex items-center gap-3 text-xs sm:text-sm text-gray-500 dark:text-pink-300 mb-4">
+        <div className="flex items-center gap-3 text-xs sm:text-sm text-gray-500">
           <span>{poll.totalVotes} {t('polls.totalVotes') || 'votes'}</span>
           {isExpired && (
-            <span className="px-2 py-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded">
+            <span className="px-2 py-1 bg-gray-200">
               Expired
             </span>
           )}
           {!poll.isActive && (
-            <span className="px-2 py-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded">
+            <span className="px-2 py-1 bg-gray-200">
               Inactive
             </span>
           )}
           {poll.hasVoted && (
-            <span className="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded">
+            <span className="px-2 py-1 bg-green-100">
               ✓ Voted
             </span>
           )}
@@ -171,7 +171,7 @@ export default function PollVoting({
 
       {/* Error Message */}
       {error && (
-        <div className="bg-red-50 dark:bg-red-900/10 border-l-4 border-red-400 text-red-800 dark:text-red-200 px-4 py-3 rounded mb-4">
+        <div className="bg-red-50">
           {error}
         </div>
       )}
@@ -189,11 +189,11 @@ export default function PollVoting({
               className={`
                 relative border-2 rounded-lg p-3 sm:p-4 transition-all
                 ${canVote && !voting
-                  ? 'border-gray-300 dark:border-[#303341] hover:border-pink-500 dark:hover:border-pink-400 cursor-pointer'
-                  : 'border-gray-200 dark:border-[#303341]'
+                  ? 'border-gray-300'
+                  : 'border-gray-200'
                 }
-                ${isSelected ? 'border-pink-500 dark:border-pink-400 bg-pink-50 dark:bg-pink-900/10' : ''}
-                ${isWinning && showVoteResults ? 'ring-2 ring-green-400 dark:ring-green-500' : ''}
+                ${isSelected ? 'border-pink-500' : ''}
+                ${isWinning && showVoteResults ? 'ring-2 ring-green-400' : ''}
               `}
               onClick={() => {
                 if (canVote && !voting) {
@@ -205,13 +205,13 @@ export default function PollVoting({
               <div className="flex items-center justify-between mb-2">
                 <span className={`text-sm sm:text-base font-medium ${
                   isSelected 
-                    ? 'text-pink-700 dark:text-pink-300' 
-                    : 'text-gray-900 dark:text-pink-100'
+                    ? 'text-pink-700' 
+                    : 'text-gray-900'
                 }`}>
                   {option.text}
                 </span>
                 {showVoteResults && (
-                  <span className="text-sm font-semibold text-gray-700 dark:text-pink-200 ml-2">
+                  <span className="text-sm font-semibold text-gray-700">
                     {percentage}%
                   </span>
                 )}
@@ -219,7 +219,7 @@ export default function PollVoting({
 
               {/* Progress Bar (if showing results) */}
               {showVoteResults && (
-                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 sm:h-2.5 overflow-hidden">
+                <div className="w-full bg-gray-200">
                   <div
                     className={`h-full transition-all duration-500 ${
                       isWinning
@@ -233,7 +233,7 @@ export default function PollVoting({
 
               {/* Vote Count (if showing results) */}
               {showVoteResults && (
-                <div className="text-xs text-gray-500 dark:text-pink-300 mt-1">
+                <div className="text-xs text-gray-500">
                   {option.votes} {option.votes === 1 ? 'vote' : 'votes'}
                 </div>
               )}
@@ -241,7 +241,7 @@ export default function PollVoting({
               {/* Selected Indicator */}
               {isSelected && (
                 <div className="absolute top-2 right-2">
-                  <svg className="w-5 h-5 text-pink-600 dark:text-pink-400" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-5 h-5 text-pink-600" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
                 </div>
@@ -253,13 +253,13 @@ export default function PollVoting({
 
       {/* Login Prompt */}
       {!isAuthenticated && (
-        <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/10 border border-blue-200 dark:border-blue-800 rounded-lg">
-          <p className="text-sm text-blue-800 dark:text-blue-200 mb-2">
+        <div className="mt-4 p-4 bg-blue-50">
+          <p className="text-sm text-blue-800">
             Please login to vote on this poll
           </p>
           <Link
             href="/login"
-            className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline"
+            className="text-sm font-medium text-blue-600"
           >
             Login →
           </Link>
@@ -268,14 +268,14 @@ export default function PollVoting({
 
       {/* Voting in Progress */}
       {voting && (
-        <div className="mt-4 flex items-center gap-2 text-sm text-gray-600 dark:text-pink-300">
+        <div className="mt-4 flex items-center gap-2 text-sm text-gray-600">
           <LoadingSpinner size="sm" />
           <span>Submitting vote...</span>
         </div>
       )}
 
       {/* Footer Info */}
-      <div className="mt-4 pt-4 border-t border-gray-200 dark:border-[#303341] text-xs text-gray-500 dark:text-pink-300">
+      <div className="mt-4 pt-4 border-t border-gray-200">
         {poll.createdBy && typeof poll.createdBy === 'object' && (
           <span>Created by {poll.createdBy.name}</span>
         )}

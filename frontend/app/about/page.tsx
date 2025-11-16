@@ -22,7 +22,7 @@ export default function AboutUsPage() {
         {/* Mission & Vision */}
         <div className="grid md:grid-cols-2 gap-8 mb-16">
           <div className="bg-white rounded-xl shadow-lg p-8 border-l-4 border-pink-600">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-gray-900 dark:text-gray-50 mb-4">{t('aboutUs.mission.title')}</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-gray-900">{t('aboutUs.mission.title')}</h2>
             <p className="text-gray-700 leading-relaxed" dir="auto">
               {t('aboutUs.mission.content')}
             </p>

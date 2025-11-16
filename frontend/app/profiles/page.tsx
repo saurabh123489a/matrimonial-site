@@ -326,7 +326,7 @@ function SearchProfilesPageContent() {
 
   if (!mounted) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-[#0f1117] flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50">
         <LoadingSpinner />
       </div>
     );
@@ -335,19 +335,19 @@ function SearchProfilesPageContent() {
   const maritalStatusOptions = ['Never Married', 'Divorced', 'Widowed', 'Awaiting Divorce'];
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-[#0a0a0f] pb-24 transition-colors">
+    <div className="min-h-screen bg-gray-50">
       {/* Filter/View Bar */}
-      <div className="bg-white dark:bg-[#12121a] border-b border-gray-200 dark:border-[#2a2a3a] sticky top-0 z-30 px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
+      <div className="bg-white">
         <div className="flex gap-2">
           <button
             onClick={() => setShowFilters(!showFilters)}
             aria-expanded={showFilters}
             aria-controls="filters-panel"
             aria-label={showFilters ? 'Hide filters' : 'Show filters'}
-            className={`flex-1 px-4 py-2 rounded-lg font-medium text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#00FFFF] focus:ring-offset-2 ${
+            className={`flex-1 px-4 py-2 rounded-lg font-medium text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500
               showFilters
-                ? 'bg-pink-600 text-white dark:bg-[#00FFFF]'
-                : 'bg-gray-100 dark:bg-[#1a1a24] text-secondary hover:bg-gray-200 dark:hover:bg-[#151520]'
+                ? 'bg-pink-600 text-white'
+                : 'bg-gray-100'
             }`}
           >
             Filter
@@ -355,10 +355,10 @@ function SearchProfilesPageContent() {
           <button
             onClick={() => setViewMode(viewMode === 'compact' ? 'detailed' : 'compact')}
             aria-label={`Switch to ${viewMode === 'detailed' ? 'compact' : 'detailed'} view`}
-            className={`flex-1 px-4 py-2 rounded-lg font-medium text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#00FFFF] focus:ring-offset-2 ${
+            className={`flex-1 px-4 py-2 rounded-lg font-medium text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500
               viewMode === 'detailed'
-                ? 'bg-pink-600 text-white dark:bg-[#00FFFF]'
-                : 'bg-gray-100 dark:bg-[#1a1a24] text-secondary hover:bg-gray-200 dark:hover:bg-[#151520]'
+                ? 'bg-pink-600 text-white'
+                : 'bg-gray-100'
             }`}
           >
             {viewMode === 'detailed' ? 'Detailed' : 'Compact'}
@@ -368,7 +368,7 @@ function SearchProfilesPageContent() {
 
       {/* Filters Panel */}
       {showFilters && (
-        <div id="filters-panel" className="bg-white dark:bg-[#12121a] border-b border-gray-200 dark:border-[#2a2a3a] p-4 sm:p-6 space-y-4 sm:space-y-6">
+        <div id="filters-panel" className="bg-white">
           {/* Gahoi ID Search */}
           <div>
             <label className="block text-sm font-medium text-secondary mb-2">
@@ -379,7 +379,7 @@ function SearchProfilesPageContent() {
               value={filters.gahoiId || ''}
               onChange={(e) => handleFilterChange('gahoiId', sanitizeFormInput(e.target.value, 'text'))}
               placeholder="e.g., 10001"
-              className="w-full px-3 py-2 border border-gray-300 dark:border-[#2a2a3a] dark:bg-[#151520] text-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#00FFFF]"
+              className="w-full px-3 py-2 border border-gray-300"
             />
           </div>
 
@@ -391,7 +391,7 @@ function SearchProfilesPageContent() {
             <select
               value={filters.gender || ''}
               onChange={(e) => handleFilterChange('gender', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-[#2a2a3a] dark:bg-[#151520] text-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#00FFFF]"
+              className="w-full px-3 py-2 border border-gray-300"
             >
               <option value="">All</option>
               <option value="male">Male</option>
@@ -412,7 +412,7 @@ function SearchProfilesPageContent() {
                 max="100"
                 value={filters.minAge || ''}
                 onChange={(e) => handleFilterChange('minAge', e.target.value ? parseInt(e.target.value) : undefined)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-[#2a2a3a] dark:bg-[#151520] text-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#00FFFF]"
+                className="w-full px-3 py-2 border border-gray-300"
               />
             </div>
             <div>
@@ -425,7 +425,7 @@ function SearchProfilesPageContent() {
                 max="100"
                 value={filters.maxAge || ''}
                 onChange={(e) => handleFilterChange('maxAge', e.target.value ? parseInt(e.target.value) : undefined)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-[#2a2a3a] dark:bg-[#151520] text-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#00FFFF]"
+                className="w-full px-3 py-2 border border-gray-300"
               />
             </div>
           </div>
@@ -449,7 +449,7 @@ function SearchProfilesPageContent() {
               value={filters.education || ''}
               onChange={(e) => handleFilterChange('education', e.target.value)}
               disabled={loadingEducation}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] text-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 disabled:opacity-50"
+              className="w-full px-3 py-2 border border-gray-300"
             >
               <option value="">All</option>
               {educationOptions.map((option) => (
@@ -469,7 +469,7 @@ function SearchProfilesPageContent() {
               value={filters.occupation || ''}
               onChange={(e) => handleFilterChange('occupation', e.target.value)}
               disabled={loadingOccupation}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] text-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 disabled:opacity-50"
+              className="w-full px-3 py-2 border border-gray-300"
             >
               <option value="">All</option>
               {occupationOptions.map((option) => (
@@ -488,7 +488,7 @@ function SearchProfilesPageContent() {
             <select
               value={filters.maritalStatus || ''}
               onChange={(e) => handleFilterChange('maritalStatus', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] text-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+              className="w-full px-3 py-2 border border-gray-300"
             >
               <option value="">All</option>
               {maritalStatusOptions.map((status) => (
@@ -522,7 +522,7 @@ function SearchProfilesPageContent() {
                     }
                   }}
                   placeholder="5'0&quot;"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] text-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  className="w-full px-3 py-2 border border-gray-300"
                 />
               </div>
               <div>
@@ -542,7 +542,7 @@ function SearchProfilesPageContent() {
                     }
                   }}
                   placeholder="6'6&quot;"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] text-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                  className="w-full px-3 py-2 border border-gray-300"
                 />
               </div>
             </div>
@@ -561,7 +561,7 @@ function SearchProfilesPageContent() {
             <button
               onClick={handleClearFilters}
               aria-label="Clear all filters"
-              className="px-4 py-3 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-semibold rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+              className="px-4 py-3 bg-gray-200"
             >
               Clear
             </button>
@@ -581,7 +581,7 @@ function SearchProfilesPageContent() {
 
         {/* Error State */}
         {error && !loading && (
-          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-600 text-red-800 dark:text-red-200 px-4 py-3 rounded-lg mb-4">
+          <div className="bg-red-50">
             {error}
           </div>
         )}
@@ -664,7 +664,7 @@ function SearchProfilesPageContent() {
 export default function SearchProfilesPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-gray-50 dark:bg-[#0f1117] flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50">
         <LoadingSpinner />
       </div>
     }>

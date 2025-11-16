@@ -38,21 +38,21 @@ export default function ProfileCompletenessMeter({ user, className = '' }: Profi
   return (
     <div className={`${className}`}>
       <div className="flex items-center justify-between mb-2">
-        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+        <span className="text-sm font-medium text-gray-700">
           Profile Completeness
         </span>
-        <span className="text-sm font-semibold text-gray-900 dark:text-white">
+        <span className="text-sm font-semibold text-gray-900">
           {completeness}%
         </span>
       </div>
-      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
+      <div className="w-full bg-gray-200">
         <div
           className={`h-full ${getColor()} transition-all duration-500 ease-out`}
           style={{ width: `${completeness}%` }}
         />
       </div>
       {completeness < 100 && (
-        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+        <p className="text-xs text-gray-500">
           Complete your profile to get more matches
         </p>
       )}

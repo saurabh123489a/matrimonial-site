@@ -90,7 +90,7 @@ export default function LoginPage() {
       <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
 
       <div className="max-w-md w-full relative z-10">
-        <div className="bg-white dark:bg-[#2B0F17] rounded-2xl shadow-xl p-6 sm:p-8 space-y-6 border dark:border-[#2F2327]">
+        <div className="bg-white">
           {step === 'phone' && (
             <div className="text-center mb-6">
               {/* Logo */}
@@ -99,15 +99,15 @@ export default function LoginPage() {
               </div>
               
               {/* Welcoming Text */}
-              <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 dark:from-[#E04F5F] dark:to-[#C43A4E] bg-clip-text text-transparent mb-3">
+              <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-pink-600 to-purple-600">
                 {t('auth.welcomeBack') || 'Welcome Back!'}
-              </h2>
+          </h2>
               <p className="text-base text-secondary mb-1">
                 {t('auth.welcomeMessage') || 'Continue your journey to find your perfect match'}
               </p>
               <p className="text-sm text-muted">
                 {t('auth.or')}{' '}
-                <Link href="/register" className="font-medium text-pink-600 hover:text-pink-500 dark:text-[#E04F5F] dark:hover:text-[#C43A4E] transition-colors">
+                <Link href="/register" className="font-medium text-pink-600 hover:text-pink-500">
                   {t('auth.createAccount')}
                 </Link>
               </p>
@@ -122,8 +122,8 @@ export default function LoginPage() {
               <p className="text-sm text-secondary">
                 {t('auth.otpSentTo')}{' '}
                 <span className="font-medium">{phone}</span>
-              </p>
-            </div>
+          </p>
+        </div>
           )}
 
         {step === 'phone' ? (
@@ -147,7 +147,7 @@ export default function LoginPage() {
                 name="phone"
                 type="tel"
                 required
-                className="appearance-none relative block w-full px-4 py-3 border-2 border-gray-300 dark:border-[#2F2327] placeholder-gray-400 dark:placeholder-[#A29CA3] text-primary bg-white dark:bg-[#1F1417] rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F] focus:border-pink-500 dark:focus:border-[#E04F5F] sm:text-sm"
+                className="appearance-none relative block w-full px-4 py-3 border-2 border-gray-300"
                 placeholder={t('auth.enterPhone')}
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
@@ -158,7 +158,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading || !phone}
-                className="w-full flex justify-center items-center py-4 px-6 border border-transparent text-base font-semibold rounded-xl text-white bg-gradient-to-r from-pink-600 via-pink-500 to-purple-600 dark:from-red-600 dark:via-red-500 dark:to-red-700 hover:from-pink-700 hover:via-pink-600 hover:to-purple-700 dark:hover:from-red-700 dark:hover:via-red-600 dark:hover:to-red-800 focus:outline-none focus:ring-4 focus:ring-pink-300 dark:focus:ring-red-500/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 btn-primary btn-scale"
+                className="w-full flex justify-center items-center py-4 px-6 border border-transparent text-base font-semibold rounded-xl text-white bg-gradient-to-r from-pink-600 via-pink-500 to-purple-600"
               >
                 {loading ? (
                   <>
@@ -204,7 +204,7 @@ export default function LoginPage() {
                 required
                 maxLength={6}
                 pattern="[0-9]{6}"
-                className="appearance-none relative block w-full px-4 py-3 border-2 border-gray-300 dark:border-[#2F2327] placeholder-gray-400 dark:placeholder-[#A29CA3] text-primary bg-white dark:bg-[#1F1417] rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F] focus:border-pink-500 dark:focus:border-[#E04F5F] sm:text-sm text-center text-2xl tracking-[0.5em] font-semibold"
+                className="appearance-none relative block w-full px-4 py-3 border-2 border-gray-300"
                 placeholder="000000"
                 value={otp}
                 onChange={(e) => {
@@ -221,7 +221,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading || otp.length !== 6}
-                className="w-full flex justify-center items-center py-4 px-6 border border-transparent text-base font-semibold rounded-xl text-white bg-gradient-to-r from-pink-600 via-pink-500 to-purple-600 dark:from-red-600 dark:via-red-500 dark:to-red-700 hover:from-pink-700 hover:via-pink-600 hover:to-purple-700 dark:hover:from-red-700 dark:hover:via-red-600 dark:hover:to-red-800 focus:outline-none focus:ring-4 focus:ring-pink-300 dark:focus:ring-red-500/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 btn-primary btn-scale"
+                className="w-full flex justify-center items-center py-4 px-6 border border-transparent text-base font-semibold rounded-xl text-white bg-gradient-to-r from-pink-600 via-pink-500 to-purple-600"
               >
                 {loading ? (
                   <>
@@ -238,7 +238,7 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={handleBack}
-                className="w-full flex justify-center py-2.5 px-4 border-2 border-gray-300 dark:border-[#2F2327] text-sm font-medium rounded-lg text-secondary bg-white dark:bg-[#2B0F17] hover:bg-gray-50 dark:hover:bg-[#241317] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 dark:focus:ring-[#E04F5F] transition-colors"
+                className="w-full flex justify-center py-2.5 px-4 border-2 border-gray-300"
               >
                 {t('auth.changePhoneNumber')}
               </button>

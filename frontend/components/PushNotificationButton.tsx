@@ -21,7 +21,7 @@ export default function PushNotificationButton() {
 
   if (!isSupported) {
     return (
-      <div className="text-sm sm:text-sm text-gray-500 dark:text-gray-400 px-1 py-2">
+      <div className="text-sm sm:text-sm text-gray-500">
         Push notifications are not supported in this browser
       </div>
     );
@@ -29,7 +29,7 @@ export default function PushNotificationButton() {
 
   if (!isAuthenticated) {
     return (
-      <div className="text-sm sm:text-sm text-gray-500 dark:text-gray-400 px-1 py-2">
+      <div className="text-sm sm:text-sm text-gray-500">
         Please login to enable push notifications
       </div>
     );
@@ -37,7 +37,7 @@ export default function PushNotificationButton() {
 
   if (permission === 'denied') {
     return (
-      <div className="text-sm sm:text-sm text-red-600 dark:text-red-400 px-1 py-2 leading-relaxed">
+      <div className="text-sm sm:text-sm text-red-600">
         Notification permission denied. Please enable it in your browser settings.
       </div>
     );
@@ -47,10 +47,10 @@ export default function PushNotificationButton() {
     <div className="space-y-3 sm:space-y-2">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
         <div className="flex-1 min-w-0">
-          <h3 className="text-base sm:text-sm font-semibold sm:font-medium text-gray-900 dark:text-white mb-1">
+          <h3 className="text-base sm:text-sm font-semibold sm:font-medium text-gray-900">
             Push Notifications
           </h3>
-          <p className="text-xs sm:text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
+          <p className="text-xs sm:text-xs text-gray-600">
             {isSubscribed
               ? 'You will receive push notifications for new messages and activities'
               : 'Enable to receive push notifications for new messages and activities'}
@@ -67,7 +67,7 @@ export default function PushNotificationButton() {
           disabled={isLoading || (permission as NotificationPermission) === 'denied'}
           className={`w-full sm:w-auto px-4 sm:px-4 py-2.5 sm:py-2 text-sm font-medium rounded-lg transition-colors touch-manipulation min-h-[44px] sm:min-h-0 flex items-center justify-center gap-2 ${
             isSubscribed
-              ? 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600 active:bg-gray-400 dark:active:bg-gray-500'
+              ? 'bg-gray-200'
               : 'bg-pink-600 text-white hover:bg-pink-700 active:bg-pink-800'
           } disabled:opacity-50 disabled:cursor-not-allowed`}
           aria-label={isSubscribed ? 'Disable push notifications' : 'Enable push notifications'}

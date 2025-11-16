@@ -33,11 +33,11 @@ export default function CompactProfileCard({ user, showOnlineStatus = false }: C
   return (
     <div 
       ref={scrollRef as React.RefObject<HTMLDivElement>}
-      className={`bg-white dark:bg-[#181b23] rounded-2xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 card-lift card-image-zoom group relative ${isVisible ? 'scroll-animate-fade-up animate' : 'scroll-animate-fade-up'}`}
+      className={`bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all ${isVisible ? 'scroll-animate-fade-up animate' : 'scroll-animate-fade-up'}`}
     >
       <Link href={getProfileUrl(user)} className="block">
         {/* Photo Section */}
-        <div className={`relative h-48 sm:h-56 ${bgColor} dark:bg-gray-800 overflow-hidden`}>
+        <div className={`relative h-48 sm:h-56 ${bgColor}`}>
           {primaryPhoto ? (
             <>
               <LazyImage
@@ -63,10 +63,10 @@ export default function CompactProfileCard({ user, showOnlineStatus = false }: C
         </div>
 
         {/* Info Section - Improved Layout */}
-        <div className="p-4 sm:p-5 dark:bg-[#181b23] space-y-3">
+        <div className="p-4 sm:p-5">
           {/* Name with Online Status */}
           <div className="flex items-start justify-between gap-2">
-            <h3 className="text-sm sm:text-base font-bold text-gray-900 dark:text-pink-100 truncate flex-1 leading-tight group-hover:text-pink-600 dark:group-hover:text-pink-400 transition-colors duration-300">
+            <h3 className="text-sm sm:text-base font-bold text-gray-900">
               {user.name}
             </h3>
             {showOnlineStatus && (
@@ -78,7 +78,7 @@ export default function CompactProfileCard({ user, showOnlineStatus = false }: C
           <div className="space-y-2">
             {/* Occupation */}
             {user.occupation && (
-              <div className="flex items-center gap-2 text-xs text-gray-700 dark:text-gray-300 truncate bg-gray-50 dark:bg-gray-800/50 rounded-lg px-2.5 py-1.5">
+              <div className="flex items-center gap-2 text-xs text-gray-700">
                 <span className="text-pink-600 flex-shrink-0 text-sm">💼</span>
                 <span className="truncate font-medium" title={user.occupation}>{user.occupation}</span>
               </div>
@@ -86,7 +86,7 @@ export default function CompactProfileCard({ user, showOnlineStatus = false }: C
 
             {/* Location */}
             {(user.city || user.state) && (
-              <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400 truncate bg-gray-50 dark:bg-gray-800/50 rounded-lg px-2.5 py-1.5">
+              <div className="flex items-center gap-2 text-xs text-gray-600">
                 <span className="text-pink-600 flex-shrink-0 text-sm">📍</span>
                 <span className="truncate font-medium" title={`${user.city || ''}${user.state ? `, ${user.state}` : ''}`}>
                   {user.city}{user.state && `, ${user.state}`}
@@ -96,7 +96,7 @@ export default function CompactProfileCard({ user, showOnlineStatus = false }: C
 
             {/* Education - if available */}
             {user.education && (
-              <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400 truncate bg-gray-50 dark:bg-gray-800/50 rounded-lg px-2.5 py-1.5">
+              <div className="flex items-center gap-2 text-xs text-gray-600">
                 <span className="text-pink-600 flex-shrink-0 text-sm">🎓</span>
                 <span className="truncate font-medium" title={user.education}>{user.education}</span>
               </div>
@@ -107,7 +107,7 @@ export default function CompactProfileCard({ user, showOnlineStatus = false }: C
 
       {/* Action Buttons - Outside Link - Improved Layout */}
       {isAuthenticated && (
-        <div className="p-3 sm:p-4 pt-0 border-t border-gray-200 dark:border-gray-700">
+        <div className="p-3 sm:p-4 pt-0 border-t border-gray-200">
           <button
             onClick={(e) => {
               e.preventDefault();

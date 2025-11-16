@@ -138,22 +138,22 @@ export default function ProfileSetupWizard() {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-scale-in">
+      <div className="bg-white">
         <div className="p-6 sm:p-8">
           {/* Progress Bar */}
           <div className="mb-6">
             <div className="flex justify-between items-center mb-2">
-              <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+              <span className="text-sm font-medium text-gray-600">
                 Step {currentStep + 1} of {wizardSteps.length}
               </span>
               <button
                 onClick={handleSkip}
-                className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                className="text-sm text-gray-500"
               >
                 Skip
               </button>
             </div>
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+            <div className="w-full bg-gray-200">
               <div
                 className="bg-pink-600 h-2 rounded-full transition-all duration-300"
                 style={{ width: `${progress}%` }}
@@ -163,17 +163,17 @@ export default function ProfileSetupWizard() {
 
           {/* Step Content */}
           <div className="mb-6">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+            <h2 className="text-2xl font-bold text-gray-900">
               {step.title}
             </h2>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">
+            <p className="text-gray-600">
               {step.description}
             </p>
 
             <div className="space-y-4">
               {step.fields.map((field) => (
                 <div key={field.key}>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-gray-700">
                     {field.label}
                     {field.required && <span className="text-red-500 ml-1">*</span>}
                   </label>
@@ -182,14 +182,14 @@ export default function ProfileSetupWizard() {
                       value={formData[field.key] || ''}
                       onChange={(e) => setFormData({ ...formData, [field.key]: e.target.value })}
                       rows={4}
-                      className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 dark:bg-gray-700 dark:text-white transition-all"
+                      className="w-full px-4 py-3 border-2 border-gray-300"
                       placeholder={`Enter ${field.label.toLowerCase()}`}
                     />
                   ) : field.type === 'select' ? (
                     <select
                       value={formData[field.key] || ''}
                       onChange={(e) => setFormData({ ...formData, [field.key]: e.target.value })}
-                      className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 dark:bg-gray-700 dark:text-white transition-all"
+                      className="w-full px-4 py-3 border-2 border-gray-300"
                     >
                       <option value="">Select {field.label}</option>
                       {field.options?.map((option) => (
@@ -203,7 +203,7 @@ export default function ProfileSetupWizard() {
                       type={field.type}
                       value={formData[field.key] || ''}
                       onChange={(e) => setFormData({ ...formData, [field.key]: e.target.value })}
-                      className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 dark:bg-gray-700 dark:text-white transition-all"
+                      className="w-full px-4 py-3 border-2 border-gray-300"
                       placeholder={`Enter ${field.label.toLowerCase()}`}
                     />
                   )}
@@ -217,7 +217,7 @@ export default function ProfileSetupWizard() {
             <button
               onClick={handleBack}
               disabled={currentStep === 0}
-              className="px-6 py-3 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+              className="px-6 py-3 border-2 border-gray-300"
             >
               Back
             </button>

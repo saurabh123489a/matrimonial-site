@@ -49,217 +49,6 @@
   --font-mono: var(--font-geist-mono);
 }
 
-.dark {
-  /* Legacy variables map to theme.css variables */
-  --background: var(--bg);
-  --background-secondary: var(--bg-secondary);
-  --background-tertiary: var(--bg-tertiary);
-  --background-input: var(--bg-input);
-  
-  --foreground: var(--text-primary);
-  --foreground-secondary: var(--text-secondary);
-  --foreground-muted: var(--text-muted);
-  
-  --primary: var(--primary);
-  --primary-dark: var(--primary-dark);
-  --primary-light: var(--primary-light);
-  --primary-medium: var(--primary-medium);
-  
-  --secondary: var(--primary-dark);
-  --secondary-dark: var(--bg-tertiary);
-  --secondary-light: var(--bg-input);
-  
-  --accent: var(--accent);
-  --accent-gradient-start: var(--primary);
-  --accent-gradient-end: var(--primary-dark);
-  
-  --border: var(--border);
-  
-  --success: var(--success);
-  --error: var(--error);
-  --warning: var(--warning);
-  --info: var(--info);
-}
-
-.dark.dark-blue {
-  --background: #0a1628;
-  --foreground: #e8f0fe;
-  --primary: #60a5fa;
-  --primary-dark: #3b82f6;
-  --primary-light: #93c5fd;
-  --secondary: #1e293b;
-  --accent: #bfdbfe;
-}
-
-.dark.dark-green {
-  --background: #0d1f0d;
-  --foreground: #f0fdf4;
-  --primary: #4ade80;
-  --primary-dark: #22c55e;
-  --primary-light: #86efac;
-  --secondary: #1a2e1a;
-  --accent: #bbf7d0;
-}
-
-.dark.dark-purple {
-  --background: #1a0d2e;
-  --foreground: #faf5ff;
-  --primary: #a78bfa;
-  --primary-dark: #8b5cf6;
-  --primary-light: #c4b5fd;
-  --secondary: #2d1b3d;
-  --accent: #e9d5ff;
-}
-
-.dark.dark-amber {
-  --background: #1f1300;
-  --foreground: #fffbeb;
-  --primary: #fbbf24;
-  --primary-dark: #f59e0b;
-  --primary-light: #fcd34d;
-  --secondary: #2d1b00;
-  --accent: #fde68a;
-}
-
-.dark.dark-red {
-  --background: #1f0a0a;
-  --foreground: #fef2f2;
-  --primary: #f87171;
-  --primary-dark: #ef4444;
-  --primary-light: #fca5a5;
-  --secondary: #2d0f0f;
-  --accent: #fecaca;
-}
-
-.dark.dark-teal {
-  --background: #0a1f1f;
-  --foreground: #f0fdfa;
-  --primary: #5eead4;
-  --primary-dark: #14b8a6;
-  --primary-light: #99f6e4;
-  --secondary: #1a2e2e;
-  --accent: #ccfbf1;
-}
-
-.dark.dark-indigo {
-  --background: #0f0d1f;
-  --foreground: #eef2ff;
-  --primary: #818cf8;
-  --primary-dark: #6366f1;
-  --primary-light: #a5b4fc;
-  --secondary: #1e1b2e;
-  --accent: #c7d2fe;
-}
-
-.dark.dark-cyan {
-  --background: #0a1a1f;
-  --foreground: #ecfeff;
-  --primary: #22d3ee;
-  --primary-dark: #06b6d4;
-  --primary-light: #67e8f9;
-  --secondary: #1a2a2f;
-  --accent: #a5f3fc;
-}
-
-.dark.dark-rose {
-  --background: #1f0f14;
-  --foreground: #fff1f2;
-  --primary: #fb7185;
-  --primary-dark: #f43f5e;
-  --primary-light: #fda4af;
-  --secondary: #2d0f1a;
-  --accent: #fecdd3;
-}
-
-.dark.dark-violet {
-  --background: #1a0d26;
-  --foreground: #f5f3ff;
-  --primary: #a855f7;
-  --primary-dark: #9333ea;
-  --primary-light: #c084fc;
-  --secondary: #2d0f3d;
-  --accent: #e9d5ff;
-}
-
-.dark.dark-emerald {
-  --background: #0d1f14;
-  --foreground: #ecfdf5;
-  --primary: #34d399;
-  --primary-dark: #10b981;
-  --primary-light: #6ee7b7;
-  --secondary: #1a2e1f;
-  --accent: #a7f3d0;
-}
-
-.dark.dark-lime {
-  --background: #1a1f0d;
-  --foreground: #f7fee7;
-  --primary: #84cc16;
-  --primary-dark: #65a30d;
-  --primary-light: #a3e635;
-  --secondary: #2d330f;
-  --accent: #d9f99d;
-}
-
-.dark.dark-fuchsia {
-  --background: #1f0d1f;
-  --foreground: #fdf4ff;
-  --primary: #e879f9;
-  --primary-dark: #d946ef;
-  --primary-light: #f0abfc;
-  --secondary: #2d0f2d;
-  --accent: #fae8ff;
-}
-
-.dark.dark-sky {
-  --background: #0a1620;
-  --foreground: #f0f9ff;
-  --primary: #38bdf8;
-  --primary-dark: #0ea5e9;
-  --primary-light: #7dd3fc;
-  --secondary: #1a2530;
-  --accent: #bae6fd;
-}
-
-.dark.dark-orange {
-  --background: #1f140a;
-  --foreground: #fff7ed;
-  --primary: #fb923c;
-  --primary-dark: #f97316;
-  --primary-light: #fdba74;
-  --secondary: #2d1f0f;
-  --accent: #fed7aa;
-}
-
-.dark.dark-yellow {
-  --background: #1f1a0a;
-  --foreground: #fefce8;
-  --primary: #facc15;
-  --primary-dark: #eab308;
-  --primary-light: #fde047;
-  --secondary: #2d280f;
-  --accent: #fef08a;
-}
-
-.dark.dark-slate {
-  --background: #0f1419;
-  --foreground: #f1f5f9;
-  --primary: #94a3b8;
-  --primary-dark: #64748b;
-  --primary-light: #cbd5e1;
-  --secondary: #1e293b;
-  --accent: #e2e8f0;
-}
-
-.dark.dark-stone {
-  --background: #141414;
-  --foreground: #fafaf9;
-  --primary: #a8a29e;
-  --primary-dark: #78716c;
-  --primary-light: #d6d3d1;
-  --secondary: #1c1917;
-  --accent: #e7e5e4;
-}
 
 /* ============================================
    TYPOGRAPHY SYSTEM
@@ -349,9 +138,6 @@ p {
   color: var(--foreground-secondary);
 }
 
-.dark p {
-  color: var(--foreground-secondary); /* Ensures good contrast */
-}
 
 /* Links */
 a {
@@ -367,26 +153,6 @@ li {
   line-height: 1.6;
 }
 
-/* Dark Maroon Theme Text Colors */
-.dark {
-  --foreground: #FFFFFF; /* Primary text */
-  --foreground-secondary: #D5D3D7; /* Secondary text */
-  --foreground-muted: #A29CA3; /* Muted text */
-}
-
-/* Ensure sufficient contrast for all text in dark maroon theme */
-.dark h1,
-.dark h2,
-.dark h3,
-.dark h4 {
-  color: #FFFFFF; /* Primary text - maximum contrast */
-}
-
-.dark p,
-.dark span,
-.dark div {
-  color: #D5D3D7; /* Secondary text - good contrast */
-}
 
 .profile-card {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -542,29 +308,6 @@ textarea:disabled {
   color: #6b7280; /* WCAG AA compliant - 4.5:1 contrast on white */
 }
 
-.dark .text-gray-400 {
-  color: #d1d5db; /* gray-300 - Better contrast in dark mode - 4.5:1 on dark bg */
-}
-
-.dark .text-gray-500 {
-  color: #e5e7eb; /* gray-200 - Improved contrast for dark mode */
-}
-
-.dark .text-gray-600 {
-  color: #d1d5db; /* gray-300 - Better contrast for dark mode */
-}
-
-.dark .text-gray-700 {
-  color: #e5e7eb; /* gray-200 - Better contrast for dark mode */
-}
-
-.dark .text-gray-800 {
-  color: #f3f4f6; /* gray-100 - Better contrast for dark mode */
-}
-
-.dark .text-gray-900 {
-  color: #ffffff; /* white - Maximum contrast for dark mode */
-}
 
 /* Ensure sufficient contrast for links - WCAG AA compliant */
 a {
@@ -581,13 +324,6 @@ a:focus {
   outline-offset: 2px;
 }
 
-.dark a {
-  color: #f87171; /* Red-400 - Better contrast on dark bg */
-}
-
-.dark a:hover {
-  color: #ef4444; /* Red-500 - Better contrast */
-}
 
 /* Ensure button text has sufficient contrast */
 button {
@@ -613,9 +349,6 @@ label {
   color: #374151; /* gray-700 - WCAG AA compliant */
 }
 
-.dark label {
-  color: #f87171; /* red-400 - Better contrast on dark */
-}
 
 .pull-to-refresh-indicator {
   position: fixed;

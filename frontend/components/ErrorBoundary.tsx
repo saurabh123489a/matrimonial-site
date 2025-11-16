@@ -52,11 +52,11 @@ export class ErrorBoundary extends Component<Props, State> {
       }
 
       return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4">
-          <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-            <div className="flex items-center justify-center w-12 h-12 mx-auto bg-red-100 dark:bg-red-900/30 rounded-full mb-4">
+        <div className="min-h-screen flex items-center justify-center bg-gray-50">
+          <div className="max-w-md w-full bg-white">
+            <div className="flex items-center justify-center w-12 h-12 mx-auto bg-red-100">
               <svg
-                className="w-6 h-6 text-red-600 dark:text-red-400"
+                className="w-6 h-6 text-red-600"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -69,18 +69,18 @@ export class ErrorBoundary extends Component<Props, State> {
                 />
               </svg>
             </div>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-pink-200 text-center mb-2">
+            <h2 className="text-xl font-semibold text-gray-900">
               Something went wrong
             </h2>
-            <p className="text-gray-600 dark:text-pink-300 text-center mb-6">
+            <p className="text-gray-600">
               We're sorry, but something unexpected happened. Please try refreshing the page.
             </p>
             {process.env.NODE_ENV === 'development' && this.state.error && (
-              <details className="mb-4 p-3 bg-gray-100 dark:bg-gray-700 rounded text-sm">
-                <summary className="cursor-pointer text-gray-700 dark:text-pink-300 font-medium mb-2">
+              <details className="mb-4 p-3 bg-gray-100">
+                <summary className="cursor-pointer text-gray-700">
                   Error Details (Development Only)
                 </summary>
-                <pre className="text-xs text-gray-600 dark:text-pink-400 overflow-auto">
+                <pre className="text-xs text-gray-600">
                   {this.state.error.toString()}
                   {this.state.error.stack}
                 </pre>
@@ -89,13 +89,13 @@ export class ErrorBoundary extends Component<Props, State> {
             <div className="flex gap-3">
               <button
                 onClick={this.handleReset}
-                className="flex-1 px-4 py-2 bg-pink-600 text-white rounded-md hover:bg-pink-700 dark:bg-pink-700 dark:hover:bg-pink-800 transition-colors"
+                className="flex-1 px-4 py-2 bg-pink-600 text-white rounded-md hover:bg-pink-700"
               >
                 Try Again
               </button>
               <button
                 onClick={() => window.location.reload()}
-                className="flex-1 px-4 py-2 border border-gray-300 dark:border-pink-800 text-gray-700 dark:text-pink-200 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                className="flex-1 px-4 py-2 border border-gray-300"
               >
                 Refresh Page
               </button>

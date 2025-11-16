@@ -75,17 +75,17 @@ export default function PrivacySettingsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white dark:bg-black flex items-center justify-center pb-20">
-        <div className="text-gray-600 dark:text-gray-400">Loading...</div>
+      <div className="min-h-screen bg-white">
+        <div className="text-gray-600">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black pb-20">
+    <div className="min-h-screen bg-white">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Settings Navigation */}
-        <div className="flex gap-4 mb-6 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex gap-4 mb-6 border-b border-gray-200">
           <Link
             href="/settings/privacy"
             className="px-4 py-2 font-medium border-b-2 border-pink-600 text-pink-600"
@@ -94,17 +94,17 @@ export default function PrivacySettingsPage() {
           </Link>
           <Link
             href="/settings/language"
-            className="px-4 py-2 font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
+            className="px-4 py-2 font-medium text-gray-600"
           >
             Language
           </Link>
         </div>
-        <h1 className="text-2xl sm:text-3xl font-light text-gray-900 dark:text-white mb-8">Privacy Settings</h1>
+        <h1 className="text-2xl sm:text-3xl font-light text-gray-900">Privacy Settings</h1>
 
         <div className="space-y-6">
           {/* Profile Visibility */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Profile Visibility</h2>
+          <div className="bg-white">
+            <h2 className="text-lg font-semibold text-gray-900">Profile Visibility</h2>
             <div className="space-y-3">
               <label className="flex items-center">
                 <input
@@ -116,8 +116,8 @@ export default function PrivacySettingsPage() {
                   className="mr-3"
                 />
                 <div>
-                  <div className="font-medium text-gray-900 dark:text-white">Public</div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">Visible to everyone</div>
+                  <div className="font-medium text-gray-900">Public</div>
+                  <div className="text-sm text-gray-500">Visible to everyone</div>
                 </div>
               </label>
               <label className="flex items-center">
@@ -130,8 +130,8 @@ export default function PrivacySettingsPage() {
                   className="mr-3"
                 />
                 <div>
-                  <div className="font-medium text-gray-900 dark:text-white">Members Only</div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">Visible to registered members only</div>
+                  <div className="font-medium text-gray-900">Members Only</div>
+                  <div className="text-sm text-gray-500">Visible to registered members only</div>
                 </div>
               </label>
               <label className="flex items-center">
@@ -144,21 +144,21 @@ export default function PrivacySettingsPage() {
                   className="mr-3"
                 />
                 <div>
-                  <div className="font-medium text-gray-900 dark:text-white">Private</div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">Only visible to you</div>
+                  <div className="font-medium text-gray-900">Private</div>
+                  <div className="text-sm text-gray-500">Only visible to you</div>
                 </div>
               </label>
             </div>
           </div>
 
           {/* Activity Status */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Activity Status</h2>
+          <div className="bg-white">
+            <h2 className="text-lg font-semibold text-gray-900">Activity Status</h2>
             <div className="space-y-4">
               <label className="flex items-center justify-between">
                 <div>
-                  <div className="font-medium text-gray-900 dark:text-white">Show Online Status</div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">Display when you're online</div>
+                  <div className="font-medium text-gray-900">Show Online Status</div>
+                  <div className="text-sm text-gray-500">Display when you're online</div>
                 </div>
                 <input
                   type="checkbox"
@@ -169,8 +169,8 @@ export default function PrivacySettingsPage() {
               </label>
               <label className="flex items-center justify-between">
                 <div>
-                  <div className="font-medium text-gray-900 dark:text-white">Show Last Seen</div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">Display when you were last active</div>
+                  <div className="font-medium text-gray-900">Show Last Seen</div>
+                  <div className="text-sm text-gray-500">Display when you were last active</div>
                 </div>
                 <input
                   type="checkbox"
@@ -183,13 +183,13 @@ export default function PrivacySettingsPage() {
           </div>
 
           {/* Contact Preferences */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Contact Preferences</h2>
+          <div className="bg-white">
+            <h2 className="text-lg font-semibold text-gray-900">Contact Preferences</h2>
             <div className="space-y-4">
               <label className="flex items-center justify-between">
                 <div>
-                  <div className="font-medium text-gray-900 dark:text-white">Allow Profile Views</div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">Let others see when you view their profile</div>
+                  <div className="font-medium text-gray-900">Allow Profile Views</div>
+                  <div className="text-sm text-gray-500">Let others see when you view their profile</div>
                 </div>
                 <input
                   type="checkbox"
@@ -200,8 +200,8 @@ export default function PrivacySettingsPage() {
               </label>
               <label className="flex items-center justify-between">
                 <div>
-                  <div className="font-medium text-gray-900 dark:text-white">Allow Messages</div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">Allow others to send you messages</div>
+                  <div className="font-medium text-gray-900">Allow Messages</div>
+                  <div className="text-sm text-gray-500">Allow others to send you messages</div>
                 </div>
                 <input
                   type="checkbox"
@@ -212,8 +212,8 @@ export default function PrivacySettingsPage() {
               </label>
               <label className="flex items-center justify-between">
                 <div>
-                  <div className="font-medium text-gray-900 dark:text-white">Allow Interests</div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">Allow others to send you interest requests</div>
+                  <div className="font-medium text-gray-900">Allow Interests</div>
+                  <div className="text-sm text-gray-500">Allow others to send you interest requests</div>
                 </div>
                 <input
                   type="checkbox"
@@ -226,13 +226,13 @@ export default function PrivacySettingsPage() {
           </div>
 
           {/* Contact Information */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Contact Information</h2>
+          <div className="bg-white">
+            <h2 className="text-lg font-semibold text-gray-900">Contact Information</h2>
             <div className="space-y-4">
               <label className="flex items-center justify-between">
                 <div>
-                  <div className="font-medium text-gray-900 dark:text-white">Show Phone Number</div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">Display your phone number on profile</div>
+                  <div className="font-medium text-gray-900">Show Phone Number</div>
+                  <div className="text-sm text-gray-500">Display your phone number on profile</div>
                 </div>
                 <input
                   type="checkbox"
@@ -243,8 +243,8 @@ export default function PrivacySettingsPage() {
               </label>
               <label className="flex items-center justify-between">
                 <div>
-                  <div className="font-medium text-gray-900 dark:text-white">Show Email</div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">Display your email on profile</div>
+                  <div className="font-medium text-gray-900">Show Email</div>
+                  <div className="text-sm text-gray-500">Display your email on profile</div>
                 </div>
                 <input
                   type="checkbox"
@@ -261,7 +261,7 @@ export default function PrivacySettingsPage() {
             <button
               onClick={handleSave}
               disabled={saving}
-              className="px-6 py-3 bg-black dark:bg-white text-white dark:text-black font-medium hover:bg-gray-900 dark:hover:bg-gray-100 transition-colors disabled:opacity-50"
+              className="px-6 py-3 bg-black"
             >
               {saving ? 'Saving...' : 'Save Settings'}
             </button>

@@ -71,7 +71,7 @@ export default function Logo({
     >
       <LogoIcon />
       {showText && (
-        <span className={`font-light tracking-tight text-gray-900 dark:text-white ${currentSize.text} transition-all duration-300`}>
+        <span className={`font-light tracking-tight text-gray-900 ${currentSize.text}`}>
           {t('common.appName')}
         </span>
       )}

@@ -6,13 +6,11 @@ import Link from 'next/link';
 import { auth } from '@/lib/auth';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useLanguage, Language } from '@/contexts/LanguageContext';
-import { useTheme } from '@/contexts/ThemeContext';
 import PushNotificationButton from '@/components/PushNotificationButton';
 
 export default function SettingsPage() {
   const router = useRouter();
   const { t } = useTranslation();
-  const { resolvedTheme, toggleTheme } = useTheme();
   const { language, setLanguage } = useLanguage();
   const [mounted, setMounted] = useState(false);
   const [onlineStatus, setOnlineStatus] = useState(true);
@@ -42,9 +40,9 @@ export default function SettingsPage() {
 
   if (!mounted) {
     return (
-      <div className="min-h-screen bg-[#F5F5DC] dark:bg-[#2A000A] flex items-center justify-center">
+      <div className="min-h-screen bg-[#F5F5DC] flex items-center justify-center">
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-[#800020] dark:border-[#D4AF37] border-t-transparent"></div>
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-[#800020] border-t-transparent"></div>
         </div>
       </div>
     );
@@ -71,18 +69,18 @@ export default function SettingsPage() {
     children?: React.ReactNode;
   }) => {
     const content = (
-      <div className="flex min-h-14 items-center justify-between gap-4 rounded-lg bg-[#800020]/5 dark:bg-[#D4AF37]/5 px-4 transition-colors hover:bg-[#800020]/10 dark:hover:bg-[#D4AF37]/10">
+      <div className="flex min-h-14 items-center justify-between gap-4 rounded-lg bg-[#800020]/5">
         <div className="flex items-center gap-4">
           <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[#D4AF37]/20 text-[#D4AF37]">
             <span className="text-xl">{icon}</span>
           </div>
-          <p className="flex-1 truncate text-base font-medium text-[#800020] dark:text-[#F5F5DC]">
+          <p className="flex-1 truncate text-base font-medium text-[#800020]">
             {label}
           </p>
         </div>
         {showChevron && !children && (
           <div className="shrink-0">
-            <svg className="w-5 h-5 text-[#800020]/40 dark:text-[#F5F5DC]/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 text-[#800020]/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </div>
@@ -120,27 +118,27 @@ export default function SettingsPage() {
         />
         <label
           htmlFor={id}
-          className="relative block h-7 w-12 cursor-pointer rounded-full bg-[#800020]/20 transition-colors peer-checked:bg-[#D4AF37] dark:bg-[#F5F5DC]/20 dark:peer-checked:bg-[#D4AF37]"
+          className="relative block h-7 w-12 cursor-pointer rounded-full bg-[#800020]/20 transition-colors peer-checked:bg-[#D4AF37]"
         >
-          <div className="absolute left-1 top-1 h-5 w-5 rounded-full bg-white dark:bg-[#2A000A] transition-transform peer-checked:translate-x-5"></div>
+          <div className="absolute left-1 top-1 h-5 w-5 rounded-full bg-white"></div>
         </label>
-      </div>
+              </div>
     );
   };
 
   return (
-    <div className="relative flex min-h-screen w-full flex-col bg-[#F5F5DC] dark:bg-[#2A000A]">
+    <div className="relative flex min-h-screen w-full flex-col bg-[#F5F5DC]">
       {/* Header */}
-      <header className="sticky top-0 z-10 flex h-16 items-center border-b border-[#800020]/10 dark:border-[#D4AF37]/10 bg-[#F5F5DC]/80 dark:bg-[#2A000A]/80 backdrop-blur-sm px-4">
+      <header className="sticky top-0 z-10 flex h-16 items-center border-b border-[#800020]/10">
         <button
           onClick={() => router.back()}
-          className="flex size-10 shrink-0 items-center justify-center rounded-full text-[#800020] dark:text-[#F5F5DC] hover:bg-[#800020]/10 dark:hover:bg-[#D4AF37]/10 transition-colors"
+          className="flex size-10 shrink-0 items-center justify-center rounded-full text-[#800020]"
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-        <h1 className="flex-1 text-center text-lg font-bold tracking-tight text-[#800020] dark:text-[#F5F5DC]">
+        <h1 className="flex-1 text-center text-lg font-bold tracking-tight text-[#800020]">
           {t('settings.title') || 'Settings'}
         </h1>
         <div className="size-10 shrink-0"></div>
@@ -151,7 +149,7 @@ export default function SettingsPage() {
         <div className="space-y-8">
           {/* Account Management */}
           <section>
-            <h2 className="px-4 pb-2 text-sm font-bold uppercase tracking-wider text-[#800020]/60 dark:text-[#F5F5DC]/60">
+            <h2 className="px-4 pb-2 text-sm font-bold uppercase tracking-wider text-[#800020]/60">
               {t('settings.accountManagement') || 'ACCOUNT MANAGEMENT'}
             </h2>
             <div className="space-y-2">
@@ -175,7 +173,7 @@ export default function SettingsPage() {
 
           {/* Privacy & Visibility */}
           <section>
-            <h2 className="px-4 pb-2 text-sm font-bold uppercase tracking-wider text-[#800020]/60 dark:text-[#F5F5DC]/60">
+            <h2 className="px-4 pb-2 text-sm font-bold uppercase tracking-wider text-[#800020]/60">
               {t('settings.privacyVisibility') || 'PRIVACY & VISIBILITY'}
             </h2>
             <div className="space-y-2">
@@ -205,7 +203,7 @@ export default function SettingsPage() {
 
           {/* Notification Preferences */}
           <section>
-            <h2 className="px-4 pb-2 text-sm font-bold uppercase tracking-wider text-[#800020]/60 dark:text-[#F5F5DC]/60">
+            <h2 className="px-4 pb-2 text-sm font-bold uppercase tracking-wider text-[#800020]/60">
               {t('settings.notificationPreferences') || 'NOTIFICATION PREFERENCES'}
             </h2>
             <div className="space-y-2">
@@ -236,27 +234,10 @@ export default function SettingsPage() {
 
           {/* App Preferences */}
           <section>
-            <h2 className="px-4 pb-2 text-sm font-bold uppercase tracking-wider text-[#800020]/60 dark:text-[#F5F5DC]/60">
+            <h2 className="px-4 pb-2 text-sm font-bold uppercase tracking-wider text-[#800020]/60">
               {t('settings.appPreferences') || 'APP PREFERENCES'}
             </h2>
             <div className="space-y-2">
-              <SettingItem
-                icon={resolvedTheme === 'dark' ? '🌙' : '☀️'}
-                label={t('settings.darkMode') || 'Dark Mode'}
-                showChevron={false}
-              >
-                <ToggleSwitch
-                  checked={resolvedTheme === 'dark'}
-                  onChange={(checked) => {
-                    if (checked && resolvedTheme !== 'dark') {
-                      toggleTheme();
-                    } else if (!checked && resolvedTheme === 'dark') {
-                      toggleTheme();
-                    }
-                  }}
-                  id="dark-mode"
-                />
-              </SettingItem>
               <SettingItem
                 icon="🌐"
                 label={t('settings.language') || 'Language'}
@@ -266,20 +247,20 @@ export default function SettingsPage() {
                 }}
               >
                 <div className="flex items-center gap-2">
-                  <span className="text-sm text-[#800020]/60 dark:text-[#F5F5DC]/60">
+                  <span className="text-sm text-[#800020]/60">
                     {languages.find(l => l.code === language)?.flag} {languages.find(l => l.code === language)?.nativeName}
-                  </span>
-                  <svg className="w-5 h-5 text-[#800020]/40 dark:text-[#F5F5DC]/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                </span>
+                  <svg className="w-5 h-5 text-[#800020]/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
-                </div>
+              </div>
               </SettingItem>
             </div>
           </section>
 
           {/* Legal & Support */}
           <section>
-            <h2 className="px-4 pb-2 text-sm font-bold uppercase tracking-wider text-[#800020]/60 dark:text-[#F5F5DC]/60">
+            <h2 className="px-4 pb-2 text-sm font-bold uppercase tracking-wider text-[#800020]/60">
               {t('settings.legalSupport') || 'LEGAL & SUPPORT'}
             </h2>
             <div className="space-y-2">
@@ -298,7 +279,7 @@ export default function SettingsPage() {
                 label={t('settings.privacyPolicy') || 'Privacy Policy'}
                 href="/privacy"
               />
-            </div>
+              </div>
           </section>
 
           {/* Actions */}
@@ -306,11 +287,11 @@ export default function SettingsPage() {
             <div className="space-y-4">
               <button
                 onClick={handleLogout}
-                className="w-full rounded-lg bg-[#800020] py-3.5 text-base font-bold text-[#F5F5DC] transition-opacity hover:opacity-90 dark:bg-[#D4AF37] dark:text-[#2A000A]"
+                className="w-full rounded-lg bg-[#800020] py-3.5 text-base font-bold text-[#F5F5DC] transition-opacity hover:opacity-90"
               >
                 {t('settings.logOut') || 'Log Out'}
               </button>
-              <button className="w-full text-center text-sm font-medium text-red-700 transition-colors hover:text-red-600 dark:text-red-400 dark:hover:text-red-300">
+              <button className="w-full text-center text-sm font-medium text-red-700 transition-colors hover:text-red-600">
                 {t('settings.deleteAccount') || 'Delete Account'}
               </button>
             </div>

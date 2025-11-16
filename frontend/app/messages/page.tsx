@@ -89,7 +89,7 @@ export default function MessagesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-[#0a0a0f] flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-pink-600 border-t-transparent"></div>
           <p className="mt-4 text-secondary">{t('messages.loading')}</p>
@@ -99,7 +99,7 @@ export default function MessagesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-[#0a0a0f]">
+    <div className="min-h-screen bg-gray-50">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-6">
@@ -110,14 +110,14 @@ export default function MessagesPage() {
         </div>
 
         {error && (
-          <div className="mb-4 bg-red-50 dark:bg-[#F25D5D]/10 border border-red-200 dark:border-[#F25D5D] text-red-800 dark:text-[#F25D5D] px-4 py-3 rounded">
+          <div className="mb-4 bg-red-50">
             {error}
           </div>
         )}
 
         {/* Conversations List */}
         {conversations.length === 0 ? (
-          <div className="bg-white dark:bg-[#12121a] rounded-lg shadow-md p-12 text-center border dark:border-[#2a2a3a]">
+          <div className="bg-white">
             <div className="text-6xl mb-4">💬</div>
             <p className="text-secondary text-lg mb-2">{t('messages.noConversations')}</p>
             <p className="text-muted text-sm mb-4">
@@ -125,18 +125,18 @@ export default function MessagesPage() {
             </p>
             <Link
               href="/profiles"
-              className="inline-block px-6 py-2 bg-pink-600 dark:bg-[#00FFFF] text-white rounded-md hover:bg-pink-700 dark:hover:bg-[#00E6E6]"
+              className="inline-block px-6 py-2 bg-pink-600"
             >
               {t('messages.browseProfiles')}
             </Link>
           </div>
         ) : (
-          <div className="bg-white dark:bg-[#12121a] rounded-lg shadow-md divide-y divide-gray-200 dark:divide-[#2a2a3a] border dark:border-[#2a2a3a]">
+          <div className="bg-white">
             {conversations.map((conv) => (
               <Link
                 key={conv.conversationId}
                 href={`/messages/${conv.otherUser._id}`}
-                className="block hover:bg-gray-50 dark:hover:bg-[#1a1a24] transition-colors"
+                className="block hover:bg-gray-50"
               >
                 <div className="flex items-center gap-4 p-4">
                   {/* Avatar */}
@@ -144,7 +144,7 @@ export default function MessagesPage() {
                     <img
                       src={getPrimaryPhoto(conv.otherUser.photos || [])}
                       alt={conv.otherUser.name}
-                      className="w-14 h-14 rounded-full object-cover border-2 border-gray-200 dark:border-[#2a2a3a]"
+                      className="w-14 h-14 rounded-full object-cover border-2 border-gray-200"
                       loading="lazy"
                       decoding="async"
                     />
@@ -180,7 +180,7 @@ export default function MessagesPage() {
                         {conv.lastMessage.content}
                       </p>
                       {conv.unreadCount > 0 && (
-                        <div className="w-2 h-2 bg-pink-600 dark:bg-[#00FFFF] rounded-full flex-shrink-0 ml-2"></div>
+                        <div className="w-2 h-2 bg-pink-600"></div>
                       )}
                     </div>
                   </div>

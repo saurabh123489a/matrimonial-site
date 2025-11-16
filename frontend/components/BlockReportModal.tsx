@@ -56,15 +56,15 @@ export default function BlockReportModal({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-white">
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+            <h2 className="text-xl font-bold text-gray-900">
               {activeTab === 'block' ? 'Block User' : 'Report User'}
             </h2>
             <button
               onClick={onClose}
-              className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+              className="text-gray-500 hover:text-gray-700"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -73,13 +73,13 @@ export default function BlockReportModal({
           </div>
 
           {/* Tabs */}
-          <div className="flex gap-2 mb-6 border-b border-gray-200 dark:border-gray-700">
+          <div className="flex gap-2 mb-6 border-b border-gray-200">
             <button
               onClick={() => setActiveTab('block')}
               className={`px-4 py-2 font-medium transition-colors ${
                 activeTab === 'block'
-                  ? 'border-b-2 border-pink-600 text-pink-600 dark:text-pink-400'
-                  : 'text-gray-500 dark:text-gray-400'
+                  ? 'border-b-2 border-pink-600 text-pink-600'
+                  : 'text-gray-500'
               }`}
             >
               Block
@@ -88,8 +88,8 @@ export default function BlockReportModal({
               onClick={() => setActiveTab('report')}
               className={`px-4 py-2 font-medium transition-colors ${
                 activeTab === 'report'
-                  ? 'border-b-2 border-pink-600 text-pink-600 dark:text-pink-400'
-                  : 'text-gray-500 dark:text-gray-400'
+                  ? 'border-b-2 border-pink-600 text-pink-600'
+                  : 'text-gray-500'
               }`}
             >
               Report
@@ -99,10 +99,10 @@ export default function BlockReportModal({
           {/* Block Tab */}
           {activeTab === 'block' && (
             <div className="space-y-4">
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-gray-600">
                 Blocking <strong>{userName}</strong> will prevent them from:
               </p>
-              <ul className="list-disc list-inside text-sm text-gray-600 dark:text-gray-300 space-y-2">
+              <ul className="list-disc list-inside text-sm text-gray-600">
                 <li>Viewing your profile</li>
                 <li>Sending you messages</li>
                 <li>Sending you interest requests</li>
@@ -121,7 +121,7 @@ export default function BlockReportModal({
           {/* Report Tab */}
           {activeTab === 'report' && (
             <div className="space-y-4">
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-gray-600">
                 Report <strong>{userName}</strong> for:
               </p>
               <div className="space-y-2">
@@ -135,19 +135,19 @@ export default function BlockReportModal({
                       onChange={(e) => setReportReason(e.target.value)}
                       className="mr-3"
                     />
-                    <span className="text-gray-700 dark:text-gray-300">{reason}</span>
+                    <span className="text-gray-700">{reason}</span>
                   </label>
                 ))}
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-gray-700">
                   Additional Details (Optional)
                 </label>
                 <textarea
                   value={reportDetails}
                   onChange={(e) => setReportDetails(e.target.value)}
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:bg-gray-700 dark:text-white"
+                  className="w-full px-3 py-2 border border-gray-300"
                   placeholder="Provide more details..."
                 />
               </div>

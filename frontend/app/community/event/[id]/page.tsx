@@ -134,19 +134,19 @@ export default function EventDetailPage() {
 
   const getCategoryColor = (category: string) => {
     const colors: Record<string, string> = {
-      gathering: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300',
-      meeting: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300',
-      celebration: 'bg-pink-100 text-pink-800 dark:bg-pink-900/30 dark:text-pink-300',
-      workshop: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300',
-      seminar: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300',
-      other: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
+      gathering: 'bg-blue-100 text-blue-800',
+      meeting: 'bg-green-100 text-green-800',
+      celebration: 'bg-pink-100 text-pink-800',
+      workshop: 'bg-purple-100 text-purple-800',
+      seminar: 'bg-yellow-100 text-yellow-800',
+      other: 'bg-gray-100 text-gray-800',
     };
     return colors[category] || colors.other;
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-black flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50">
         <LoadingSpinner size="lg" text="Loading event..." />
       </div>
     );
@@ -154,9 +154,9 @@ export default function EventDetailPage() {
 
   if (error && !event) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-black">
+      <div className="min-h-screen bg-gray-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <Link href="/community" className="text-pink-600 dark:text-pink-400 hover:text-pink-700 dark:hover:text-pink-300 mb-4 inline-block">
+          <Link href="/community" className="text-pink-600">
             ← Back to Community
           </Link>
           <EmptyState
@@ -182,12 +182,12 @@ export default function EventDetailPage() {
   const isExpired = event.status === 'completed' || event.status === 'cancelled';
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-black transition-colors">
+    <div className="min-h-screen bg-gray-50">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Back Button */}
         <Link 
           href="/community" 
-          className="text-pink-600 dark:text-pink-400 hover:text-pink-700 dark:hover:text-pink-300 mb-6 inline-flex items-center gap-2 transition-colors"
+          className="text-pink-600"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -197,17 +197,17 @@ export default function EventDetailPage() {
 
         {/* Error Message */}
         {error && (
-          <div className="bg-red-50 dark:bg-red-900/10 border-l-4 border-red-400 text-red-800 dark:text-red-200 px-4 py-3 rounded mb-6">
+          <div className="bg-red-50">
             {error}
           </div>
         )}
 
         {/* Event Header */}
-        <div className="bg-white dark:bg-[#181b23] rounded-lg shadow-md p-6 sm:p-8 mb-6 transition-colors">
+        <div className="bg-white">
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4">
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-3">
-                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-pink-100">
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
                   {event.title}
                 </h1>
                 <span className={`px-3 py-1 text-xs font-semibold rounded-full ${getCategoryColor(event.category)}`}>
@@ -216,7 +216,7 @@ export default function EventDetailPage() {
               </div>
               
               {event.description && (
-                <p className="text-gray-600 dark:text-pink-200 mb-4 leading-relaxed">
+                <p className="text-gray-600">
                   {event.description}
                 </p>
               )}
@@ -237,40 +237,40 @@ export default function EventDetailPage() {
           {/* Event Details Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
             <div className="flex items-start gap-3">
-              <div className="flex-shrink-0 w-10 h-10 bg-pink-100 dark:bg-pink-900/30 rounded-lg flex items-center justify-center">
+              <div className="flex-shrink-0 w-10 h-10 bg-pink-100">
                 <span className="text-xl">📅</span>
               </div>
               <div>
-                <div className="text-sm font-medium text-gray-500 dark:text-pink-300 mb-1">
+                <div className="text-sm font-medium text-gray-500">
                   Date & Time
                 </div>
-                <div className="text-base font-semibold text-gray-900 dark:text-pink-100">
+                <div className="text-base font-semibold text-gray-900">
                   {formatDate(event.eventDate)}
                 </div>
-                <div className="text-sm text-gray-600 dark:text-pink-200">
+                <div className="text-sm text-gray-600">
                   {formatTime(event.eventTime)}
                 </div>
               </div>
             </div>
 
             <div className="flex items-start gap-3">
-              <div className="flex-shrink-0 w-10 h-10 bg-pink-100 dark:bg-pink-900/30 rounded-lg flex items-center justify-center">
+              <div className="flex-shrink-0 w-10 h-10 bg-pink-100">
                 <span className="text-xl">📍</span>
               </div>
               <div>
-                <div className="text-sm font-medium text-gray-500 dark:text-pink-300 mb-1">
+                <div className="text-sm font-medium text-gray-500">
                   Location
                 </div>
-                <div className="text-base font-semibold text-gray-900 dark:text-pink-100">
+                <div className="text-base font-semibold text-gray-900">
                   {event.location}
                 </div>
                 {event.address && (
-                  <div className="text-sm text-gray-600 dark:text-pink-200">
+                  <div className="text-sm text-gray-600">
                     {event.address}
                   </div>
                 )}
                 {(event.city || event.state) && (
-                  <div className="text-sm text-gray-600 dark:text-pink-200">
+                  <div className="text-sm text-gray-600">
                     {[event.city, event.state].filter(Boolean).join(', ')}
                   </div>
                 )}
@@ -279,14 +279,14 @@ export default function EventDetailPage() {
 
             {event.maxAttendees && (
               <div className="flex items-start gap-3">
-                <div className="flex-shrink-0 w-10 h-10 bg-pink-100 dark:bg-pink-900/30 rounded-lg flex items-center justify-center">
+                <div className="flex-shrink-0 w-10 h-10 bg-pink-100">
                   <span className="text-xl">👥</span>
                 </div>
                 <div>
-                  <div className="text-sm font-medium text-gray-500 dark:text-pink-300 mb-1">
+                  <div className="text-sm font-medium text-gray-500">
                     Max Attendees
                   </div>
-                  <div className="text-base font-semibold text-gray-900 dark:text-pink-100">
+                  <div className="text-base font-semibold text-gray-900">
                     {event.maxAttendees} people
                   </div>
                 </div>
@@ -294,14 +294,14 @@ export default function EventDetailPage() {
             )}
 
             <div className="flex items-start gap-3">
-              <div className="flex-shrink-0 w-10 h-10 bg-pink-100 dark:bg-pink-900/30 rounded-lg flex items-center justify-center">
+              <div className="flex-shrink-0 w-10 h-10 bg-pink-100">
                 <span className="text-xl">👤</span>
               </div>
               <div>
-                <div className="text-sm font-medium text-gray-500 dark:text-pink-300 mb-1">
+                <div className="text-sm font-medium text-gray-500">
                   Organizer
                 </div>
-                <div className="text-base font-semibold text-gray-900 dark:text-pink-100">
+                <div className="text-base font-semibold text-gray-900">
                   {typeof event.organizer === 'object' && event.organizer !== null
                     ? event.organizer.name
                     : event.organizerName}
@@ -314,17 +314,17 @@ export default function EventDetailPage() {
           <div className="flex items-center gap-2 mb-6">
             <span className={`px-3 py-1 text-xs font-semibold rounded-full ${
               event.status === 'upcoming' 
-                ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'
+                ? 'bg-green-100 text-green-800'
                 : event.status === 'ongoing'
-                ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300'
+                ? 'bg-blue-100 text-blue-800'
                 : event.status === 'completed'
-                ? 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
-                : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300'
+                ? 'bg-gray-100 text-gray-800'
+                : 'bg-red-100 text-red-800'
             }`}>
               {event.status.charAt(0).toUpperCase() + event.status.slice(1)}
             </span>
             {isPast && !isExpired && (
-              <span className="text-sm text-gray-500 dark:text-pink-300">
+              <span className="text-sm text-gray-500">
                 (Past Event)
               </span>
             )}
@@ -336,7 +336,7 @@ export default function EventDetailPage() {
               {event.tags.map((tag, index) => (
                 <span
                   key={index}
-                  className="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded"
+                  className="px-2 py-1 text-xs bg-gray-100"
                 >
                   #{tag}
                 </span>
@@ -346,14 +346,14 @@ export default function EventDetailPage() {
 
           {/* RSVP Section */}
           {!isExpired && (
-            <div className="border-t border-gray-200 dark:border-[#303341] pt-6">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-pink-100 mb-4">
+            <div className="border-t border-gray-200">
+              <h3 className="text-lg font-semibold text-gray-900">
                 {t('events.rsvp') || 'RSVP'}
               </h3>
               
               {!isAuthenticated ? (
-                <div className="bg-blue-50 dark:bg-blue-900/10 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-                  <p className="text-sm text-blue-800 dark:text-blue-200 mb-3">
+                <div className="bg-blue-50">
+                  <p className="text-sm text-blue-800">
                     Please login to RSVP to this event
                   </p>
                   <Link
@@ -366,13 +366,13 @@ export default function EventDetailPage() {
               ) : (
                 <div className="space-y-3">
                   {rsvpStatus ? (
-                    <div className="bg-green-50 dark:bg-green-900/10 border border-green-200 dark:border-green-800 rounded-lg p-4">
+                    <div className="bg-green-50">
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="text-sm font-medium text-green-800 dark:text-green-200 mb-1">
+                          <p className="text-sm font-medium text-green-800">
                             You have RSVP'd: <span className="font-semibold capitalize">{rsvpStatus}</span>
                           </p>
-                          <p className="text-xs text-green-600 dark:text-green-300">
+                          <p className="text-xs text-green-600">
                             {rsvpStatus === 'going' && 'Looking forward to seeing you!'}
                             {rsvpStatus === 'maybe' && 'We hope you can make it!'}
                             {rsvpStatus === 'notGoing' && 'Sorry you can\'t make it.'}
@@ -381,7 +381,7 @@ export default function EventDetailPage() {
                         <button
                           onClick={handleCancelRSVP}
                           disabled={rsvping}
-                          className="px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 disabled:opacity-50 transition-colors"
+                          className="px-4 py-2 text-sm font-medium text-red-600"
                         >
                           {rsvping ? 'Cancelling...' : 'Cancel RSVP'}
                         </button>
@@ -419,11 +419,11 @@ export default function EventDetailPage() {
         </div>
 
         {/* Additional Info */}
-        <div className="bg-white dark:bg-[#181b23] rounded-lg shadow-md p-6 transition-colors">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-pink-100 mb-4">
+        <div className="bg-white">
+          <h3 className="text-lg font-semibold text-gray-900">
             Event Information
           </h3>
-          <div className="space-y-2 text-sm text-gray-600 dark:text-pink-200">
+          <div className="space-y-2 text-sm text-gray-600">
             {event.isPublic ? (
               <p>✓ This is a public event - all community members are welcome</p>
             ) : (
