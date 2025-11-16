@@ -959,7 +959,7 @@ export default function MyProfilePage() {
                       }
                     }}
                     placeholder="5'6&quot;"
-                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
                       fieldErrors.height 
                         ? 'border-red-400 focus:ring-red-500 focus:border-red-500' 
                         : 'border-gray-300'
@@ -997,7 +997,7 @@ export default function MyProfilePage() {
                         }
                       }}
                       rows={4}
-                      className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2
+                      className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
                         fieldErrors.bio 
                           ? 'border-red-400 focus:ring-red-500 focus:border-red-500' 
                           : 'border-gray-300'
@@ -1968,7 +1968,7 @@ export default function MyProfilePage() {
                           setFieldErrors(newErrors);
                         }
                       }}
-                          className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2
+                          className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
                             fieldErrors['preferences.minAge'] 
                               ? 'border-red-400 focus:ring-red-500 focus:border-red-500' 
                               : 'border-gray-300'
@@ -2001,7 +2001,7 @@ export default function MyProfilePage() {
                           setFieldErrors(newErrors);
                         }
                       }}
-                          className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2
+                          className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
                             fieldErrors['preferences.maxAge'] 
                               ? 'border-red-400 focus:ring-red-500 focus:border-red-500' 
                               : 'border-gray-300'
@@ -2090,7 +2090,7 @@ export default function MyProfilePage() {
                             }
                       }}
                           placeholder="5'8&quot;"
-                          className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2
+                          className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
                             fieldErrors['preferences.minHeight'] 
                               ? 'border-red-400 focus:ring-red-500 focus:border-red-500' 
                               : 'border-gray-300'
@@ -2140,7 +2140,7 @@ export default function MyProfilePage() {
                             }
                       }}
                           placeholder="6'2&quot;"
-                          className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2
+                          className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
                             fieldErrors['preferences.maxHeight'] 
                               ? 'border-red-400 focus:ring-red-500 focus:border-red-500' 
                               : 'border-gray-300'
