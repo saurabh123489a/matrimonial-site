@@ -16,7 +16,7 @@
 
 :root {
   /* ========== BACKGROUND COLORS ========== */
-  --bg: #F5F5DC; /* Soft Cream */
+  --bg: #ffffff; /* White */
   --bg-secondary: #ffffff;
   --bg-tertiary: #f9f9f0;
   --bg-input: #ffffff;
@@ -29,7 +29,7 @@
   --text-secondary: #5a0017;
   --text-muted: #8b6b5a;
   --text-disabled: #b8a8a0;
-  --text-inverse: #F5F5DC;
+  --text-inverse: #ffffff;
   
   /* ========== PRIMARY COLORS (Deep Maroon) ========== */
   --primary: #800020;

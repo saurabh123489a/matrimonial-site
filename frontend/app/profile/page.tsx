@@ -612,7 +612,7 @@ export default function MyProfilePage() {
   const dietaryOptions = ['vegetarian', 'non-vegetarian', 'vegan', 'jain'];
 
   return (
-    <div className="min-h-screen bg-[#F5F5DC]">
+    <div className="min-h-screen bg-white">
       {/* Header - Mobile First Design */}
       <div className="bg-[#800020]">
         <div className="flex items-center justify-between px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
@@ -671,13 +671,13 @@ export default function MyProfilePage() {
               }
             }}
             aria-label={editing ? 'Cancel editing and discard changes' : 'Go back'}
-            className="p-2 -ml-2 text-[#F5F5DC] hover:bg-[#800020]/20"
+            className="p-2 -ml-2 text-white hover:bg-[#800020]/20"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
-          <h1 className="text-xl sm:text-2xl font-bold leading-tight tracking-tight text-[#F5F5DC]">
+          <h1 className="text-xl sm:text-2xl font-bold leading-tight tracking-tight text-white">
             {editing ? 'Edit Profile' : t('profile.myProfile')}
           </h1>
           <div className="flex items-center gap-1">
@@ -685,7 +685,7 @@ export default function MyProfilePage() {
               <button
                 onClick={() => setShowShareModal(true)}
                 aria-label="Share profile"
-                className="p-2 -mr-2 text-[#F5F5DC] hover:bg-[#800020]/20"
+                className="p-2 -mr-2 text-white hover:bg-[#800020]/20"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
@@ -695,7 +695,7 @@ export default function MyProfilePage() {
               <button
                 onClick={() => setEditing(true)}
                 aria-label="Edit profile"
-                className="p-2 -mr-2 text-[#F5F5DC] hover:bg-[#800020]/20"
+                className="p-2 -mr-2 text-white hover:bg-[#800020]/20"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />

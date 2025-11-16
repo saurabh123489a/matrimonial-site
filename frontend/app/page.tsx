@@ -204,7 +204,7 @@ export default function Home() {
       {/* Stats Section - Minimal Design */}
       <div 
         ref={statsRef.ref as React.RefObject<HTMLDivElement>}
-        className={`bg-gradient-to-br from-[#F5F5DC] via-white to-[#f9f9f0] ${statsRef.isVisible ? 'scroll-animate-scale animate' : 'scroll-animate-scale'}`}
+        className={`bg-gradient-to-br from-white via-white to-[#f9f9f0] ${statsRef.isVisible ? 'scroll-animate-scale animate' : 'scroll-animate-scale'}`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
           <div className="text-center mb-12">

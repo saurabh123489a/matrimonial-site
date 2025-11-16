@@ -40,7 +40,7 @@ export default function SettingsPage() {
 
   if (!mounted) {
     return (
-      <div className="min-h-screen bg-[#F5F5DC] flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-[#800020] border-t-transparent"></div>
         </div>
@@ -127,7 +127,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="relative flex min-h-screen w-full flex-col bg-[#F5F5DC]">
+    <div className="relative flex min-h-screen w-full flex-col bg-white">
       {/* Header */}
       <header className="sticky top-0 z-10 flex h-16 items-center border-b border-[#800020]/10">
         <button
@@ -287,7 +287,7 @@ export default function SettingsPage() {
             <div className="space-y-4">
               <button
                 onClick={handleLogout}
-                className="w-full rounded-lg bg-[#800020] py-3.5 text-base font-bold text-[#F5F5DC] transition-opacity hover:opacity-90"
+                className="w-full rounded-lg bg-[#800020] py-3.5 text-base font-bold text-white transition-opacity hover:opacity-90"
               >
                 {t('settings.logOut') || 'Log Out'}
               </button>

@@ -128,14 +128,14 @@ export default function RootLayout({
         )}
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#F5F5DC] text-primary transition-colors`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-primary transition-colors`}
       >
         <LanguageProvider>
           <NotificationProvider>
             <ProfileActionProvider>
               <GoogleAnalytics />
               <Navbar />
-              <main className="min-h-screen bg-[#F5F5DC] transition-colors pb-32 sm:pb-28 safe-area-bottom">
+              <main className="min-h-screen bg-white transition-colors pb-32 sm:pb-28 safe-area-bottom">
                 {children}
               </main>
               <BottomActionBar />
