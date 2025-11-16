@@ -7,6 +7,7 @@ import { auth } from '@/lib/auth';
 import LazyImage from './LazyImage';
 import { getProfileUrl } from '@/lib/profileUtils';
 import QuickMessageModal from './QuickMessageModal';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 interface CompactProfileCardProps {
   user: User;
@@ -17,6 +18,7 @@ export default function CompactProfileCard({ user, showOnlineStatus = false }: C
   const primaryPhoto = user.photos?.find(p => p.isPrimary) || user.photos?.[0];
   const [showMessageModal, setShowMessageModal] = useState(false);
   const isAuthenticated = auth.isAuthenticated();
+  const { ref: scrollRef, isVisible } = useScrollAnimation({ threshold: 0.1 });
   
   // Generate a random background color for variety (like in the image)
   const bgColors = [
@@ -29,7 +31,10 @@ export default function CompactProfileCard({ user, showOnlineStatus = false }: C
   const bgColor = bgColors[user._id.charCodeAt(0) % bgColors.length];
   
   return (
-    <div className="bg-white dark:bg-[#181b23] rounded-2xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 ease-out group relative">
+    <div 
+      ref={scrollRef as React.RefObject<HTMLDivElement>}
+      className={`bg-white dark:bg-[#181b23] rounded-2xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 card-lift card-image-zoom group relative ${isVisible ? 'scroll-animate-fade-up animate' : 'scroll-animate-fade-up'}`}
+    >
       <Link href={getProfileUrl(user)} className="block">
         {/* Photo Section */}
         <div className={`relative h-48 sm:h-56 ${bgColor} dark:bg-gray-800 overflow-hidden`}>
@@ -109,7 +114,7 @@ export default function CompactProfileCard({ user, showOnlineStatus = false }: C
               e.stopPropagation();
               setShowMessageModal(true);
             }}
-            className="w-full px-3 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white text-xs sm:text-sm font-bold rounded-xl hover:from-blue-700 hover:to-blue-800 active:from-blue-800 active:to-blue-900 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1 active:translate-y-0 duration-300 touch-manipulation min-h-[44px]"
+            className="w-full px-3 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white text-xs sm:text-sm font-bold rounded-xl hover:from-blue-700 hover:to-blue-800 active:from-blue-800 active:to-blue-900 btn-primary btn-scale transition-all shadow-lg hover:shadow-xl touch-manipulation min-h-[44px]"
             title="Send Message"
             aria-label="Send Message"
           >

@@ -4,11 +4,16 @@ import Link from 'next/link';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useState, useEffect } from 'react';
 import SEOStructuredData from '@/components/SEOStructuredData';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 export default function Home() {
   const { t } = useTranslation();
   const [mounted, setMounted] = useState(false);
   const [showWelcomeMessage, setShowWelcomeMessage] = useState(true);
+  
+  const featuresRef = useScrollAnimation({ threshold: 0.2 });
+  const statsRef = useScrollAnimation({ threshold: 0.2 });
+  const ctaRef = useScrollAnimation({ threshold: 0.2 });
 
   useEffect(() => {
     setMounted(true);
@@ -139,7 +144,7 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
                 href="/register"
-                className="inline-flex items-center justify-center px-8 py-4 bg-white text-pink-600 font-medium hover:bg-gray-100 transition-colors text-sm uppercase tracking-wider shadow-lg"
+                className="inline-flex items-center justify-center px-8 py-4 bg-white text-pink-600 font-medium hover:bg-gray-100 btn-primary btn-scale transition-all text-sm uppercase tracking-wider shadow-lg"
               >
                 Get Started
               </Link>
@@ -150,7 +155,10 @@ export default function Home() {
 
 
       {/* Features Section - Clean Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24 animate-fade-in">
+      <div 
+        ref={featuresRef.ref as React.RefObject<HTMLDivElement>}
+        className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24 ${featuresRef.isVisible ? 'scroll-animate-fade-up animate' : 'scroll-animate-fade-up'}`}
+      >
         <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-3xl sm:text-4xl font-light text-gray-900 mb-4">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-red-600">
@@ -196,7 +204,10 @@ export default function Home() {
       </div>
 
       {/* Stats Section - Minimal Design */}
-      <div className="bg-gradient-to-br from-pink-50 via-red-50 to-pink-100 dark:from-[#161821] dark:via-[#151720] dark:to-[#12141b] border-t border-b border-pink-100 dark:border-[#262932] transition-colors">
+      <div 
+        ref={statsRef.ref as React.RefObject<HTMLDivElement>}
+        className={`bg-gradient-to-br from-pink-50 via-red-50 to-pink-100 dark:from-[#161821] dark:via-[#151720] dark:to-[#12141b] border-t border-b border-pink-100 dark:border-[#262932] transition-colors ${statsRef.isVisible ? 'scroll-animate-scale animate' : 'scroll-animate-scale'}`}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-light text-gray-900 dark:text-pink-200 mb-4">
@@ -324,7 +335,7 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link
               href="/register"
-              className="inline-flex items-center justify-center px-8 py-4 bg-white text-pink-600 font-medium hover:bg-gray-100 transition-colors text-sm uppercase tracking-wider shadow-lg"
+              className="inline-flex items-center justify-center px-8 py-4 bg-white text-pink-600 font-medium hover:bg-gray-100 btn-primary btn-scale transition-all text-sm uppercase tracking-wider shadow-lg"
             >
               Create Free Account
             </Link>

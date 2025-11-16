@@ -183,7 +183,7 @@ export default function DetailedProfileTile({ user }: DetailedProfileTileProps) 
   };
 
   return (
-    <div className="bg-white dark:bg-[#181b23] rounded-2xl overflow-hidden shadow-xl border border-gray-200 dark:border-gray-700 relative hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 ease-out group">
+    <div className="bg-white dark:bg-[#181b23] rounded-2xl overflow-hidden shadow-xl border border-gray-200 dark:border-gray-700 relative card-lift card-image-zoom group">
       <Link href={getProfileUrl(user)} className="block" onClick={handleCardClick}>
         {/* Photo Section with Overlays */}
         <div className="relative h-72 sm:h-80 md:h-96 bg-gradient-to-br from-pink-50 to-purple-50 dark:from-gray-800 dark:to-gray-900 overflow-hidden">
@@ -296,7 +296,7 @@ export default function DetailedProfileTile({ user }: DetailedProfileTileProps) 
             <button
               onClick={handleSendInterest}
               disabled={actionLoading || hasInterest}
-              className="flex flex-col items-center gap-1.5 px-2 py-3 sm:py-3.5 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600 transition-all duration-200 touch-manipulation disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md active:scale-95"
+              className="flex flex-col items-center gap-1.5 px-2 py-3 sm:py-3.5 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-100 dark:active:bg-gray-600 btn-secondary btn-scale transition-all touch-manipulation disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
               title={hasInterest ? 'Interest Already Sent' : 'Send Interest'}
             >
               <span className="text-xl sm:text-2xl">✉️</span>
@@ -307,7 +307,7 @@ export default function DetailedProfileTile({ user }: DetailedProfileTileProps) 
             <button
               onClick={handleSuperInterest}
               disabled={actionLoading}
-              className="flex flex-col items-center gap-1.5 px-2 py-3 sm:py-3.5 bg-gradient-to-br from-pink-50 to-pink-100 dark:from-pink-900/20 dark:to-pink-800/20 border-2 border-pink-300 dark:border-pink-600 rounded-xl hover:from-pink-100 hover:to-pink-200 dark:hover:from-pink-900/30 dark:hover:to-pink-800/30 active:from-pink-200 active:to-pink-300 transition-all duration-200 touch-manipulation disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md active:scale-95"
+              className="flex flex-col items-center gap-1.5 px-2 py-3 sm:py-3.5 bg-gradient-to-br from-pink-50 to-pink-100 dark:from-pink-900/20 dark:to-pink-800/20 border-2 border-pink-300 dark:border-pink-600 rounded-xl hover:from-pink-100 hover:to-pink-200 dark:hover:from-pink-900/30 dark:hover:to-pink-800/30 active:from-pink-200 active:to-pink-300 btn-secondary btn-scale transition-all touch-manipulation disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
               title="Send Super Interest"
             >
               <span className="text-xl sm:text-2xl">💕</span>
@@ -318,7 +318,7 @@ export default function DetailedProfileTile({ user }: DetailedProfileTileProps) 
             <button
               onClick={handleShortlist}
               disabled={actionLoading}
-              className={`flex flex-col items-center gap-1.5 px-2 py-3 sm:py-3.5 border-2 rounded-xl transition-all duration-200 touch-manipulation disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md active:scale-95 ${
+              className={`flex flex-col items-center gap-1.5 px-2 py-3 sm:py-3.5 border-2 rounded-xl btn-scale transition-all touch-manipulation disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md ${
                 isShortlisted
                   ? 'bg-gradient-to-br from-yellow-400 to-yellow-500 border-yellow-500 text-white hover:from-yellow-500 hover:to-yellow-600'
                   : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
@@ -336,7 +336,7 @@ export default function DetailedProfileTile({ user }: DetailedProfileTileProps) 
                 e.stopPropagation();
                 setShowMessageModal(true);
               }}
-              className="flex flex-col items-center gap-1.5 px-2 py-3 sm:py-3.5 bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 active:from-blue-800 active:to-blue-900 transition-all duration-200 touch-manipulation shadow-lg hover:shadow-xl active:scale-95"
+              className="flex flex-col items-center gap-1.5 px-2 py-3 sm:py-3.5 bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 active:from-blue-800 active:to-blue-900 btn-primary btn-scale transition-all touch-manipulation shadow-lg hover:shadow-xl"
               title="Send Message"
             >
               <span className="text-xl sm:text-2xl">💬</span>

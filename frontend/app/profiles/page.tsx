@@ -341,7 +341,10 @@ function SearchProfilesPageContent() {
         <div className="flex gap-2">
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className={`flex-1 px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
+            aria-expanded={showFilters}
+            aria-controls="filters-panel"
+            aria-label={showFilters ? 'Hide filters' : 'Show filters'}
+            className={`flex-1 px-4 py-2 rounded-lg font-medium text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 ${
               showFilters
                 ? 'bg-pink-600 text-white dark:bg-pink-600'
                 : 'bg-gray-100 dark:bg-[#1f212a] text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-[#252730]'
@@ -351,12 +354,12 @@ function SearchProfilesPageContent() {
           </button>
           <button
             onClick={() => setViewMode(viewMode === 'compact' ? 'detailed' : 'compact')}
-            className={`flex-1 px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
+            aria-label={`Switch to ${viewMode === 'detailed' ? 'compact' : 'detailed'} view`}
+            className={`flex-1 px-4 py-2 rounded-lg font-medium text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 ${
               viewMode === 'detailed'
                 ? 'bg-pink-600 text-white dark:bg-pink-600'
                 : 'bg-gray-100 dark:bg-[#1f212a] text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-[#252730]'
             }`}
-            title={viewMode === 'detailed' ? 'Detailed View' : 'Compact View'}
           >
             {viewMode === 'detailed' ? 'Detailed' : 'Compact'}
           </button>
@@ -365,7 +368,7 @@ function SearchProfilesPageContent() {
 
       {/* Filters Panel */}
       {showFilters && (
-        <div className="bg-white dark:bg-[#181b23] border-b border-gray-200 dark:border-[#303341] p-4 sm:p-6 space-y-4 sm:space-y-6">
+        <div id="filters-panel" className="bg-white dark:bg-[#181b23] border-b border-gray-200 dark:border-[#303341] p-4 sm:p-6 space-y-4 sm:space-y-6">
           {/* Gahoi ID Search */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">
@@ -550,13 +553,15 @@ function SearchProfilesPageContent() {
             <button
               onClick={handleSearch}
               disabled={loading}
-              className="flex-1 py-3 bg-pink-600 text-white font-semibold rounded-lg hover:bg-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              aria-label={loading ? 'Searching profiles' : 'Search profiles'}
+              className="flex-1 py-3 bg-pink-600 text-white font-semibold rounded-lg hover:bg-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2"
             >
               {loading ? 'Searching...' : 'Search'}
             </button>
             <button
               onClick={handleClearFilters}
-              className="px-4 py-3 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-semibold rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+              aria-label="Clear all filters"
+              className="px-4 py-3 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-semibold rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
             >
               Clear
             </button>

@@ -8,6 +8,7 @@ import LazyImage from './LazyImage';
 import { getProfileUrl } from '@/lib/profileUtils';
 import { useNotifications } from '@/contexts/NotificationContext';
 import QuickMessageModal from './QuickMessageModal';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 interface ProfileCardProps {
   user: User;
@@ -20,6 +21,7 @@ export default function ProfileCard({ user }: ProfileCardProps) {
   const [isShortlisted, setIsShortlisted] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showMessageModal, setShowMessageModal] = useState(false);
+  const { ref: scrollRef, isVisible } = useScrollAnimation({ threshold: 0.1 });
 
   useEffect(() => {
     setIsAuthenticated(auth.isAuthenticated());
@@ -92,7 +94,10 @@ export default function ProfileCard({ user }: ProfileCardProps) {
   };
   
   return (
-    <div className="bg-white rounded-2xl shadow-lg overflow-hidden profile-card border border-gray-200 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 ease-out group">
+    <div 
+      ref={scrollRef as React.RefObject<HTMLDivElement>}
+      className={`bg-white rounded-2xl shadow-lg overflow-hidden profile-card card-lift card-image-zoom border border-gray-200 group ${isVisible ? 'scroll-animate-fade-up animate' : 'scroll-animate-fade-up'}`}
+    >
       {/* Photo Section */}
       <div className="relative h-64 sm:h-80 bg-gradient-to-br from-pink-100 to-red-100 overflow-hidden">
         {primaryPhoto ? (
@@ -193,7 +198,7 @@ export default function ProfileCard({ user }: ProfileCardProps) {
           <div className="flex gap-2.5">
             <Link
               href={getProfileUrl(user)}
-              className="flex-1 text-center px-4 py-3 bg-gradient-to-r from-pink-600 via-pink-500 to-red-600 text-white font-bold rounded-xl hover:from-pink-700 hover:via-pink-600 hover:to-red-700 transition-all text-sm shadow-lg hover:shadow-xl transform hover:-translate-y-1 active:translate-y-0 duration-300"
+              className="flex-1 text-center px-4 py-3 bg-gradient-to-r from-pink-600 via-pink-500 to-red-600 text-white font-bold rounded-xl hover:from-pink-700 hover:via-pink-600 hover:to-red-700 btn-primary btn-scale transition-all text-sm shadow-lg hover:shadow-xl touch-manipulation"
             >
               View Profile
             </Link>
@@ -204,7 +209,7 @@ export default function ProfileCard({ user }: ProfileCardProps) {
                   e.stopPropagation();
                   setShowMessageModal(true);
                 }}
-                className="px-4 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 active:bg-blue-800 transition-all text-sm shadow-lg hover:shadow-xl transform hover:-translate-y-1 active:translate-y-0 duration-300 touch-manipulation min-w-[56px] flex items-center justify-center"
+                className="px-4 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 active:bg-blue-800 btn-secondary btn-scale transition-all text-sm shadow-lg hover:shadow-xl touch-manipulation min-w-[56px] flex items-center justify-center"
                 title="Send Message"
                 aria-label="Send Message"
               >
@@ -217,7 +222,7 @@ export default function ProfileCard({ user }: ProfileCardProps) {
             <button
               onClick={handleSendInterest}
               disabled={actionLoading || !isAuthenticated}
-              className="flex-1 px-4 py-3 bg-gradient-to-r from-pink-50 to-pink-100 text-pink-700 font-bold rounded-xl hover:from-pink-100 hover:to-pink-200 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-sm border-2 border-pink-200 hover:border-pink-300 active:scale-[0.98] duration-200 shadow-sm hover:shadow-md"
+              className="flex-1 px-4 py-3 bg-gradient-to-r from-pink-50 to-pink-100 text-pink-700 font-bold rounded-xl hover:from-pink-100 hover:to-pink-200 disabled:opacity-50 disabled:cursor-not-allowed btn-secondary btn-scale transition-all text-sm border-2 border-pink-200 hover:border-pink-300 shadow-sm hover:shadow-md"
               title={isAuthenticated ? 'Send Interest' : 'Login to send interest'}
             >
               {actionLoading ? (
@@ -233,7 +238,7 @@ export default function ProfileCard({ user }: ProfileCardProps) {
             <button
               onClick={handleShortlist}
               disabled={actionLoading || !isAuthenticated}
-              className={`px-4 py-3 font-bold rounded-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all text-xl border-2 active:scale-[0.98] duration-200 shadow-sm hover:shadow-md ${
+              className={`px-4 py-3 font-bold rounded-xl disabled:opacity-50 disabled:cursor-not-allowed btn-scale transition-all text-xl border-2 shadow-sm hover:shadow-md ${
                 isShortlisted
                   ? 'bg-gradient-to-r from-yellow-400 to-yellow-500 text-white border-yellow-500 hover:from-yellow-500 hover:to-yellow-600'
                   : 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100 hover:border-gray-300'

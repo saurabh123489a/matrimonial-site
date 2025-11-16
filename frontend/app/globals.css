@@ -344,6 +344,94 @@ body {
   transition-duration: 150ms;
 }
 
+/* Accessibility: Keyboard focus styles */
+*:focus-visible {
+  outline: 2px solid #ec4899;
+  outline-offset: 2px;
+}
+
+/* Ensure all interactive elements are keyboard accessible */
+button:not(:disabled),
+a,
+input:not([type="hidden"]),
+select,
+textarea,
+[tabindex]:not([tabindex="-1"]) {
+  cursor: pointer;
+}
+
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Improve color contrast for better accessibility - WCAG AA compliant (4.5:1 ratio) */
+.text-gray-500 {
+  color: #6b7280; /* WCAG AA compliant - 4.5:1 contrast on white */
+}
+
+.dark .text-gray-400 {
+  color: #9ca3af; /* Better contrast in dark mode - 4.5:1 on dark bg */
+}
+
+.dark .text-gray-500 {
+  color: #a1a1aa; /* Improved contrast for dark mode */
+}
+
+/* Ensure sufficient contrast for links - WCAG AA compliant */
+a {
+  color: #ec4899; /* Pink-500 - 4.5:1 contrast on white */
+  text-decoration: underline;
+}
+
+a:hover {
+  color: #be185d; /* Pink-700 - Better contrast */
+}
+
+a:focus {
+  outline: 2px solid #ec4899;
+  outline-offset: 2px;
+}
+
+.dark a {
+  color: #f9a8d4; /* Pink-300 - Better contrast on dark bg */
+}
+
+.dark a:hover {
+  color: #f472b6; /* Pink-400 - Better contrast */
+}
+
+/* Ensure button text has sufficient contrast */
+button {
+  color: inherit;
+}
+
+button:focus-visible {
+  outline: 2px solid #ec4899;
+  outline-offset: 2px;
+}
+
+/* Improve contrast for disabled states */
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Ensure form labels have sufficient contrast */
+label {
+  color: #374151; /* gray-700 - WCAG AA compliant */
+}
+
+.dark label {
+  color: #f9a8d4; /* pink-300 - Better contrast on dark */
+}
+
 .pull-to-refresh-indicator {
   position: fixed;
   top: 0;
@@ -557,4 +645,409 @@ body {
 .profile-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* ============================================
+   SCROLL ANIMATIONS
+   ============================================ */
+
+/* Fade in on scroll */
+@keyframes fadeInOnScroll {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Slide up on scroll */
+@keyframes slideUpOnScroll {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Slide in from left on scroll */
+@keyframes slideInLeftOnScroll {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Slide in from right on scroll */
+@keyframes slideInRightOnScroll {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Scale in on scroll */
+@keyframes scaleInOnScroll {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Scroll animation classes - initially hidden */
+.scroll-fade-in {
+  opacity: 0;
+  animation: fadeInOnScroll 0.6s ease-out forwards;
+}
+
+.scroll-slide-up {
+  opacity: 0;
+  animation: slideUpOnScroll 0.7s ease-out forwards;
+}
+
+.scroll-slide-left {
+  opacity: 0;
+  animation: slideInLeftOnScroll 0.6s ease-out forwards;
+}
+
+.scroll-slide-right {
+  opacity: 0;
+  animation: slideInRightOnScroll 0.6s ease-out forwards;
+}
+
+.scroll-scale-in {
+  opacity: 0;
+  animation: scaleInOnScroll 0.5s ease-out forwards;
+}
+
+/* When element is in viewport, trigger animation */
+.scroll-animate {
+  opacity: 0;
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.scroll-animate.animate {
+  opacity: 1;
+}
+
+.scroll-animate-fade-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.scroll-animate-fade-up.animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.scroll-animate-fade-left {
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.scroll-animate-fade-left.animate {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.scroll-animate-fade-right {
+  opacity: 0;
+  transform: translateX(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.scroll-animate-fade-right.animate {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.scroll-animate-scale {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.scroll-animate-scale.animate {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ============================================
+   ENHANCED BUTTON HOVER EFFECTS
+   ============================================ */
+
+/* Primary button hover effect */
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(0);
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary:hover::before {
+  left: 100%;
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Secondary button hover effect */
+.btn-secondary {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(0);
+}
+
+.btn-secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.btn-secondary:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Button ripple effect */
+.btn-ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-ripple::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.btn-ripple:active::after {
+  width: 300px;
+  height: 300px;
+}
+
+/* Button glow effect */
+.btn-glow {
+  transition: all 0.3s ease;
+}
+
+.btn-glow:hover {
+  box-shadow: 0 0 20px rgba(192, 24, 91, 0.4);
+}
+
+/* Button scale effect */
+.btn-scale {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-scale:hover {
+  transform: scale(1.05);
+}
+
+.btn-scale:active {
+  transform: scale(0.98);
+}
+
+/* ============================================
+   ENHANCED CARD HOVER LIFT EFFECTS
+   ============================================ */
+
+/* Enhanced profile card hover */
+.profile-card {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, box-shadow;
+}
+
+.profile-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* Card lift effect with shadow */
+.card-lift {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(0);
+}
+
+.card-lift:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.15), 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Card subtle lift */
+.card-lift-subtle {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-lift-subtle:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* Card with image zoom on hover */
+.card-image-zoom {
+  overflow: hidden;
+}
+
+.card-image-zoom img {
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-image-zoom:hover img {
+  transform: scale(1.1);
+}
+
+/* Card border glow on hover */
+.card-glow {
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.card-glow:hover {
+  border-color: rgba(192, 24, 91, 0.3);
+  box-shadow: 0 0 20px rgba(192, 24, 91, 0.15);
+}
+
+/* ============================================
+   SMOOTH TRANSITIONS BETWEEN STATES
+   ============================================ */
+
+/* Smooth state transitions */
+.transition-smooth {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.transition-fast {
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.transition-slow {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Opacity transitions */
+.transition-opacity {
+  transition: opacity 0.3s ease;
+}
+
+/* Transform transitions */
+.transition-transform {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Color transitions */
+.transition-colors {
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Background transitions */
+.transition-bg {
+  transition: background-color 0.3s ease, background-image 0.3s ease;
+}
+
+/* Shadow transitions */
+.transition-shadow {
+  transition: box-shadow 0.3s ease;
+}
+
+/* Scale transitions */
+.transition-scale {
+  transition: transform 0.2s ease;
+}
+
+.transition-scale:hover {
+  transform: scale(1.05);
+}
+
+.transition-scale:active {
+  transform: scale(0.95);
+}
+
+/* ============================================
+   UTILITY CLASSES FOR ANIMATIONS
+   ============================================ */
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .scroll-animate,
+  .scroll-animate-fade-up,
+  .scroll-animate-fade-left,
+  .scroll-animate-fade-right,
+  .scroll-animate-scale {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Stagger animation delays */
+.animate-delay-100 {
+  animation-delay: 0.1s;
+}
+
+.animate-delay-200 {
+  animation-delay: 0.2s;
+}
+
+.animate-delay-300 {
+  animation-delay: 0.3s;
+}
+
+.animate-delay-400 {
+  animation-delay: 0.4s;
+}
+
+.animate-delay-500 {
+  animation-delay: 0.5s;
 }

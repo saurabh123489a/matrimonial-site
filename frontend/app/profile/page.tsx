@@ -206,7 +206,6 @@ export default function MyProfilePage() {
       const labels: Record<string, string> = {
         bio: 'Bio',
         height: 'Height',
-        weight: 'Weight',
         education: 'Education',
         occupation: 'Occupation',
         profession: 'Profession',
@@ -232,12 +231,6 @@ export default function MyProfilePage() {
       }
     }
     
-    // Validate weight (in kg, reasonable range: 30-200 kg)
-    if (data.weight !== undefined) {
-      if (data.weight < 30 || data.weight > 200) {
-        errors.weight = 'Weight must be between 30 kg and 200 kg';
-      }
-    }
     
     // Validate age (if provided)
     if (data.age !== undefined) {
@@ -270,15 +263,6 @@ export default function MyProfilePage() {
       }
     }
     
-    // Validate aboutMyself length
-    if (data.aboutMyself !== undefined && data.aboutMyself.length > 2000) {
-      errors.aboutMyself = 'About Myself must not exceed 2000 characters';
-    }
-    
-    // Validate partnerPreference length
-    if (data.partnerPreference !== undefined && data.partnerPreference.length > 500) {
-      errors.partnerPreference = 'Partner Preference must not exceed 500 characters';
-    }
     
     // Validate preferences age range
     if (data.preferences) {
@@ -351,9 +335,7 @@ export default function MyProfilePage() {
         const getFieldLabel = (fieldName: string): string => {
           const labels: Record<string, string> = {
             bio: 'Bio',
-            aboutMyself: 'About Myself',
             height: 'Height',
-            weight: 'Weight',
             education: 'Education',
             occupation: 'Occupation',
             profession: 'Profession',
@@ -687,7 +669,8 @@ export default function MyProfilePage() {
                 router.back();
               }
             }}
-            className="p-2 -ml-2 text-gray-700 dark:text-pink-100 hover:bg-gray-100 dark:hover:bg-[#1f212a] rounded-lg transition-colors"
+            aria-label={editing ? 'Cancel editing and discard changes' : 'Go back'}
+            className="p-2 -ml-2 text-gray-700 dark:text-pink-100 hover:bg-gray-100 dark:hover:bg-[#1f212a] rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -700,18 +683,20 @@ export default function MyProfilePage() {
             {editing ? (
               <button
                 onClick={() => setShowShareModal(true)}
-                className="p-2 -mr-2 text-gray-700 dark:text-pink-100 hover:bg-gray-100 dark:hover:bg-[#1f212a] rounded-lg transition-colors"
+                aria-label="Share profile"
+                className="p-2 -mr-2 text-gray-700 dark:text-pink-100 hover:bg-gray-100 dark:hover:bg-[#1f212a] rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2"
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
                 </svg>
               </button>
             ) : (
               <button
                 onClick={() => setEditing(true)}
-                className="p-2 -mr-2 text-gray-700 dark:text-pink-100 hover:bg-gray-100 dark:hover:bg-[#1f212a] rounded-lg transition-colors"
+                aria-label="Edit profile"
+                className="p-2 -mr-2 text-gray-700 dark:text-pink-100 hover:bg-gray-100 dark:hover:bg-[#1f212a] rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2"
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
                 </svg>
               </button>
@@ -767,9 +752,10 @@ export default function MyProfilePage() {
                       };
                       input.click();
                     }}
-                    className="absolute bottom-2 right-2 w-8 h-8 bg-pink-600 rounded-full flex items-center justify-center text-white shadow-lg hover:bg-pink-700 transition-colors"
+                    aria-label="Upload profile photo"
+                    className="absolute bottom-2 right-2 w-8 h-8 bg-pink-600 rounded-full flex items-center justify-center text-white shadow-lg hover:bg-pink-700 transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2"
                   >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                     </svg>
                   </button>
@@ -840,7 +826,10 @@ export default function MyProfilePage() {
         <div className="bg-white dark:bg-[#181b23] rounded-lg overflow-hidden">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, aboutMe: !expandedSections.aboutMe })}
-            className="w-full flex items-center justify-between p-4 sm:p-6 text-left"
+            aria-expanded={expandedSections.aboutMe}
+            aria-controls="about-me-section"
+            aria-label={`${expandedSections.aboutMe ? 'Collapse' : 'Expand'} About Me section`}
+            className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 rounded-lg"
           >
             <h2 className="text-lg font-semibold text-gray-900 dark:text-pink-100">About Me</h2>
             <svg 
@@ -848,13 +837,14 @@ export default function MyProfilePage() {
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
+              aria-hidden="true"
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
           </button>
           
           {expandedSections.aboutMe && (
-            <div className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
+            <div id="about-me-section" className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
               {/* Full Name */}
             <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">Full Name <span className="text-red-500">*</span></label>
@@ -889,10 +879,11 @@ export default function MyProfilePage() {
             <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">Height</label>
               {editing ? (
-                <input
+                <>
+                  <input
                     type="text"
                     value={formData.height ? `${Math.floor(formData.height / 12)}'${formData.height % 12}"` : ''}
-                  onChange={(e) => {
+                    onChange={(e) => {
                       const value = e.target.value;
                       const match = value.match(/(\d+)'(\d+)"/);
                       if (match) {
@@ -914,15 +905,16 @@ export default function MyProfilePage() {
                         ? 'border-red-400 focus:ring-red-500 focus:border-red-500' 
                         : 'border-gray-300 dark:border-gray-600 focus:ring-pink-500'
                     }`}
-                />
-                {fieldErrors.height && (
-                  <p className="mt-1 text-sm text-red-600 dark:text-red-400 flex items-center">
-                    <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                    </svg>
-                    {fieldErrors.height}
-                  </p>
-                )}
+                  />
+                  {fieldErrors.height && (
+                    <p className="mt-1 text-sm text-red-600 dark:text-red-400 flex items-center">
+                      <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                      </svg>
+                      {fieldErrors.height}
+                    </p>
+                  )}
+                </>
               ) : (
                 <p className="text-gray-900 dark:text-pink-100">
                     {user.height ? `${Math.floor(user.height / 12)}'${user.height % 12}"` : 'Not provided'}
@@ -977,7 +969,10 @@ export default function MyProfilePage() {
         <div className="bg-white dark:bg-[#181b23] rounded-lg overflow-hidden">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, contact: !expandedSections.contact })}
-            className="w-full flex items-center justify-between p-4 sm:p-6 text-left"
+            aria-expanded={expandedSections.contact}
+            aria-controls="contact-section"
+            aria-label={`${expandedSections.contact ? 'Collapse' : 'Expand'} Contact Information section`}
+            className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 rounded-lg"
           >
             <h2 className="text-lg font-semibold text-gray-900 dark:text-pink-100">Contact Information</h2>
             <svg 
@@ -985,6 +980,7 @@ export default function MyProfilePage() {
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
+              aria-hidden="true"
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
@@ -1044,7 +1040,10 @@ export default function MyProfilePage() {
         <div className="bg-white dark:bg-[#181b23] rounded-lg overflow-hidden">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, location: !expandedSections.location })}
-            className="w-full flex items-center justify-between p-4 sm:p-6 text-left"
+            aria-expanded={expandedSections.location}
+            aria-controls="location-section"
+            aria-label={`${expandedSections.location ? 'Collapse' : 'Expand'} Location section`}
+            className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 rounded-lg"
           >
             <h2 className="text-lg font-semibold text-gray-900 dark:text-pink-100">Location</h2>
             <svg 
@@ -1052,13 +1051,14 @@ export default function MyProfilePage() {
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
+              aria-hidden="true"
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
           </button>
           
           {expandedSections.location && (
-            <div className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
+            <div id="location-section" className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
               {editing ? (
                 <LocationSelect
                   selectedCountry={formData.country || user?.country || ''}
@@ -1137,7 +1137,10 @@ export default function MyProfilePage() {
         <div className="bg-white dark:bg-[#181b23] rounded-lg overflow-hidden">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, education: !expandedSections.education })}
-            className="w-full flex items-center justify-between p-4 sm:p-6 text-left"
+            aria-expanded={expandedSections.education}
+            aria-controls="education-section"
+            aria-label={`${expandedSections.education ? 'Collapse' : 'Expand'} Education & Career section`}
+            className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 rounded-lg"
           >
             <h2 className="text-lg font-semibold text-gray-900 dark:text-pink-100">Education & Career</h2>
             <svg 
@@ -1145,13 +1148,14 @@ export default function MyProfilePage() {
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
+              aria-hidden="true"
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
           </button>
           
           {expandedSections.education && (
-            <div className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
+            <div id="education-section" className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
               {/* Education */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">
@@ -1296,7 +1300,10 @@ export default function MyProfilePage() {
         <div className="bg-white dark:bg-[#181b23] rounded-lg overflow-hidden">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, lifestyle: !expandedSections.lifestyle })}
-            className="w-full flex items-center justify-between p-4 sm:p-6 text-left"
+            aria-expanded={expandedSections.lifestyle}
+            aria-controls="lifestyle-section"
+            aria-label={`${expandedSections.lifestyle ? 'Collapse' : 'Expand'} Lifestyle & Interests section`}
+            className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 rounded-lg"
           >
             <h2 className="text-lg font-semibold text-gray-900 dark:text-pink-100">Lifestyle & Interests</h2>
             <svg 
@@ -1304,13 +1311,14 @@ export default function MyProfilePage() {
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
+              aria-hidden="true"
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
           </button>
           
           {expandedSections.lifestyle && (
-            <div className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
+            <div id="lifestyle-section" className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
               {/* Dietary Preferences */}
             <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-3">Dietary Preferences</label>
@@ -1407,7 +1415,10 @@ export default function MyProfilePage() {
         <div className="bg-white dark:bg-[#181b23] rounded-lg overflow-hidden">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, family: !expandedSections.family })}
-            className="w-full flex items-center justify-between p-4 sm:p-6 text-left"
+            aria-expanded={expandedSections.family}
+            aria-controls="family-section"
+            aria-label={`${expandedSections.family ? 'Collapse' : 'Expand'} Family Information section`}
+            className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 rounded-lg"
           >
             <h2 className="text-lg font-semibold text-gray-900 dark:text-pink-100">👨‍👩‍👧‍👦 Family Information</h2>
             <svg 
@@ -1415,13 +1426,14 @@ export default function MyProfilePage() {
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
+              aria-hidden="true"
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
           </button>
           
           {expandedSections.family && (
-            <div className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
+            <div id="family-section" className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Father's Name */}
                 <div>
@@ -1656,7 +1668,10 @@ export default function MyProfilePage() {
         <div className="bg-white dark:bg-[#181b23] rounded-lg overflow-hidden">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, horoscope: !expandedSections.horoscope })}
-            className="w-full flex items-center justify-between p-4 sm:p-6 text-left"
+            aria-expanded={expandedSections.horoscope}
+            aria-controls="horoscope-section"
+            aria-label={`${expandedSections.horoscope ? 'Collapse' : 'Expand'} Horoscope Details section`}
+            className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 rounded-lg"
           >
             <h2 className="text-lg font-semibold text-gray-900 dark:text-pink-100">🔮 Horoscope Details</h2>
             <svg 
@@ -1664,13 +1679,14 @@ export default function MyProfilePage() {
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
+              aria-hidden="true"
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
           </button>
           
           {expandedSections.horoscope && (
-            <div className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
+            <div id="horoscope-section" className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
               {/* Date of Birth */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">Date of Birth</label>
@@ -1856,7 +1872,10 @@ export default function MyProfilePage() {
         <div className="bg-white dark:bg-[#181b23] rounded-lg overflow-hidden">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, partnerPreferences: !expandedSections.partnerPreferences })}
-            className="w-full flex items-center justify-between p-4 sm:p-6 text-left"
+            aria-expanded={expandedSections.partnerPreferences}
+            aria-controls="partner-preferences-section"
+            aria-label={`${expandedSections.partnerPreferences ? 'Collapse' : 'Expand'} Partner Preferences section`}
+            className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 rounded-lg"
           >
             <h2 className="text-lg font-semibold text-gray-900 dark:text-pink-100">Partner Preferences</h2>
             <svg 
@@ -1864,13 +1883,14 @@ export default function MyProfilePage() {
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
+              aria-hidden="true"
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
           </button>
           
           {expandedSections.partnerPreferences && (
-            <div className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
+            <div id="partner-preferences-section" className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
               {/* Age Range */}
                 <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-3">
@@ -2119,7 +2139,8 @@ export default function MyProfilePage() {
                     checked={editing ? (formData.horoscopeMatchMandatory ?? user.horoscopeMatchMandatory ?? false) : (user.horoscopeMatchMandatory ?? false)}
                     onChange={(e) => setFormData({ ...formData, horoscopeMatchMandatory: e.target.checked })}
                     disabled={!editing}
-                    className="w-5 h-5 text-pink-600 border-gray-300 rounded focus:ring-pink-500 dark:border-gray-600 dark:bg-[#1f212a] disabled:opacity-50 disabled:cursor-not-allowed"
+                    aria-label="Require horoscope match for partner preferences"
+                    className="w-5 h-5 text-pink-600 border-gray-300 rounded focus:ring-pink-500 focus:ring-2 focus:ring-offset-2 dark:border-gray-600 dark:bg-[#1f212a] disabled:opacity-50 disabled:cursor-not-allowed"
                   />
                   <span className="text-sm font-medium text-gray-700 dark:text-pink-200">
                     Require Horoscope Match <span className="text-gray-500 dark:text-gray-400 text-xs">(Mandatory for matches)</span>
@@ -2142,7 +2163,8 @@ export default function MyProfilePage() {
               <button
                 onClick={handleSave}
                 disabled={saving}
-            className="w-full py-4 bg-pink-600 text-white font-semibold rounded-lg hover:bg-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-lg"
+                aria-label={saving ? 'Saving profile changes' : 'Save profile changes'}
+                className="w-full py-4 bg-pink-600 text-white font-semibold rounded-lg hover:bg-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2"
               >
             {saving ? 'Saving...' : 'Save Changes'}
               </button>
