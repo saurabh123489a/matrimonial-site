@@ -331,20 +331,6 @@ export default function Navbar() {
             
             {/* Right: Icons */}
             <div className="flex items-center space-x-1 sm:space-x-2 md:space-x-3 flex-shrink-0">
-              {/* Search Icon - Show auth modal if not authenticated */}
-              {mounted && !isAuthenticated && (
-                <button
-                  onClick={() => setShowAuthModal(true)}
-                  className="min-w-[44px] min-h-[44px] p-2 text-secondary hover:text-pink-600"
-                  title="Search"
-                  aria-label="Search profiles"
-                >
-                  <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                </button>
-              )}
-              
               {/* Language Switcher - Always visible */}
               {mounted && <LanguageSwitcher />}
               
