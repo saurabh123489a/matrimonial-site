@@ -197,6 +197,120 @@ export default function MyProfilePage() {
     }
   };
 
+  // Client-side validation function
+  const validateFormData = (data: UpdateUserDto): Record<string, string> => {
+    const errors: Record<string, string> = {};
+    
+    // Helper function to get field label
+    const getFieldLabel = (fieldName: string): string => {
+      const labels: Record<string, string> = {
+        bio: 'Bio',
+        height: 'Height',
+        weight: 'Weight',
+        education: 'Education',
+        occupation: 'Occupation',
+        profession: 'Profession',
+        annualIncome: 'Annual Income',
+        city: 'City',
+        state: 'State',
+        country: 'Country',
+        dateOfBirth: 'Date of Birth',
+        age: 'Age',
+      };
+      return labels[fieldName] || fieldName;
+    };
+    
+    // Validate bio length
+    if (data.bio !== undefined && data.bio.length > 2000) {
+      errors.bio = 'Bio must not exceed 2000 characters';
+    }
+    
+    // Validate height (in inches, reasonable range: 36-96 inches / 3-8 feet)
+    if (data.height !== undefined) {
+      if (data.height < 36 || data.height > 96) {
+        errors.height = 'Height must be between 3 feet (36 inches) and 8 feet (96 inches)';
+      }
+    }
+    
+    // Validate weight (in kg, reasonable range: 30-200 kg)
+    if (data.weight !== undefined) {
+      if (data.weight < 30 || data.weight > 200) {
+        errors.weight = 'Weight must be between 30 kg and 200 kg';
+      }
+    }
+    
+    // Validate age (if provided)
+    if (data.age !== undefined) {
+      if (data.age < 18 || data.age > 100) {
+        errors.age = 'Age must be between 18 and 100 years';
+      }
+    }
+    
+    // Validate date of birth
+    if (data.dateOfBirth) {
+      const birthDate = new Date(data.dateOfBirth);
+      const today = new Date();
+      
+      if (isNaN(birthDate.getTime())) {
+        errors.dateOfBirth = 'Please enter a valid date';
+      } else if (birthDate > today) {
+        errors.dateOfBirth = 'Date of birth cannot be in the future';
+      } else {
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+          age--;
+        }
+        if (age < 18) {
+          errors.dateOfBirth = 'You must be at least 18 years old';
+        }
+        if (age > 100) {
+          errors.dateOfBirth = 'Please enter a valid date of birth';
+        }
+      }
+    }
+    
+    // Validate aboutMyself length
+    if (data.aboutMyself !== undefined && data.aboutMyself.length > 2000) {
+      errors.aboutMyself = 'About Myself must not exceed 2000 characters';
+    }
+    
+    // Validate partnerPreference length
+    if (data.partnerPreference !== undefined && data.partnerPreference.length > 500) {
+      errors.partnerPreference = 'Partner Preference must not exceed 500 characters';
+    }
+    
+    // Validate preferences age range
+    if (data.preferences) {
+      if (data.preferences.minAge !== undefined && (data.preferences.minAge < 18 || data.preferences.minAge > 100)) {
+        errors['preferences.minAge'] = 'Minimum age must be between 18 and 100';
+      }
+      if (data.preferences.maxAge !== undefined && (data.preferences.maxAge < 18 || data.preferences.maxAge > 100)) {
+        errors['preferences.maxAge'] = 'Maximum age must be between 18 and 100';
+      }
+      if (data.preferences.minAge !== undefined && data.preferences.maxAge !== undefined) {
+        if (data.preferences.minAge > data.preferences.maxAge) {
+          errors['preferences.minAge'] = 'Minimum age cannot be greater than maximum age';
+          errors['preferences.maxAge'] = 'Maximum age cannot be less than minimum age';
+        }
+      }
+      if (data.preferences.minHeight !== undefined && (data.preferences.minHeight < 36 || data.preferences.minHeight > 96)) {
+        errors['preferences.minHeight'] = 'Minimum height must be between 36 and 96 inches';
+      }
+      if (data.preferences.maxHeight !== undefined && (data.preferences.maxHeight < 36 || data.preferences.maxHeight > 96)) {
+        errors['preferences.maxHeight'] = 'Maximum height must be between 36 and 96 inches';
+      }
+      if (data.preferences.minHeight !== undefined && data.preferences.maxHeight !== undefined) {
+        if (data.preferences.minHeight > data.preferences.maxHeight) {
+          errors['preferences.minHeight'] = 'Minimum height cannot be greater than maximum height';
+          errors['preferences.maxHeight'] = 'Maximum height cannot be less than minimum height';
+        }
+      }
+    }
+    
+    return errors;
+  };
+
   const handleSave = async () => {
     setSaving(true);
     setError('');
@@ -205,6 +319,17 @@ export default function MyProfilePage() {
     try {
       // Exclude name, phone, email, and whatsappNumber from updates (non-editable fields)
       const { name, phone, email, whatsappNumber, ...updateData } = formData;
+      
+      // Client-side validation
+      const validationErrors = validateFormData(updateData);
+      if (Object.keys(validationErrors).length > 0) {
+        setFieldErrors(validationErrors);
+        setError('Please fix the errors in the form before saving');
+        showError('Please fix the errors in the form before saving');
+        setSaving(false);
+        return;
+      }
+      
       const response = await userApi.updateMe(updateData);
       if (response.status) {
         
@@ -216,37 +341,138 @@ export default function MyProfilePage() {
       }
     } catch (err: any) {
       const errorData = err.response?.data;
-      const errorMsg = errorData?.message || 'Failed to update profile';
-      setError(errorMsg);
-      showError(errorMsg);
-
       
+      // Handle validation errors with user-friendly messages
       if (errorData?.errors || errorData?.validationErrors) {
         const validationErrors: Record<string, string> = {};
         const errors = errorData.errors || errorData.validationErrors || {};
         
+        // Helper function to convert field names to user-friendly labels
+        const getFieldLabel = (fieldName: string): string => {
+          const labels: Record<string, string> = {
+            bio: 'Bio',
+            aboutMyself: 'About Myself',
+            height: 'Height',
+            weight: 'Weight',
+            education: 'Education',
+            occupation: 'Occupation',
+            profession: 'Profession',
+            annualIncome: 'Annual Income',
+            city: 'City',
+            state: 'State',
+            country: 'Country',
+            dateOfBirth: 'Date of Birth',
+            age: 'Age',
+            partnerPreference: 'Partner Preference',
+            'preferences.minAge': 'Minimum Age',
+            'preferences.maxAge': 'Maximum Age',
+            'preferences.minHeight': 'Minimum Height',
+            'preferences.maxHeight': 'Maximum Height',
+          };
+          return labels[fieldName] || fieldName;
+        };
+        
+        // Helper function to convert error messages to user-friendly format
+        const getUserFriendlyError = (error: any, fieldName: string): string => {
+          const fieldLabel = getFieldLabel(fieldName);
+          
+          // Handle Zod validation errors
+          if (error.code === 'invalid_enum_value') {
+            return `${fieldLabel} must be one of the allowed values`;
+          }
+          
+          if (error.code === 'invalid_type') {
+            if (error.expected === 'string' && error.received === 'undefined') {
+              return `${fieldLabel} is required`;
+            }
+            return `${fieldLabel} has an invalid format`;
+          }
+          
+          if (error.code === 'too_small') {
+            if (error.type === 'string' && error.minimum) {
+              return `${fieldLabel} must be at least ${error.minimum} characters`;
+            }
+            if (error.type === 'number' && error.minimum) {
+              return `${fieldLabel} must be at least ${error.minimum}`;
+            }
+          }
+          
+          if (error.code === 'too_big') {
+            if (error.type === 'string' && error.maximum) {
+              return `${fieldLabel} must not exceed ${error.maximum} characters`;
+            }
+            if (error.type === 'number' && error.maximum) {
+              return `${fieldLabel} must not exceed ${error.maximum}`;
+            }
+          }
+          
+          if (error.code === 'invalid_string') {
+            if (error.validation === 'email') {
+              return 'Please enter a valid email address';
+            }
+            if (error.validation === 'regex') {
+              return `${fieldLabel} format is invalid`;
+            }
+          }
+          
+          // Use the error message if available
+          if (error.message) {
+            let message = error.message
+              .replace(/Invalid enum value\. Expected/, 'Please select')
+              .replace(/received/, 'you entered')
+              .replace(/Expected/, 'Expected')
+              .replace(/Invalid/, 'Invalid');
+            return message;
+          }
+          
+          return `${fieldLabel} is invalid`;
+        };
         
         if (Array.isArray(errors)) {
           errors.forEach((error: any) => {
-            if (error.path && error.message) {
-              validationErrors[error.path.join('.')] = error.message;
+            if (error.path && error.path.length > 0) {
+              const fieldName = error.path.join('.');
+              validationErrors[fieldName] = getUserFriendlyError(error, fieldName);
             }
           });
         } else if (typeof errors === 'object') {
-          
           Object.keys(errors).forEach((key) => {
             const errorValue = errors[key];
             if (typeof errorValue === 'string') {
               validationErrors[key] = errorValue;
             } else if (Array.isArray(errorValue) && errorValue.length > 0) {
-              validationErrors[key] = errorValue[0];
+              const firstError = errorValue[0];
+              if (typeof firstError === 'object' && firstError.message) {
+                validationErrors[key] = getUserFriendlyError(firstError, key);
+              } else {
+                validationErrors[key] = firstError;
+              }
+            } else if (typeof errorValue === 'object' && errorValue.message) {
+              validationErrors[key] = getUserFriendlyError(errorValue, key);
             }
           });
         }
         
         if (Object.keys(validationErrors).length > 0) {
           setFieldErrors(validationErrors);
+          const errorFields = Object.keys(validationErrors);
+          if (errorFields.length === 1) {
+            setError(`Please fix the error in ${getFieldLabel(errorFields[0])}`);
+            showError(`Please fix the error in ${getFieldLabel(errorFields[0])}`);
+          } else {
+            setError('Please fix the errors in the form fields');
+            showError('Please fix the errors in the form fields');
+          }
+        } else {
+          const errorMsg = errorData?.message || 'Failed to update profile';
+          setError(errorMsg);
+          showError(errorMsg);
         }
+      } else {
+        // Handle non-validation errors
+        const errorMsg = errorData?.message || 'Failed to update profile';
+        setError(errorMsg);
+        showError(errorMsg);
       }
     } finally {
       setSaving(false);
@@ -495,6 +721,25 @@ export default function MyProfilePage() {
       </div>
 
       <div className="px-4 py-6 space-y-6">
+        {/* Error Display */}
+        {error && (
+          <div className="rounded-xl bg-red-50 dark:bg-red-900/20 p-4 border-l-4 border-red-500 shadow-sm">
+            <div className="flex items-start">
+              <svg className="w-5 h-5 text-red-500 mt-0.5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+              </svg>
+              <div className="flex-1">
+                <p className="text-sm text-red-800 dark:text-red-200 font-medium">{error}</p>
+                {Object.keys(fieldErrors).length > 0 && (
+                  <p className="text-xs text-red-600 dark:text-red-300 mt-1">
+                    Please check the fields marked in red below
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Profile Photos Section - Matching Image Design */}
         <div className="flex gap-4 mb-6">
           {/* Main Profile Photo */}
@@ -654,13 +899,30 @@ export default function MyProfilePage() {
                         const feet = parseInt(match[1]);
                         const inches = parseInt(match[2]);
                         setFormData({ ...formData, height: feet * 12 + inches });
+                        if (fieldErrors.height) {
+                          const newErrors = { ...fieldErrors };
+                          delete newErrors.height;
+                          setFieldErrors(newErrors);
+                        }
                       } else if (value === '') {
                         setFormData({ ...formData, height: undefined });
                       }
                     }}
                     placeholder="5'6&quot;"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-pink-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 dark:bg-[#1f212a] dark:text-pink-100 ${
+                      fieldErrors.height 
+                        ? 'border-red-400 focus:ring-red-500 focus:border-red-500' 
+                        : 'border-gray-300 dark:border-gray-600 focus:ring-pink-500'
+                    }`}
                 />
+                {fieldErrors.height && (
+                  <p className="mt-1 text-sm text-red-600 dark:text-red-400 flex items-center">
+                    <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                    </svg>
+                    {fieldErrors.height}
+                  </p>
+                )}
               ) : (
                 <p className="text-gray-900 dark:text-pink-100">
                     {user.height ? `${Math.floor(user.height / 12)}'${user.height % 12}"` : 'Not provided'}
@@ -672,13 +934,37 @@ export default function MyProfilePage() {
             <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Bio</label>
               {editing ? (
-                  <textarea
-                    value={formData.bio || ''}
-                    onChange={(e) => setFormData({ ...formData, bio: sanitizeFormInput(e.target.value, 'textarea') })}
-                    rows={4}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-pink-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
-                    placeholder="A software engineer with a passion for travel and classical dance. Looking for a partner who values family, honesty, and a good sense of humor."
-                />
+                  <>
+                    <textarea
+                      value={formData.bio || ''}
+                      onChange={(e) => {
+                        setFormData({ ...formData, bio: sanitizeFormInput(e.target.value, 'textarea') });
+                        if (fieldErrors.bio) {
+                          const newErrors = { ...fieldErrors };
+                          delete newErrors.bio;
+                          setFieldErrors(newErrors);
+                        }
+                      }}
+                      rows={4}
+                      className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 dark:bg-[#1f212a] dark:text-pink-100 ${
+                        fieldErrors.bio 
+                          ? 'border-red-400 focus:ring-red-500 focus:border-red-500' 
+                          : 'border-gray-300 dark:border-gray-600 focus:ring-pink-500'
+                      }`}
+                      placeholder="A software engineer with a passion for travel and classical dance. Looking for a partner who values family, honesty, and a good sense of humor."
+                    />
+                    {fieldErrors.bio && (
+                      <p className="mt-1 text-sm text-red-600 dark:text-red-400 flex items-center">
+                        <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                        </svg>
+                        {fieldErrors.bio}
+                      </p>
+                    )}
+                    <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                      {(formData.bio || '').length}/2000 characters
+                    </p>
+                  </>
               ) : (
                   <p className="text-gray-900 dark:text-pink-100">{user.bio || 'No bio provided'}</p>
               )}
@@ -1389,15 +1675,34 @@ export default function MyProfilePage() {
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Date of Birth</label>
                 {editing ? (
-                  <input
-                    type="date"
-                    value={typeof formData.dateOfBirth === 'string' ? formData.dateOfBirth : (formData.dateOfBirth instanceof Date ? formData.dateOfBirth.toISOString().split('T')[0] : '')}
-                    onChange={(e) => {
-                      setFormData({ ...formData, dateOfBirth: e.target.value });
-                    }}
-                    max={new Date().toISOString().split('T')[0]}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-pink-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
-                  />
+                  <>
+                    <input
+                      type="date"
+                      value={typeof formData.dateOfBirth === 'string' ? formData.dateOfBirth : (formData.dateOfBirth instanceof Date ? formData.dateOfBirth.toISOString().split('T')[0] : '')}
+                      onChange={(e) => {
+                        setFormData({ ...formData, dateOfBirth: e.target.value });
+                        if (fieldErrors.dateOfBirth) {
+                          const newErrors = { ...fieldErrors };
+                          delete newErrors.dateOfBirth;
+                          setFieldErrors(newErrors);
+                        }
+                      }}
+                      max={new Date().toISOString().split('T')[0]}
+                      className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 dark:bg-[#1f212a] dark:text-pink-100 ${
+                        fieldErrors.dateOfBirth 
+                          ? 'border-red-400 focus:ring-red-500 focus:border-red-500' 
+                          : 'border-gray-300 dark:border-gray-600 focus:ring-pink-500'
+                      }`}
+                    />
+                    {fieldErrors.dateOfBirth && (
+                      <p className="mt-1 text-sm text-red-600 dark:text-red-400 flex items-center">
+                        <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                        </svg>
+                        {fieldErrors.dateOfBirth}
+                      </p>
+                    )}
+                  </>
                 ) : (
                   <p className="text-gray-900 dark:text-pink-100">
                     {user.dateOfBirth ? new Date(user.dateOfBirth).toLocaleDateString() : 'Not provided'}
@@ -1584,15 +1889,31 @@ export default function MyProfilePage() {
                           min="18"
                           max="100"
                           value={formData.preferences?.minAge || user.preferences?.minAge || 28}
-                      onChange={(e) => setFormData({
-                        ...formData,
+                      onChange={(e) => {
+                        setFormData({
+                          ...formData,
                             preferences: {
                               ...formData.preferences,
                               minAge: parseInt(e.target.value) || undefined,
                         },
-                      })}
-                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-pink-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                      });
+                        if (fieldErrors['preferences.minAge']) {
+                          const newErrors = { ...fieldErrors };
+                          delete newErrors['preferences.minAge'];
+                          setFieldErrors(newErrors);
+                        }
+                      }}
+                          className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 dark:bg-[#1f212a] dark:text-pink-100 ${
+                            fieldErrors['preferences.minAge'] 
+                              ? 'border-red-400 focus:ring-red-500 focus:border-red-500' 
+                              : 'border-gray-300 dark:border-gray-600 focus:ring-pink-500'
+                          }`}
                     />
+                    {fieldErrors['preferences.minAge'] && (
+                      <p className="mt-1 text-xs text-red-600 dark:text-red-400">
+                        {fieldErrors['preferences.minAge']}
+                      </p>
+                    )}
                 </div>
                       <div className="flex-1">
                         <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">Max Age</label>
@@ -1601,15 +1922,31 @@ export default function MyProfilePage() {
                           min="18"
                           max="100"
                           value={formData.preferences?.maxAge || user.preferences?.maxAge || 34}
-                      onChange={(e) => setFormData({
-                        ...formData,
+                      onChange={(e) => {
+                        setFormData({
+                          ...formData,
                             preferences: {
                               ...formData.preferences,
                               maxAge: parseInt(e.target.value) || undefined,
                         },
-                      })}
-                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-pink-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                      });
+                        if (fieldErrors['preferences.maxAge']) {
+                          const newErrors = { ...fieldErrors };
+                          delete newErrors['preferences.maxAge'];
+                          setFieldErrors(newErrors);
+                        }
+                      }}
+                          className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 dark:bg-[#1f212a] dark:text-pink-100 ${
+                            fieldErrors['preferences.maxAge'] 
+                              ? 'border-red-400 focus:ring-red-500 focus:border-red-500' 
+                              : 'border-gray-300 dark:border-gray-600 focus:ring-pink-500'
+                          }`}
                     />
+                    {fieldErrors['preferences.maxAge'] && (
+                      <p className="mt-1 text-xs text-red-600 dark:text-red-400">
+                        {fieldErrors['preferences.maxAge']}
+                      </p>
+                    )}
                 </div>
                 </div>
                   </div>
@@ -1681,10 +2018,24 @@ export default function MyProfilePage() {
                           },
                         });
                             }
+                            if (fieldErrors['preferences.minHeight']) {
+                              const newErrors = { ...fieldErrors };
+                              delete newErrors['preferences.minHeight'];
+                              setFieldErrors(newErrors);
+                            }
                       }}
                           placeholder="5'8&quot;"
-                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-pink-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                          className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 dark:bg-[#1f212a] dark:text-pink-100 ${
+                            fieldErrors['preferences.minHeight'] 
+                              ? 'border-red-400 focus:ring-red-500 focus:border-red-500' 
+                              : 'border-gray-300 dark:border-gray-600 focus:ring-pink-500'
+                          }`}
                     />
+                    {fieldErrors['preferences.minHeight'] && (
+                      <p className="mt-1 text-xs text-red-600 dark:text-red-400">
+                        {fieldErrors['preferences.minHeight']}
+                      </p>
+                    )}
                 </div>
                       <div className="flex-1">
                         <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">Max Height</label>
@@ -1717,10 +2068,24 @@ export default function MyProfilePage() {
                           },
                         });
                             }
+                            if (fieldErrors['preferences.maxHeight']) {
+                              const newErrors = { ...fieldErrors };
+                              delete newErrors['preferences.maxHeight'];
+                              setFieldErrors(newErrors);
+                            }
                       }}
                           placeholder="6'2&quot;"
-                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-[#1f212a] dark:text-pink-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                          className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 dark:bg-[#1f212a] dark:text-pink-100 ${
+                            fieldErrors['preferences.maxHeight'] 
+                              ? 'border-red-400 focus:ring-red-500 focus:border-red-500' 
+                              : 'border-gray-300 dark:border-gray-600 focus:ring-pink-500'
+                          }`}
                     />
+                    {fieldErrors['preferences.maxHeight'] && (
+                      <p className="mt-1 text-xs text-red-600 dark:text-red-400">
+                        {fieldErrors['preferences.maxHeight']}
+                      </p>
+                    )}
                 </div>
                     </div>
                 </div>
