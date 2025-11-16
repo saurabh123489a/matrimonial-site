@@ -8,6 +8,7 @@ import LazyImage from './LazyImage';
 import { getProfileUrl, getProfileImageUrl } from '@/lib/profileUtils';
 import QuickMessageModal from './QuickMessageModal';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import { Badge } from './ui';
 
 interface CompactProfileCardProps {
   user: User;
@@ -95,6 +96,17 @@ export default function CompactProfileCard({ user, showOnlineStatus = false }: C
               </div>
             )}
           </div>
+
+          {/* Interests/Hobbies - Show first 2 */}
+          {user.hobbies && user.hobbies.length > 0 && (
+            <div className="flex flex-wrap items-center gap-1.5 mt-3 pt-3 border-t border-gray-100">
+              {user.hobbies.slice(0, 2).map((hobby, index) => (
+                <Badge key={index} variant="accent" size="sm">
+                  {hobby}
+                </Badge>
+              ))}
+            </div>
+          )}
         </div>
       </Link>
 
