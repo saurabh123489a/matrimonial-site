@@ -5,7 +5,7 @@
  * ============================================
  * 
  * This file provides a complete theme system using CSS variables
- * for both Light and Dark (Maroon) themes.
+ * for both Light and Dark (Neon) themes.
  * 
  * All components MUST use CSS variables - no hardcoded colors.
  */
@@ -16,40 +16,40 @@
 
 :root {
   /* ========== BACKGROUND COLORS ========== */
-  --bg: #ffffff;
-  --bg-secondary: #f9fafb;
-  --bg-tertiary: #f3f4f6;
+  --bg: #F5F5DC; /* Soft Cream */
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f9f9f0;
   --bg-input: #ffffff;
-  --bg-hover: #f9fafb;
-  --bg-active: #f3f4f6;
+  --bg-hover: #f0f0e0;
+  --bg-active: #e8e8d8;
   
   /* ========== TEXT COLORS ========== */
-  /* Lightly dark, not pure black for better readability */
-  --text-primary: #232323;
-  --text-secondary: #4b5563;
-  --text-muted: #6b7280;
-  --text-disabled: #9ca3af;
-  --text-inverse: #ffffff;
+  /* Deep Maroon for primary text */
+  --text-primary: #800020;
+  --text-secondary: #5a0017;
+  --text-muted: #8b6b5a;
+  --text-disabled: #b8a8a0;
+  --text-inverse: #F5F5DC;
   
-  /* ========== PRIMARY COLORS (Pink Family) ========== */
-  --primary: #ec4899;
-  --primary-dark: #be185d;
-  --primary-light: #f9a8d4;
-  --primary-medium: #f472b6;
-  --primary-hover: #be185d;
-  --primary-active: #9d174d;
-  --primary-disabled: #f9a8d4;
+  /* ========== PRIMARY COLORS (Deep Maroon) ========== */
+  --primary: #800020;
+  --primary-dark: #5a0017;
+  --primary-light: #a00028;
+  --primary-medium: #900023;
+  --primary-hover: #900023;
+  --primary-active: #5a0017;
+  --primary-disabled: #b8a8a0;
   
-  /* ========== ACCENT COLORS ========== */
-  --accent: #dc2626;
-  --accent-hover: #b91c1c;
-  --accent-light: #fee2e2;
+  /* ========== ACCENT COLORS (Gold) ========== */
+  --accent: #D4AF37;
+  --accent-hover: #c19d2e;
+  --accent-light: #f5e6b3;
   
   /* ========== BORDER COLORS ========== */
-  --border: #e5e7eb;
-  --border-light: #f3f4f6;
-  --border-dark: #d1d5db;
-  --border-focus: #ec4899;
+  --border: rgba(128, 0, 32, 0.1); /* Primary with 10% opacity */
+  --border-light: rgba(128, 0, 32, 0.05);
+  --border-dark: rgba(128, 0, 32, 0.2);
+  --border-focus: #800020;
   
   /* ========== STATE COLORS ========== */
   --success: #10b981;
@@ -80,72 +80,72 @@
 }
 
 /* ============================================
-   DARK THEME TOKENS (Maroon Matrimonial Theme)
+   DARK THEME TOKENS (Maroon & Gold Theme)
    ============================================ */
 
 .dark {
   /* ========== BACKGROUND COLORS ========== */
-  --bg: #1A0C11;
-  --bg-secondary: #2B0F17;
-  --bg-tertiary: #241317;
-  --bg-input: #1F1417;
-  --bg-hover: #241317;
-  --bg-active: #1F1417;
+  --bg: #2A000A; /* Dark Maroon/Brown */
+  --bg-secondary: #3a0012;
+  --bg-tertiary: #4a001a;
+  --bg-input: #3a0012;
+  --bg-hover: #4a001a;
+  --bg-active: #3a0012;
   
   /* ========== TEXT COLORS ========== */
-  /* Fully readable white/light colors - !important ensures override */
-  --text-primary: #FFFFFF !important;
-  --text-secondary: #D5D3D7 !important;
-  --text-muted: #A29CA3 !important;
-  --text-disabled: #A29CA3 !important;
-  --text-inverse: #1A0C11;
+  /* Soft Cream for readability - !important ensures override */
+  --text-primary: #F5F5DC !important;
+  --text-secondary: #E8E8C8 !important;
+  --text-muted: #C8C8A8 !important;
+  --text-disabled: #A0A088 !important;
+  --text-inverse: #2A000A;
   
-  /* ========== PRIMARY COLORS (Red Accent Family) ========== */
-  --primary: #E04F5F;
-  --primary-dark: #C43A4E;
-  --primary-light: #E04F5F;
-  --primary-medium: #C43A4E;
-  --primary-hover: #C43A4E;
-  --primary-active: #B02A3E;
-  --primary-disabled: #6b7280;
+  /* ========== PRIMARY COLORS (Deep Maroon) ========== */
+  --primary: #800020;
+  --primary-dark: #5a0017;
+  --primary-light: #a00028;
+  --primary-medium: #900023;
+  --primary-hover: #900023;
+  --primary-active: #5a0017;
+  --primary-disabled: #6b6b5a;
   
-  /* ========== ACCENT COLORS ========== */
-  --accent: #E04F5F;
-  --accent-hover: #C43A4E;
-  --accent-light: #241317;
+  /* ========== ACCENT COLORS (Gold) ========== */
+  --accent: #D4AF37;
+  --accent-hover: #c19d2e;
+  --accent-light: #3a0012;
   
   /* ========== BORDER COLORS ========== */
-  --border: #2F2327;
-  --border-light: #241317;
-  --border-dark: #1F1417;
-  --border-focus: #E04F5F;
+  --border: rgba(212, 175, 55, 0.1); /* Gold with opacity */
+  --border-light: rgba(212, 175, 55, 0.05);
+  --border-dark: rgba(212, 175, 55, 0.2);
+  --border-focus: #D4AF37;
   
   /* ========== STATE COLORS ========== */
-  --success: #64D39A;
-  --success-bg: rgba(100, 211, 154, 0.1);
-  --success-text: #64D39A;
+  --success: #4ade80;
+  --success-bg: rgba(74, 222, 128, 0.15);
+  --success-text: #4ade80;
   
-  --error: #F25D5D;
-  --error-bg: rgba(242, 93, 93, 0.1);
-  --error-text: #F25D5D;
+  --error: #ef4444;
+  --error-bg: rgba(239, 68, 68, 0.15);
+  --error-text: #ef4444;
   
-  --warning: #F5C75B;
-  --warning-bg: rgba(245, 199, 91, 0.1);
-  --warning-text: #F5C75B;
+  --warning: #D4AF37;
+  --warning-bg: rgba(212, 175, 55, 0.15);
+  --warning-text: #D4AF37;
   
-  --info: #E04F5F;
-  --info-bg: rgba(224, 79, 95, 0.1);
-  --info-text: #E04F5F;
+  --info: #D4AF37;
+  --info-bg: rgba(212, 175, 55, 0.15);
+  --info-text: #D4AF37;
   
   /* ========== SHADOW COLORS ========== */
-  --shadow-sm: rgba(0, 0, 0, 0.3);
-  --shadow-md: rgba(0, 0, 0, 0.4);
-  --shadow-lg: rgba(0, 0, 0, 0.5);
-  --shadow-xl: rgba(0, 0, 0, 0.6);
+  --shadow-sm: rgba(128, 0, 32, 0.1);
+  --shadow-md: rgba(128, 0, 32, 0.2);
+  --shadow-lg: rgba(128, 0, 32, 0.3);
+  --shadow-xl: rgba(128, 0, 32, 0.4);
   
   /* ========== OVERLAY COLORS ========== */
-  --overlay: rgba(0, 0, 0, 0.7);
-  --overlay-light: rgba(0, 0, 0, 0.3);
+  --overlay: rgba(0, 0, 0, 0.8);
+  --overlay-light: rgba(0, 0, 0, 0.4);
 }
 
 /* ============================================

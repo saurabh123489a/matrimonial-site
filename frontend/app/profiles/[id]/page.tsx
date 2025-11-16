@@ -116,7 +116,7 @@ export default function ProfileViewPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-[#1A0C11] flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-[#0a0a0f] flex items-center justify-center">
         <LoadingSpinner />
       </div>
     );
@@ -124,14 +124,14 @@ export default function ProfileViewPage() {
 
   if (error || !user) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-[#1A0C11] flex items-center justify-center px-4">
+      <div className="min-h-screen bg-gray-50 dark:bg-[#0a0a0f] flex items-center justify-center px-4">
         <div className="text-center">
           <div className="bg-red-50 dark:bg-[#F25D5D]/10 border border-red-400 dark:border-[#F25D5D] text-red-800 dark:text-[#F25D5D] px-4 py-3 rounded mb-4 max-w-md">
             {error || 'Profile not found'}
           </div>
           <button
             onClick={() => router.back()}
-            className="text-pink-600 dark:text-[#E04F5F] hover:text-pink-700 dark:hover:text-[#C43A4E] font-medium"
+            className="text-pink-600 dark:text-[#00FFFF] hover:text-pink-700 dark:hover:text-[#C43A4E] font-medium"
           >
             ← Go Back
           </button>
@@ -144,13 +144,13 @@ export default function ProfileViewPage() {
   const dietaryOptions = ['vegetarian', 'non-vegetarian', 'vegan', 'jain'];
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-[#1A0C11] pb-24 transition-colors">
+    <div className="min-h-screen bg-gray-50 dark:bg-[#0a0a0f] pb-24 transition-colors">
       {/* Header - Mobile First Design */}
-      <div className="bg-white dark:bg-[#2B0F17] border-b border-gray-200 dark:border-[#2F2327] sticky top-0 z-30">
-        <div className="flex items-center justify-between px-4 py-3">
+      <div className="bg-white dark:bg-[#12121a] border-b border-gray-200 dark:border-[#2a2a3a] sticky top-0 z-30">
+        <div className="flex items-center justify-between px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
           <button
             onClick={() => router.back()}
-            className="p-2 -ml-2 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-[#241317] rounded-lg transition-colors"
+            className="p-2 -ml-2 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-[#1a1a24] rounded-lg transition-colors"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -161,7 +161,7 @@ export default function ProfileViewPage() {
           </h1>
           <button
             onClick={() => router.push(`/messages/${user._id}`)}
-            className="p-2 -mr-2 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-[#241317] rounded-lg transition-colors"
+            className="p-2 -mr-2 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-[#1a1a24] rounded-lg transition-colors"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
@@ -170,7 +170,7 @@ export default function ProfileViewPage() {
         </div>
       </div>
 
-      <div className="px-4 py-6 space-y-6">
+      <div className="px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6 sm:space-y-8">
         {/* Profile Photos Section */}
         <div className="flex gap-4 mb-6">
           {/* Main Profile Photo */}
@@ -185,7 +185,7 @@ export default function ProfileViewPage() {
                 />
               </div>
             ) : (
-              <div className="w-32 h-40 rounded-xl bg-gray-200 dark:bg-[#241317] flex items-center justify-center">
+              <div className="w-32 h-40 rounded-xl bg-gray-200 dark:bg-[#1a1a24] flex items-center justify-center">
                 <span className="text-4xl">👤</span>
               </div>
             )}
@@ -207,23 +207,23 @@ export default function ProfileViewPage() {
         </div>
 
         {/* Profile Completion */}
-        <div className="bg-white dark:bg-[#2B0F17] rounded-lg p-4 mb-6 border dark:border-[#2F2327]">
+        <div className="bg-white dark:bg-[#12121a] rounded-lg p-4 mb-6 border dark:border-[#2a2a3a]">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium text-gray-700 dark:text-[#D5D3D7]">Profile Completion</span>
-            <span className="text-sm font-semibold text-pink-600 dark:text-[#E04F5F]">
+            <span className="text-sm font-semibold text-pink-600 dark:text-[#00FFFF]">
               {user.isProfileComplete ? '100%' : '80%'}
             </span>
           </div>
-          <div className="w-full bg-gray-200 dark:bg-[#241317] rounded-full h-2">
+          <div className="w-full bg-gray-200 dark:bg-[#1a1a24] rounded-full h-2">
             <div 
-              className="bg-pink-600 dark:bg-[#E04F5F] h-2 rounded-full transition-all duration-300"
+              className="bg-pink-600 dark:bg-[#00FFFF] h-2 rounded-full transition-all duration-300"
               style={{ width: user.isProfileComplete ? '100%' : '80%' }}
             />
           </div>
         </div>
 
         {/* About Me Section - Collapsible */}
-        <div className="bg-white dark:bg-[#2B0F17] rounded-lg overflow-hidden border dark:border-[#2F2327]">
+        <div className="bg-white dark:bg-[#12121a] rounded-lg overflow-hidden border dark:border-[#2a2a3a]">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, aboutMe: !expandedSections.aboutMe })}
             className="w-full flex items-center justify-between p-4 text-left"
@@ -240,12 +240,12 @@ export default function ProfileViewPage() {
           </button>
           
           {expandedSections.aboutMe && (
-            <div className="px-4 pb-4 space-y-4">
+            <div className="px-4 sm:px-6 pb-4 space-y-4">
               {/* Gahoi ID */}
               {user.gahoiId && (
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-1">Gahoi ID</label>
-                  <p className="text-gray-900 dark:text-white font-semibold text-pink-600 dark:text-[#E04F5F]">{user.gahoiId}</p>
+                  <p className="text-gray-900 dark:text-white font-semibold text-pink-600 dark:text-[#00FFFF]">{user.gahoiId}</p>
                 </div>
               )}
 
@@ -295,7 +295,7 @@ export default function ProfileViewPage() {
         </div>
 
         {/* Education & Career Section - Collapsible */}
-        <div className="bg-white dark:bg-[#2B0F17] rounded-lg overflow-hidden border dark:border-[#2F2327]">
+        <div className="bg-white dark:bg-[#12121a] rounded-lg overflow-hidden border dark:border-[#2a2a3a]">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, education: !expandedSections.education })}
             className="w-full flex items-center justify-between p-4 text-left"
@@ -312,7 +312,7 @@ export default function ProfileViewPage() {
           </button>
           
           {expandedSections.education && (
-            <div className="px-4 pb-4 space-y-4">
+            <div className="px-4 sm:px-6 pb-4 space-y-4">
               {/* Education */}
               {user.education && (
                 <div>
@@ -365,7 +365,7 @@ export default function ProfileViewPage() {
         </div>
 
         {/* Location Section - Collapsible */}
-        <div className="bg-white dark:bg-[#2B0F17] rounded-lg overflow-hidden border dark:border-[#2F2327]">
+        <div className="bg-white dark:bg-[#12121a] rounded-lg overflow-hidden border dark:border-[#2a2a3a]">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, location: !expandedSections.location })}
             className="w-full flex items-center justify-between p-4 text-left"
@@ -382,7 +382,7 @@ export default function ProfileViewPage() {
           </button>
           
           {expandedSections.location && (
-            <div className="px-4 pb-4 space-y-4">
+            <div className="px-4 sm:px-6 pb-4 space-y-4">
               {/* City */}
               {user.city && (
                 <div>
@@ -435,7 +435,7 @@ export default function ProfileViewPage() {
         </div>
 
         {/* Lifestyle & Interests Section - Collapsible */}
-        <div className="bg-white dark:bg-[#2B0F17] rounded-lg overflow-hidden border dark:border-[#2F2327]">
+        <div className="bg-white dark:bg-[#12121a] rounded-lg overflow-hidden border dark:border-[#2a2a3a]">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, lifestyle: !expandedSections.lifestyle })}
             className="w-full flex items-center justify-between p-4 text-left"
@@ -452,7 +452,7 @@ export default function ProfileViewPage() {
           </button>
           
           {expandedSections.lifestyle && (
-            <div className="px-4 pb-4 space-y-6">
+            <div className="px-4 sm:px-6 pb-4 space-y-6">
               {/* Dietary Preferences */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-3">Dietary Preferences</label>
@@ -464,8 +464,8 @@ export default function ProfileViewPage() {
                         key={option}
                         className={`px-4 py-2 rounded-full text-sm font-medium ${
                           isSelected
-                            ? 'bg-pink-600 dark:bg-[#E04F5F] text-white'
-                            : 'bg-gray-200 dark:bg-[#241317] text-gray-700 dark:text-[#D5D3D7]'
+                            ? 'bg-pink-600 dark:bg-[#00FFFF] text-white'
+                            : 'bg-gray-200 dark:bg-[#1a1a24] text-gray-700 dark:text-[#D5D3D7]'
                         }`}
                       >
                         {option === 'non-vegetarian' ? 'Non-Veg' : option.charAt(0).toUpperCase() + option.slice(1)}
@@ -482,7 +482,7 @@ export default function ProfileViewPage() {
                   {(user.hobbies || []).map((hobby) => (
                     <span
                       key={hobby}
-                      className="px-4 py-2 rounded-full text-sm font-medium bg-pink-600 dark:bg-[#E04F5F] text-white"
+                      className="px-4 py-2 rounded-full text-sm font-medium bg-pink-600 dark:bg-[#00FFFF] text-white"
                     >
                       {hobby}
                     </span>
@@ -498,7 +498,7 @@ export default function ProfileViewPage() {
 
         {/* Family Section - Collapsible */}
         {(user.family?.fathersName || user.family?.mothersName || user.family?.fathersContactNumber) && (
-          <div className="bg-white dark:bg-[#2B0F17] rounded-lg overflow-hidden border dark:border-[#2F2327]">
+          <div className="bg-white dark:bg-[#12121a] rounded-lg overflow-hidden border dark:border-[#2a2a3a]">
             <button
               onClick={() => setExpandedSections({ ...expandedSections, family: !expandedSections.family })}
               className="w-full flex items-center justify-between p-4 text-left"
@@ -515,7 +515,7 @@ export default function ProfileViewPage() {
             </button>
             
             {expandedSections.family && (
-              <div className="px-4 pb-4 space-y-4">
+              <div className="px-4 sm:px-6 pb-4 space-y-4">
                 {/* Father's Name */}
                 {user.family?.fathersName && (
                   <div>
@@ -545,7 +545,7 @@ export default function ProfileViewPage() {
         )}
 
         {/* Partner Preferences Section - Collapsible */}
-        <div className="bg-white dark:bg-[#2B0F17] rounded-lg overflow-hidden border dark:border-[#2F2327]">
+        <div className="bg-white dark:bg-[#12121a] rounded-lg overflow-hidden border dark:border-[#2a2a3a]">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, partnerPreferences: !expandedSections.partnerPreferences })}
             className="w-full flex items-center justify-between p-4 text-left"
@@ -562,19 +562,19 @@ export default function ProfileViewPage() {
           </button>
           
           {expandedSections.partnerPreferences && (
-            <div className="px-4 pb-4 space-y-6">
+            <div className="px-4 sm:px-6 pb-4 space-y-6">
               {/* Age Range */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-3">
                   Age Range
-                  <span className="ml-2 text-pink-600 dark:text-[#E04F5F] font-semibold">
+                  <span className="ml-2 text-pink-600 dark:text-[#00FFFF] font-semibold">
                     {user.preferences?.minAge || 28} - {user.preferences?.maxAge || 34}
                   </span>
                 </label>
                 <div className="flex items-center gap-2">
-                  <div className="flex-1 h-2 bg-gray-200 dark:bg-[#241317] rounded-full relative">
+                  <div className="flex-1 h-2 bg-gray-200 dark:bg-[#1a1a24] rounded-full relative">
                     <div 
-                      className="absolute h-2 bg-pink-600 dark:bg-[#E04F5F] rounded-full"
+                      className="absolute h-2 bg-pink-600 dark:bg-[#00FFFF] rounded-full"
                       style={{ 
                         left: `${((user.preferences?.minAge || 28) - 18) / (100 - 18) * 100}%`,
                         width: `${((user.preferences?.maxAge || 34) - (user.preferences?.minAge || 28)) / (100 - 18) * 100}%`
@@ -588,14 +588,14 @@ export default function ProfileViewPage() {
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-[#D5D3D7] mb-3">
                   Height Range
-                  <span className="ml-2 text-pink-600 dark:text-[#E04F5F] font-semibold">
+                  <span className="ml-2 text-pink-600 dark:text-[#00FFFF] font-semibold">
                     {user.preferences?.minHeight ? `${Math.floor(user.preferences.minHeight / 12)}'${user.preferences.minHeight % 12}"` : "5'8\""} - {user.preferences?.maxHeight ? `${Math.floor(user.preferences.maxHeight / 12)}'${user.preferences.maxHeight % 12}"` : "6'2\""}
                   </span>
                 </label>
                 <div className="flex items-center gap-2">
-                  <div className="flex-1 h-2 bg-gray-200 dark:bg-[#241317] rounded-full relative">
+                  <div className="flex-1 h-2 bg-gray-200 dark:bg-[#1a1a24] rounded-full relative">
                     <div 
-                      className="absolute h-2 bg-pink-600 dark:bg-[#E04F5F] rounded-full"
+                      className="absolute h-2 bg-pink-600 dark:bg-[#00FFFF] rounded-full"
                       style={{ 
                         left: `${((user.preferences?.minHeight || 68) - 48) / (84 - 48) * 100}%`,
                         width: `${((user.preferences?.maxHeight || 74) - (user.preferences?.minHeight || 68)) / (84 - 48) * 100}%`
@@ -620,7 +620,7 @@ export default function ProfileViewPage() {
           <button
             onClick={handleShortlist}
             disabled={actionLoading}
-            className="px-6 py-3 bg-gray-200 dark:bg-[#241317] text-gray-700 dark:text-[#D5D3D7] font-semibold rounded-lg hover:bg-gray-300 dark:hover:bg-[#1F1417] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="px-6 py-3 bg-gray-200 dark:bg-[#1a1a24] text-gray-700 dark:text-[#D5D3D7] font-semibold rounded-lg hover:bg-gray-300 dark:hover:bg-[#151520] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             ⭐
           </button>
