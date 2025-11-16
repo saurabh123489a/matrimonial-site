@@ -7,7 +7,7 @@ import { auth } from '@/lib/auth';
 import { useNotifications } from '@/contexts/NotificationContext';
 import { useProfileAction } from '@/contexts/ProfileActionContext';
 import LazyImage from './LazyImage';
-import { getProfileUrl } from '@/lib/profileUtils';
+import { getProfileUrl, getProfileImageUrl } from '@/lib/profileUtils';
 import QuickMessageModal from './QuickMessageModal';
 
 interface DetailedProfileTileProps {
@@ -25,6 +25,7 @@ export default function DetailedProfileTile({ user }: DetailedProfileTileProps) 
 
   const primaryPhoto = user.photos?.find(p => p.isPrimary) || user.photos?.[0];
   const photoCount = user.photos?.length || 0;
+  const profileImageUrl = getProfileImageUrl(user);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -178,7 +179,7 @@ export default function DetailedProfileTile({ user }: DetailedProfileTileProps) 
     setSelectedProfile({
       userId: user._id,
       userName: user.name,
-      userPhoto: primaryPhoto?.url,
+      userPhoto: profileImageUrl,
     });
   };
 
@@ -187,22 +188,14 @@ export default function DetailedProfileTile({ user }: DetailedProfileTileProps) 
       <Link href={getProfileUrl(user)} className="block" onClick={handleCardClick}>
         {/* Photo Section with Overlays */}
         <div className="relative h-72 sm:h-80 md:h-96 bg-gradient-to-br from-pink-50 to-purple-50">
-          {primaryPhoto ? (
-            <>
-              <LazyImage
-                src={primaryPhoto.url}
-                alt={user.name}
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-                placeholder="👤"
-              />
-              {/* Gradient overlay for text readability */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
-            </>
-          ) : (
-            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-pink-100 to-purple-100">
-              <div className="text-8xl text-gray-300">👤</div>
-            </div>
-          )}
+          <LazyImage
+            src={profileImageUrl}
+            alt={user.name}
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+            placeholder="👤"
+          />
+          {/* Gradient overlay for text readability */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
 
           {/* Top Badges */}
           <div className="absolute top-3 left-3 right-3 flex items-start justify-between z-10">
@@ -353,7 +346,7 @@ export default function DetailedProfileTile({ user }: DetailedProfileTileProps) 
           onClose={() => setShowMessageModal(false)}
           userId={user._id}
           userName={user.name}
-          userPhoto={primaryPhoto?.url}
+          userPhoto={profileImageUrl}
         />
       )}
     </div>

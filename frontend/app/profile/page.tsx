@@ -14,7 +14,7 @@ import ProfileShareModal from '@/components/ProfileShareModal';
 import LazyImage from '@/components/LazyImage';
 import CustomDatePicker from '@/components/CustomDatePicker';
 import { sanitizeFormInput } from '@/hooks/useSanitizedInput';
-import { getProfileUrl } from '@/lib/profileUtils';
+import { getProfileUrl, getProfileImageUrl } from '@/lib/profileUtils';
 
 export default function MyProfilePage() {
   const router = useRouter();
@@ -730,43 +730,37 @@ export default function MyProfilePage() {
         <div className="flex gap-4 sm:gap-6 mb-6 sm:mb-8">
           {/* Main Profile Photo */}
           <div className="relative flex-shrink-0">
-            {user.photos?.[0] ? (
-              <div className="relative w-32 h-40 rounded-xl overflow-hidden">
-                <LazyImage
-                  src={user.photos[0].url}
-                  alt={user.name}
-                  className="w-full h-full object-cover"
-                  placeholder="👤"
-                />
-                {editing && (
-                  <button
-                    onClick={() => {
-                      const input = document.createElement('input');
-                      input.type = 'file';
-                      input.accept = 'image/*';
-                      input.multiple = false;
-                      input.onchange = async (e) => {
-                        const files = Array.from((e.target as HTMLInputElement).files || []);
-                        if (files.length > 0) {
-                          await handlePhotoUpload(files);
-                        }
-                      };
-                      input.click();
-                    }}
-                    aria-label="Upload profile photo"
-                    className="absolute bottom-2 right-2 w-8 h-8 bg-[#800020]"
-                  >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                    </svg>
-                  </button>
+            <div className="relative w-32 h-40 rounded-xl overflow-hidden">
+              <LazyImage
+                src={getProfileImageUrl(user)}
+                alt={user.name}
+                className="w-full h-full object-cover"
+                placeholder="👤"
+              />
+              {editing && (
+                <button
+                  onClick={() => {
+                    const input = document.createElement('input');
+                    input.type = 'file';
+                    input.accept = 'image/*';
+                    input.multiple = false;
+                    input.onchange = async (e) => {
+                      const files = Array.from((e.target as HTMLInputElement).files || []);
+                      if (files.length > 0) {
+                        await handlePhotoUpload(files);
+                      }
+                    };
+                    input.click();
+                  }}
+                  aria-label="Upload profile photo"
+                  className="absolute bottom-2 right-2 w-8 h-8 bg-[#800020]"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                </button>
               )}
             </div>
-            ) : (
-              <div className="w-32 h-40 rounded-xl bg-gray-200">
-                <span className="text-4xl">👤</span>
-          </div>
-            )}
         </div>
 
           {/* Additional Photos */}

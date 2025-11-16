@@ -7,7 +7,7 @@ import { auth } from '@/lib/auth';
 import Link from 'next/link';
 import SkeletonLoader from '@/components/SkeletonLoader';
 import EmptyState from '@/components/EmptyState';
-import { getProfileUrl } from '@/lib/profileUtils';
+import { getProfileUrl, getProfileImageUrl } from '@/lib/profileUtils';
 
 export default function InterestReceivedPage() {
   const router = useRouter();
@@ -138,10 +138,10 @@ export default function InterestReceivedPage() {
                       </span>
                     )}
                   </div>
-                  {interest.fromUser?.profileImage && (
+                  {interest.fromUser && (
                     <div className="ml-4 flex-shrink-0">
                       <img
-                        src={interest.fromUser.profileImage}
+                        src={getProfileImageUrl(interest.fromUser)}
                         alt={interest.fromUser.name}
                         className="w-20 h-20 object-cover rounded"
                       />

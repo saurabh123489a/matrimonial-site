@@ -10,6 +10,7 @@ import { useProfileAction } from '@/contexts/ProfileActionContext';
 import LazyImage from '@/components/LazyImage';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import ProfileCompletenessMeter from '@/components/ProfileCompletenessMeter';
+import { getProfileImageUrl } from '@/lib/profileUtils';
 
 export default function ProfileViewPage() {
   const params = useParams();
@@ -53,11 +54,10 @@ export default function ProfileViewPage() {
         const profileData = response.data;
         setUser(profileData);
         // Set selected profile for bottom action bar
-        const primaryPhoto = profileData.photos?.find(p => p.isPrimary) || profileData.photos?.[0];
         setSelectedProfile({
           userId: profileData._id,
           userName: profileData.name,
-          userPhoto: primaryPhoto?.url,
+          userPhoto: getProfileImageUrl(profileData),
         });
       } else {
         setError(response.message || 'Profile not found');
@@ -175,20 +175,14 @@ export default function ProfileViewPage() {
         <div className="flex gap-4 mb-6">
           {/* Main Profile Photo */}
           <div className="relative flex-shrink-0">
-            {user.photos?.[0] ? (
-              <div className="relative w-32 h-40 rounded-xl overflow-hidden">
-                <LazyImage
-                  src={user.photos[0].url}
-                  alt={user.name}
-                  className="w-full h-full object-cover"
-                  placeholder="👤"
-                />
-              </div>
-            ) : (
-              <div className="w-32 h-40 rounded-xl bg-gray-200">
-                <span className="text-4xl">👤</span>
-              </div>
-            )}
+            <div className="relative w-32 h-40 rounded-xl overflow-hidden">
+              <LazyImage
+                src={getProfileImageUrl(user)}
+                alt={user.name}
+                className="w-full h-full object-cover"
+                placeholder="👤"
+              />
+            </div>
           </div>
 
           {/* Additional Photos */}

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { User, interestApi, shortlistApi } from '@/lib/api';
 import { auth } from '@/lib/auth';
 import LazyImage from './LazyImage';
-import { getProfileUrl } from '@/lib/profileUtils';
+import { getProfileUrl, getProfileImageUrl } from '@/lib/profileUtils';
 import { useNotifications } from '@/contexts/NotificationContext';
 import QuickMessageModal from './QuickMessageModal';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
@@ -17,6 +17,7 @@ interface ProfileCardProps {
 
 function ProfileCard({ user }: ProfileCardProps) {
   const primaryPhoto = user.photos?.find(p => p.isPrimary) || user.photos?.[0];
+  const profileImageUrl = getProfileImageUrl(user);
   const { showSuccess, showError } = useNotifications();
   const [actionLoading, setActionLoading] = useState(false);
   const [isShortlisted, setIsShortlisted] = useState(false);
@@ -101,31 +102,23 @@ function ProfileCard({ user }: ProfileCardProps) {
     >
       {/* Photo Section */}
       <div className="relative h-64 sm:h-80 bg-gradient-to-br from-pink-100 to-red-100 overflow-hidden">
-        {primaryPhoto ? (
-          <>
-            <LazyImage
-              src={primaryPhoto.url}
-              alt={`${user.name}'s profile photo`}
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-              placeholder="👤"
-              onError={() => {
-                // Fallback handled by LazyImage component
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            <div className={`absolute top-3 right-3 backdrop-blur-sm text-xs px-3 py-1.5 rounded-full font-bold shadow-lg z-10 transition-all duration-300 ${
-              user.isProfileComplete 
-                ? 'bg-green-500/90 text-white' 
-                : 'bg-blue-500/90 text-white'
-            }`}>
-              {user.isProfileComplete ? '✓ Verified' : '✨ New'}
-            </div>
-          </>
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-7xl text-gray-300 bg-gray-100">
-            👤
-          </div>
-        )}
+        <LazyImage
+          src={profileImageUrl}
+          alt={`${user.name}'s profile photo`}
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+          placeholder="👤"
+          onError={() => {
+            // Fallback handled by LazyImage component
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        <div className={`absolute top-3 right-3 backdrop-blur-sm text-xs px-3 py-1.5 rounded-full font-bold shadow-lg z-10 transition-all duration-300 ${
+          user.isProfileComplete 
+            ? 'bg-green-500/90 text-white' 
+            : 'bg-blue-500/90 text-white'
+        }`}>
+          {user.isProfileComplete ? '✓ Verified' : '✨ New'}
+        </div>
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent p-4">
           <div className="flex items-center justify-between">
             {user.photos && user.photos.length > 1 && (
@@ -264,7 +257,7 @@ function ProfileCard({ user }: ProfileCardProps) {
           onClose={() => setShowMessageModal(false)}
           userId={user._id}
           userName={user.name}
-          userPhoto={primaryPhoto?.url}
+          userPhoto={profileImageUrl}
         />
       )}
     </div>

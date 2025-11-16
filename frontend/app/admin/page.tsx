@@ -389,7 +389,7 @@ function UsersTab() {
                             {user.photos && user.photos.length > 0 ? (
                               <img
                                 className="h-10 w-10 rounded-full object-cover"
-                                src={user.photos.find((p: any) => p.isPrimary)?.url || user.photos[0]?.url || '/default-avatar.png'}
+                                src={getPrimaryPhoto(user.photos || [], user.gender)}
                                 alt={user.name}
                                 loading="lazy"
                                 decoding="async"
@@ -631,10 +631,12 @@ function MessagesTab() {
     });
   };
 
-  const getPrimaryPhoto = (photos: any[]) => {
-    if (!photos || photos.length === 0) return '/default-avatar.png';
+  const getPrimaryPhoto = (photos: any[], gender?: 'male' | 'female' | 'other' | string) => {
+    if (!photos || photos.length === 0) {
+      return gender === 'female' ? '/images/default-female.svg' : '/images/default-male.svg';
+    }
     const primary = photos.find((p: any) => p.isPrimary);
-    return primary?.url || photos[0]?.url || '/default-avatar.png';
+    return primary?.url || photos[0]?.url || (gender === 'female' ? '/images/default-female.svg' : '/images/default-male.svg');
   };
 
   return (
@@ -753,12 +755,12 @@ function MessagesTab() {
                           <div className="flex items-center">
                             <img
                               className="h-10 w-10 rounded-full object-cover"
-                              src={getPrimaryPhoto((sender as any).photos || [])}
+                              src={getPrimaryPhoto((sender as any).photos || [], (sender as any).gender)}
                               alt={(sender as any).name}
                               loading="lazy"
                               decoding="async"
                               onError={(e) => {
-                                (e.target as HTMLImageElement).src = '/default-avatar.png';
+                                (e.target as HTMLImageElement).src = '/images/default-male.svg';
                               }}
                             />
                             <div className="ml-4">
@@ -771,12 +773,12 @@ function MessagesTab() {
                           <div className="flex items-center">
                             <img
                               className="h-10 w-10 rounded-full object-cover"
-                              src={getPrimaryPhoto((receiver as any).photos || [])}
+                              src={getPrimaryPhoto((receiver as any).photos || [], (receiver as any).gender)}
                               alt={(receiver as any).name}
                               loading="lazy"
                               decoding="async"
                               onError={(e) => {
-                                (e.target as HTMLImageElement).src = '/default-avatar.png';
+                                (e.target as HTMLImageElement).src = '/images/default-male.svg';
                               }}
                             />
                             <div className="ml-4">
@@ -867,7 +869,7 @@ function MessagesTab() {
                     <div className="flex items-center">
                       <img
                         className="h-12 w-12 rounded-full object-cover mr-3"
-                        src={getPrimaryPhoto((typeof selectedMessage.senderId === 'object' ? selectedMessage.senderId : {} as any).photos || [])}
+                        src={getPrimaryPhoto((typeof selectedMessage.senderId === 'object' ? selectedMessage.senderId : {} as any).photos || [], (typeof selectedMessage.senderId === 'object' ? selectedMessage.senderId : {} as any).gender)}
                         alt={(typeof selectedMessage.senderId === 'object' ? selectedMessage.senderId : {} as any).name}
                         loading="lazy"
                         decoding="async"
@@ -886,7 +888,7 @@ function MessagesTab() {
                     <div className="flex items-center">
                       <img
                         className="h-12 w-12 rounded-full object-cover mr-3"
-                        src={getPrimaryPhoto((typeof selectedMessage.receiverId === 'object' ? selectedMessage.receiverId : {} as any).photos || [])}
+                        src={getPrimaryPhoto((typeof selectedMessage.receiverId === 'object' ? selectedMessage.receiverId : {} as any).photos || [], (typeof selectedMessage.receiverId === 'object' ? selectedMessage.receiverId : {} as any).gender)}
                         alt={(typeof selectedMessage.receiverId === 'object' ? selectedMessage.receiverId : {} as any).name}
                         loading="lazy"
                         decoding="async"

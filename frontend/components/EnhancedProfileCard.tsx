@@ -8,7 +8,7 @@ import { useNotifications } from '@/contexts/NotificationContext';
 import { auth } from '@/lib/auth';
 import ProfileBadges from './ProfileBadges';
 import LazyImage from './LazyImage';
-import { getProfileUrl } from '@/lib/profileUtils';
+import { getProfileUrl, getProfileImageUrl } from '@/lib/profileUtils';
 import { sortPhotos } from '@/lib/utils/photoUtils';
 import QuickMessageModal from './QuickMessageModal';
 
@@ -31,6 +31,7 @@ export default function EnhancedProfileCard({ user, showActions = true }: Enhanc
   const sortedPhotos = user.photos ? sortPhotos(user.photos) : [];
   const primaryPhoto = sortedPhotos[0];
   const photoCount = sortedPhotos.length;
+  const profileImageUrl = getProfileImageUrl(user);
 
   const handleHoroscopeMatch = async () => {
     if (!auth.isAuthenticated()) {
@@ -79,22 +80,14 @@ export default function EnhancedProfileCard({ user, showActions = true }: Enhanc
     >
       {/* Photo Section with Overlay */}
       <div className="relative h-64 sm:h-80 bg-gradient-to-br from-pink-50 to-purple-50">
-        {primaryPhoto ? (
-          <>
-            <LazyImage
-              src={primaryPhoto.url}
-              alt={user.name}
-              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-              placeholder="👤"
-            />
-            {/* Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
-          </>
-        ) : (
-          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-pink-100 to-purple-100">
-            <div className="text-8xl text-gray-300">👤</div>
-          </div>
-        )}
+        <LazyImage
+          src={profileImageUrl}
+          alt={user.name}
+          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          placeholder="👤"
+        />
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
         
         {/* Badges */}
         <div className="absolute top-3 left-3 flex gap-2 z-10">
@@ -397,7 +390,7 @@ export default function EnhancedProfileCard({ user, showActions = true }: Enhanc
           onClose={() => setShowMessageModal(false)}
           userId={user._id}
           userName={user.name}
-          userPhoto={primaryPhoto?.url}
+          userPhoto={profileImageUrl}
         />
       )}
     </div>

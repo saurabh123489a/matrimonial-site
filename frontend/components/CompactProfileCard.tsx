@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { User } from '@/lib/api';
 import { auth } from '@/lib/auth';
 import LazyImage from './LazyImage';
-import { getProfileUrl } from '@/lib/profileUtils';
+import { getProfileUrl, getProfileImageUrl } from '@/lib/profileUtils';
 import QuickMessageModal from './QuickMessageModal';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
@@ -16,6 +16,7 @@ interface CompactProfileCardProps {
 
 export default function CompactProfileCard({ user, showOnlineStatus = false }: CompactProfileCardProps) {
   const primaryPhoto = user.photos?.find(p => p.isPrimary) || user.photos?.[0];
+  const profileImageUrl = getProfileImageUrl(user);
   const [showMessageModal, setShowMessageModal] = useState(false);
   const isAuthenticated = auth.isAuthenticated();
   const { ref: scrollRef, isVisible } = useScrollAnimation({ threshold: 0.1 });
@@ -38,22 +39,14 @@ export default function CompactProfileCard({ user, showOnlineStatus = false }: C
       <Link href={getProfileUrl(user)} className="block">
         {/* Photo Section */}
         <div className={`relative h-48 sm:h-56 ${bgColor}`}>
-          {primaryPhoto ? (
-            <>
-              <LazyImage
-                src={primaryPhoto.url}
-                alt={user.name}
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                placeholder="👤"
-              />
-              {/* Gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            </>
-          ) : (
-            <div className="w-full h-full flex items-center justify-center text-6xl text-gray-400">
-              👤
-            </div>
-          )}
+          <LazyImage
+            src={profileImageUrl}
+            alt={user.name}
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+            placeholder="👤"
+          />
+          {/* Gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           {/* Age badge */}
           {user.age && (
             <div className="absolute top-2 right-2 bg-white/95 backdrop-blur-sm text-gray-900 text-xs font-bold px-2.5 py-1 rounded-full shadow-lg border border-gray-200/50">
@@ -130,7 +123,7 @@ export default function CompactProfileCard({ user, showOnlineStatus = false }: C
           onClose={() => setShowMessageModal(false)}
           userId={user._id}
           userName={user.name}
-          userPhoto={primaryPhoto?.url}
+          userPhoto={profileImageUrl}
         />
       )}
     </div>
