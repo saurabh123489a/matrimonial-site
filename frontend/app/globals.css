@@ -1,41 +1,45 @@
 @import "tailwindcss";
+@import "./theme.css";
 
 /* ============================================
-   COLOR SYSTEM - Primary, Secondary, Accent
+   LEGACY COLOR SYSTEM - Backward Compatibility
+   ============================================
+   These variables are kept for backward compatibility.
+   New code should use theme.css variables.
    ============================================ */
 
 :root {
-  /* Background Colors - Light Mode */
-  --background: #ffffff;
-  --background-secondary: #f9fafb;
-  --background-tertiary: #f3f4f6;
+  /* Background Colors - Light Mode (Legacy) */
+  --background: var(--bg);
+  --background-secondary: var(--bg-secondary);
+  --background-tertiary: var(--bg-tertiary);
   
-  /* Foreground Colors - Light Mode */
-  --foreground: #171717;
-  --foreground-secondary: #6b7280;
-  --foreground-muted: #9ca3af;
+  /* Foreground Colors - Light Mode (Legacy) */
+  --foreground: var(--text-primary);
+  --foreground-secondary: var(--text-secondary);
+  --foreground-muted: var(--text-muted);
   
-  /* Primary Colors - Light Mode */
-  --primary: #ec4899; /* Pink-500 - Main brand color */
-  --primary-dark: #be185d; /* Pink-700 - Hover states */
-  --primary-light: #f9a8d4; /* Pink-300 - Backgrounds/accents */
-  --primary-medium: #f472b6; /* Pink-400 - Medium emphasis */
+  /* Primary Colors - Light Mode (Legacy) */
+  --primary: var(--primary);
+  --primary-dark: var(--primary-dark);
+  --primary-light: var(--primary-light);
+  --primary-medium: var(--primary-medium);
   
-  /* Secondary Colors - Light Mode */
-  --secondary: #6b7280; /* Gray-500 - Supporting text */
-  --secondary-dark: #374151; /* Gray-700 - Headings */
-  --secondary-light: #f3f4f6; /* Gray-100 - Backgrounds */
+  /* Secondary Colors - Light Mode (Legacy) */
+  --secondary: var(--text-secondary);
+  --secondary-dark: var(--text-primary);
+  --secondary-light: var(--bg-tertiary);
   
-  /* Accent Colors - Light Mode */
-  --accent: #dc2626; /* Red-600 - Accents */
-  --accent-gradient-start: #ec4899; /* Pink-600 */
-  --accent-gradient-end: #dc2626; /* Red-600 */
+  /* Accent Colors - Light Mode (Legacy) */
+  --accent: var(--accent);
+  --accent-gradient-start: var(--primary);
+  --accent-gradient-end: var(--accent);
   
-  /* Status Colors - Light Mode */
-  --success: #10b981; /* Green-500 */
-  --error: #ef4444; /* Red-500 */
-  --warning: #f59e0b; /* Amber-500 */
-  --info: #3b82f6; /* Blue-500 */
+  /* Status Colors - Light Mode (Legacy) */
+  --success: var(--success);
+  --error: var(--error);
+  --warning: var(--warning);
+  --info: var(--info);
 }
 
 @theme inline {
@@ -46,41 +50,35 @@
 }
 
 .dark {
-  /* Background Colors - Dark Maroon Matrimonial Theme */
-  --background: #1A0C11; /* Primary dark background */
-  --background-secondary: #2B0F17; /* Primary surface */
-  --background-tertiary: #241317; /* Elevated surface */
-  --background-input: #1F1417; /* Input/bg secondary */
+  /* Legacy variables map to theme.css variables */
+  --background: var(--bg);
+  --background-secondary: var(--bg-secondary);
+  --background-tertiary: var(--bg-tertiary);
+  --background-input: var(--bg-input);
   
-  /* Foreground Colors - Dark Maroon Theme */
-  --foreground: #FFFFFF; /* Primary text */
-  --foreground-secondary: #D5D3D7; /* Secondary text */
-  --foreground-muted: #A29CA3; /* Muted text */
+  --foreground: var(--text-primary);
+  --foreground-secondary: var(--text-secondary);
+  --foreground-muted: var(--text-muted);
   
-  /* Primary Colors - Dark Maroon Theme */
-  --primary: #E04F5F; /* Primary accent */
-  --primary-dark: #C43A4E; /* Secondary accent / Hover states */
-  --primary-light: #E04F5F; /* Light variant */
-  --primary-medium: #C43A4E; /* Medium emphasis */
+  --primary: var(--primary);
+  --primary-dark: var(--primary-dark);
+  --primary-light: var(--primary-light);
+  --primary-medium: var(--primary-medium);
   
-  /* Secondary Colors - Dark Maroon Theme */
-  --secondary: #C43A4E; /* Secondary accent */
-  --secondary-dark: #241317; /* Elevated surface */
-  --secondary-light: #1F1417; /* Input/bg secondary */
+  --secondary: var(--primary-dark);
+  --secondary-dark: var(--bg-tertiary);
+  --secondary-light: var(--bg-input);
   
-  /* Accent Colors - Dark Maroon Theme */
-  --accent: #E04F5F; /* Primary accent */
-  --accent-gradient-start: #E04F5F; /* Gradient start */
-  --accent-gradient-end: #C43A4E; /* Gradient end */
+  --accent: var(--accent);
+  --accent-gradient-start: var(--primary);
+  --accent-gradient-end: var(--primary-dark);
   
-  /* Border Colors */
-  --border: #2F2327; /* Border color */
+  --border: var(--border);
   
-  /* Status Colors - Dark Maroon Theme */
-  --success: #64D39A; /* Success green */
-  --error: #F25D5D; /* Danger red */
-  --warning: #F5C75B; /* Warning yellow */
-  --info: #E04F5F; /* Info (using primary accent) */
+  --success: var(--success);
+  --error: var(--error);
+  --warning: var(--warning);
+  --info: var(--info);
 }
 
 .dark.dark-blue {

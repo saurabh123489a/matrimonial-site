@@ -1,0 +1,686 @@
+/**
+ * ============================================
+ * COMPLETE LIGHT + DARK THEME SYSTEM
+ * Matrimonial Site - Premium Theme Tokens
+ * ============================================
+ * 
+ * This file provides a complete theme system using CSS variables
+ * for both Light and Dark (Maroon) themes.
+ * 
+ * All components MUST use CSS variables - no hardcoded colors.
+ */
+
+/* ============================================
+   LIGHT THEME TOKENS
+   ============================================ */
+
+:root {
+  /* ========== BACKGROUND COLORS ========== */
+  --bg: #ffffff;
+  --bg-secondary: #f9fafb;
+  --bg-tertiary: #f3f4f6;
+  --bg-input: #ffffff;
+  --bg-hover: #f9fafb;
+  --bg-active: #f3f4f6;
+  
+  /* ========== TEXT COLORS ========== */
+  /* Lightly dark, not pure black for better readability */
+  --text-primary: #232323;
+  --text-secondary: #4b5563;
+  --text-muted: #6b7280;
+  --text-disabled: #9ca3af;
+  --text-inverse: #ffffff;
+  
+  /* ========== PRIMARY COLORS (Pink Family) ========== */
+  --primary: #ec4899;
+  --primary-dark: #be185d;
+  --primary-light: #f9a8d4;
+  --primary-medium: #f472b6;
+  --primary-hover: #be185d;
+  --primary-active: #9d174d;
+  --primary-disabled: #f9a8d4;
+  
+  /* ========== ACCENT COLORS ========== */
+  --accent: #dc2626;
+  --accent-hover: #b91c1c;
+  --accent-light: #fee2e2;
+  
+  /* ========== BORDER COLORS ========== */
+  --border: #e5e7eb;
+  --border-light: #f3f4f6;
+  --border-dark: #d1d5db;
+  --border-focus: #ec4899;
+  
+  /* ========== STATE COLORS ========== */
+  --success: #10b981;
+  --success-bg: #d1fae5;
+  --success-text: #065f46;
+  
+  --error: #ef4444;
+  --error-bg: #fee2e2;
+  --error-text: #991b1b;
+  
+  --warning: #f59e0b;
+  --warning-bg: #fef3c7;
+  --warning-text: #92400e;
+  
+  --info: #3b82f6;
+  --info-bg: #dbeafe;
+  --info-text: #1e40af;
+  
+  /* ========== SHADOW COLORS ========== */
+  --shadow-sm: rgba(0, 0, 0, 0.05);
+  --shadow-md: rgba(0, 0, 0, 0.1);
+  --shadow-lg: rgba(0, 0, 0, 0.15);
+  --shadow-xl: rgba(0, 0, 0, 0.2);
+  
+  /* ========== OVERLAY COLORS ========== */
+  --overlay: rgba(0, 0, 0, 0.5);
+  --overlay-light: rgba(0, 0, 0, 0.1);
+}
+
+/* ============================================
+   DARK THEME TOKENS (Maroon Matrimonial Theme)
+   ============================================ */
+
+.dark {
+  /* ========== BACKGROUND COLORS ========== */
+  --bg: #1A0C11;
+  --bg-secondary: #2B0F17;
+  --bg-tertiary: #241317;
+  --bg-input: #1F1417;
+  --bg-hover: #241317;
+  --bg-active: #1F1417;
+  
+  /* ========== TEXT COLORS ========== */
+  /* Fully readable white/light colors */
+  --text-primary: #FFFFFF;
+  --text-secondary: #D5D3D7;
+  --text-muted: #A29CA3;
+  --text-disabled: #6b7280;
+  --text-inverse: #232323;
+  
+  /* ========== PRIMARY COLORS (Red Accent Family) ========== */
+  --primary: #E04F5F;
+  --primary-dark: #C43A4E;
+  --primary-light: #E04F5F;
+  --primary-medium: #C43A4E;
+  --primary-hover: #C43A4E;
+  --primary-active: #B02A3E;
+  --primary-disabled: #6b7280;
+  
+  /* ========== ACCENT COLORS ========== */
+  --accent: #E04F5F;
+  --accent-hover: #C43A4E;
+  --accent-light: #241317;
+  
+  /* ========== BORDER COLORS ========== */
+  --border: #2F2327;
+  --border-light: #241317;
+  --border-dark: #1F1417;
+  --border-focus: #E04F5F;
+  
+  /* ========== STATE COLORS ========== */
+  --success: #64D39A;
+  --success-bg: rgba(100, 211, 154, 0.1);
+  --success-text: #64D39A;
+  
+  --error: #F25D5D;
+  --error-bg: rgba(242, 93, 93, 0.1);
+  --error-text: #F25D5D;
+  
+  --warning: #F5C75B;
+  --warning-bg: rgba(245, 199, 91, 0.1);
+  --warning-text: #F5C75B;
+  
+  --info: #E04F5F;
+  --info-bg: rgba(224, 79, 95, 0.1);
+  --info-text: #E04F5F;
+  
+  /* ========== SHADOW COLORS ========== */
+  --shadow-sm: rgba(0, 0, 0, 0.3);
+  --shadow-md: rgba(0, 0, 0, 0.4);
+  --shadow-lg: rgba(0, 0, 0, 0.5);
+  --shadow-xl: rgba(0, 0, 0, 0.6);
+  
+  /* ========== OVERLAY COLORS ========== */
+  --overlay: rgba(0, 0, 0, 0.7);
+  --overlay-light: rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+
+* {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+}
+
+/* ============================================
+   TYPOGRAPHY UTILITIES
+   ============================================ */
+
+.text-primary {
+  color: var(--text-primary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+.text-disabled {
+  color: var(--text-disabled);
+}
+
+.text-inverse {
+  color: var(--text-inverse);
+}
+
+/* Heading colors */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-primary);
+}
+
+/* Body text */
+p, span, div, li {
+  color: var(--text-secondary);
+}
+
+/* Links */
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--primary-hover);
+}
+
+a:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   BACKGROUND UTILITIES
+   ============================================ */
+
+.bg {
+  background-color: var(--bg);
+}
+
+.bg-secondary {
+  background-color: var(--bg-secondary);
+}
+
+.bg-tertiary {
+  background-color: var(--bg-tertiary);
+}
+
+.bg-input {
+  background-color: var(--bg-input);
+}
+
+.bg-hover:hover {
+  background-color: var(--bg-hover);
+}
+
+.bg-active:active {
+  background-color: var(--bg-active);
+}
+
+/* ============================================
+   SURFACE/CARD UTILITIES
+   ============================================ */
+
+.surface {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+}
+
+.card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px var(--shadow-sm);
+}
+
+.card:hover {
+  box-shadow: 0 4px 6px var(--shadow-md);
+  border-color: var(--border-dark);
+}
+
+.card-elevated {
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px var(--shadow-md);
+}
+
+/* ============================================
+   BUTTON UTILITIES
+   ============================================ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.625rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: var(--text-inverse);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+}
+
+.btn-primary:active {
+  background-color: var(--primary-active);
+}
+
+.btn-primary:disabled {
+  background-color: var(--primary-disabled);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.btn-secondary {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+  background-color: var(--bg-hover);
+  border-color: var(--border-dark);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+}
+
+.btn-outline:hover {
+  background-color: var(--primary);
+  color: var(--text-inverse);
+}
+
+.btn-ghost {
+  background-color: transparent;
+  color: var(--text-primary);
+}
+
+.btn-ghost:hover {
+  background-color: var(--bg-hover);
+}
+
+/* Button sizes */
+.btn-sm {
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
+}
+
+.btn-lg {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+}
+
+/* ============================================
+   INPUT UTILITIES
+   ============================================ */
+
+.input {
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  background-color: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(224, 79, 95, 0.1);
+}
+
+.dark .input:focus {
+  box-shadow: 0 0 0 3px rgba(224, 79, 95, 0.2);
+}
+
+.input:disabled {
+  background-color: var(--bg-tertiary);
+  color: var(--text-disabled);
+  cursor: not-allowed;
+}
+
+.input::placeholder {
+  color: var(--text-muted);
+}
+
+.input-error {
+  border-color: var(--error);
+}
+
+.input-error:focus {
+  border-color: var(--error);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.dark .input-error:focus {
+  box-shadow: 0 0 0 3px rgba(242, 93, 93, 0.2);
+}
+
+/* ============================================
+   BORDER UTILITIES
+   ============================================ */
+
+.border {
+  border: 1px solid var(--border);
+}
+
+.border-light {
+  border: 1px solid var(--border-light);
+}
+
+.border-dark {
+  border: 1px solid var(--border-dark);
+}
+
+.border-focus {
+  border-color: var(--border-focus);
+}
+
+.border-t {
+  border-top: 1px solid var(--border);
+}
+
+.border-b {
+  border-bottom: 1px solid var(--border);
+}
+
+.border-l {
+  border-left: 1px solid var(--border);
+}
+
+.border-r {
+  border-right: 1px solid var(--border);
+}
+
+/* ============================================
+   STATE UTILITIES
+   ============================================ */
+
+.text-success {
+  color: var(--success-text);
+}
+
+.bg-success {
+  background-color: var(--success-bg);
+  color: var(--success-text);
+}
+
+.text-error {
+  color: var(--error-text);
+}
+
+.bg-error {
+  background-color: var(--error-bg);
+  color: var(--error-text);
+}
+
+.text-warning {
+  color: var(--warning-text);
+}
+
+.bg-warning {
+  background-color: var(--warning-bg);
+  color: var(--warning-text);
+}
+
+.text-info {
+  color: var(--info-text);
+}
+
+.bg-info {
+  background-color: var(--info-bg);
+  color: var(--info-text);
+}
+
+/* ============================================
+   SHADOW UTILITIES
+   ============================================ */
+
+.shadow-sm {
+  box-shadow: 0 1px 2px var(--shadow-sm);
+}
+
+.shadow-md {
+  box-shadow: 0 4px 6px var(--shadow-md);
+}
+
+.shadow-lg {
+  box-shadow: 0 10px 15px var(--shadow-lg);
+}
+
+.shadow-xl {
+  box-shadow: 0 20px 25px var(--shadow-xl);
+}
+
+/* ============================================
+   COMPONENT EXAMPLES
+   ============================================ */
+
+/* Example: Button Component */
+.example-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.625rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  background-color: var(--primary);
+  color: var(--text-inverse);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.example-button:hover {
+  background-color: var(--primary-hover);
+}
+
+/* Example: Card Component */
+.example-card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px var(--shadow-sm);
+}
+
+/* Example: Input Component */
+.example-input {
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  background-color: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+/* Example: Alert/Notification */
+.alert {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+}
+
+.alert-success {
+  background-color: var(--success-bg);
+  color: var(--success-text);
+  border-color: var(--success);
+}
+
+.alert-error {
+  background-color: var(--error-bg);
+  color: var(--error-text);
+  border-color: var(--error);
+}
+
+.alert-warning {
+  background-color: var(--warning-bg);
+  color: var(--warning-text);
+  border-color: var(--warning);
+}
+
+.alert-info {
+  background-color: var(--info-bg);
+  color: var(--info-text);
+  border-color: var(--info);
+}
+
+/* Example: Badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 9999px;
+  background-color: var(--primary-light);
+  color: var(--primary-dark);
+}
+
+.dark .badge {
+  background-color: var(--primary);
+  color: var(--text-inverse);
+}
+
+/* Example: Divider */
+.divider {
+  height: 1px;
+  background-color: var(--border);
+  border: none;
+  margin: 1rem 0;
+}
+
+/* Example: Focus Visible */
+*:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   ACCESSIBILITY ENHANCEMENTS
+   ============================================ */
+
+/* Ensure sufficient contrast */
+@media (prefers-contrast: high) {
+  :root {
+    --text-primary: #000000;
+    --border: #000000;
+  }
+  
+  .dark {
+    --text-primary: #FFFFFF;
+    --border: #FFFFFF;
+  }
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* ============================================
+   TOKEN REFERENCE GUIDE
+   ============================================
+   
+   BACKGROUNDS:
+   - var(--bg) - Main background
+   - var(--bg-secondary) - Card/surface background
+   - var(--bg-tertiary) - Elevated surface
+   - var(--bg-input) - Input field background
+   - var(--bg-hover) - Hover state background
+   - var(--bg-active) - Active state background
+   
+   TEXT:
+   - var(--text-primary) - Headings, primary text
+   - var(--text-secondary) - Body text, labels
+   - var(--text-muted) - Muted text, placeholders
+   - var(--text-disabled) - Disabled text
+   - var(--text-inverse) - Text on colored backgrounds
+   
+   PRIMARY COLORS:
+   - var(--primary) - Main brand color
+   - var(--primary-dark) - Darker variant (hover)
+   - var(--primary-light) - Lighter variant
+   - var(--primary-medium) - Medium variant
+   - var(--primary-hover) - Hover state
+   - var(--primary-active) - Active state
+   - var(--primary-disabled) - Disabled state
+   
+   ACCENT:
+   - var(--accent) - Accent color
+   - var(--accent-hover) - Accent hover
+   - var(--accent-light) - Light accent background
+   
+   BORDERS:
+   - var(--border) - Default border
+   - var(--border-light) - Light border
+   - var(--border-dark) - Dark border
+   - var(--border-focus) - Focus border
+   
+   STATES:
+   - var(--success) - Success color
+   - var(--error) - Error color
+   - var(--warning) - Warning color
+   - var(--info) - Info color
+   - Each state has -bg and -text variants
+   
+   SHADOWS:
+   - var(--shadow-sm) - Small shadow
+   - var(--shadow-md) - Medium shadow
+   - var(--shadow-lg) - Large shadow
+   - var(--shadow-xl) - Extra large shadow
+   
+   OVERLAYS:
+   - var(--overlay) - Modal overlay
+   - var(--overlay-light) - Light overlay
+   ============================================
+ */
+
