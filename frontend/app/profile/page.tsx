@@ -591,8 +591,8 @@ export default function MyProfilePage() {
     return (
       <div className="max-w-4xl mx-auto px-4 py-12">
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-pink-600"></div>
-          <p className="mt-4 text-secondary">{t('common.loading')}</p>
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-[#800020] dark:border-[#D4AF37]"></div>
+          <p className="mt-4 text-[#800020] dark:text-[#F5F5DC]">{t('common.loading')}</p>
         </div>
       </div>
     );
@@ -612,9 +612,9 @@ export default function MyProfilePage() {
   const dietaryOptions = ['vegetarian', 'non-vegetarian', 'vegan', 'jain'];
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-[#0a0a0f] pb-24 transition-colors">
+    <div className="min-h-screen bg-[#F5F5DC] dark:bg-[#2A000A] pb-24 transition-colors">
       {/* Header - Mobile First Design */}
-      <div className="bg-white dark:bg-[#12121a] border-b border-gray-200 dark:border-[#2a2a3a] sticky top-0 z-30">
+      <div className="bg-[#800020] dark:bg-[#800020] border-b border-[#800020]/20 dark:border-[#D4AF37]/10 sticky top-0 z-30">
         <div className="flex items-center justify-between px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
           <button
             onClick={() => {
@@ -671,13 +671,13 @@ export default function MyProfilePage() {
               }
             }}
             aria-label={editing ? 'Cancel editing and discard changes' : 'Go back'}
-            className="p-2 -ml-2 text-secondary hover:bg-gray-100 dark:hover:bg-[#1a1a24] rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#00FFFF] focus:ring-offset-2"
+            className="p-2 -ml-2 text-[#F5F5DC] hover:bg-[#800020]/20 dark:hover:bg-[#D4AF37]/20 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:ring-offset-2"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight text-primary">
+          <h1 className="text-xl sm:text-2xl font-bold leading-tight tracking-tight text-[#F5F5DC] dark:text-[#F5F5DC]">
             {editing ? 'Edit Profile' : t('profile.myProfile')}
           </h1>
           <div className="flex items-center gap-1">
@@ -685,7 +685,7 @@ export default function MyProfilePage() {
               <button
                 onClick={() => setShowShareModal(true)}
                 aria-label="Share profile"
-                className="p-2 -mr-2 text-secondary hover:bg-gray-100 dark:hover:bg-[#1a1a24] rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#00FFFF] focus:ring-offset-2"
+                className="p-2 -mr-2 text-[#F5F5DC] hover:bg-[#800020]/20 dark:hover:bg-[#D4AF37]/20 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:ring-offset-2"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
@@ -695,7 +695,7 @@ export default function MyProfilePage() {
               <button
                 onClick={() => setEditing(true)}
                 aria-label="Edit profile"
-                className="p-2 -mr-2 text-secondary hover:bg-gray-100 dark:hover:bg-[#1a1a24] rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#00FFFF] focus:ring-offset-2"
+                className="p-2 -mr-2 text-[#F5F5DC] hover:bg-[#800020]/20 dark:hover:bg-[#D4AF37]/20 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:ring-offset-2"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
@@ -715,9 +715,9 @@ export default function MyProfilePage() {
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
               </svg>
               <div className="flex-1">
-                <p className="text-sm text-red-800 dark:text-[#F25D5D] font-medium">{error}</p>
+                <p className="text-sm text-red-800 dark:text-red-400 font-medium">{error}</p>
                 {Object.keys(fieldErrors).length > 0 && (
-                  <p className="text-xs text-red-600 dark:text-[#F25D5D] mt-1">
+                  <p className="text-xs text-red-600 dark:text-red-400 mt-1">
                     Please check the fields marked in red below
                   </p>
                 )}
@@ -754,7 +754,7 @@ export default function MyProfilePage() {
                       input.click();
                     }}
                     aria-label="Upload profile photo"
-                    className="absolute bottom-2 right-2 w-8 h-8 bg-pink-600 rounded-full flex items-center justify-center text-white shadow-lg hover:bg-pink-700 transition-colors focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2"
+                    className="absolute bottom-2 right-2 w-8 h-8 bg-[#800020] dark:bg-[#D4AF37] rounded-full flex items-center justify-center text-[#F5F5DC] shadow-lg hover:bg-[#900023] dark:hover:bg-[#c19d2e] transition-colors focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:ring-offset-2"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -796,7 +796,7 @@ export default function MyProfilePage() {
                   };
                   input.click();
                 }}
-                className="w-full h-19 rounded-lg border-2 border-dashed border-gray-300 dark:border-[#2a2a3a] flex flex-col items-center justify-center text-muted hover:border-pink-500 dark:hover:border-[#00FFFF] transition-colors"
+                className="w-full h-19 rounded-lg border-2 border-dashed border-gray-300 dark:border-[#D4AF37]/20 flex flex-col items-center justify-center text-muted hover:border-[#800020] dark:hover:border-[#D4AF37] transition-colors"
               >
                 <svg className="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -808,31 +808,31 @@ export default function MyProfilePage() {
                     </div>
 
         {/* Profile Completion */}
-        <div className="bg-white dark:bg-[#12121a] rounded-lg p-4 sm:p-6 mb-6 sm:mb-8 border dark:border-[#2a2a3a]">
+        <div className="bg-white dark:bg-[#3a0012] rounded-lg p-4 sm:p-6 mb-6 sm:mb-8 border border-[#800020]/10 dark:border-[#D4AF37]/10">
           <div className="flex items-center justify-between mb-4">
-            <span className="text-sm font-medium text-secondary">Profile Completion</span>
-            <span className="text-sm font-semibold text-pink-600 dark:text-[#00FFFF]">
+            <span className="text-sm font-medium text-[#800020] dark:text-[#F5F5DC]">Profile Completion</span>
+            <span className="text-sm font-semibold text-[#800020] dark:text-[#D4AF37]">
               {user.isProfileComplete ? '100%' : '80%'}
             </span>
           </div>
           <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
             <div 
-              className="bg-pink-600 h-2 rounded-full transition-all duration-300"
+              className="bg-[#800020] dark:bg-[#D4AF37] h-2 rounded-full transition-all duration-300"
               style={{ width: user.isProfileComplete ? '100%' : '80%' }}
             />
           </div>
           </div>
 
         {/* About Me Section - Collapsible */}
-        <div className="bg-white dark:bg-[#12121a] rounded-lg overflow-hidden border dark:border-[#2a2a3a]">
+        <div className="bg-white dark:bg-[#3a0012] rounded-lg overflow-hidden border border-[#800020]/10 dark:border-[#D4AF37]/10">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, aboutMe: !expandedSections.aboutMe })}
             aria-expanded={expandedSections.aboutMe}
             aria-controls="about-me-section"
             aria-label={`${expandedSections.aboutMe ? 'Collapse' : 'Expand'} About Me section`}
-            className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 rounded-lg"
+            className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-[#800020] dark:focus:ring-[#D4AF37] focus:ring-offset-2 rounded-lg"
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-primary">About Me</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-[#800020] dark:text-[#F5F5DC]">About Me</h2>
             <svg 
               className={`w-5 h-5 text-muted transition-transform ${expandedSections.aboutMe ? 'rotate-180' : ''}`}
               fill="none" 
@@ -848,37 +848,37 @@ export default function MyProfilePage() {
             <div id="about-me-section" className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
               {/* Full Name */}
             <div>
-                <label className="block text-sm font-medium text-secondary mb-2">Full Name <span className="text-red-500">*</span></label>
+                <label className="block text-sm font-medium text-[#800020] dark:text-[#F5F5DC] mb-2">Full Name <span className="text-red-500 dark:text-red-400">*</span></label>
               {editing ? (
                 <input
                   type="text"
                   value={user.name || ''}
                   readOnly
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-[#2a2a3a] dark:bg-[#151520] dark:text-white rounded-lg bg-gray-50 dark:bg-[#151520] cursor-not-allowed"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-[#D4AF37]/20 dark:bg-[#3a0012] dark:text-[#F5F5DC] rounded-lg bg-gray-50 dark:bg-[#3a0012] cursor-not-allowed"
                 />
               ) : (
-                <p className="text-primary">{user.name}</p>
+                <p className="text-[#800020] dark:text-[#F5F5DC]">{user.name}</p>
               )}
             </div>
 
               {/* Age */}
             <div>
-                <label className="block text-sm font-medium text-secondary mb-2">Age <span className="text-red-500 dark:text-[#F25D5D]">*</span></label>
+                <label className="block text-sm font-medium text-[#800020] dark:text-[#F5F5DC] mb-2">Age <span className="text-red-500 dark:text-red-400">*</span></label>
               {editing ? (
                   <input
                     type="number"
                     value={user.age || ''}
                     readOnly
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#2a2a3a] dark:bg-[#151520] dark:text-white rounded-lg bg-gray-50 dark:bg-[#151520]"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#D4AF37]/20 dark:bg-[#3a0012] dark:text-[#F5F5DC] rounded-lg bg-gray-50 dark:bg-[#3a0012]"
                   />
                 ) : (
-                  <p className="text-primary">{user.age || 'Not provided'}</p>
+                  <p className="text-[#800020] dark:text-[#F5F5DC]">{user.age || 'Not provided'}</p>
               )}
             </div>
 
               {/* Height */}
             <div>
-                <label className="block text-sm font-medium text-secondary mb-2">Height</label>
+                <label className="block text-sm font-medium text-[#800020] dark:text-[#F5F5DC] mb-2">Height</label>
               {editing ? (
                 <>
                   <input
@@ -901,14 +901,14 @@ export default function MyProfilePage() {
                       }
                     }}
                     placeholder="5'6&quot;"
-                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 dark:bg-[#151520] dark:text-white ${
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 dark:bg-[#3a0012] dark:text-[#F5F5DC] ${
                       fieldErrors.height 
                         ? 'border-red-400 focus:ring-red-500 focus:border-red-500' 
                         : 'border-gray-300 dark:border-gray-600 focus:ring-pink-500'
                     }`}
                   />
                   {fieldErrors.height && (
-                    <p className="mt-1 text-sm text-red-600 dark:text-[#F25D5D] flex items-center">
+                    <p className="mt-1 text-sm text-red-600 dark:text-red-400 flex items-center">
                       <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                       </svg>
@@ -917,7 +917,7 @@ export default function MyProfilePage() {
                   )}
                 </>
               ) : (
-                <p className="text-primary">
+                <p className="text-[#800020] dark:text-[#F5F5DC]">
                     {user.height ? `${Math.floor(user.height / 12)}'${user.height % 12}"` : 'Not provided'}
                 </p>
               )}
@@ -925,7 +925,7 @@ export default function MyProfilePage() {
 
               {/* Bio */}
             <div>
-                <label className="block text-sm font-medium text-secondary mb-2">Bio</label>
+                <label className="block text-sm font-medium text-[#800020] dark:text-[#F5F5DC] mb-2">Bio</label>
               {editing ? (
                   <>
                     <textarea
@@ -939,7 +939,7 @@ export default function MyProfilePage() {
                         }
                       }}
                       rows={4}
-                      className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 dark:bg-[#151520] dark:text-white ${
+                      className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 dark:bg-[#3a0012] dark:text-[#F5F5DC] ${
                         fieldErrors.bio 
                           ? 'border-red-400 focus:ring-red-500 focus:border-red-500' 
                           : 'border-gray-300 dark:border-gray-600 focus:ring-pink-500'
@@ -947,7 +947,7 @@ export default function MyProfilePage() {
                       placeholder="A software engineer with a passion for travel and classical dance. Looking for a partner who values family, honesty, and a good sense of humor."
                     />
                     {fieldErrors.bio && (
-                      <p className="mt-1 text-sm text-red-600 dark:text-[#F25D5D] flex items-center">
+                      <p className="mt-1 text-sm text-red-600 dark:text-red-400 flex items-center">
                         <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                         </svg>
@@ -959,7 +959,7 @@ export default function MyProfilePage() {
                     </p>
                   </>
               ) : (
-                  <p className="text-primary">{user.bio || 'No bio provided'}</p>
+                  <p className="text-[#800020] dark:text-[#F5F5DC]">{user.bio || 'No bio provided'}</p>
               )}
             </div>
                 </div>
@@ -967,15 +967,15 @@ export default function MyProfilePage() {
                   </div>
 
         {/* Contact Information Section - Collapsible */}
-        <div className="bg-white dark:bg-[#12121a] rounded-lg overflow-hidden border dark:border-[#2a2a3a]">
+        <div className="bg-white dark:bg-[#3a0012] rounded-lg overflow-hidden border border-[#800020]/10 dark:border-[#D4AF37]/10">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, contact: !expandedSections.contact })}
             aria-expanded={expandedSections.contact}
             aria-controls="contact-section"
             aria-label={`${expandedSections.contact ? 'Collapse' : 'Expand'} Contact Information section`}
-            className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 rounded-lg"
+            className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-[#800020] dark:focus:ring-[#D4AF37] focus:ring-offset-2 rounded-lg"
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-primary">Contact Information</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-[#800020] dark:text-[#F5F5DC]">Contact Information</h2>
             <svg 
               className={`w-5 h-5 text-muted transition-transform ${expandedSections.contact ? 'rotate-180' : ''}`}
               fill="none" 
@@ -991,46 +991,46 @@ export default function MyProfilePage() {
             <div className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
               {/* Email */}
               <div>
-                <label className="block text-sm font-medium text-secondary mb-2">Email</label>
+                <label className="block text-sm font-medium text-[#800020] dark:text-[#F5F5DC] mb-2">Email</label>
                 {editing ? (
                   <input
                     type="email"
                     value={user.email || ''}
                     readOnly
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#2a2a3a] dark:bg-[#151520] dark:text-white rounded-lg bg-gray-50 dark:bg-[#151520] cursor-not-allowed"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#D4AF37]/20 dark:bg-[#3a0012] dark:text-[#F5F5DC] rounded-lg bg-gray-50 dark:bg-[#3a0012] cursor-not-allowed"
                   />
                 ) : (
-                  <p className="text-primary">{user.email || 'Not provided'}</p>
+                  <p className="text-[#800020] dark:text-[#F5F5DC]">{user.email || 'Not provided'}</p>
                 )}
               </div>
 
               {/* Phone */}
               <div>
-                <label className="block text-sm font-medium text-secondary mb-2">Phone</label>
+                <label className="block text-sm font-medium text-[#800020] dark:text-[#F5F5DC] mb-2">Phone</label>
                 {editing ? (
                   <input
                     type="tel"
                     value={user.phone || ''}
                     readOnly
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#2a2a3a] dark:bg-[#151520] dark:text-white rounded-lg bg-gray-50 dark:bg-[#151520] cursor-not-allowed"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#D4AF37]/20 dark:bg-[#3a0012] dark:text-[#F5F5DC] rounded-lg bg-gray-50 dark:bg-[#3a0012] cursor-not-allowed"
                   />
                 ) : (
-                  <p className="text-primary">{user.phone || 'Not provided'}</p>
+                  <p className="text-[#800020] dark:text-[#F5F5DC]">{user.phone || 'Not provided'}</p>
                 )}
               </div>
 
               {/* WhatsApp Number */}
               <div>
-                <label className="block text-sm font-medium text-secondary mb-2">WhatsApp Number</label>
+                <label className="block text-sm font-medium text-[#800020] dark:text-[#F5F5DC] mb-2">WhatsApp Number</label>
                 {editing ? (
                   <input
                     type="tel"
                     value={user.whatsappNumber || ''}
                     readOnly
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#2a2a3a] dark:bg-[#151520] dark:text-white rounded-lg bg-gray-50 dark:bg-[#151520] cursor-not-allowed"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#D4AF37]/20 dark:bg-[#3a0012] dark:text-[#F5F5DC] rounded-lg bg-gray-50 dark:bg-[#3a0012] cursor-not-allowed"
                   />
                 ) : (
-                  <p className="text-primary">{user.whatsappNumber || 'Not provided'}</p>
+                  <p className="text-[#800020] dark:text-[#F5F5DC]">{user.whatsappNumber || 'Not provided'}</p>
                 )}
               </div>
             </div>
@@ -1038,15 +1038,15 @@ export default function MyProfilePage() {
         </div>
 
         {/* Location Section - Collapsible */}
-        <div className="bg-white dark:bg-[#12121a] rounded-lg overflow-hidden border dark:border-[#2a2a3a]">
+        <div className="bg-white dark:bg-[#3a0012] rounded-lg overflow-hidden border border-[#800020]/10 dark:border-[#D4AF37]/10">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, location: !expandedSections.location })}
             aria-expanded={expandedSections.location}
             aria-controls="location-section"
             aria-label={`${expandedSections.location ? 'Collapse' : 'Expand'} Location section`}
-            className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 rounded-lg"
+            className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-[#800020] dark:focus:ring-[#D4AF37] focus:ring-offset-2 rounded-lg"
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-primary">Location</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-[#800020] dark:text-[#F5F5DC]">Location</h2>
             <svg 
               className={`w-5 h-5 text-muted transition-transform ${expandedSections.location ? 'rotate-180' : ''}`}
               fill="none" 
@@ -1070,11 +1070,11 @@ export default function MyProfilePage() {
                   onCityChange={handleCityChange}
                 />
               ) : (
-                <div className="space-y-2 text-primary">
-                  {user.country && <p><span className="font-medium dark:text-[#D5D3D7]">Country:</span> {user.country}</p>}
-                  {user.state && <p><span className="font-medium dark:text-[#D5D3D7]">State:</span> {user.state}</p>}
-                  {user.city && <p><span className="font-medium dark:text-[#D5D3D7]">City:</span> {user.city}</p>}
-                  {user.town && <p><span className="font-medium dark:text-[#D5D3D7]">Town:</span> {user.town}</p>}
+                <div className="space-y-2 text-[#800020] dark:text-[#F5F5DC]">
+                  {user.country && <p><span className="font-medium text-[#800020] dark:text-[#F5F5DC]">Country:</span> <span className="text-[#800020] dark:text-[#E8E8C8]">{user.country}</span></p>}
+                  {user.state && <p><span className="font-medium text-[#800020] dark:text-[#F5F5DC]">State:</span> <span className="text-[#800020] dark:text-[#E8E8C8]">{user.state}</span></p>}
+                  {user.city && <p><span className="font-medium text-[#800020] dark:text-[#F5F5DC]">City:</span> <span className="text-[#800020] dark:text-[#E8E8C8]">{user.city}</span></p>}
+                  {user.town && <p><span className="font-medium text-[#800020] dark:text-[#F5F5DC]">Town:</span> <span className="text-[#800020] dark:text-[#E8E8C8]">{user.town}</span></p>}
                   {!user.country && !user.state && !user.city && <p className="text-muted">Not provided</p>}
                 </div>
               )}
@@ -1087,7 +1087,7 @@ export default function MyProfilePage() {
                       type="text"
                       value={formData.town || ''}
                       onChange={(e) => setFormData({ ...formData, town: sanitizeFormInput(e.target.value, 'text') })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#2a2a3a] dark:bg-[#151520] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#00FFFF]"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#D4AF37]/20 dark:bg-[#3a0012] dark:text-[#F5F5DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#800020] dark:focus:ring-[#D4AF37]"
                       placeholder="Enter town or village name"
                     />
                   </div>
@@ -1097,7 +1097,7 @@ export default function MyProfilePage() {
                       value={formData.presentAddress || ''}
                       onChange={(e) => setFormData({ ...formData, presentAddress: sanitizeFormInput(e.target.value, 'textarea') })}
                       rows={2}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#2a2a3a] dark:bg-[#151520] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#00FFFF]"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#D4AF37]/20 dark:bg-[#3a0012] dark:text-[#F5F5DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#800020] dark:focus:ring-[#D4AF37]"
                       placeholder="Enter present address"
                     />
                   </div>
@@ -1107,7 +1107,7 @@ export default function MyProfilePage() {
                       value={formData.permanentAddress || ''}
                       onChange={(e) => setFormData({ ...formData, permanentAddress: sanitizeFormInput(e.target.value, 'textarea') })}
                       rows={2}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#2a2a3a] dark:bg-[#151520] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#00FFFF]"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#D4AF37]/20 dark:bg-[#3a0012] dark:text-[#F5F5DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#800020] dark:focus:ring-[#D4AF37]"
                       placeholder="Enter permanent address"
                     />
                   </div>
@@ -1119,13 +1119,13 @@ export default function MyProfilePage() {
                   {user.presentAddress && (
                     <div>
                       <label className="block text-sm font-medium text-secondary mb-2">Present Address</label>
-                      <p className="text-primary">{user.presentAddress}</p>
+                      <p className="text-[#800020] dark:text-[#F5F5DC]">{user.presentAddress}</p>
                     </div>
                   )}
                   {user.permanentAddress && (
                     <div>
                       <label className="block text-sm font-medium text-secondary mb-2">Permanent Address</label>
-                      <p className="text-primary">{user.permanentAddress}</p>
+                      <p className="text-[#800020] dark:text-[#F5F5DC]">{user.permanentAddress}</p>
                     </div>
                   )}
                 </>
@@ -1135,15 +1135,15 @@ export default function MyProfilePage() {
         </div>
 
         {/* Education & Career Section - Collapsible */}
-        <div className="bg-white dark:bg-[#12121a] rounded-lg overflow-hidden border dark:border-[#2a2a3a]">
+        <div className="bg-white dark:bg-[#3a0012] rounded-lg overflow-hidden border border-[#800020]/10 dark:border-[#D4AF37]/10">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, education: !expandedSections.education })}
             aria-expanded={expandedSections.education}
             aria-controls="education-section"
             aria-label={`${expandedSections.education ? 'Collapse' : 'Expand'} Education & Career section`}
-            className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 rounded-lg"
+            className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-[#800020] dark:focus:ring-[#D4AF37] focus:ring-offset-2 rounded-lg"
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-primary">Education & Career</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-[#800020] dark:text-[#F5F5DC]">Education & Career</h2>
             <svg 
               className={`w-5 h-5 text-muted transition-transform ${expandedSections.education ? 'rotate-180' : ''}`}
               fill="none" 
@@ -1170,7 +1170,7 @@ export default function MyProfilePage() {
                     value={formData.education || ''}
                     onChange={(e) => setFormData({ ...formData, education: e.target.value })}
                     disabled={loadingEducation}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#2a2a3a] dark:bg-[#151520] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#00FFFF] disabled:opacity-50"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#D4AF37]/20 dark:bg-[#3a0012] dark:text-[#F5F5DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#800020] dark:focus:ring-[#D4AF37] disabled:opacity-50"
                   >
                     <option value="">Select Education</option>
                     {educationOptions.map((option) => (
@@ -1180,7 +1180,7 @@ export default function MyProfilePage() {
                     ))}
                   </select>
                 ) : (
-                  <p className="text-primary">
+                  <p className="text-[#800020] dark:text-[#F5F5DC]">
                     {user.education 
                       ? educationOptions.find(opt => opt.value === user.education)?.label || user.education
                       : 'Not provided'}
@@ -1195,7 +1195,7 @@ export default function MyProfilePage() {
                   <select
                     value={formData.educationalDetail || ''}
                     onChange={(e) => setFormData({ ...formData, educationalDetail: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#2a2a3a] dark:bg-[#151520] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#00FFFF]"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#D4AF37]/20 dark:bg-[#3a0012] dark:text-[#F5F5DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#800020] dark:focus:ring-[#D4AF37]"
                   >
                     <option value="">Select</option>
                     <option value="Graduate">Graduate</option>
@@ -1205,7 +1205,7 @@ export default function MyProfilePage() {
                     <option value="Professional">Professional</option>
                   </select>
                 ) : (
-                  <p className="text-primary">{user.educationalDetail || 'Not provided'}</p>
+                  <p className="text-[#800020] dark:text-[#F5F5DC]">{user.educationalDetail || 'Not provided'}</p>
                 )}
               </div>
 
@@ -1222,7 +1222,7 @@ export default function MyProfilePage() {
                     value={formData.occupation || ''}
                     onChange={(e) => setFormData({ ...formData, occupation: e.target.value })}
                     disabled={loadingOccupation}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#2a2a3a] dark:bg-[#151520] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#00FFFF] disabled:opacity-50"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#D4AF37]/20 dark:bg-[#3a0012] dark:text-[#F5F5DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#800020] dark:focus:ring-[#D4AF37] disabled:opacity-50"
                   >
                     <option value="">Select Occupation</option>
                     {occupationOptions.map((option) => (
@@ -1232,7 +1232,7 @@ export default function MyProfilePage() {
                     ))}
                   </select>
                 ) : (
-                  <p className="text-primary">
+                  <p className="text-[#800020] dark:text-[#F5F5DC]">
                     {user.occupation 
                       ? occupationOptions.find(opt => opt.value === user.occupation)?.label || user.occupation
                       : 'Not provided'}
@@ -1248,11 +1248,11 @@ export default function MyProfilePage() {
                     type="text"
                     value={formData.profession || ''}
                     onChange={(e) => setFormData({ ...formData, profession: sanitizeFormInput(e.target.value, 'text') })}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#2a2a3a] dark:bg-[#151520] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#00FFFF]"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#D4AF37]/20 dark:bg-[#3a0012] dark:text-[#F5F5DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#800020] dark:focus:ring-[#D4AF37]"
                     placeholder="e.g., Computer Software Professional"
                   />
                 ) : (
-                  <p className="text-primary">{user.profession || 'Not provided'}</p>
+                  <p className="text-[#800020] dark:text-[#F5F5DC]">{user.profession || 'Not provided'}</p>
                 )}
               </div>
 
@@ -1264,11 +1264,11 @@ export default function MyProfilePage() {
                     type="text"
                     value={formData.employer || ''}
                     onChange={(e) => setFormData({ ...formData, employer: sanitizeFormInput(e.target.value, 'text') })}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#2a2a3a] dark:bg-[#151520] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#00FFFF]"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#D4AF37]/20 dark:bg-[#3a0012] dark:text-[#F5F5DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#800020] dark:focus:ring-[#D4AF37]"
                     placeholder="Company name"
                   />
                 ) : (
-                  <p className="text-primary">{user.employer || 'Not provided'}</p>
+                  <p className="text-[#800020] dark:text-[#F5F5DC]">{user.employer || 'Not provided'}</p>
                 )}
               </div>
 
@@ -1280,7 +1280,7 @@ export default function MyProfilePage() {
                     value={formData.annualIncome || ''}
                     onChange={(e) => setFormData({ ...formData, annualIncome: e.target.value })}
                     disabled={loadingSalary}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#2a2a3a] dark:bg-[#151520] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#00FFFF] disabled:opacity-50"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#D4AF37]/20 dark:bg-[#3a0012] dark:text-[#F5F5DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#800020] dark:focus:ring-[#D4AF37] disabled:opacity-50"
                   >
                     <option value="">Select Annual Income</option>
                     {salaryOptions.map((option) => (
@@ -1290,7 +1290,7 @@ export default function MyProfilePage() {
                     ))}
                   </select>
                 ) : (
-                  <p className="text-primary">{user.annualIncome || 'Not provided'}</p>
+                  <p className="text-[#800020] dark:text-[#F5F5DC]">{user.annualIncome || 'Not provided'}</p>
                 )}
               </div>
             </div>
@@ -1298,15 +1298,15 @@ export default function MyProfilePage() {
         </div>
 
         {/* Lifestyle & Interests Section - Collapsible */}
-        <div className="bg-white dark:bg-[#12121a] rounded-lg overflow-hidden border dark:border-[#2a2a3a]">
+        <div className="bg-white dark:bg-[#3a0012] rounded-lg overflow-hidden border border-[#800020]/10 dark:border-[#D4AF37]/10">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, lifestyle: !expandedSections.lifestyle })}
             aria-expanded={expandedSections.lifestyle}
             aria-controls="lifestyle-section"
             aria-label={`${expandedSections.lifestyle ? 'Collapse' : 'Expand'} Lifestyle & Interests section`}
-            className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 rounded-lg"
+            className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-[#800020] dark:focus:ring-[#D4AF37] focus:ring-offset-2 rounded-lg"
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-primary">Lifestyle & Interests</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-[#800020] dark:text-[#F5F5DC]">Lifestyle & Interests</h2>
             <svg 
               className={`w-5 h-5 text-muted transition-transform ${expandedSections.lifestyle ? 'rotate-180' : ''}`}
               fill="none" 
@@ -1334,9 +1334,9 @@ export default function MyProfilePage() {
                         disabled={!editing}
                         className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                           isSelected
-                            ? 'bg-pink-600 text-white'
-                            : 'bg-gray-200 dark:bg-[#1a1a24] text-secondary'
-                        } ${!editing ? 'cursor-default' : 'cursor-pointer hover:bg-pink-100 dark:hover:bg-red-900/20'}`}
+                            ? 'bg-[#800020] dark:bg-[#D4AF37] text-[#F5F5DC]'
+                            : 'bg-gray-200 dark:bg-[#4a001a] text-[#800020] dark:text-[#F5F5DC]'
+                        } ${!editing ? 'cursor-default' : 'cursor-pointer hover:bg-[#800020]/10 dark:hover:bg-[#D4AF37]/20'}`}
                       >
                         {option === 'non-vegetarian' ? 'Non-Veg' : option.charAt(0).toUpperCase() + option.slice(1)}
                       </button>
@@ -1345,7 +1345,7 @@ export default function MyProfilePage() {
             </div>
                 {!editing && user.diet && (
                   <div className="flex flex-wrap gap-2 mt-2">
-                    <span className="px-4 py-2 rounded-full text-sm font-medium bg-pink-600 text-white">
+                    <span className="px-4 py-2 rounded-full text-sm font-medium bg-[#800020] dark:bg-[#D4AF37] text-[#F5F5DC]">
                       {user.diet === 'non-vegetarian' ? 'Non-Veg' : user.diet.charAt(0).toUpperCase() + user.diet.slice(1)}
                     </span>
             </div>
@@ -1375,9 +1375,9 @@ export default function MyProfilePage() {
                         disabled={!editing}
                         className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                           isSelected
-                            ? 'bg-pink-600 text-white'
-                            : 'bg-gray-200 dark:bg-[#1a1a24] text-secondary'
-                        } ${!editing ? 'cursor-default' : 'cursor-pointer hover:bg-pink-100 dark:hover:bg-red-900/20'}`}
+                            ? 'bg-[#800020] dark:bg-[#D4AF37] text-[#F5F5DC]'
+                            : 'bg-gray-200 dark:bg-[#4a001a] text-[#800020] dark:text-[#F5F5DC]'
+                        } ${!editing ? 'cursor-default' : 'cursor-pointer hover:bg-[#800020]/10 dark:hover:bg-[#D4AF37]/20'}`}
                       >
                         {hobby}
                       </button>
@@ -1386,7 +1386,7 @@ export default function MyProfilePage() {
                   {editing && (
                     <button
                       type="button"
-                      className="px-4 py-2 rounded-full text-sm font-medium border-2 border-dashed border-gray-300 dark:border-[#2a2a3a] text-muted hover:border-pink-500 dark:hover:border-[#00FFFF] transition-colors"
+                      className="px-4 py-2 rounded-full text-sm font-medium border-2 border-dashed border-gray-300 dark:border-[#D4AF37]/20 text-muted hover:border-[#800020] dark:hover:border-[#D4AF37] transition-colors"
                     >
                       + Add
                     </button>
@@ -1397,7 +1397,7 @@ export default function MyProfilePage() {
                     {(user.hobbies || []).map((hobby) => (
                       <span
                         key={hobby}
-                        className="px-4 py-2 rounded-full text-sm font-medium bg-pink-600 text-white"
+                        className="px-4 py-2 rounded-full text-sm font-medium bg-[#800020] dark:bg-[#D4AF37] text-[#F5F5DC]"
                       >
                         {hobby}
                       </span>
@@ -1413,15 +1413,15 @@ export default function MyProfilePage() {
                 </div>
 
         {/* Family Information Section - Collapsible */}
-        <div className="bg-white dark:bg-[#12121a] rounded-lg overflow-hidden border dark:border-[#2a2a3a]">
+        <div className="bg-white dark:bg-[#3a0012] rounded-lg overflow-hidden border border-[#800020]/10 dark:border-[#D4AF37]/10">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, family: !expandedSections.family })}
             aria-expanded={expandedSections.family}
             aria-controls="family-section"
             aria-label={`${expandedSections.family ? 'Collapse' : 'Expand'} Family Information section`}
-            className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 rounded-lg"
+            className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-[#800020] dark:focus:ring-[#D4AF37] focus:ring-offset-2 rounded-lg"
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-primary">👨‍👩‍👧‍👦 Family Information</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-[#800020] dark:text-[#F5F5DC]">👨‍👩‍👧‍👦 Family Information</h2>
             <svg 
               className={`w-5 h-5 text-muted transition-transform ${expandedSections.family ? 'rotate-180' : ''}`}
               fill="none" 
@@ -1450,11 +1450,11 @@ export default function MyProfilePage() {
                           fathersName: sanitizeFormInput(e.target.value, 'text'),
                         },
                       })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#2a2a3a] dark:bg-[#151520] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#00FFFF]"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#D4AF37]/20 dark:bg-[#3a0012] dark:text-[#F5F5DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#800020] dark:focus:ring-[#D4AF37]"
                       placeholder="Enter father's name"
                     />
                   ) : (
-                    <p className="text-primary">{user.family?.fathersName || 'Not provided'}</p>
+                    <p className="text-[#800020] dark:text-[#F5F5DC]">{user.family?.fathersName || 'Not provided'}</p>
                   )}
                 </div>
 
@@ -1472,7 +1472,7 @@ export default function MyProfilePage() {
                           fathersOccupationDesc: e.target.value ? formData.family?.fathersOccupationDesc : '', 
                         },
                       })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#2a2a3a] dark:bg-[#151520] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#00FFFF]"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#D4AF37]/20 dark:bg-[#3a0012] dark:text-[#F5F5DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#800020] dark:focus:ring-[#D4AF37]"
                     >
                       <option value="">Select Type</option>
                       <option value="job">Job</option>
@@ -1481,7 +1481,7 @@ export default function MyProfilePage() {
                       <option value="business">Business</option>
                     </select>
                   ) : (
-                    <p className="text-primary">
+                    <p className="text-[#800020] dark:text-[#F5F5DC]">
                       {user.family?.fathersOccupationType 
                         ? user.family.fathersOccupationType.charAt(0).toUpperCase() + user.family.fathersOccupationType.slice(1)
                         : 'Not provided'}
@@ -1503,7 +1503,7 @@ export default function MyProfilePage() {
                           fathersOccupationDesc: sanitizeFormInput(e.target.value, 'text'),
                         },
                       })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#2a2a3a] dark:bg-[#151520] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#00FFFF]"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#D4AF37]/20 dark:bg-[#3a0012] dark:text-[#F5F5DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#800020] dark:focus:ring-[#D4AF37]"
                       placeholder={`Enter ${formData.family.fathersOccupationType} details`}
                     />
                   </div>
@@ -1512,7 +1512,7 @@ export default function MyProfilePage() {
                 {!editing && user.family?.fathersOccupationDesc && (
                   <div className="md:col-span-2">
                     <label className="block text-sm font-medium text-secondary mb-2">Father's Occupation Description</label>
-                    <p className="text-primary">{user.family.fathersOccupationDesc}</p>
+                    <p className="text-[#800020] dark:text-[#F5F5DC]">{user.family.fathersOccupationDesc}</p>
                   </div>
                 )}
 
@@ -1530,11 +1530,11 @@ export default function MyProfilePage() {
                           fathersContactNumber: sanitizeFormInput(e.target.value, 'phone'),
                         },
                       })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#2a2a3a] dark:bg-[#151520] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#00FFFF]"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#D4AF37]/20 dark:bg-[#3a0012] dark:text-[#F5F5DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#800020] dark:focus:ring-[#D4AF37]"
                       placeholder="Enter contact number"
                     />
                   ) : (
-                    <p className="text-primary">{user.family?.fathersContactNumber || 'Not provided'}</p>
+                    <p className="text-[#800020] dark:text-[#F5F5DC]">{user.family?.fathersContactNumber || 'Not provided'}</p>
                   )}
                 </div>
 
@@ -1552,11 +1552,11 @@ export default function MyProfilePage() {
                           mothersName: sanitizeFormInput(e.target.value, 'text'),
                         },
                       })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#2a2a3a] dark:bg-[#151520] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#00FFFF]"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#D4AF37]/20 dark:bg-[#3a0012] dark:text-[#F5F5DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#800020] dark:focus:ring-[#D4AF37]"
                       placeholder="Enter mother's name"
                     />
                   ) : (
-                    <p className="text-primary">{user.family?.mothersName || 'Not provided'}</p>
+                    <p className="text-[#800020] dark:text-[#F5F5DC]">{user.family?.mothersName || 'Not provided'}</p>
                   )}
                 </div>
 
@@ -1574,7 +1574,7 @@ export default function MyProfilePage() {
                           mothersOccupationDesc: e.target.value ? formData.family?.mothersOccupationDesc : '', 
                         },
                       })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#2a2a3a] dark:bg-[#151520] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#00FFFF]"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#D4AF37]/20 dark:bg-[#3a0012] dark:text-[#F5F5DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#800020] dark:focus:ring-[#D4AF37]"
                     >
                       <option value="">Select Type</option>
                       <option value="job">Job</option>
@@ -1583,7 +1583,7 @@ export default function MyProfilePage() {
                       <option value="business">Business</option>
                     </select>
                   ) : (
-                    <p className="text-primary">
+                    <p className="text-[#800020] dark:text-[#F5F5DC]">
                       {user.family?.mothersOccupationType 
                         ? user.family.mothersOccupationType.charAt(0).toUpperCase() + user.family.mothersOccupationType.slice(1)
                         : 'Not provided'}
@@ -1605,7 +1605,7 @@ export default function MyProfilePage() {
                           mothersOccupationDesc: sanitizeFormInput(e.target.value, 'text'),
                         },
                       })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#2a2a3a] dark:bg-[#151520] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#00FFFF]"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#D4AF37]/20 dark:bg-[#3a0012] dark:text-[#F5F5DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#800020] dark:focus:ring-[#D4AF37]"
                       placeholder={`Enter ${formData.family.mothersOccupationType} details`}
                     />
                   </div>
@@ -1614,7 +1614,7 @@ export default function MyProfilePage() {
                 {!editing && user.family?.mothersOccupationDesc && (
                   <div className="md:col-span-2">
                     <label className="block text-sm font-medium text-secondary mb-2">Mother's Occupation Description</label>
-                    <p className="text-primary">{user.family.mothersOccupationDesc}</p>
+                    <p className="text-[#800020] dark:text-[#F5F5DC]">{user.family.mothersOccupationDesc}</p>
                   </div>
                 )}
 
@@ -1633,10 +1633,10 @@ export default function MyProfilePage() {
                           numberOfBrothers: parseInt(e.target.value) || 0,
                         },
                       })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#2a2a3a] dark:bg-[#151520] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#00FFFF]"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#D4AF37]/20 dark:bg-[#3a0012] dark:text-[#F5F5DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#800020] dark:focus:ring-[#D4AF37]"
                     />
                   ) : (
-                    <p className="text-primary">{user.family?.numberOfBrothers || 0}</p>
+                    <p className="text-[#800020] dark:text-[#F5F5DC]">{user.family?.numberOfBrothers || 0}</p>
                   )}
                 </div>
 
@@ -1654,10 +1654,10 @@ export default function MyProfilePage() {
                           numberOfSisters: parseInt(e.target.value) || 0,
                         },
                       })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#2a2a3a] dark:bg-[#151520] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#00FFFF]"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-[#D4AF37]/20 dark:bg-[#3a0012] dark:text-[#F5F5DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#800020] dark:focus:ring-[#D4AF37]"
                     />
                   ) : (
-                    <p className="text-primary">{user.family?.numberOfSisters || 0}</p>
+                    <p className="text-[#800020] dark:text-[#F5F5DC]">{user.family?.numberOfSisters || 0}</p>
                   )}
                 </div>
               </div>
@@ -1666,15 +1666,15 @@ export default function MyProfilePage() {
         </div>
 
         {/* Horoscope Details Section - Collapsible */}
-        <div className="bg-white dark:bg-[#12121a] rounded-lg overflow-hidden border dark:border-[#2a2a3a]">
+        <div className="bg-white dark:bg-[#3a0012] rounded-lg overflow-hidden border border-[#800020]/10 dark:border-[#D4AF37]/10">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, horoscope: !expandedSections.horoscope })}
             aria-expanded={expandedSections.horoscope}
             aria-controls="horoscope-section"
             aria-label={`${expandedSections.horoscope ? 'Collapse' : 'Expand'} Horoscope Details section`}
-            className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 rounded-lg"
+            className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-[#800020] dark:focus:ring-[#D4AF37] focus:ring-offset-2 rounded-lg"
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-primary">🔮 Horoscope Details</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-[#800020] dark:text-[#F5F5DC]">🔮 Horoscope Details</h2>
             <svg 
               className={`w-5 h-5 text-muted transition-transform ${expandedSections.horoscope ? 'rotate-180' : ''}`}
               fill="none" 
@@ -1707,7 +1707,7 @@ export default function MyProfilePage() {
               ) : (
                 <div>
                   <label className="block text-sm font-medium text-secondary mb-2">Date of Birth</label>
-                  <p className="text-primary">
+                  <p className="text-[#800020] dark:text-[#F5F5DC]">
                     {user.dateOfBirth ? new Date(user.dateOfBirth).toLocaleDateString() : 'Not provided'}
                   </p>
                 </div>
@@ -1731,11 +1731,11 @@ export default function MyProfilePage() {
                         },
                       });
                     }}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#2a2a3a] dark:bg-[#151520] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#00FFFF]"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#D4AF37]/20 dark:bg-[#3a0012] dark:text-[#F5F5DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#800020] dark:focus:ring-[#D4AF37]"
                     placeholder="HH:MM:SS"
                   />
                 ) : (
-                  <p className="text-primary">
+                  <p className="text-[#800020] dark:text-[#F5F5DC]">
                     {user.horoscopeDetails?.timeOfBirth || 'Not provided'}
                   </p>
                 )}
@@ -1754,7 +1754,7 @@ export default function MyProfilePage() {
                         rashi: e.target.value,
                       },
                     })}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#2a2a3a] dark:bg-[#151520] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#00FFFF]"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#D4AF37]/20 dark:bg-[#3a0012] dark:text-[#F5F5DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#800020] dark:focus:ring-[#D4AF37]"
                   >
                     <option value="">Select Rashi</option>
                     <option value="Aries">Aries (Mesha)</option>
@@ -1771,7 +1771,7 @@ export default function MyProfilePage() {
                     <option value="Pisces">Pisces (Meena)</option>
                   </select>
                 ) : (
-                  <p className="text-primary">
+                  <p className="text-[#800020] dark:text-[#F5F5DC]">
                     {user.horoscopeDetails?.rashi || 'Not provided'}
                   </p>
                 )}
@@ -1790,7 +1790,7 @@ export default function MyProfilePage() {
                         nakshatra: e.target.value,
                       },
                     })}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#2a2a3a] dark:bg-[#151520] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#00FFFF]"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#D4AF37]/20 dark:bg-[#3a0012] dark:text-[#F5F5DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#800020] dark:focus:ring-[#D4AF37]"
                   >
                     <option value="">Select Nakshatra</option>
                     <option value="Ashwini">Ashwini</option>
@@ -1822,7 +1822,7 @@ export default function MyProfilePage() {
                     <option value="Revati">Revati</option>
                   </select>
                 ) : (
-                  <p className="text-primary">
+                  <p className="text-[#800020] dark:text-[#F5F5DC]">
                     {user.horoscopeDetails?.nakshatra || 'Not provided'}
                   </p>
                 )}
@@ -1842,11 +1842,11 @@ export default function MyProfilePage() {
                         starSign: e.target.value,
                       },
                     })}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#2a2a3a] dark:bg-[#151520] dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-[#00FFFF]"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-[#D4AF37]/20 dark:bg-[#3a0012] dark:text-[#F5F5DC] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#800020] dark:focus:ring-[#D4AF37]"
                     placeholder="Optional"
                   />
                 ) : (
-                  <p className="text-primary">
+                  <p className="text-[#800020] dark:text-[#F5F5DC]">
                     {user.horoscopeDetails?.starSign || 'Not provided'}
                   </p>
                 )}
@@ -1856,15 +1856,15 @@ export default function MyProfilePage() {
         </div>
 
         {/* Partner Preferences Section - Collapsible */}
-        <div className="bg-white dark:bg-[#12121a] rounded-lg overflow-hidden border dark:border-[#2a2a3a]">
+        <div className="bg-white dark:bg-[#3a0012] rounded-lg overflow-hidden border border-[#800020]/10 dark:border-[#D4AF37]/10">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, partnerPreferences: !expandedSections.partnerPreferences })}
             aria-expanded={expandedSections.partnerPreferences}
             aria-controls="partner-preferences-section"
             aria-label={`${expandedSections.partnerPreferences ? 'Collapse' : 'Expand'} Partner Preferences section`}
-            className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 rounded-lg"
+            className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none focus:ring-2 focus:ring-[#800020] dark:focus:ring-[#D4AF37] focus:ring-offset-2 rounded-lg"
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-primary">Partner Preferences</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-[#800020] dark:text-[#F5F5DC]">Partner Preferences</h2>
             <svg 
               className={`w-5 h-5 text-muted transition-transform ${expandedSections.partnerPreferences ? 'rotate-180' : ''}`}
               fill="none" 
@@ -1910,14 +1910,14 @@ export default function MyProfilePage() {
                           setFieldErrors(newErrors);
                         }
                       }}
-                          className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 dark:bg-[#151520] dark:text-white ${
+                          className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 dark:bg-[#3a0012] dark:text-[#F5F5DC] ${
                             fieldErrors['preferences.minAge'] 
                               ? 'border-red-400 focus:ring-red-500 focus:border-red-500' 
-                              : 'border-gray-300 dark:border-gray-600 focus:ring-pink-500'
+                              : 'border-gray-300 dark:border-gray-600 focus:ring-[#800020] dark:focus:ring-[#D4AF37]'
                           }`}
                     />
                     {fieldErrors['preferences.minAge'] && (
-                      <p className="mt-1 text-xs text-red-600 dark:text-[#F25D5D]">
+                      <p className="mt-1 text-xs text-red-600 dark:text-red-400">
                         {fieldErrors['preferences.minAge']}
                       </p>
                     )}
@@ -1943,14 +1943,14 @@ export default function MyProfilePage() {
                           setFieldErrors(newErrors);
                         }
                       }}
-                          className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 dark:bg-[#151520] dark:text-white ${
+                          className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 dark:bg-[#3a0012] dark:text-[#F5F5DC] ${
                             fieldErrors['preferences.maxAge'] 
                               ? 'border-red-400 focus:ring-red-500 focus:border-red-500' 
-                              : 'border-gray-300 dark:border-gray-600 focus:ring-pink-500'
+                              : 'border-gray-300 dark:border-gray-600 focus:ring-[#800020] dark:focus:ring-[#D4AF37]'
                           }`}
                     />
                     {fieldErrors['preferences.maxAge'] && (
-                      <p className="mt-1 text-xs text-red-600 dark:text-[#F25D5D]">
+                      <p className="mt-1 text-xs text-red-600 dark:text-red-400">
                         {fieldErrors['preferences.maxAge']}
                       </p>
                     )}
@@ -1961,14 +1961,14 @@ export default function MyProfilePage() {
                   <div className="flex items-center gap-2">
                     <div className="flex-1 h-2 bg-gray-200 dark:bg-gray-700 rounded-full relative">
                       <div 
-                        className="absolute h-2 bg-pink-600 rounded-full"
+                        className="absolute h-2 bg-[#800020] dark:bg-[#D4AF37] rounded-full"
                         style={{ 
                           left: `${((user.preferences?.minAge || 28) - 18) / (100 - 18) * 100}%`,
                           width: `${((user.preferences?.maxAge || 34) - (user.preferences?.minAge || 28)) / (100 - 18) * 100}%`
                         }}
                     />
                   </div>
-                    <span className="text-pink-600 dark:text-[#00FFFF] font-semibold text-sm whitespace-nowrap">
+                    <span className="text-[#800020] dark:text-[#D4AF37] font-semibold text-sm whitespace-nowrap">
                       {user.preferences?.minAge || 28} - {user.preferences?.maxAge || 34}
                     </span>
                   </div>
@@ -2032,14 +2032,14 @@ export default function MyProfilePage() {
                             }
                       }}
                           placeholder="5'8&quot;"
-                          className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 dark:bg-[#151520] dark:text-white ${
+                          className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 dark:bg-[#3a0012] dark:text-[#F5F5DC] ${
                             fieldErrors['preferences.minHeight'] 
                               ? 'border-red-400 focus:ring-red-500 focus:border-red-500' 
-                              : 'border-gray-300 dark:border-gray-600 focus:ring-pink-500'
+                              : 'border-gray-300 dark:border-gray-600 focus:ring-[#800020] dark:focus:ring-[#D4AF37]'
                           }`}
                     />
                     {fieldErrors['preferences.minHeight'] && (
-                      <p className="mt-1 text-xs text-red-600 dark:text-[#F25D5D]">
+                      <p className="mt-1 text-xs text-red-600 dark:text-red-400">
                         {fieldErrors['preferences.minHeight']}
                       </p>
                     )}
@@ -2082,14 +2082,14 @@ export default function MyProfilePage() {
                             }
                       }}
                           placeholder="6'2&quot;"
-                          className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 dark:bg-[#151520] dark:text-white ${
+                          className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 dark:bg-[#3a0012] dark:text-[#F5F5DC] ${
                             fieldErrors['preferences.maxHeight'] 
                               ? 'border-red-400 focus:ring-red-500 focus:border-red-500' 
-                              : 'border-gray-300 dark:border-gray-600 focus:ring-pink-500'
+                              : 'border-gray-300 dark:border-gray-600 focus:ring-[#800020] dark:focus:ring-[#D4AF37]'
                           }`}
                     />
                     {fieldErrors['preferences.maxHeight'] && (
-                      <p className="mt-1 text-xs text-red-600 dark:text-[#F25D5D]">
+                      <p className="mt-1 text-xs text-red-600 dark:text-red-400">
                         {fieldErrors['preferences.maxHeight']}
                       </p>
                     )}
@@ -2100,14 +2100,14 @@ export default function MyProfilePage() {
                 <div className="flex items-center gap-2">
                   <div className="flex-1 h-2 bg-gray-200 dark:bg-gray-700 rounded-full relative">
                     <div 
-                      className="absolute h-2 bg-pink-600 rounded-full"
+                      className="absolute h-2 bg-[#800020] dark:bg-[#D4AF37] rounded-full"
                       style={{ 
                         left: String(((user.preferences?.minHeight || 68) - 48) / (84 - 48) * 100) + '%',
                         width: String(((user.preferences?.maxHeight || 74) - (user.preferences?.minHeight || 68)) / (84 - 48) * 100) + '%'
                       }}
                     />
                 </div>
-                    <span className="text-pink-600 dark:text-[#00FFFF] font-semibold text-sm whitespace-nowrap">
+                    <span className="text-[#800020] dark:text-[#D4AF37] font-semibold text-sm whitespace-nowrap">
                       {user.preferences?.minHeight 
                         ? (Math.floor(user.preferences.minHeight / 12) + "'" + (user.preferences.minHeight % 12) + '"')
                         : "5'8\""} - {user.preferences?.maxHeight 
@@ -2119,7 +2119,7 @@ export default function MyProfilePage() {
                 </div>
 
               {/* Horoscope Match Mandatory */}
-              <div className="pt-4 border-t border-gray-200 dark:border-[#303341]">
+              <div className="pt-4 border-t border-gray-200 dark:border-[#D4AF37]/10">
                 <label className="flex items-center gap-3 cursor-pointer">
                   <input
                     type="checkbox"
@@ -2127,14 +2127,14 @@ export default function MyProfilePage() {
                     onChange={(e) => setFormData({ ...formData, horoscopeMatchMandatory: e.target.checked })}
                     disabled={!editing}
                     aria-label="Require horoscope match for partner preferences"
-                    className="w-5 h-5 text-pink-600 border-gray-300 rounded focus:ring-pink-500 focus:ring-2 focus:ring-offset-2 dark:border-gray-600 dark:bg-[#1f212a] disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-5 h-5 text-[#800020] dark:text-[#D4AF37] border-gray-300 rounded focus:ring-[#800020] dark:focus:ring-[#D4AF37] focus:ring-2 focus:ring-offset-2 dark:border-[#D4AF37]/30 dark:bg-[#3a0012] disabled:opacity-50 disabled:cursor-not-allowed"
                   />
                   <span className="text-sm font-medium text-secondary">
                     Require Horoscope Match <span className="text-muted text-xs">(Mandatory for matches)</span>
                   </span>
                 </label>
                 {!editing && (
-                  <p className="mt-2 text-sm text-secondary dark:text-[#D5D3D7]">
+                  <p className="mt-2 text-sm text-[#800020] dark:text-[#E8E8C8]">
                     {user.horoscopeMatchMandatory 
                       ? 'Horoscope compatibility is required for matches' 
                       : 'Horoscope compatibility is optional for matches'}
@@ -2151,7 +2151,7 @@ export default function MyProfilePage() {
                 onClick={handleSave}
                 disabled={saving}
                 aria-label={saving ? 'Saving profile changes' : 'Save profile changes'}
-                className="w-full py-4 bg-pink-600 text-white font-semibold rounded-lg hover:bg-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2"
+                className="w-full py-4 bg-[#800020] dark:bg-[#D4AF37] text-[#F5F5DC] font-semibold rounded-lg hover:bg-[#900023] dark:hover:bg-[#c19d2e] disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:ring-offset-2"
               >
             {saving ? 'Saving...' : 'Save Changes'}
               </button>
