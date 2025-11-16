@@ -632,7 +632,7 @@ export default function MyProfilePage() {
     <div className="min-h-screen bg-gray-50 dark:bg-[#0f1117] pb-24 transition-colors">
       {/* Header - Mobile First Design */}
       <div className="bg-white dark:bg-[#181b23] border-b border-gray-200 dark:border-[#303341] sticky top-0 z-30">
-        <div className="flex items-center justify-between px-4 py-3">
+        <div className="flex items-center justify-between px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
           <button
             onClick={() => {
               if (editing) {
@@ -720,10 +720,10 @@ export default function MyProfilePage() {
         </div>
       </div>
 
-      <div className="px-4 py-6 space-y-6">
+      <div className="px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6 sm:space-y-8">
         {/* Error Display */}
         {error && (
-          <div className="rounded-xl bg-red-50 dark:bg-red-900/20 p-4 border-l-4 border-red-500 shadow-sm">
+          <div className="rounded-xl bg-red-50 dark:bg-red-900/20 p-4 sm:p-6 border-l-4 border-red-500 shadow-sm">
             <div className="flex items-start">
               <svg className="w-5 h-5 text-red-500 mt-0.5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
@@ -741,7 +741,7 @@ export default function MyProfilePage() {
         )}
 
         {/* Profile Photos Section - Matching Image Design */}
-        <div className="flex gap-4 mb-6">
+        <div className="flex gap-4 sm:gap-6 mb-6 sm:mb-8">
           {/* Main Profile Photo */}
           <div className="relative flex-shrink-0">
             {user.photos?.[0] ? (
@@ -821,8 +821,8 @@ export default function MyProfilePage() {
                     </div>
 
         {/* Profile Completion */}
-        <div className="bg-white dark:bg-[#181b23] rounded-lg p-4 mb-6">
-          <div className="flex items-center justify-between mb-2">
+        <div className="bg-white dark:bg-[#181b23] rounded-lg p-4 sm:p-6 mb-6 sm:mb-8">
+          <div className="flex items-center justify-between mb-4">
             <span className="text-sm font-medium text-gray-700 dark:text-pink-200">Profile Completion</span>
             <span className="text-sm font-semibold text-pink-600 dark:text-pink-400">
               {user.isProfileComplete ? '100%' : '80%'}
@@ -840,7 +840,7 @@ export default function MyProfilePage() {
         <div className="bg-white dark:bg-[#181b23] rounded-lg overflow-hidden">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, aboutMe: !expandedSections.aboutMe })}
-            className="w-full flex items-center justify-between p-4 text-left"
+            className="w-full flex items-center justify-between p-4 sm:p-6 text-left"
           >
             <h2 className="text-lg font-semibold text-gray-900 dark:text-pink-100">About Me</h2>
             <svg 
@@ -854,10 +854,10 @@ export default function MyProfilePage() {
           </button>
           
           {expandedSections.aboutMe && (
-            <div className="px-4 pb-4 space-y-4">
+            <div className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
               {/* Full Name */}
             <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Full Name <span className="text-red-500">*</span></label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">Full Name <span className="text-red-500">*</span></label>
               {editing ? (
                 <input
                   type="text"
@@ -872,7 +872,7 @@ export default function MyProfilePage() {
 
               {/* Age */}
             <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Age <span className="text-red-500">*</span></label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">Age <span className="text-red-500">*</span></label>
               {editing ? (
                   <input
                     type="number"
@@ -887,7 +887,7 @@ export default function MyProfilePage() {
 
               {/* Height */}
             <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Height</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">Height</label>
               {editing ? (
                 <input
                     type="text"
@@ -932,7 +932,7 @@ export default function MyProfilePage() {
 
               {/* Bio */}
             <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Bio</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">Bio</label>
               {editing ? (
                   <>
                     <textarea
@@ -977,7 +977,7 @@ export default function MyProfilePage() {
         <div className="bg-white dark:bg-[#181b23] rounded-lg overflow-hidden">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, contact: !expandedSections.contact })}
-            className="w-full flex items-center justify-between p-4 text-left"
+            className="w-full flex items-center justify-between p-4 sm:p-6 text-left"
           >
             <h2 className="text-lg font-semibold text-gray-900 dark:text-pink-100">Contact Information</h2>
             <svg 
@@ -991,10 +991,10 @@ export default function MyProfilePage() {
           </button>
           
           {expandedSections.contact && (
-            <div className="px-4 pb-4 space-y-4">
+            <div className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
               {/* Email */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Email</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">Email</label>
                 {editing ? (
                   <input
                     type="email"
@@ -1009,7 +1009,7 @@ export default function MyProfilePage() {
 
               {/* Phone */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Phone</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">Phone</label>
                 {editing ? (
                   <input
                     type="tel"
@@ -1024,7 +1024,7 @@ export default function MyProfilePage() {
 
               {/* WhatsApp Number */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">WhatsApp Number</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">WhatsApp Number</label>
                 {editing ? (
                   <input
                     type="tel"
@@ -1044,7 +1044,7 @@ export default function MyProfilePage() {
         <div className="bg-white dark:bg-[#181b23] rounded-lg overflow-hidden">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, location: !expandedSections.location })}
-            className="w-full flex items-center justify-between p-4 text-left"
+            className="w-full flex items-center justify-between p-4 sm:p-6 text-left"
           >
             <h2 className="text-lg font-semibold text-gray-900 dark:text-pink-100">Location</h2>
             <svg 
@@ -1058,7 +1058,7 @@ export default function MyProfilePage() {
           </button>
           
           {expandedSections.location && (
-            <div className="px-4 pb-4 space-y-4">
+            <div className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
               {editing ? (
                 <LocationSelect
                   selectedCountry={formData.country || user?.country || ''}
@@ -1081,7 +1081,7 @@ export default function MyProfilePage() {
               {editing && (
                 <>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Town/Village</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">Town/Village</label>
                     <input
                       type="text"
                       value={formData.town || ''}
@@ -1091,7 +1091,7 @@ export default function MyProfilePage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Present Address</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">Present Address</label>
                     <textarea
                       value={formData.presentAddress || ''}
                       onChange={(e) => setFormData({ ...formData, presentAddress: sanitizeFormInput(e.target.value, 'textarea') })}
@@ -1101,7 +1101,7 @@ export default function MyProfilePage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Permanent Address</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">Permanent Address</label>
                     <textarea
                       value={formData.permanentAddress || ''}
                       onChange={(e) => setFormData({ ...formData, permanentAddress: sanitizeFormInput(e.target.value, 'textarea') })}
@@ -1117,13 +1117,13 @@ export default function MyProfilePage() {
                 <>
                   {user.presentAddress && (
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Present Address</label>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">Present Address</label>
                       <p className="text-gray-900 dark:text-pink-100">{user.presentAddress}</p>
                     </div>
                   )}
                   {user.permanentAddress && (
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Permanent Address</label>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">Permanent Address</label>
                       <p className="text-gray-900 dark:text-pink-100">{user.permanentAddress}</p>
                     </div>
                   )}
@@ -1137,7 +1137,7 @@ export default function MyProfilePage() {
         <div className="bg-white dark:bg-[#181b23] rounded-lg overflow-hidden">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, education: !expandedSections.education })}
-            className="w-full flex items-center justify-between p-4 text-left"
+            className="w-full flex items-center justify-between p-4 sm:p-6 text-left"
           >
             <h2 className="text-lg font-semibold text-gray-900 dark:text-pink-100">Education & Career</h2>
             <svg 
@@ -1151,10 +1151,10 @@ export default function MyProfilePage() {
           </button>
           
           {expandedSections.education && (
-            <div className="px-4 pb-4 space-y-4">
+            <div className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
               {/* Education */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">
                   Education <span className="text-red-500">*</span>
                   {loadingEducation && (
                     <span className="ml-2 text-xs text-gray-500 dark:text-pink-400">(Loading...)</span>
@@ -1185,7 +1185,7 @@ export default function MyProfilePage() {
 
               {/* Educational Detail */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Educational Detail</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">Educational Detail</label>
                 {editing ? (
                   <select
                     value={formData.educationalDetail || ''}
@@ -1206,7 +1206,7 @@ export default function MyProfilePage() {
 
               {/* Occupation */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">
                   Occupation <span className="text-red-500">*</span>
                   {loadingOccupation && (
                     <span className="ml-2 text-xs text-gray-500 dark:text-pink-400">(Loading...)</span>
@@ -1237,7 +1237,7 @@ export default function MyProfilePage() {
 
               {/* Profession */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Profession</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">Profession</label>
                 {editing ? (
                   <input
                     type="text"
@@ -1253,7 +1253,7 @@ export default function MyProfilePage() {
 
               {/* Employer/Company */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Employer/Company</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">Employer/Company</label>
                 {editing ? (
                   <input
                     type="text"
@@ -1269,7 +1269,7 @@ export default function MyProfilePage() {
 
               {/* Annual Income */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Annual Income</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">Annual Income</label>
                 {editing ? (
                   <select
                     value={formData.annualIncome || ''}
@@ -1296,7 +1296,7 @@ export default function MyProfilePage() {
         <div className="bg-white dark:bg-[#181b23] rounded-lg overflow-hidden">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, lifestyle: !expandedSections.lifestyle })}
-            className="w-full flex items-center justify-between p-4 text-left"
+            className="w-full flex items-center justify-between p-4 sm:p-6 text-left"
           >
             <h2 className="text-lg font-semibold text-gray-900 dark:text-pink-100">Lifestyle & Interests</h2>
             <svg 
@@ -1310,7 +1310,7 @@ export default function MyProfilePage() {
           </button>
           
           {expandedSections.lifestyle && (
-            <div className="px-4 pb-4 space-y-6">
+            <div className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
               {/* Dietary Preferences */}
             <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-3">Dietary Preferences</label>
@@ -1407,7 +1407,7 @@ export default function MyProfilePage() {
         <div className="bg-white dark:bg-[#181b23] rounded-lg overflow-hidden">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, family: !expandedSections.family })}
-            className="w-full flex items-center justify-between p-4 text-left"
+            className="w-full flex items-center justify-between p-4 sm:p-6 text-left"
           >
             <h2 className="text-lg font-semibold text-gray-900 dark:text-pink-100">👨‍👩‍👧‍👦 Family Information</h2>
             <svg 
@@ -1421,11 +1421,11 @@ export default function MyProfilePage() {
           </button>
           
           {expandedSections.family && (
-            <div className="px-4 pb-4 space-y-4">
+            <div className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Father's Name */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Father's Name</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">Father's Name</label>
                   {editing ? (
                     <input
                       type="text"
@@ -1447,7 +1447,7 @@ export default function MyProfilePage() {
 
                 {/* Father's Occupation Type */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Father's Occupation Type</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">Father's Occupation Type</label>
                   {editing ? (
                     <select
                       value={formData.family?.fathersOccupationType || ''}
@@ -1479,7 +1479,7 @@ export default function MyProfilePage() {
                 {/* Father's Occupation Description */}
                 {editing && formData.family?.fathersOccupationType && (
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Father's Occupation Description</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">Father's Occupation Description</label>
                     <input
                       type="text"
                       value={formData.family?.fathersOccupationDesc || ''}
@@ -1498,14 +1498,14 @@ export default function MyProfilePage() {
 
                 {!editing && user.family?.fathersOccupationDesc && (
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Father's Occupation Description</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">Father's Occupation Description</label>
                     <p className="text-gray-900 dark:text-pink-100">{user.family.fathersOccupationDesc}</p>
                   </div>
                 )}
 
                 {/* Father's Contact Number */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Father's Contact Number</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">Father's Contact Number</label>
                   {editing ? (
                     <input
                       type="tel"
@@ -1527,7 +1527,7 @@ export default function MyProfilePage() {
 
                 {/* Mother's Name */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Mother's Name</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">Mother's Name</label>
                   {editing ? (
                     <input
                       type="text"
@@ -1549,7 +1549,7 @@ export default function MyProfilePage() {
 
                 {/* Mother's Occupation Type */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Mother's Occupation Type</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">Mother's Occupation Type</label>
                   {editing ? (
                     <select
                       value={formData.family?.mothersOccupationType || ''}
@@ -1581,7 +1581,7 @@ export default function MyProfilePage() {
                 {/* Mother's Occupation Description */}
                 {editing && formData.family?.mothersOccupationType && (
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Mother's Occupation Description</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">Mother's Occupation Description</label>
                     <input
                       type="text"
                       value={formData.family?.mothersOccupationDesc || ''}
@@ -1600,14 +1600,14 @@ export default function MyProfilePage() {
 
                 {!editing && user.family?.mothersOccupationDesc && (
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Mother's Occupation Description</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">Mother's Occupation Description</label>
                     <p className="text-gray-900 dark:text-pink-100">{user.family.mothersOccupationDesc}</p>
                   </div>
                 )}
 
                 {/* Siblings Information */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Number of Brothers</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">Number of Brothers</label>
                   {editing ? (
                     <input
                       type="number"
@@ -1628,7 +1628,7 @@ export default function MyProfilePage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Number of Sisters</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">Number of Sisters</label>
                   {editing ? (
                     <input
                       type="number"
@@ -1656,7 +1656,7 @@ export default function MyProfilePage() {
         <div className="bg-white dark:bg-[#181b23] rounded-lg overflow-hidden">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, horoscope: !expandedSections.horoscope })}
-            className="w-full flex items-center justify-between p-4 text-left"
+            className="w-full flex items-center justify-between p-4 sm:p-6 text-left"
           >
             <h2 className="text-lg font-semibold text-gray-900 dark:text-pink-100">🔮 Horoscope Details</h2>
             <svg 
@@ -1670,10 +1670,10 @@ export default function MyProfilePage() {
           </button>
           
           {expandedSections.horoscope && (
-            <div className="px-4 pb-4 space-y-4">
+            <div className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
               {/* Date of Birth */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Date of Birth</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">Date of Birth</label>
                 {editing ? (
                   <>
                     <input
@@ -1712,7 +1712,7 @@ export default function MyProfilePage() {
 
               {/* Time of Birth */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Time of Birth (HH:MM:SS)</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">Time of Birth (HH:MM:SS)</label>
                 {editing ? (
                   <input
                     type="time"
@@ -1740,7 +1740,7 @@ export default function MyProfilePage() {
 
               {/* Rashi */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Rashi (Moon Sign)</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">Rashi (Moon Sign)</label>
                 {(editing || editingHoroscope) ? (
                   <select
                     value={formData.horoscopeDetails?.rashi || ''}
@@ -1776,7 +1776,7 @@ export default function MyProfilePage() {
 
               {/* Nakshatra */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Nakshatra</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">Nakshatra</label>
                 {(editing || editingHoroscope) ? (
                   <select
                     value={formData.horoscopeDetails?.nakshatra || ''}
@@ -1827,7 +1827,7 @@ export default function MyProfilePage() {
 
               {/* Star Sign */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">Star Sign</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">Star Sign</label>
                 {(editing || editingHoroscope) ? (
                   <input
                     type="text"
@@ -1856,7 +1856,7 @@ export default function MyProfilePage() {
         <div className="bg-white dark:bg-[#181b23] rounded-lg overflow-hidden">
           <button
             onClick={() => setExpandedSections({ ...expandedSections, partnerPreferences: !expandedSections.partnerPreferences })}
-            className="w-full flex items-center justify-between p-4 text-left"
+            className="w-full flex items-center justify-between p-4 sm:p-6 text-left"
           >
             <h2 className="text-lg font-semibold text-gray-900 dark:text-pink-100">Partner Preferences</h2>
             <svg 
@@ -1870,7 +1870,7 @@ export default function MyProfilePage() {
           </button>
           
           {expandedSections.partnerPreferences && (
-            <div className="px-4 pb-4 space-y-6">
+            <div className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
               {/* Age Range */}
                 <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-3">

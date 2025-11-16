@@ -337,7 +337,7 @@ function SearchProfilesPageContent() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-[#0f1117] pb-24 transition-colors">
       {/* Filter/View Bar */}
-      <div className="bg-white dark:bg-[#181b23] border-b border-gray-200 dark:border-[#303341] sticky top-0 z-30 px-4 py-3">
+      <div className="bg-white dark:bg-[#181b23] border-b border-gray-200 dark:border-[#303341] sticky top-0 z-30 px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
         <div className="flex gap-2">
           <button
             onClick={() => setShowFilters(!showFilters)}
@@ -365,10 +365,10 @@ function SearchProfilesPageContent() {
 
       {/* Filters Panel */}
       {showFilters && (
-        <div className="bg-white dark:bg-[#181b23] border-b border-gray-200 dark:border-[#303341] p-4 space-y-4">
+        <div className="bg-white dark:bg-[#181b23] border-b border-gray-200 dark:border-[#303341] p-4 sm:p-6 space-y-4 sm:space-y-6">
           {/* Gahoi ID Search */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">
               Search by Gahoi ID
             </label>
             <input
@@ -382,7 +382,7 @@ function SearchProfilesPageContent() {
 
           {/* Gender */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">
               Gender
             </label>
             <select
@@ -398,9 +398,9 @@ function SearchProfilesPageContent() {
           </div>
 
           {/* Age Range */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">
                 Min Age
               </label>
               <input
@@ -413,7 +413,7 @@ function SearchProfilesPageContent() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">
                 Max Age
               </label>
               <input
@@ -439,7 +439,7 @@ function SearchProfilesPageContent() {
 
           {/* Education */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">
               Education
             </label>
             <select
@@ -459,7 +459,7 @@ function SearchProfilesPageContent() {
 
           {/* Occupation */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">
               Occupation
             </label>
             <select
@@ -479,7 +479,7 @@ function SearchProfilesPageContent() {
 
           {/* Marital Status */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">
               Marital Status
             </label>
             <select
@@ -501,7 +501,7 @@ function SearchProfilesPageContent() {
             <label className="block text-sm font-medium text-gray-700 dark:text-pink-200 mb-2">
               Height Range
             </label>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">Min Height</label>
                 <input
@@ -546,7 +546,7 @@ function SearchProfilesPageContent() {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex gap-3 pt-2">
+          <div className="flex gap-4 pt-4">
             <button
               onClick={handleSearch}
               disabled={loading}
@@ -565,7 +565,7 @@ function SearchProfilesPageContent() {
       )}
 
       {/* Results Section */}
-      <div className="px-4 py-4">
+      <div className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
 
         {/* Loading State */}
         {loading && (
