@@ -17,6 +17,8 @@ import ProfileShareModal from '@/components/ProfileShareModal';
 import { sanitizeFormInput } from '@/hooks/useSanitizedInput';
 import { getProfileUrl } from '@/lib/profileUtils';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
+import { useDebounce } from '@/hooks/useDebounce';
+import { getErrorMessage } from '@/lib/utils/errorMessages';
 
 interface SearchFilters {
   gender?: string;
@@ -75,6 +77,10 @@ function SearchProfilesPageContent() {
   
   // Current user for gender-based filtering
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  
+  // Gahoi ID search with debouncing
+  const [gahoiIdSearch, setGahoiIdSearch] = useState('');
+  const debouncedGahoiId = useDebounce(gahoiIdSearch, 500);
 
   useEffect(() => {
     setMounted(true);
@@ -98,7 +104,11 @@ function SearchProfilesPageContent() {
     if (searchParams.get('maritalStatus')) urlFilters.maritalStatus = searchParams.get('maritalStatus') || '';
     if (searchParams.get('minHeight')) urlFilters.minHeight = parseInt(searchParams.get('minHeight') || '');
     if (searchParams.get('maxHeight')) urlFilters.maxHeight = parseInt(searchParams.get('maxHeight') || '');
-    if (searchParams.get('gahoiId')) urlFilters.gahoiId = searchParams.get('gahoiId') || '';
+    if (searchParams.get('gahoiId')) {
+      const gahoiId = searchParams.get('gahoiId') || '';
+      urlFilters.gahoiId = gahoiId;
+      setGahoiIdSearch(gahoiId);
+    }
     
     if (Object.keys(urlFilters).length > 0) {
       setFilters(prev => ({ ...prev, ...urlFilters }));
@@ -138,6 +148,22 @@ function SearchProfilesPageContent() {
       });
     }
   }, [mounted, currentUser, hasSearched]);
+
+  // Auto-search when Gahoi ID is debounced (only if user has typed something)
+  useEffect(() => {
+    if (debouncedGahoiId && debouncedGahoiId.trim() && mounted && currentUser) {
+      handleFilterChange('gahoiId', debouncedGahoiId.trim());
+      // Trigger search after a short delay to ensure filter state is updated
+      const timeoutId = setTimeout(() => {
+        performSearch(1, false);
+      }, 100);
+      return () => clearTimeout(timeoutId);
+    } else if (!debouncedGahoiId && filters.gahoiId) {
+      // Clear Gahoi ID filter when search is cleared
+      handleFilterChange('gahoiId', '');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedGahoiId, mounted, currentUser]);
 
   const loadCurrentUser = async () => {
     try {
@@ -262,12 +288,15 @@ function SearchProfilesPageContent() {
         }
       }
     } catch (err: any) {
-      console.error('Search error:', err);
-      const errorMsg = err.response?.data?.message || err.message || 'Failed to search profiles';
+      const errorMsg = getErrorMessage(err, t);
       setError(errorMsg);
       if (!append) {
         showError(errorMsg);
         setUsers([]);
+      }
+      // Log error for debugging (only in development)
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Search error:', err);
       }
     } finally {
       setLoading(false);
@@ -321,6 +350,7 @@ function SearchProfilesPageContent() {
       maxHeight: undefined,
       gahoiId: '',
     });
+    setGahoiIdSearch('');
     // Clear URL params
     window.history.replaceState({}, '', window.location.pathname);
   };
@@ -410,10 +440,17 @@ function SearchProfilesPageContent() {
             </label>
             <input
               type="text"
-              value={filters.gahoiId || ''}
-              onChange={(e) => handleFilterChange('gahoiId', sanitizeFormInput(e.target.value, 'text'))}
+              value={gahoiIdSearch}
+              onChange={(e) => {
+                const value = sanitizeFormInput(e.target.value, 'text');
+                setGahoiIdSearch(value);
+                // Clear filter immediately if input is empty
+                if (!value.trim()) {
+                  handleFilterChange('gahoiId', '');
+                }
+              }}
               placeholder="e.g., 10001"
-              className="w-full px-3 py-2 border border-gray-300"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
             />
           </div>
 
@@ -615,8 +652,22 @@ function SearchProfilesPageContent() {
 
         {/* Error State */}
         {error && !loading && (
-          <div className="bg-red-50">
-            {error}
+          <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-lg mb-4">
+            <div className="flex items-start">
+              <svg className="w-5 h-5 text-red-500 mt-0.5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+              </svg>
+              <div className="flex-1">
+                <p className="text-sm font-medium text-red-800">{error}</p>
+                <button
+                  onClick={() => setError('')}
+                  className="mt-2 text-xs text-red-600 hover:text-red-800 underline"
+                  aria-label="Dismiss error"
+                >
+                  Dismiss
+                </button>
+              </div>
+            </div>
           </div>
         )}
 
