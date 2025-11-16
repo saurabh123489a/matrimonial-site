@@ -681,17 +681,42 @@ export default function MyProfilePage() {
             {editing ? 'Edit Profile' : t('profile.myProfile')}
           </h1>
           <div className="flex items-center gap-1">
-            {editing ? (
-              <button
-                onClick={() => setShowShareModal(true)}
-                aria-label="Share profile"
-                className="p-2 -mr-2 text-white hover:bg-[#800020]/20"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-                </svg>
-              </button>
-            ) : (
+            {/* Share Button - Always visible */}
+            <button
+              onClick={() => setShowShareModal(true)}
+              aria-label="Share profile"
+              className="p-2 text-white hover:bg-[#800020]/20 rounded-lg transition-colors"
+              title="Share profile"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+              </svg>
+            </button>
+
+            {/* Active Status Toggle - Always visible */}
+            <button
+              onClick={handleToggleActive}
+              disabled={togglingActive}
+              aria-label={user.isActive ? 'Deactivate profile' : 'Activate profile'}
+              className={`p-2 text-white hover:bg-[#800020]/20 rounded-lg transition-colors relative ${
+                togglingActive ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
+              title={user.isActive ? 'Profile is active - Click to deactivate' : 'Profile is inactive - Click to activate'}
+            >
+              {togglingActive ? (
+                <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              ) : (
+                <div className="flex items-center gap-1">
+                  <div className={`w-2 h-2 rounded-full ${user.isActive ? 'bg-green-400' : 'bg-gray-400'}`}></div>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+              )}
+            </button>
+
+            {/* Edit Button - Always visible */}
+            {!editing ? (
               <button
                 onClick={() => {
                   // Ensure user data is loaded before entering edit mode
@@ -759,10 +784,70 @@ export default function MyProfilePage() {
                   setError('');
                 }}
                 aria-label="Edit profile"
-                className="p-2 -mr-2 text-white hover:bg-[#800020]/20"
+                className="p-2 -mr-2 text-white hover:bg-[#800020]/20 rounded-lg transition-colors"
+                title="Edit profile"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                </svg>
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  setEditing(false);
+                  setFormData({
+                    name: user?.name || '',
+                    email: user?.email || '',
+                    phone: user?.phone || '',
+                    city: user?.city || '',
+                    state: user?.state || '',
+                    country: user?.country || '',
+                    education: user?.education || '',
+                    occupation: user?.occupation || '',
+                    bio: user?.bio || '',
+                    height: user?.height || undefined,
+                    diet: (user?.diet as 'vegetarian' | 'non-vegetarian' | 'vegan' | 'jain' | undefined) || undefined,
+                    hobbies: user?.hobbies || [],
+                    preferences: {
+                      minAge: user?.preferences?.minAge || undefined,
+                      maxAge: user?.preferences?.maxAge || undefined,
+                      minHeight: user?.preferences?.minHeight || undefined,
+                      maxHeight: user?.preferences?.maxHeight || undefined,
+                    },
+                    horoscopeMatchMandatory: user?.horoscopeMatchMandatory || false,
+                    dateOfBirth: user?.dateOfBirth ? new Date(user.dateOfBirth).toISOString().split('T')[0] : '',
+                    family: {
+                      fathersName: user?.family?.fathersName || '',
+                      fathersOccupationType: user?.family?.fathersOccupationType || undefined,
+                      fathersOccupationDesc: user?.family?.fathersOccupationDesc || '',
+                      fathersContactNumber: user?.family?.fathersContactNumber || '',
+                      mothersName: user?.family?.mothersName || '',
+                      mothersOccupationType: user?.family?.mothersOccupationType || undefined,
+                      mothersOccupationDesc: user?.family?.mothersOccupationDesc || '',
+                      numberOfBrothers: user?.family?.numberOfBrothers || 0,
+                      numberOfSisters: user?.family?.numberOfSisters || 0,
+                      marriedBrothers: user?.family?.marriedBrothers || 0,
+                      unmarriedBrothers: user?.family?.unmarriedBrothers || 0,
+                      marriedSisters: user?.family?.marriedSisters || 0,
+                      unmarriedSisters: user?.family?.unmarriedSisters || 0,
+                      familyType: user?.family?.familyType || 'nuclear',
+                      familyStatus: user?.family?.familyStatus || 'middle-class',
+                      familyValues: user?.family?.familyValues || 'moderate',
+                    },
+                    horoscopeDetails: {
+                      rashi: user?.horoscopeDetails?.rashi || '',
+                      nakshatra: user?.horoscopeDetails?.nakshatra || '',
+                      starSign: user?.horoscopeDetails?.starSign || '',
+                      timeOfBirth: user?.horoscopeDetails?.timeOfBirth || '',
+                    },
+                  });
+                }}
+                aria-label="Cancel editing"
+                className="p-2 -mr-2 text-white hover:bg-[#800020]/20 rounded-lg transition-colors"
+                title="Cancel editing"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             )}
