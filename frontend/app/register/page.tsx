@@ -323,6 +323,11 @@ export default function RegisterPage() {
       const data: any = {
         ...formData,
         age: formData.age ? parseInt(formData.age) : undefined,
+        dateOfBirth: formData.dateOfBirth || undefined,
+        // Convert empty string to null for communityPosition (required by validation schema)
+        communityPosition: formData.communityPosition && formData.communityPosition.trim() !== '' 
+          ? formData.communityPosition 
+          : null,
       };
       
       
@@ -340,37 +345,136 @@ export default function RegisterPage() {
       }
     } catch (err: any) {
       const errorData = err.response?.data;
-      const errorMsg = getErrorMessage(err, t);
-      setError(errorMsg);
       
-      
+      // Handle validation errors with user-friendly messages
       if (errorData?.errors || errorData?.validationErrors) {
         const validationErrors: Record<string, string> = {};
         const errors = errorData.errors || errorData.validationErrors || {};
         
+        // Helper function to convert field names to user-friendly labels
+        const getFieldLabel = (fieldName: string): string => {
+          const labels: Record<string, string> = {
+            name: 'Full Name',
+            email: 'Email',
+            phone: 'Phone Number',
+            password: 'Password',
+            gender: 'Gender',
+            age: 'Age',
+            dateOfBirth: 'Date of Birth',
+            communityPosition: 'Community Position',
+          };
+          return labels[fieldName] || fieldName;
+        };
+        
+        // Helper function to convert error messages to user-friendly format
+        const getUserFriendlyError = (error: any, fieldName: string): string => {
+          const fieldLabel = getFieldLabel(fieldName);
+          
+          // Handle Zod validation errors
+          if (error.code === 'invalid_enum_value') {
+            if (fieldName === 'communityPosition') {
+              return 'Please select a valid community position or leave it blank';
+            }
+            if (fieldName === 'gender') {
+              return 'Please select a valid gender';
+            }
+            return `${fieldLabel} must be one of the allowed values`;
+          }
+          
+          if (error.code === 'invalid_type') {
+            if (error.expected === 'string' && error.received === 'undefined') {
+              return `${fieldLabel} is required`;
+            }
+            return `${fieldLabel} has an invalid format`;
+          }
+          
+          if (error.code === 'too_small') {
+            if (error.type === 'string' && error.minimum) {
+              return `${fieldLabel} must be at least ${error.minimum} characters`;
+            }
+            if (error.type === 'number' && error.minimum) {
+              return `${fieldLabel} must be at least ${error.minimum}`;
+            }
+          }
+          
+          if (error.code === 'too_big') {
+            if (error.type === 'string' && error.maximum) {
+              return `${fieldLabel} must not exceed ${error.maximum} characters`;
+            }
+            if (error.type === 'number' && error.maximum) {
+              return `${fieldLabel} must not exceed ${error.maximum}`;
+            }
+          }
+          
+          if (error.code === 'invalid_string') {
+            if (error.validation === 'email') {
+              return 'Please enter a valid email address';
+            }
+            if (error.validation === 'regex') {
+              if (fieldName === 'phone') {
+                return 'Phone number must be exactly 10 digits and start with 6, 7, 8, or 9';
+              }
+              return `${fieldLabel} format is invalid`;
+            }
+          }
+          
+          // Use the error message if available, otherwise create a generic one
+          if (error.message) {
+            // Replace technical terms with user-friendly ones
+            let message = error.message
+              .replace(/Invalid enum value\. Expected/, 'Please select')
+              .replace(/received/, 'you entered')
+              .replace(/Expected/, 'Expected')
+              .replace(/Invalid/, 'Invalid');
+            
+            return message;
+          }
+          
+          return `${fieldLabel} is invalid`;
+        };
         
         if (Array.isArray(errors)) {
           errors.forEach((error: any) => {
-            if (error.path && error.message) {
+            if (error.path && error.path.length > 0) {
               const fieldName = error.path[error.path.length - 1];
-              validationErrors[fieldName] = error.message;
+              validationErrors[fieldName] = getUserFriendlyError(error, fieldName);
             }
           });
         } else if (typeof errors === 'object') {
-          
           Object.keys(errors).forEach((key) => {
             const errorValue = errors[key];
             if (typeof errorValue === 'string') {
               validationErrors[key] = errorValue;
             } else if (Array.isArray(errorValue) && errorValue.length > 0) {
-              validationErrors[key] = errorValue[0];
+              // Handle array of error objects (Zod format)
+              const firstError = errorValue[0];
+              if (typeof firstError === 'object' && firstError.message) {
+                validationErrors[key] = getUserFriendlyError(firstError, key);
+              } else {
+                validationErrors[key] = firstError;
+              }
+            } else if (typeof errorValue === 'object' && errorValue.message) {
+              validationErrors[key] = getUserFriendlyError(errorValue, key);
             }
           });
         }
         
         if (Object.keys(validationErrors).length > 0) {
           setFieldErrors(validationErrors);
+          // Set a general error message
+          const errorFields = Object.keys(validationErrors);
+          if (errorFields.length === 1) {
+            setError(`Please fix the error in ${getFieldLabel(errorFields[0])}`);
+          } else {
+            setError(`Please fix the errors in the form fields`);
+          }
+        } else {
+          setError(getErrorMessage(err, t));
         }
+      } else {
+        // Handle non-validation errors
+        const errorMsg = getErrorMessage(err, t);
+        setError(errorMsg);
       }
     } finally {
       setLoading(false);
